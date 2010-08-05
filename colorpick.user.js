@@ -128,12 +128,14 @@ function enableColorPicker(){
 		window.addEventListener('focus',ffs);
 		window.addEventListener('keyup',wk);//removed through here
 	}
-	n.style.display="none";
-	c.style.display="none";
-	if(isLocked)picked();
-	document.body.style.cursor='crosshair';
-	isEnabled=true;
-	window.setTimeout(newImage,250);//yeah i know...c razy
+	if(!isEnabled){
+		n.style.display="none";
+		c.style.display="none";
+		if(isLocked)picked();
+		document.body.style.cursor='crosshair';
+		isEnabled=true;
+		window.setTimeout(newImage,250);//yeah i know...c razy
+	}
 }
 var isUpdating=false,lastTimeout=0;
 function updateColorPreview(ev){

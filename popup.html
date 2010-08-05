@@ -4,9 +4,28 @@
 		a{text-decoration:none;position:relative;margin;2px;padding:3px;}
 		a:hover{color:#338;background-color:#AAF;border:1px solid #338;}
 		#pre{cursor:move;min-width:150px;border:1px solid grey;}
+		.lbrow{position:relative;padding-left:30px;margin-left:5px;}
+		.lb{position:absolute;top:5px;left:0px;}
 	</style>
   <script>
   	var tabid=0;
+  	function rgb2hsv(red, grn, blu) {
+			var x, val, f, i, hue, sat, val;
+			red/=255;//http://www.actionscript.org/forums/showthread.php3?t=15155
+			grn/=255;
+			blu/=255;
+			x = Math.min(Math.min(red, grn), blu);
+			val = Math.max(Math.max(red, grn), blu);
+			if (x==val){
+			    return({h:undefined, s:0, v:val*100});
+			}
+			f = (red == x) ? grn-blu : ((grn == x) ? blu-red : red-grn);
+			i = (red == x) ? 3 : ((grn == x) ? 5 : 1);
+			hue = Math.floor((i-f/(val-x))*60)%360;
+			sat = Math.floor(((val-x)/val)*100);
+			val = Math.floor(val*100);
+			return({h:hue, s:sat, v:val});
+		}
 	  chrome.extension.onRequest.addListener(
 		  function(request, sender, sendResponse) {
 		    if(request.greeting == "setPreview" && (request.tabi==tabid || tabid==0)){
@@ -19,6 +38,10 @@
 		    	document.getElementById('cr').value=request.cr;
 		    	document.getElementById('cg').value=request.cg;
 		    	document.getElementById('cb').value=request.cb;
+		    	var hsv=rgb2hsv(request.cr,request.cg,request.cb);
+		    	document.getElementById('ch').value=hsv.h?hsv.h:'';
+		    	document.getElementById('cs').value=hsv.s;
+		    	document.getElementById('cv').value=hsv.v;
 		    	//document.body.innerHTML='<img src="'+request.previewURI+'" /> '+hex;
 		    	
 	      	sendResponse({});
@@ -70,6 +93,10 @@
 	  		document.getElementById('cr').value=response.cr;
 	    	document.getElementById('cg').value=response.cg;
 	    	document.getElementById('cb').value=response.cb;
+	    	var hsv=rgb2hsv(response.cr,response.cg,response.cb);
+	    	document.getElementById('ch').value=hsv.h?hsv.h:'';
+	    	document.getElementById('cs').value=hsv.s;
+	    	document.getElementById('cv').value=hsv.v;
 	  		if(response.previewURI.length > 0 )document.getElementById('pre').src=response.previewURI;
 	  		document.getElementById('hex').select();
 	  		
@@ -159,7 +186,10 @@
 		 popupimage({href:chrome.extension.getURL('popup.html?isPopup')},'colorPickPopup_'+tabid);
 		}
   </script>
-<body onload="iin();"><a href="javascript:oout();window.close()" title="Close and Leave Color Picking Mode" id="eclose">Exit</a> #<input type="text" id="hex" size="6" onmouseover="this.select()" /><br/>rgb:<input type="text" id="cr" style="width:35px" onmouseover="this.select()" /><input type="text" id="cg" style="width:35px" onmouseover="this.select()" /><input type="text" id="cb" style="width:35px" onmouseover="this.select()" /><br/><img alt="preview pane" ondragstart="initdrag();return false" onmouseout="finalizedrag()" onmouseup="finalizedrag()" src="default.png" id="pre" width="150" height="150" style="margin-bottom:3px;">
+<body onload="iin();"><a href="javascript:oout();window.close()" title="Close and Leave Color Picking Mode" id="eclose">Exit</a> #<input type="text" id="hex" size="6" onmouseover="this.select()" /><br/>
+<div class="lbrow"><div class="lb">rgb:</div><input type="text" id="cr" style="width:35px" onmouseover="this.select()" /><input type="text" id="cg" style="width:35px" onmouseover="this.select()" /><input type="text" id="cb" style="width:35px" onmouseover="this.select()" /><br/></div>
+<div class="lbrow"><div class="lb">hsb:</div><input type="text" id="ch" style="width:35px" onmouseover="this.select()" /><input type="text" id="cs" style="width:35px" onmouseover="this.select()" /><input type="text" id="cv" style="width:35px" onmouseover="this.select()" /><br/></div>
+<img alt="preview pane" ondragstart="initdrag();return false" onmouseout="finalizedrag()" onmouseup="finalizedrag()" src="default.png" id="pre" width="150" height="150" style="margin-bottom:3px;">
 <div id="pres" style="position:relative;width:150px;height:36px;border:1px solid grey;">
 <div id="ohexpre" style="z-index:0;position:absolute;left:0px;top:0px;width:150px;min-height:36px;"> </div>
 <div id="hexpre" style="z-index:9999;position:absolute;left:0px;top:0px;width:75px;min-height:36px;"> </div>
