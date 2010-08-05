@@ -1,0 +1,25 @@
+{
+   "description": "A simple color picker eye drop.",
+   "name": "Color Pick",
+   "browser_action": {
+	    "default_icon": "icon19.png",
+	    "default_title": "Color Pick",
+	    "popup": "popup.html"
+	  },
+	 "content_scripts": [ {
+      "js": [ "colorpick.user.js" ],
+      "run_at": "document_start",
+      "matches": [ "http://*/*", "https://*/*" ]
+   } ],
+   "background_page": "background.html",
+   "options_page": "options.html",
+   "icons": { "16": "icon16.png",
+           "32": "icon32.png",
+           "48": "icon48.png",
+           "64": "icon64.png",
+          "128": "icon128.png" },
+   "permissions": [
+				  "http://vidzbigger.com/","tabs"
+				],
+   "version": "0.0.1.16"
+}

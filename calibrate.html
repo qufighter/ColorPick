@@ -1,0 +1,84 @@
+<html>
+<head><title>ColorPicker Calibrate</title>
+<style>
+	label{display:block;}
+	body{text-align:center;margin:30px;margin-top:0px}
+	h1{margin:3px;}
+</style>
+<script type="text/javascript">
+
+function recieveScaleFromFlash(sc){
+	if(sc=='1'){
+		document.getElementById('setcal').style.border='2px solid gray';
+		document.getElementById('setcal').value='Looks Good - Set Calibration'
+		getCurrentVals()
+	}else{
+		document.getElementById('setcal').style.border='3px solid red';
+		document.getElementById('setcal').value='No Match - Please adjust page zoom first!'
+	}
+}
+var scoffset=0;
+function getCurrentVals(){
+	scoffset=window.outerWidth-window.innerWidth;
+	document.getElementById('creslt').value=scoffset;
+	document.getElementById('allresult').style.display="block"
+	document.getElementById('htmtes').innerText=((window.outerWidth-scoffset)/window.innerWidth);
+	localStorage['cpScaleOffset']=scoffset;
+	localStorage['flashScalePix']=false;
+}
+window.onresize=function(){
+	document.getElementById('htmtes').innerText=((window.outerWidth-scoffset)/window.innerWidth);
+}
+function setpre(){
+	document.getElementById('creslt').value=localStorage['cpScaleOffset'];
+}
+</script>
+<?php
+	include('../../block_annoying.php');
+	?>
+</head>
+<body onload="setpre()" >
+
+<h1>Color Pick Calibration Page</h1>
+<div style="float:right;margin-left:50px;">
+<br/>Otherwise you must press control and zero to reset the zoom.<br/>
+You may have to press a different key on a mac command-0 not control-0<br/>
+ </div>
+
+If it pops up with flash security warnings you can skip it<br/>
+If the images already match simply press the button<br/><br/><br style="clear:both;"/>
+
+
+
+When you are at the correct scale the image on the left and right should match.  Then press this button.
+<br/><br/> 
+<input type="button" id="setcal" onclick="getCurrentVals();this.style.marginTop='-7px';" onmouseout="this.style.marginTop='0px';" style="border-radius:4px;background-color:#CCC;" value="Looks Good - Set Calibration"/>
+<br/><br/> 
+<table style="margin:auto"><tr>
+	<td>
+		<embed id="sco" src="scalepixelvis.swf" quality="low" scale="noscale" width="200" height="200" name="sc" align="middle" allowscriptaccess="always" type="application/x-shockwave-flash"/>
+	</td>
+	<td>
+		<img src="scalepixelvis.png">
+	</td>
+</tr></table>
+
+<div id="allresult" style="display:none;">
+<input type="text" style="text-align:center" id="creslt" value="" /><br/>
+You should have a one or two digit number for a result in the box above.
+<br/>This is the size of the borders on your browser window.<br/>
+
+
+<table style="margin:auto"><tr>
+	<td>
+		<div style="text-align:center;width:200px;height:200px;background-color:#0066CC;color:white;font-family:Verdana,sans-serif;font-size:64pt;margin:auto;" id="htmtes">1</div>
+	</td>
+	<td width="200">
+		The numbers in the box on the left should match the one above it as you scale the page if you calibrated correctly.<br/><br/>If you change themes you may have to calibrate again!
+	</td>
+</tr></table>
+
+<a href="options.html">Done! Back to Options</a>
+</div>
+</body>
+</html>
