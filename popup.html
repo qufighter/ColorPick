@@ -6,6 +6,7 @@
 		#pre{cursor:move;min-width:150px;border:1px solid grey;}
 		.lbrow{position:relative;padding-left:30px;margin-left:5px;}
 		.lb{position:absolute;top:5px;left:0px;}
+		#cssmode{display:none;}
 	</style>
   <script>
   	var tabid=0;
@@ -39,9 +40,12 @@
 		    	document.getElementById('cg').value=request.cg;
 		    	document.getElementById('cb').value=request.cb;
 		    	var hsv=rgb2hsv(request.cr,request.cg,request.cb);
-		    	document.getElementById('ch').value=hsv.h?hsv.h:'';
+		    	document.getElementById('ch').value=hsv.h?hsv.h:'0';
 		    	document.getElementById('cs').value=hsv.s;
 		    	document.getElementById('cv').value=hsv.v;
+		    	document.getElementById('crgb').value='rgb('+document.getElementById('cr').value+','+document.getElementById('cg').value+','+document.getElementById('cb').value+')';
+		    	document.getElementById('chsl').value='hsl('+document.getElementById('ch').value+','+document.getElementById('cs').value+','+document.getElementById('cv').value+')';
+
 		    	//document.body.innerHTML='<img src="'+request.previewURI+'" /> '+hex;
 		    	
 	      	sendResponse({});
@@ -58,6 +62,9 @@
 	  var borderValue='1px solid grey';
 	  if(typeof(localStorage["borderValue"])!='undefined')borderValue = localStorage["borderValue"];
 
+		var useCSSValues=false;
+		if(typeof(localStorage["useCSSValues"])!='undefined')useCSSValues = ((localStorage["useCSSValues"]=='true')?true:false);
+
 		function wk(ev){
 			if(ev.keyCode==27){
 				//dissableColorPickerFromHere();// :D
@@ -67,6 +74,12 @@
 		}
 
 	  function iin(){
+	  	
+	  	if(useCSSValues){
+	  		document.getElementById('cssmode').style.display="block";
+	  		document.getElementById('defaultmode').style.display="none";
+
+	  	}
 	  	
 	  	//if( !globalPopout ){
 		  	if( window.name.indexOf('colorPickPopup')>-1 ){
@@ -94,12 +107,14 @@
 	    	document.getElementById('cg').value=response.cg;
 	    	document.getElementById('cb').value=response.cb;
 	    	var hsv=rgb2hsv(response.cr,response.cg,response.cb);
-	    	document.getElementById('ch').value=hsv.h?hsv.h:'';
+	    	document.getElementById('ch').value=hsv.h?hsv.h:'0';
 	    	document.getElementById('cs').value=hsv.s;
 	    	document.getElementById('cv').value=hsv.v;
 	  		if(response.previewURI.length > 0 )document.getElementById('pre').src=response.previewURI;
 	  		document.getElementById('hex').select();
-	  		
+	    	document.getElementById('crgb').value='rgb('+document.getElementById('cr').value+','+document.getElementById('cg').value+','+document.getElementById('cb').value+')';
+	    	document.getElementById('chsl').value='hsl('+document.getElementById('ch').value+','+document.getElementById('cs').value+','+document.getElementById('cv').value+')';
+
 	  		
 	  		usePrevColorBG=true;
 				if(typeof(localStorage["usePrevColorBG"])!='undefined')usePrevColorBG = ((localStorage["usePrevColorBG"]=='true')?true:false);
@@ -187,8 +202,13 @@
 		}
   </script>
 <body onload="iin();"><a href="javascript:oout();window.close()" title="Close and Leave Color Picking Mode" id="eclose">Exit</a> #<input type="text" id="hex" size="6" onmouseover="this.select()" /><br/>
+<div id="defaultmode">
 <div class="lbrow"><div class="lb">rgb:</div><input type="text" id="cr" style="width:35px" onmouseover="this.select()" /><input type="text" id="cg" style="width:35px" onmouseover="this.select()" /><input type="text" id="cb" style="width:35px" onmouseover="this.select()" /><br/></div>
-<div class="lbrow"><div class="lb">hsb:</div><input type="text" id="ch" style="width:35px" onmouseover="this.select()" /><input type="text" id="cs" style="width:35px" onmouseover="this.select()" /><input type="text" id="cv" style="width:35px" onmouseover="this.select()" /><br/></div>
+<div class="lbrow"><div class="lb">hsl:</div><input type="text" id="ch" style="width:35px" onmouseover="this.select()" /><input type="text" id="cs" style="width:35px" onmouseover="this.select()" /><input type="text" id="cv" style="width:35px" onmouseover="this.select()" /><br/></div>
+</div><div id="cssmode">
+<div class="lbrow"><div class="lb">rgb:</div><input type="text" id="crgb" style="width:105px" onmouseover="this.select()" /><br/></div>
+<div class="lbrow"><div class="lb">hsl:</div><input type="text" id="chsl" style="width:105px" onmouseover="this.select()" /><br/></div>
+</div>
 <img alt="preview pane" ondragstart="initdrag();return false" onmouseout="finalizedrag()" onmouseup="finalizedrag()" src="default.png" id="pre" width="150" height="150" style="margin-bottom:3px;">
 <div id="pres" style="position:relative;width:150px;height:36px;border:1px solid grey;">
 <div id="ohexpre" style="z-index:0;position:absolute;left:0px;top:0px;width:150px;min-height:36px;"> </div>
