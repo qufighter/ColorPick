@@ -13,15 +13,17 @@ var pOptions=[];
 //pOptions["hqthumbs"]={def:false,ind:1,name:'HQ Thumbnails (more ram) '};
 
 //WARNIGN you have to set defaults two places for now...
+pOptions["EnableRGB"]={def:true,ind:0,name:'Show RGB'};
+pOptions["EnableHSL"]={def:true,ind:0,name:'Show HSL'};
 pOptions["useCSSValues"]={def:false,ind:0,name:'Use CSS values like rgb(255,255,244) instead of seperate R.G.B fields'};
-pOptions["ShowRGBHSL"]={def:false,ind:1,name:'Show RGB and HSL values in popup'};
+pOptions["ShowRGBHSL"]={def:false,ind:1,name:'Show RGB and/or HSL values on page result'};
+pOptions["showPreviewInContentS"]={def:false,ind:0,name:'Show image and hex(/rgb/hsl) preview on page too'};
 pOptions["iconIsBitmap"]={def:true,ind:0,name:'Icon is zoomed colorpick pixel preview'};
 pOptions["resetIcon"]={def:false,ind:1,name:'Reset icon on close'};
 pOptions["iconIsPreview"]={def:false,ind:0,name:'Use icon badge square for color preview'};
 pOptions["autoRedirect"]={def:false,ind:0,name:'Automatically redirect to a pickable version when unavailable (in new tab)'};
 pOptions["redirectSameWindow"]={def:false,ind:1,name:'Use the same window (warning: you may loose anything you entered on that page)'};
 pOptions["autocopyhex"]={def:false,ind:0,name:'Auto copy the hex to the clipboard when you sample a color (overwrites clipboard)'};
-pOptions["showPreviewInContentS"]={def:false,ind:0,name:'Show image and hex preview on page too'};
 pOptions["contSprevZoomd"]={def:false,ind:1,name:'Page preview is also zoomed'};
 pOptions["backgroundColor"]={def:'#FFF',ind:0,name:'Popup Background Color ("#FFFFFF" or "blue")'};
 pOptions["usePrevColorBG"]={def:false,ind:1,name:'Use Previous Color for Background Instead'};
