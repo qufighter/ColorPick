@@ -40,6 +40,7 @@
 		    	document.getElementById('cg').value=request.cg;
 		    	document.getElementById('cb').value=request.cb;
 		    	var hsv=rgb2hsv(request.cr,request.cg,request.cb);
+		    	hsv.v=Math.floor(hsv.v);
 		    	document.getElementById('ch').value=hsv.h?hsv.h:'0';
 		    	document.getElementById('cs').value=hsv.s;
 		    	document.getElementById('cv').value=hsv.v;
@@ -107,6 +108,7 @@
 	    	document.getElementById('cg').value=response.cg;
 	    	document.getElementById('cb').value=response.cb;
 	    	var hsv=rgb2hsv(response.cr,response.cg,response.cb);
+	    	hsv.v=Math.floor(hsv.v);///bug?
 	    	document.getElementById('ch').value=hsv.h?hsv.h:'0';
 	    	document.getElementById('cs').value=hsv.s;
 	    	document.getElementById('cv').value=hsv.v;

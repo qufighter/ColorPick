@@ -1,4 +1,4 @@
-var n=false,c=false,hex=0,scal=1,ex=0,ey=0;
+var n=false,c=false,hex=0,rgb=null;hsv=null;scal=1,ex=0,ey=0;
 var isEnabled=false,isLocked=false,scaleOffset=0;//isPicked
 var borders='1px solid black',useflscale=false,scaleul='';
 chrome.extension.onRequest.addListener(
@@ -29,7 +29,7 @@ function setPixelPreview(pix,zoom,hex,lhex){
 	if(n.innerHTML=='&nbsp;' || n.innerHTML.indexOf('<img')==0){
 		var wid=75,padr=32;
 		if(zoom)wid=150,padr=32;
-		n.innerHTML='<img height="'+wid+'" width="'+wid+'" src="'+pix+'" style="margin-left:32px;padding-right:'+padr+'px;" /><br>#<input size="7" style="font-size:10pt;border:'+borders+';" id="cphexvl" type="text" value="'+hex+'" />'+(lhex!='none'?'<input size="1" style="font-size:10pt;background-color:#'+lhex+';border:'+borders+';border-left:none;" type="text" value="" />':'');
+		n.innerHTML='<img height="'+wid+'" width="'+wid+'" src="'+pix+'" style="margin-left:32px;padding-right:'+padr+'px;" /><br>#<input size="7" style="font-size:10pt;border:'+borders+';" id="cphexvl" type="text" value="'+hex+'" />'+(lhex!='none'?'<input size="1" style="font-size:10pt;background-color:#'+lhex+';border:'+borders+';border-left:none;" type="text" value="" />':'')+(rgb?'<br><input type="text" value="rgb('+rgb.r+', '+rgb.g+', '+rgb.b+')"/>':'')+(hsv?'<br><input type="text" value="hsl('+hsv.h+', '+hsv.s+', '+hsv.v+')"/>':'');
 	}
 }
 function picked(){
@@ -39,7 +39,7 @@ function picked(){
 		n.innerHTML='&nbsp;';
 	}else{
 		isLocked=true;
-		n.innerHTML='#<input size="7" style="font-size:10pt;border:'+borders+';" type="text" id="cphexvl" value="'+hex + '" /> <input type="image" id="exitbtn" src="'+chrome.extension.getURL('close.png')+'" alt="Close" title="Close and Exit Color Pick Mode (esc)" />';
+		n.innerHTML='#<input size="7" style="font-size:10pt;border:'+borders+';" type="text" id="cphexvl" value="'+hex + '" /> <input type="image" id="exitbtn" src="'+chrome.extension.getURL('close.png')+'" alt="Close" title="Close and Exit Color Pick Mode (esc)" />'+(rgb?'<br><input type="text" value="rgb('+rgb.r+', '+rgb.g+', '+rgb.b+')"/>':'')+(hsv?'<br><input type="text" value="hsl('+hsv.h+', '+hsv.s+', '+hsv.v+')"/>':'');
 		document.getElementById('exitbtn').addEventListener('click',dissableColorPickerFromHere,true);
 		document.getElementById('cphexvl').select();
 		
@@ -165,7 +165,16 @@ function updateColorPreview(ev){
 		x*=scal;
 		y*=scal;
 	}
-	chrome.extension.sendRequest({getPixel:true,_x:x,_y:y}, function(response){hex=response.hex;n.style.backgroundColor='#'+hex;isUpdating=false;});
+	chrome.extension.sendRequest({getPixel:true,_x:x,_y:y}, function(response){
+		hex=response.hex;n.style.backgroundColor='#'+hex;isUpdating=false;
+		rgb=null;hsv=null
+		if(response.rgb){
+			rgb=response.rgb
+		}
+		if(response.hsv){
+			hsv=response.hsv
+		}
+	});
 }
 var isMakingNew=false,lastNewTimeout=0;
 function newImage(){

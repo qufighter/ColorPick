@@ -8,9 +8,25 @@
 		 return "0123456789ABCDEF".charAt((N-N%16)/16)
 		      + "0123456789ABCDEF".charAt(N%16);
 		}
-		
+		function rgb2hsv(red, grn, blu) {
+			var x, val, f, i, hue, sat, val;
+			red/=255;//http://www.actionscript.org/forums/showthread.php3?t=15155
+			grn/=255;
+			blu/=255;
+			x = Math.min(Math.min(red, grn), blu);
+			val = Math.max(Math.max(red, grn), blu);
+			if (x==val){
+			    return({h:undefined, s:0, v:val*100});
+			}
+			f = (red == x) ? grn-blu : ((grn == x) ? blu-red : red-grn);
+			i = (red == x) ? 3 : ((grn == x) ? 5 : 1);
+			hue = Math.floor((i-f/(val-x))*60)%360;
+			sat = Math.floor(((val-x)/val)*100);
+			val = Math.floor(val*100);
+			return({h:hue, s:sat, v:val});
+		}
 		//reiterate defaults, eventually prefs will read config from here, no?
-		var iconIsBitmap=true,resetIcon=false,iconIsPreview=false,autoRedirect=false,redirectSameWindow=false,showPreviewInContentS=false,contSprevZoomd=false,borderValue='1px solid grey',showPreviousClr=true,flashScalePix=false,shareClors=false,autocopyhex=false;
+		var iconIsBitmap=true,resetIcon=false,iconIsPreview=false,autoRedirect=false,redirectSameWindow=false,showPreviewInContentS=false,contSprevZoomd=false,borderValue='1px solid grey',showPreviousClr=true,flashScalePix=false,shareClors=false,autocopyhex=false,ShowRGBHSL=false;
 		var cpScaleOffset=(navigator.platform=='win32'?16:0)
 		
 		function fromPrefs(){
@@ -27,7 +43,7 @@
 			//if(typeof(localStorage["flashScalePix"])!='undefined')flashScalePix = ((localStorage["flashScalePix"]=='true')?true:false);
 			if(typeof(localStorage["shareClors"])!='undefined')shareClors = ((localStorage["shareClors"]=='true')?true:false);
 			if(typeof(localStorage["autocopyhex"])!='undefined')autocopyhex = ((localStorage["autocopyhex"]=='true')?true:false);
-			//if(typeof(localStorage["ShowRGBHSL"])!='undefined')ShowRGBHSL = ((localStorage["ShowRGBHSL"]=='true')?true:false);
+			if(typeof(localStorage["ShowRGBHSL"])!='undefined')ShowRGBHSL = ((localStorage["ShowRGBHSL"]=='true')?true:false);
 		}
 		
 		function defaultIcon(){
@@ -42,6 +58,7 @@
 		//var fullScreenImageData=[];//potentially huge array of raw image data
 		var imageDataIsRendered=false;
 		var clrgb={r:0,g:0,b:0}
+		var clhsv={h:0,s:0,v:0}
 		var isCurrentEnableReady=false;
 		
 		function attemptReinitPicker(tabid){
@@ -99,7 +116,13 @@
    				x=request._x;
    				y=request._y;
 					handleRendering()//if returns false we could send empty response since there is no hex update... or secret hourglass code as suggested
-					sendResponse({hex:curentHex});
+					var dobj={hex:curentHex}
+					if(ShowRGBHSL){
+						dobj.rgb={r:clrgb.r,g:clrgb.g,b:clrgb.b}
+						dobj.hsv={h:clhsv.h,s:clhsv.s,v:clhsv.v}
+					}
+					
+					sendResponse(dobj);
 				}else if (request.greeting == "setColor"){
 					if(showPreviousClr)lastHex=curentHex;
 					else lastHex='none';
@@ -280,7 +303,10 @@
 
 			//console.log('requesting:'+x+','+y + ' '+"#"+data[0]+" "+data[1]+" "+data[2]);
 			curentHex=RGBtoHex(data[0],data[1],data[2]);
-			clrgb.r=data[0],clrgb.g=data[1],clrgb.b=data[2];				
+			clhsv=rgb2hsv(data[0],data[1],data[2]);
+			if(!clhsv.h)clhsv.h=0;
+			clhsv.v=Math.floor(clhsv.v);
+			clrgb.r=data[0],clrgb.g=data[1],clrgb.b=data[2];
     	chrome.extension.sendRequest({greeting: "setPreview",tabi:tabid,previewURI:lastPreviewURI,hex:curentHex,lhex:lastHex,cr:clrgb.r,cg:clrgb.g,cb:clrgb.b}, function(response) {
 	  		//preview has been sent to the popup in case its showing...
 			});
