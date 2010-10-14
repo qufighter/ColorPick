@@ -26,7 +26,7 @@
 			return({h:hue, s:sat, v:val});
 		}
 		//reiterate defaults, eventually prefs will read config from here, no?
-		var iconIsBitmap=true,resetIcon=false,appleIcon=false,iconIsPreview=false,autoRedirect=false,redirectSameWindow=false,showPreviewInContentS=false,contSprevZoomd=false,borderValue='1px solid grey',showPreviousClr=true,flashScalePix=false,shareClors=false,autocopyhex=false,ShowRGBHSL=false,EnableRGB=true,EnableHSL=true;
+		var iconIsBitmap=true,usePNG=true,resetIcon=false,appleIcon=false,iconIsPreview=false,autoRedirect=false,redirectSameWindow=false,showPreviewInContentS=false,contSprevZoomd=false,borderValue='1px solid grey',showPreviousClr=true,flashScalePix=false,shareClors=false,autocopyhex=false,ShowRGBHSL=false,EnableRGB=true,EnableHSL=true;
 		var cpScaleOffset=(navigator.platform=='win32'?16:0)
 		
 		var iconPath = '';
@@ -35,6 +35,7 @@
 			if(typeof(localStorage["iconIsBitmap"])!='undefined')iconIsBitmap = ((localStorage["iconIsBitmap"]=='true')?true:false);
 			if(typeof(localStorage["resetIcon"])!='undefined')resetIcon = ((localStorage["resetIcon"]=='true')?true:false);
 			if(typeof(localStorage["appleIcon"])!='undefined')appleIcon = ((localStorage["appleIcon"]=='true')?true:false);
+			if(typeof(localStorage["usePNG"])!='undefined')appleIcon = ((localStorage["usePNG"]=='true')?true:false);
 			if(typeof(localStorage["iconIsPreview"])!='undefined')iconIsPreview = ((localStorage["iconIsPreview"]=='true')?true:false);
 			if(typeof(localStorage["autoRedirect"])!='undefined')autoRedirect = ((localStorage["autoRedirect"]=='true')?true:false);
 			if(typeof(localStorage["redirectSameWindow"])!='undefined')redirectSameWindow = ((localStorage["redirectSameWindow"]=='true')?true:false);
@@ -108,8 +109,8 @@
  					}
    				
    				try{
-	 					chrome.tabs.captureVisibleTab(winid, {format:'png'}, cbf);
-	 					//chrome.tabs.captureVisibleTab(winid, {format:'jpg',quality:100}, cbf);
+	 					if(usePNG)chrome.tabs.captureVisibleTab(winid, {format:'png'}, cbf);
+	 					else chrome.tabs.captureVisibleTab(winid, {format:'jpg',quality:100}, cbf);
 	 				}catch(ex){
 				 		//ex = Error: Too many arguments.
 	 					chrome.tabs.captureVisibleTab(winid, cbf);

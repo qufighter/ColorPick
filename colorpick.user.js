@@ -135,7 +135,7 @@ function enableColorPicker(){
 		n.style.display="none";
 		c.style.display="none";
 		if(isLocked)picked();
-		document.body.style.cursor='crosshair';
+		document.body.style.cursor='url('+chrome.extension.getURL('crosshair.png')+') 16 16,crosshair';
 		isEnabled=true;
 		window.setTimeout(newImage,250);//yeah i know...c razy
 	}
