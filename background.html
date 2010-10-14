@@ -26,12 +26,15 @@
 			return({h:hue, s:sat, v:val});
 		}
 		//reiterate defaults, eventually prefs will read config from here, no?
-		var iconIsBitmap=true,resetIcon=false,iconIsPreview=false,autoRedirect=false,redirectSameWindow=false,showPreviewInContentS=false,contSprevZoomd=false,borderValue='1px solid grey',showPreviousClr=true,flashScalePix=false,shareClors=false,autocopyhex=false,ShowRGBHSL=false,EnableRGB=true,EnableHSL=true;
+		var iconIsBitmap=true,resetIcon=false,appleIcon=false,iconIsPreview=false,autoRedirect=false,redirectSameWindow=false,showPreviewInContentS=false,contSprevZoomd=false,borderValue='1px solid grey',showPreviousClr=true,flashScalePix=false,shareClors=false,autocopyhex=false,ShowRGBHSL=false,EnableRGB=true,EnableHSL=true;
 		var cpScaleOffset=(navigator.platform=='win32'?16:0)
+		
+		var iconPath = '';
 		
 		function fromPrefs(){
 			if(typeof(localStorage["iconIsBitmap"])!='undefined')iconIsBitmap = ((localStorage["iconIsBitmap"]=='true')?true:false);
 			if(typeof(localStorage["resetIcon"])!='undefined')resetIcon = ((localStorage["resetIcon"]=='true')?true:false);
+			if(typeof(localStorage["appleIcon"])!='undefined')appleIcon = ((localStorage["appleIcon"]=='true')?true:false);
 			if(typeof(localStorage["iconIsPreview"])!='undefined')iconIsPreview = ((localStorage["iconIsPreview"]=='true')?true:false);
 			if(typeof(localStorage["autoRedirect"])!='undefined')autoRedirect = ((localStorage["autoRedirect"]=='true')?true:false);
 			if(typeof(localStorage["redirectSameWindow"])!='undefined')redirectSameWindow = ((localStorage["redirectSameWindow"]=='true')?true:false);
@@ -46,10 +49,14 @@
 			if(typeof(localStorage["ShowRGBHSL"])!='undefined')ShowRGBHSL = ((localStorage["ShowRGBHSL"]=='true')?true:false);
 			if(typeof(localStorage["EnableRGB"])!='undefined')EnableRGB = ((localStorage["EnableRGB"]=='true')?true:false);
 			if(typeof(localStorage["EnableHSL"])!='undefined')EnableHSL = ((localStorage["EnableHSL"]=='true')?true:false);
+			
+			defaultIcon();
 		}
 		
 		function defaultIcon(){
-			chrome.browserAction.setIcon({path:chrome.extension.getURL('icon19.png')});//update icon (to be configurable)
+			if(appleIcon)iconPath='apple/';
+			else iconPath='';
+			if(resetIcon)chrome.browserAction.setIcon({path:chrome.extension.getURL(iconPath+'icon19.png')});//update icon (to be configurable)
 		}
 
 		//globals
@@ -101,8 +108,8 @@
  					}
    				
    				try{
-	 					//chrome.tabs.captureVisibleTab(winid, {format:'png'}, cbf);
-	 					chrome.tabs.captureVisibleTab(winid, {format:'jpg',quality:100}, cbf);
+	 					chrome.tabs.captureVisibleTab(winid, {format:'png'}, cbf);
+	 					//chrome.tabs.captureVisibleTab(winid, {format:'jpg',quality:100}, cbf);
 	 				}catch(ex){
 				 		//ex = Error: Too many arguments.
 	 					chrome.tabs.captureVisibleTab(winid, cbf);
@@ -195,7 +202,7 @@
 	  			sendResponse({hex:curentHex,lhex:lastHex,previewURI:lastPreviewURI,cr:clrgb.r,cg:clrgb.g,cb:clrgb.b});
 	  		}else if (request.greeting == "disableColorPicker"){
 	  			lastPreviewURI='';
-	  			if(resetIcon)defaultIcon();
+	  			defaultIcon();
 	  			chrome.browserAction.setBadgeText({text:''});
 //	  			chrome.tabs.getSelected(null, function(tab) {
 //					  chrome.tabs.sendRequest(tab.id, {greeting: "disableColorPicker"}, function(response) {});
@@ -255,6 +262,7 @@
 
 			ictx.fillStyle = "rgba(0,0,0,0.3)";//croshair
 			//ictx.globalAlpha = 1.0;
+			
 			ictx.beginPath();
 			ictx.moveTo(startPoint, 0);
 			ictx.lineTo(startPoint, totalWidth);

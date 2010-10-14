@@ -20,6 +20,7 @@ pOptions["ShowRGBHSL"]={def:false,ind:1,name:'Show RGB and/or HSL values on page
 pOptions["showPreviewInContentS"]={def:false,ind:0,name:'Show image and hex(/rgb/hsl) preview on page too'};
 pOptions["iconIsBitmap"]={def:true,ind:0,name:'Icon is zoomed colorpick pixel preview'};
 pOptions["resetIcon"]={def:false,ind:1,name:'Reset icon on close'};
+pOptions["appleIcon"]={def:false,ind:2,name:'Use Apple color picker logo'};
 pOptions["iconIsPreview"]={def:false,ind:0,name:'Use icon badge square for color preview'};
 pOptions["autoRedirect"]={def:false,ind:0,name:'Automatically redirect to a pickable version when unavailable (in new tab)'};
 pOptions["redirectSameWindow"]={def:false,ind:1,name:'Use the same window (warning: you may loose anything you entered on that page)'};
@@ -142,7 +143,7 @@ function init(){
 
 </script>
 </head>
-<body onload="init()" style="background-image:url(bg.jpg);">
+<body onload="init()" style="background-image:url(bg1.jpg);">
 
 <div style="float:right;">
 	
@@ -180,7 +181,9 @@ Making money using this extension?  Please donate any amount here: <a href="http
 
 
 <button onclick="save_options()" id="bsave">Save</button> <button onclick="reset_options()" id="defa">Show Defaults</button><br><br>
-<span id="status"></span> | <a href="calibrate.html" title="Use this to allow normal browser level scaling of the page while you sample colors">Calibrate Theme Scale</a><br/><!--(Dissable <b>Flash approximate Precision during Page Zoom</b>, if you are using this calibrate, as calibrate is more accurate and once only)-->
+<span id="status"></span> | <a href="calibrate.html" title="Use this to allow normal browser level scaling of the page while you sample colors">Calibrate Theme Scale</a> (VERY important in XP or if your browser has thiner than 8px edges)<br/>
+<img src="icon128.png" />
+<!--(Dissable <b>Flash approximate Precision during Page Zoom</b>, if you are using this calibrate, as calibrate is more accurate and once only)-->
 </div>
 
 

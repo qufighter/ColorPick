@@ -30,6 +30,7 @@ function setPixelPreview(pix,zoom,hex,lhex){
 		var wid=75,padr=32;
 		if(zoom)wid=150,padr=32;
 		n.innerHTML='<img height="'+wid+'" width="'+wid+'" src="'+pix+'" style="margin-left:32px;padding-right:'+padr+'px;" /><br>#<input size="7" style="font-size:10pt;border:'+borders+';" id="cphexvl" type="text" value="'+hex+'" />'+(lhex!='none'?'<input size="1" style="font-size:10pt;background-color:#'+lhex+';border:'+borders+';border-left:none;" type="text" value="" />':'')+(rgb?'<br><input type="text" value="rgb('+rgb.r+', '+rgb.g+', '+rgb.b+')"/>':'')+(hsv?'<br><input type="text" value="hsl('+hsv.h+', '+hsv.s+', '+hsv.v+')"/>':'');
+		keepOnScreen();
 	}
 }
 function picked(){
@@ -42,7 +43,7 @@ function picked(){
 		n.innerHTML='#<input size="7" style="font-size:10pt;border:'+borders+';" type="text" id="cphexvl" value="'+hex + '" /> <input type="image" id="exitbtn" src="'+chrome.extension.getURL('close.png')+'" alt="Close" title="Close and Exit Color Pick Mode (esc)" />'+(rgb?'<br><input type="text" value="rgb('+rgb.r+', '+rgb.g+', '+rgb.b+')"/>':'')+(hsv?'<br><input type="text" value="hsl('+hsv.h+', '+hsv.s+', '+hsv.v+')"/>':'');
 		document.getElementById('exitbtn').addEventListener('click',dissableColorPickerFromHere,true);
 		document.getElementById('cphexvl').select();
-		
+		keepOnScreen();
 	}
 }
 function dissableColorPickerFromHere(){//this one should be sufficient dissable
@@ -83,11 +84,11 @@ function mmf(ev){
 }
 var tgfdf=false;
 function ffs(ev){
-	if(!isEnabled)return;//new ...?
-	if(tgfdf){tgfdf=false;return;}//double focus means skip it, else ssf
-	var e=ev;
-	tgfdf=true;
-	window.setTimeout(function(){if(tgfdf)ssf(e);tgfdf=false},250);
+//	if(!isEnabled)return;//new ...?
+//	if(tgfdf){tgfdf=false;return;}//double focus means skip it, else ssf
+//	var e=ev;
+//	tgfdf=true;
+//	window.setTimeout(function(){if(tgfdf)ssf(e);tgfdf=false},250);
 }
 function ssf(ev){
 	if(!isEnabled)return;
@@ -107,6 +108,8 @@ function enableColorPicker(){
 		n.style.minWidth="30px";
 		n.style.maxWidth="200px";
 		n.style.minHeight="30px";
+		n.style.borderRadius='8px';
+		n.style.webkitBoxShadow='2px 2px 2px #666';
 		n.style.border=borders;
 		n.style.zIndex="2147483647";
 		n.style.cursor="default";
@@ -137,22 +140,24 @@ function enableColorPicker(){
 		window.setTimeout(newImage,250);//yeah i know...c razy
 	}
 }
-var isUpdating=false,lastTimeout=0;
+function keepOnScreen(){
+	if( n.clientWidth + n.offsetLeft +24 > window.innerWidth ){
+		n.style.left=(lx-8-n.clientWidth)+"px";
+	}
+	if( n.clientHeight + n.offsetTop +24 > window.innerHeight ){
+		n.style.top=(ly-8-n.clientHeight)+"px";
+	}
+}
+var isUpdating=false,lastTimeout=0,lx=0,ly=0;
 function updateColorPreview(ev){
 	if(!isEnabled||isLocked)return;
 	var x,y,x1,y1;
-	
-	x=ex-window.pageXOffset
-	y=ey-window.pageYOffset
+	x=ex-window.pageXOffset,y=ey-window.pageYOffset;
+	lx=x,ly=y;
 	n.style.top=(y+8)+"px";
 	n.style.left=(x+8)+"px"; //still impossible to get accurate mouse positionin screen space relative to document space :/ although its possible to get it relative to top left corner of window, it becomes an approximation from there since zooming the page modifies the innerHeight rendering comparision with outerHeight moot
 	
-	if( n.clientWidth + n.offsetLeft > window.innerWidth ){
-		n.style.left=(x-8-n.clientWidth)+"px";
-	}
-	if( n.clientHeight + n.offsetTop > window.innerHeight ){
-		n.style.top=(y-8-n.clientHeight)+"px";
-	}
+	keepOnScreen();
 
 	//don't send two requests at once if the last one hasn't finished yet, but still send another request if it's busy
 	if(isUpdating){
