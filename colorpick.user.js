@@ -29,7 +29,7 @@ function setPixelPreview(pix,zoom,hex,lhex){
 	if(n.innerHTML=='&nbsp;' || n.innerHTML.indexOf('<img')==0){
 		var wid=75,padr=32;
 		if(zoom)wid=150,padr=32;
-		n.innerHTML='<img height="'+wid+'" width="'+wid+'" src="'+pix+'" style="margin-left:32px;padding-right:'+padr+'px;" /><br>#<input size="7" style="font-size:10pt;border:'+borders+';" id="cphexvl" type="text" value="'+hex+'" />'+(lhex!='none'?'<input size="1" style="font-size:10pt;background-color:#'+lhex+';border:'+borders+';border-left:none;" type="text" value="" />':'')+(rgb?'<br><input type="text" value="rgb('+rgb.r+', '+rgb.g+', '+rgb.b+')"/>':'')+(hsv?'<br><input type="text" value="hsl('+hsv.h+', '+hsv.s+', '+hsv.v+')"/>':'');
+		n.innerHTML='<img height="'+wid+'" width="'+wid+'" src="'+pix+'" style="margin-left:32px;padding-right:'+padr+'px;" /><br>#<input size="7" style="font-size:10pt;border:'+borders+';" id="cphexvl" type="text" value="'+hex+'" onmouseover="this.select()" />'+(lhex!='none'?'<input size="1" style="font-size:10pt;background-color:#'+lhex+';border:'+borders+';border-left:none;" type="text" value="" />':'')+(rgb?'<br><input onmouseover="this.select()" type="text" value="rgb('+rgb.r+', '+rgb.g+', '+rgb.b+')"/>':'')+(hsv?'<br><input onmouseover="this.select()" type="text" value="hsl('+hsv.h+', '+hsv.s+', '+hsv.v+')"/>':'');
 		keepOnScreen();
 	}
 }
@@ -40,7 +40,7 @@ function picked(){
 		n.innerHTML='&nbsp;';
 	}else{
 		isLocked=true;
-		n.innerHTML='#<input size="7" style="font-size:10pt;border:'+borders+';" type="text" id="cphexvl" value="'+hex + '" /> <input type="image" id="exitbtn" src="'+chrome.extension.getURL('close.png')+'" alt="Close" title="Close and Exit Color Pick Mode (esc)" />'+(rgb?'<br><input type="text" value="rgb('+rgb.r+', '+rgb.g+', '+rgb.b+')"/>':'')+(hsv?'<br><input type="text" value="hsl('+hsv.h+', '+hsv.s+', '+hsv.v+')"/>':'');
+		n.innerHTML='#<input size="7" style="font-size:10pt;border:'+borders+';" type="text" id="cphexvl" value="'+hex + '" onmouseover="this.select()" /> <input type="image" id="exitbtn" src="'+chrome.extension.getURL('close.png')+'" alt="Close" title="Close and Exit Color Pick Mode (esc)" />'+(rgb?'<br><input onmouseover="this.select()" type="text" value="rgb('+rgb.r+', '+rgb.g+', '+rgb.b+')"/>':'')+(hsv?'<br><input onmouseover="this.select()" type="text" value="hsl('+hsv.h+', '+hsv.s+', '+hsv.v+')"/>':'');
 		document.getElementById('exitbtn').addEventListener('click',dissableColorPickerFromHere,true);
 		document.getElementById('cphexvl').select();
 		keepOnScreen();

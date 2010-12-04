@@ -91,6 +91,9 @@
 	  			tabid=sender.tab.id;
 	  			winid=sender.tab.windowId;
 	  		}
+	  		if(request.tabi){
+	  			tabid=request.tabi;
+	  		}
 	  		if (request.greeting == "setPreview"){
 	  			 sendResponse({});//not handled by this listener
 	  		}else if (request.newImage){	
@@ -120,7 +123,6 @@
  				}else if (request.movePixel){
 	  			x+=(request._x/2);//or otherwise use the current scale
    				y+=(request._y/2);
-	  			handleRendering()
 	  			sendResponse({});
    			}else if (request.getPixel){
    				x=request._x;

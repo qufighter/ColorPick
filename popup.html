@@ -176,7 +176,7 @@
 			x=ev.pageX-window.pageXOffset
 			y=ev.pageY-window.pageYOffset
 			if(isDrag){
-				chrome.extension.sendRequest({movePixel:true,_x:(x1-x),_y:(y1-y)}, function(response) {});
+				chrome.extension.sendRequest({movePixel:true,_x:(x1-x),_y:(y1-y),tabi:tabid}, function(response) {});
 				x1=x,y1=y;//accoutn for that we moved it already
 			}
 	  }
@@ -184,12 +184,13 @@
 	  function initdrag(){
 	  	x1=x,y1=y;
 	  	isDrag=true;
+	  	
 	  	//document.getElementById('dbg').innerHTML=(x1)+' ' +(y1);
 	  }
 	  function finalizedrag(){
 	  	if(isDrag){
 		  	//document.getElementById('dbg').innerHTML=(x-x1)+' ' +(y-y1);
-		  	chrome.extension.sendRequest({movePixel:true,_x:(x1-x),_y:(y1-y)}, function(response) {});
+		  	chrome.extension.sendRequest({movePixel:true,_x:(x1-x),_y:(y1-y),tabi:tabid}, function(response) {});
 		  	isDrag=false;
 		  }
 	  }
