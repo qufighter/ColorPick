@@ -73,6 +73,9 @@
 		function resnap(){
 			chrome.tabs.sendRequest(tabid,{newImage:true},function(r){});
 		}
+		function toglPick(){
+			chrome.tabs.sendRequest(tabid,{doPick:true},function(r){});//perform pick
+		}
 		
 		function wk(ev){
 			if(ev.keyCode==27){
@@ -88,12 +91,8 @@
 			}else if(ev.keyCode==39){//r
 				chrome.extension.sendRequest({movePixel:true,_x:1,_y:0,tabi:tabid},function(r){});
 			}else if(ev.keyCode==13){//enter
-				ppick();
+				toglPick();
 			}
-		}
-		
-		function ppick(){
-			chrome.tabs.sendRequest(tabid,{doPick:true},function(r){});//perform pick
 		}
 
 	  function iin(){
@@ -110,30 +109,28 @@
 	  		document.getElementById('defhsl').style.display="none";
 	  		document.getElementById('csshsl').style.display="none";
 	  	}
+	  	document.getElementById('eclose').innerHTML='<img border="0" align="top" style="position:relative;top:3px;" src="'+chrome.extension.getURL('close.png')+'" />';
+	  	document.getElementById('epick').innerHTML='<img border="0" align="top" style="position:relative;top:3px;" src="'+chrome.extension.getURL('icon19.png')+'" />';
+
 	  	//if( !globalPopout ){
 		  	if( window.name.indexOf('colorPickPopup')>-1 ){
 		  		tabid=window.name.replace('colorPickPopup_','')-0;
+		  		finishSetup()
 		  	}else{
 			  	chrome.windows.getCurrent(function(window){
 			  		chrome.tabs.getSelected(window.id, function(tab){
 			  			tabid=tab.id;
 			  			//document.getElementById('dbg').innerHTML+=tab.id+' '
 							//chrome.tabs.executeScript(tab.id,{file:'colorpick.user.js'},function(a){document.getElementById('dbg').innerHTML+='seems to be ok'+a});
-			  		
-			  		
-			  		
-			  		
-			  		
+			  			finishSetup()
 			  		})
 			  	})
 			  }
 			//}
 			
 	  	window.addEventListener('keydown',wk);//window does not work unless inspect mode
-	  	
-			document.getElementById('eclose').innerHTML='<img border="0" align="top" style="position:relative;top:3px;" src="'+chrome.extension.getURL('close.png')+'" />';
-	  	document.getElementById('epick').innerHTML='<img border="0" align="top" style="position:relative;top:3px;" src="'+chrome.extension.getURL('icon19.png')+'" />';
-	  	
+	  }
+	  function finishSetup(){
 	  	chrome.extension.sendRequest({enableColorPicker:true,tabi:tabid}, function(response) {
 	  		hex=response.hex;
 	  		document.getElementById('hexpre').style.backgroundColor='#'+hex;
@@ -188,8 +185,6 @@
 					document.body.style.width='166px';
 				}
 	  	});
-	  	
-	  	
 	  }
 	  function oout(){
 	  	chrome.extension.sendRequest({disableColorPicker:true},function(r){});
@@ -236,7 +231,7 @@
 		 popupimage({href:chrome.extension.getURL('popup.html?isPopup')},'colorPickPopup_'+tabid);
 		}
   </script>
-<body onload="iin();"><a href="javascript:oout();window.close()" title="Close and Leave Color Picking Mode" id="eclose">Exit</a> #<input type="text" id="hex" size="6" onmouseover="this.select()" /> <a href="javascript:ppick()" title="Toggle Pick Color (enter) [Lock/Unlock]" id="epick">+</a><br/>
+<body onload="iin();"><a href="javascript:oout();window.close()" title="Close and Leave Color Picking Mode" id="eclose">Exit</a> #<input type="text" id="hex" size="6" onmouseover="this.select()" /> <a href="javascript:toglPick()" title="Toggle Pick Color (enter) [Lock/Unlock]" id="epick">+</a><br/>
 <div id="defaultmode">
 <div class="lbrow" id="defrgb"><div class="lb">rgb:</div><input type="text" id="cr" style="width:35px" onmouseover="this.select()" /><input type="text" id="cg" style="width:35px" onmouseover="this.select()" /><input type="text" id="cb" style="width:35px" onmouseover="this.select()" /><br/></div>
 <div class="lbrow" id="defhsl"><div class="lb">hsl:</div><input type="text" id="ch" style="width:35px" onmouseover="this.select()" /><input type="text" id="cs" style="width:35px" onmouseover="this.select()" /><input type="text" id="cv" style="width:35px" onmouseover="this.select()" /><br/></div>
