@@ -7,6 +7,9 @@
 		.lbrow{position:relative;padding-left:30px;margin-left:5px;}
 		.lb{position:absolute;top:5px;left:0px;}
 		#cssmode{display:none;}
+		#pres{position:relative;width:150px;height:36px;border:1px solid grey;}
+		#ohexpre{z-index:0;position:absolute;left:0px;top:0px;width:150px;min-height:36px;}
+		#hexpre{z-index:9999;position:absolute;left:0px;top:0px;width:75px;min-height:36px;}
 	</style>
   <script>
   	var tabid=0;
@@ -240,9 +243,9 @@
 <div class="lbrow" id="csshsl"><div class="lb">hsl:</div><input type="text" id="chsl" style="width:105px" onmouseover="this.select()" /><br/></div>
 </div>
 <img alt="preview pane" ondragstart="initdrag();return false" onmouseout="finalizedrag()" onmouseup="finalizedrag()" src="default.png" id="pre" width="150" height="150" style="margin-bottom:3px;">
-<div id="pres" style="position:relative;width:150px;height:36px;border:1px solid grey;">
-<div id="ohexpre" style="z-index:0;position:absolute;left:0px;top:0px;width:150px;min-height:36px;"> </div>
-<div id="hexpre" style="z-index:9999;position:absolute;left:0px;top:0px;width:75px;min-height:36px;"> </div>
+<div id="pres">
+<div id="ohexpre"> </div>
+<div id="hexpre"> </div>
 </div>
 <a href="javascript:window.close()" title="Pick colors underneath this window">Hide</a><a href="javascript:void(0)" onclick="popOut()">Pop-out</a><a href="javascript:void(0)" onclick="resnap()" title="Take New Picture of Page [r]">Refresh</a><a target="_blank" href="options.html" title="Help">?</a><div id="dbg"></div></body>
 </html>
