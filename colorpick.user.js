@@ -1,30 +1,21 @@
-var n=false,c=false,hex=0,rgb=null;hsv=null;scal=1,ex=0,ey=0;
-var isEnabled=false,isLocked=false,scaleOffset=0;//isPicked
-var borders='1px solid black',useflscale=false,scaleul='';
+var n=false,c=false,hex=0,rgb=null;hsv=null;scal=1,ex=0,ey=0,isEnabled=false,isLocked=false,scaleOffset=0,borders='1px solid black';
 chrome.extension.onRequest.addListener(
 function(request, sender, sendResponse) {
 	if (request.setPixelPreview)
   	setPixelPreview(request.previewURI,request.zoomed,request.hex,request.lhex)
-  else if (request.greeting == "enableColorPicker"){
+  else if (request.enableColorPicker){
   	borders=request.borders;
-  	//useflscale=false;//request.usescale; //slow phaseout
-  	//scaleul=request.scurl;
   	scaleOffset=request.scOffset;
   	enableColorPicker()
-  }else if (request.greeting == "newImage"){
+  }else if (request.newImage){
   	ssf()
-  }else if (request.greeting == "disableColorPicker")
-  	disableColorPicker()
-  
+  }else if (request.doPick){
+  	picked()
+  }else if (request.movedPixel){
+  	setColor(request);
+  }else if (request.disableColorPicker)disableColorPicker()
   sendResponse({});
 });
-//function canpick(){
-	//basically you can only unlock it if the mouse moves too
-//	if(isLocked){
-//		isLocked=false;
-//		n.innerText=' ';
-//	}
-//}
 function setPixelPreview(pix,zoom,hex,lhex){
 	if(n.innerHTML=='&nbsp;' || n.innerHTML.indexOf('<img')==0){
 		var wid=75,padr=32;
@@ -33,40 +24,43 @@ function setPixelPreview(pix,zoom,hex,lhex){
 		keepOnScreen();
 	}
 }
+function setColor(r){
+	hex=r.hex,isUpdating=false,rgb=null,hsv=null;
+	n.style.backgroundColor='#'+hex;
+	if(r.rgb)rgb=r.rgb;
+	if(r.hsv)hsv=r.hsv;
+	if(!isLocked){if(r.msg)n.innerHTML=r.msg;}
+	else setDisplay();
+}
+function setDisplay(){
+	n.innerHTML='#<input size="7" style="font-size:10pt;border:'+borders+';" type="text" id="cphexvl" value="'+hex + '" onmouseover="this.select()" /> <input type="image" id="exitbtn" src="'+chrome.extension.getURL('close.png')+'" alt="Close" title="Close and Exit Color Pick Mode (esc)" />'+(rgb?'<br><input onmouseover="this.select()" type="text" value="rgb('+rgb.r+', '+rgb.g+', '+rgb.b+')"/>':'')+(hsv?'<br><input onmouseover="this.select()" type="text" value="hsl('+hsv.h+', '+hsv.s+', '+hsv.v+')"/>':'');
+	document.getElementById('exitbtn').addEventListener('click',dissableColorPickerFromHere,true);
+	document.getElementById('cphexvl').select();
+	keepOnScreen();
+}
 function picked(){
-	chrome.extension.sendRequest({greeting:'setColor'}, function(response){if(response.docopy)document.execCommand('copy', false, null);});
 	if(isLocked){
 		isLocked=false;
 		n.innerHTML='&nbsp;';
 	}else{
+		chrome.extension.sendRequest({setColor:true}, function(response){if(response.docopy)document.execCommand('copy', false, null);});
 		isLocked=true;
-		n.innerHTML='#<input size="7" style="font-size:10pt;border:'+borders+';" type="text" id="cphexvl" value="'+hex + '" onmouseover="this.select()" /> <input type="image" id="exitbtn" src="'+chrome.extension.getURL('close.png')+'" alt="Close" title="Close and Exit Color Pick Mode (esc)" />'+(rgb?'<br><input onmouseover="this.select()" type="text" value="rgb('+rgb.r+', '+rgb.g+', '+rgb.b+')"/>':'')+(hsv?'<br><input onmouseover="this.select()" type="text" value="hsl('+hsv.h+', '+hsv.s+', '+hsv.v+')"/>':'');
-		document.getElementById('exitbtn').addEventListener('click',dissableColorPickerFromHere,true);
-		document.getElementById('cphexvl').select();
-		keepOnScreen();
+		setDisplay();
 	}
 }
-function dissableColorPickerFromHere(){//this one should be sufficient dissable
-	chrome.extension.sendRequest({greeting: "disableColorPicker"}, function(response) {
-		//hi, this should actually have called the below function as well due to message passing, although i would just call it manually.. it will look faster
-	});
+function dissableColorPickerFromHere(){
+	chrome.extension.sendRequest({disableColorPicker:true},function(r){});
 }
-
 function disableColorPicker(){
-	isEnabled=false;//cheap trick/// really we want to 
-	//1)remove event listeners
+	isEnabled=false;
 	document.removeEventListener('mousemove',mmf);
 	window.removeEventListener('scroll',ssf);
 	window.removeEventListener('resize',ssf);
-	window.removeEventListener('focus',ffs);
 	window.removeEventListener('keyup',wk);
-	//2)remove the elements we created and set them to false
 	document.body.removeChild(c);
 	document.body.removeChild(n);
 	c=false,n=false;
 	document.body.style.cursor='default';
-	//	n.style.display="none";
-	//	c.style.display="none";
 }
 function wk(ev){
 	if(!isEnabled)return;
@@ -74,6 +68,8 @@ function wk(ev){
 		dissableColorPickerFromHere();
 	}else if(ev.keyCode==82||ev.keyCode==74){//r or j refresh
 		ssf();
+	}else if(ev.keyCode==13){
+		picked();
 	}
 }
 function mmf(ev){
@@ -81,14 +77,6 @@ function mmf(ev){
 	ex=ev.pageX;
 	ey=ev.pageY;
 	updateColorPreview()
-}
-var tgfdf=false;
-function ffs(ev){
-//	if(!isEnabled)return;//new ...?
-//	if(tgfdf){tgfdf=false;return;}//double focus means skip it, else ssf
-//	var e=ev;
-//	tgfdf=true;
-//	window.setTimeout(function(){if(tgfdf)ssf(e);tgfdf=false},250);
 }
 function ssf(ev){
 	if(!isEnabled)return;
@@ -98,13 +86,13 @@ function ssf(ev){
 	},10);
 }
 function enableColorPicker(){
-	chrome.extension.sendRequest({greeting: "reportingIn"}, function(response) {
+	chrome.extension.sendRequest({reportingIn:true}, function(response) {
 		//allows us to detect if the script is running from the bg
 	});
 	if(!n){
 		n=document.createElement('div');
 		n.innerHTML='&nbsp;';
-		n.style.position='fixed';
+		n.style.position='fixed';//background-color: black; background-image: url();background-repeat: no-repeat no-repeat; 
 		n.style.minWidth="30px";
 		n.style.maxWidth="200px";
 		n.style.minHeight="30px";
@@ -121,14 +109,11 @@ function enableColorPicker(){
 		c.style.left='0px';
 		c.id='color_pick_click_box';
 		c.addEventListener('click',picked,true);
-		//c.addEventListener('mousedown',canpick,true);
 		document.body.appendChild(c);
 		document.body.appendChild(n);
-
 		document.addEventListener('mousemove',mmf);
 		window.addEventListener('scroll',ssf);
 		window.addEventListener('resize',ssf);
-		window.addEventListener('focus',ffs);
 		window.addEventListener('keyup',wk);//removed through here
 	}
 	if(!isEnabled){
@@ -155,11 +140,8 @@ function updateColorPreview(ev){
 	x=ex-window.pageXOffset,y=ey-window.pageYOffset;
 	lx=x,ly=y;
 	n.style.top=(y+8)+"px";
-	n.style.left=(x+8)+"px"; //still impossible to get accurate mouse positionin screen space relative to document space :/ although its possible to get it relative to top left corner of window, it becomes an approximation from there since zooming the page modifies the innerHeight rendering comparision with outerHeight moot
-	
+	n.style.left=(x+8)+"px";
 	keepOnScreen();
-
-	//don't send two requests at once if the last one hasn't finished yet, but still send another request if it's busy
 	if(isUpdating){
 		window.clearTimeout(lastTimeout);
 		lastTimeout=window.setTimeout(function(){updateColorPreview()},250);
@@ -171,14 +153,7 @@ function updateColorPreview(ev){
 		y*=scal;
 	}
 	chrome.extension.sendRequest({getPixel:true,_x:x,_y:y}, function(response){
-		hex=response.hex;n.style.backgroundColor='#'+hex;isUpdating=false;
-		rgb=null;hsv=null
-		if(response.rgb){
-			rgb=response.rgb
-		}
-		if(response.hsv){
-			hsv=response.hsv
-		}
+		setColor(response);
 	});
 }
 var isMakingNew=false,lastNewTimeout=0;
@@ -189,13 +164,12 @@ function newImage(){
 		lastNewTimeout=window.setTimeout(function(){newImage()},500);
 		return;
 	}
-	n.style.display="none";//too late, it is still rendered... doing this earlier??? 
+	n.style.display="none";
 	c.style.display="none";
 	isMakingNew=true;
 	var x,y;//wid hei
   x=window.innerWidth
 	y=window.innerHeight
-	
 	c.style.width=x+'px';
 	c.style.height=y+'px';
 	if(scal!=1){
@@ -205,7 +179,6 @@ function newImage(){
 	chrome.extension.sendRequest({newImage:true,_x:x,_y:y}, function(response){
 		isMakingNew=false;
 		scal=(outerWidth-scaleOffset)/innerWidth
-		//document.body.removeChild(f);chrome.extension.getURL
 		window.setTimeout(function(){c.style.display="block";n.style.display="block";updateColorPreview();},500)
 	});
 }

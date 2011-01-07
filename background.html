@@ -26,7 +26,7 @@
 			return({h:hue, s:sat, v:val});
 		}
 		//reiterate defaults, eventually prefs will read config from here, no?
-		var iconIsBitmap=true,usePNG=true,resetIcon=false,appleIcon=false,iconIsPreview=false,autoRedirect=false,redirectSameWindow=false,showPreviewInContentS=false,contSprevZoomd=false,borderValue='1px solid grey',showPreviousClr=true,flashScalePix=false,shareClors=false,autocopyhex=false,ShowRGBHSL=false,EnableRGB=true,EnableHSL=true;
+		var iconIsBitmap=true,usePNG=true,resetIcon=false,appleIcon=false,iconIsPreview=false,autoRedirect=false,redirectSameWindow=false,showPreviewInContentS=false,contSprevZoomd=false,borderValue='1px solid grey',showPreviousClr=true,flashScalePix=false,shareClors=false,autocopyhex=false,ShowRGBHSL=false,EnableRGB=true,EnableHSL=true,pixelatedPreview=true,fishEye=5;
 		var cpScaleOffset=(navigator.platform=='win32'?16:0)
 		
 		var iconPath = '';
@@ -35,7 +35,7 @@
 			if(typeof(localStorage["iconIsBitmap"])!='undefined')iconIsBitmap = ((localStorage["iconIsBitmap"]=='true')?true:false);
 			if(typeof(localStorage["resetIcon"])!='undefined')resetIcon = ((localStorage["resetIcon"]=='true')?true:false);
 			if(typeof(localStorage["appleIcon"])!='undefined')appleIcon = ((localStorage["appleIcon"]=='true')?true:false);
-			if(typeof(localStorage["usePNG"])!='undefined')appleIcon = ((localStorage["usePNG"]=='true')?true:false);
+			if(typeof(localStorage["usePNG"])!='undefined')usePNG = ((localStorage["usePNG"]=='true')?true:false);
 			if(typeof(localStorage["iconIsPreview"])!='undefined')iconIsPreview = ((localStorage["iconIsPreview"]=='true')?true:false);
 			if(typeof(localStorage["autoRedirect"])!='undefined')autoRedirect = ((localStorage["autoRedirect"]=='true')?true:false);
 			if(typeof(localStorage["redirectSameWindow"])!='undefined')redirectSameWindow = ((localStorage["redirectSameWindow"]=='true')?true:false);
@@ -50,13 +50,15 @@
 			if(typeof(localStorage["ShowRGBHSL"])!='undefined')ShowRGBHSL = ((localStorage["ShowRGBHSL"]=='true')?true:false);
 			if(typeof(localStorage["EnableRGB"])!='undefined')EnableRGB = ((localStorage["EnableRGB"]=='true')?true:false);
 			if(typeof(localStorage["EnableHSL"])!='undefined')EnableHSL = ((localStorage["EnableHSL"]=='true')?true:false);
+			if(typeof(localStorage["pixelatedPreview"])!='undefined')pixelatedPreview = ((localStorage["pixelatedPreview"]=='true')?true:false);
+			if(typeof(localStorage["fishEye"])!='undefined')fishEye=localStorage["fishEye"]-0;
 			
 			defaultIcon();
 		}
 		
 		function defaultIcon(){
+			var iconPath='';
 			if(appleIcon)iconPath='apple/';
-			else iconPath='';
 			if(resetIcon)chrome.browserAction.setIcon({path:chrome.extension.getURL(iconPath+'icon19.png')});//update icon (to be configurable)
 		}
 
@@ -85,6 +87,15 @@
 			
 		}
 		
+		function getCurrentClrData(){
+			var dobj={hex:curentHex}
+			if(ShowRGBHSL){
+				if(EnableRGB)dobj.rgb={r:clrgb.r,g:clrgb.g,b:clrgb.b}
+				if(EnableHSL)dobj.hsv={h:clhsv.h,s:clhsv.s,v:clhsv.v}
+			}
+			return dobj;
+		}
+		
 		chrome.extension.onRequest.addListener(
 	  function(request, sender, sendResponse) {
 	  		if(sender.tab){
@@ -94,7 +105,7 @@
 	  		if(request.tabi){
 	  			tabid=request.tabi;
 	  		}
-	  		if (request.greeting == "setPreview"){
+	  		if(request.setPreview){
 	  			 sendResponse({});//not handled by this listener
 	  		}else if (request.newImage){	
 	  			var wid=request._x;
@@ -121,21 +132,20 @@
  					
  					
  				}else if (request.movePixel){
-	  			x+=(request._x/2);//or otherwise use the current scale
-   				y+=(request._y/2);
+	  			x+=(request._x);//or otherwise use the current scale
+   				y+=(request._y);
+   				handleRendering()
+   				dobj=getCurrentClrData();
+					dobj.movedPixel=true;
+					dobj.msg='Press Enter to Pick Color';
+   				chrome.tabs.sendRequest(tabid,dobj,function(r){});
 	  			sendResponse({});
    			}else if (request.getPixel){
    				x=request._x;
    				y=request._y;
 					handleRendering()//if returns false we could send empty response since there is no hex update... or secret hourglass code as suggested
-					var dobj={hex:curentHex}
-					if(ShowRGBHSL){
-						if(EnableRGB)dobj.rgb={r:clrgb.r,g:clrgb.g,b:clrgb.b}
-						if(EnableHSL)dobj.hsv={h:clhsv.h,s:clhsv.s,v:clhsv.v}
-					}
-					
-					sendResponse(dobj);
-				}else if (request.greeting == "setColor"){
+					sendResponse(getCurrentClrData());
+				}else if (request.setColor){
 					if(showPreviousClr)lastHex=curentHex;
 					else lastHex='none';
 					//user clicked, optionally store color to database...
@@ -148,10 +158,10 @@
 					//testing this feature to determine volume
 					
 					sendResponse({docopy:autocopyhex});
-				}else if(request.greeting == "reportingIn"){
+				}else if(request.reportingIn){
 					isCurrentEnableReady=true;
 	  			 
-	  		}else if (request.greeting == "enableColorPicker"){
+	  		}else if (request.enableColorPicker){
 	  			
 	  			chrome.tabs.getSelected(null, function(tab) {
 	  				var tabId=tab.id;
@@ -165,7 +175,7 @@
 	  				
 	  				
 					  //var scaleurl='http://vidzbigger.com/downloads/tools/scalepixel.swf';
-					  chrome.tabs.sendRequest(tab.id, {greeting: "enableColorPicker",borders:borderValue,scOffset:cpScaleOffset}, function(response) {
+					  chrome.tabs.sendRequest(tab.id, {enableColorPicker:true,borders:borderValue,scOffset:cpScaleOffset}, function(response) {
 					  });
 					  
 					  if(tabURL.indexOf('https://chrome.google.com/extensions/')==0 ||tabURL.indexOf('chrome')==0 ||tabURL.indexOf('about')==0 ){
@@ -203,12 +213,12 @@
 					  }
 					});
 	  			sendResponse({hex:curentHex,lhex:lastHex,previewURI:lastPreviewURI,cr:clrgb.r,cg:clrgb.g,cb:clrgb.b});
-	  		}else if (request.greeting == "disableColorPicker"){
+	  		}else if (request.disableColorPicker){
 	  			lastPreviewURI='';
 	  			defaultIcon();
 	  			chrome.browserAction.setBadgeText({text:''});
 //	  			chrome.tabs.getSelected(null, function(tab) {
-//					  chrome.tabs.sendRequest(tab.id, {greeting: "disableColorPicker"}, function(response) {});
+//					  chrome.tabs.sendRequest(tab.id, {disableColorPicker:true}, function(response) {});
 //					});'
 					if(!imageDataIsRendered){//cleans up the image src
 						var pim=document.getElementById('pim');
@@ -218,7 +228,7 @@
 							imageDataIsRendered=true;
 						}
 					}
-					chrome.tabs.sendRequest(tabid, {greeting: "disableColorPicker"}, function(response) {});
+					chrome.tabs.sendRequest(tabid, {disableColorPicker:true}, function(response) {});
 	  			sendResponse({});
 		    }else if(request.greeting == "reloadprefs"){
 		    	fromPrefs();sendResponse({});
@@ -256,34 +266,110 @@
 			var startPoint=Math.floor(totalWidth/2);
 			sx=x-startPoint;
 			sy=y-startPoint;
+			var data = ctx.getImageData(x, y, 1, 1).data;
 			
 			//var img=ctx.getImageData(sx, sy, totalWidth, totalWidth);
-			
-			ictx.scale(2,2);
-			ictx.drawImage(cvs,-x+(startPoint/2),-y+(startPoint/2));//application of scale
-			ictx.scale(0.5,0.5);
-
-			ictx.fillStyle = "rgba(0,0,0,0.3)";//croshair
-			//ictx.globalAlpha = 1.0;
-			
-			ictx.beginPath();
-			ictx.moveTo(startPoint, 0);
-			ictx.lineTo(startPoint, totalWidth);
-			ictx.lineTo(startPoint+1, totalWidth);
-			ictx.lineTo(startPoint+1, 0);
-			ictx.closePath();
-			ictx.fill();
-			
-			ictx.beginPath();
-			ictx.moveTo(0,startPoint);
-			ictx.lineTo(totalWidth, startPoint);
-			ictx.lineTo(totalWidth, startPoint+1);
-			ictx.lineTo(0, startPoint+1);
-			ictx.closePath();
-			ictx.fill();
+			if(!pixelatedPreview){
+				ictx.scale(2,2);
+				ictx.drawImage(cvs,-x+(startPoint/2),-y+(startPoint/2));//application of scale
+				ictx.scale(0.5,0.5);
+				
+				ictx.fillStyle = "rgba(0,0,0,0.3)";//croshair
+				//ictx.globalAlpha = 1.0;
+				
+				ictx.beginPath();
+				ictx.moveTo(startPoint, 0);
+				ictx.lineTo(startPoint, totalWidth);
+				ictx.lineTo(startPoint+1, totalWidth);
+				ictx.lineTo(startPoint+1, 0);
+				ictx.closePath();
+				ictx.fill();
+				
+				ictx.beginPath();
+				ictx.moveTo(0,startPoint);
+				ictx.lineTo(totalWidth, startPoint);
+				ictx.lineTo(totalWidth, startPoint+1);
+				ictx.lineTo(0, startPoint+1);
+				ictx.closePath();
+				ictx.fill();
+				
+			}else{
+				ictx.drawImage(cvs,-x+(startPoint),-y+(startPoint));
+				var smi,spi,mp=fishEye;
+				//xx,yy
+				for(var i=0;i<startPoint;i+=2){
+					smi=startPoint-i;
+					spi=startPoint+i;
+					
+					ictx.drawImage(icvs,spi,0,smi,totalWidth,
+															spi+1,0,smi,totalWidth);
+															
+					ictx.drawImage(icvs,0,0,smi+1,totalWidth,
+															-1,0,smi+1,totalWidth);
+					
+					ictx.drawImage(icvs,0,spi,totalWidth,smi,
+															0,spi+1,totalWidth,smi);
+															
+					ictx.drawImage(icvs,0,0,totalWidth,smi+1,
+															0,-1,totalWidth,smi+1);
+					
+					if(i==0)ictx.fillStyle = "rgba("+(255-data[0])+","+(255-data[1])+","+(255-data[2])+",0.9)";
+					else ictx.fillStyle = "rgba(255,255,255,0.4)";
+						
+					for(var c=0;c<mp;c++){
+						i+=1;
+						smi=startPoint-i;
+						spi=startPoint+i;
+						ictx.drawImage(icvs,spi,0,smi,totalWidth,
+																spi+1,0,smi,totalWidth);
+																
+						ictx.drawImage(icvs,0,0,smi+1,totalWidth,
+																-1,0,smi+1,totalWidth);
+																
+						ictx.drawImage(icvs,0,spi,totalWidth,smi,
+																0,spi+1,totalWidth,smi);
+																
+						ictx.drawImage(icvs,0,0,totalWidth,smi+1,
+																0,-1,totalWidth,smi+1);
+					}
+					mp--;
+					if(mp<1)mp=1;
+					
+					ictx.beginPath();
+					ictx.moveTo(spi+1, 0);
+					ictx.lineTo(spi+1, totalWidth);
+					ictx.lineTo(spi+2, totalWidth);
+					ictx.lineTo(spi+2, 0);
+					ictx.closePath();
+					ictx.fill();
+					
+					ictx.beginPath();
+					ictx.moveTo(smi, 0);
+					ictx.lineTo(smi, totalWidth);
+					ictx.lineTo(smi-1, totalWidth);
+					ictx.lineTo(smi-1, 0);
+					ictx.closePath();
+					ictx.fill();
+					
+					ictx.beginPath();
+					ictx.moveTo(0,spi+1);
+					ictx.lineTo(totalWidth, spi+1);
+					ictx.lineTo(totalWidth, spi+2);
+					ictx.lineTo(0, spi+2);
+					ictx.closePath();
+					ictx.fill();
+					
+					ictx.beginPath();
+					ictx.moveTo(0,smi);
+					ictx.lineTo(totalWidth, smi);
+					ictx.lineTo(totalWidth, smi-1);
+					ictx.lineTo(0, smi-1);
+					ictx.closePath();
+					ictx.fill();
+				}
+			}
 			
 			lastPreviewURI = icvs.toDataURL();//the last one, large size, is cached for revisiting the menu
-			var data = ctx.getImageData(x, y, 1, 1).data;
 			
 				if(iconIsBitmap)
 				chrome.browserAction.setIcon({imageData:ictx.getImageData(startPoint-9, startPoint-9, 19, 19)});//update icon (to be configurable)
@@ -318,7 +404,7 @@
 			curentHex=RGBtoHex(data[0],data[1],data[2]);
 			clhsv=rgb2hsv(data[0],data[1],data[2]);
 			clrgb.r=data[0],clrgb.g=data[1],clrgb.b=data[2];
-    	chrome.extension.sendRequest({greeting: "setPreview",tabi:tabid,previewURI:lastPreviewURI,hex:curentHex,lhex:lastHex,cr:clrgb.r,cg:clrgb.g,cb:clrgb.b}, function(response) {
+    	chrome.extension.sendRequest({setPreview:true,tabi:tabid,previewURI:lastPreviewURI,hex:curentHex,lhex:lastHex,cr:clrgb.r,cg:clrgb.g,cb:clrgb.b}, function(response) {
 	  		//preview has been sent to the popup in case its showing...
 			});
 	  }

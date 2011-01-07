@@ -13,19 +13,21 @@ var pOptions=[];
 //pOptions["hqthumbs"]={def:false,ind:1,name:'HQ Thumbnails (more ram) '};
 
 //WARNIGN you have to set defaults two places for now...
+pOptions["pixelatedPreview"]={def:true,ind:0,name:'Zoomed preview is Pixelated (more CPU, slower, more exact)'};
+pOptions["fishEye"]={def:5,ind:1,name:'Fish Eye Amount for Pixelated Preview',select:{1:'1 Off',2:2,3:3,4:4,5:'5 default',6:6,7:7,8:8,9:'9 Full',10:10,11:11,12:12,13:13,14:14,15:'15 Max Zoomed'}};
 pOptions["EnableRGB"]={def:true,ind:0,name:'Show RGB'};
 pOptions["EnableHSL"]={def:true,ind:0,name:'Show HSL'};
-pOptions["useCSSValues"]={def:false,ind:0,name:'Use CSS values like rgb(255,255,244) instead of seperate R.G.B fields'};
-pOptions["ShowRGBHSL"]={def:false,ind:1,name:'Show RGB and/or HSL values on page result'};
+pOptions["useCSSValues"]={def:false,ind:1,name:'Use CSS values like rgb(255,255,244) for RGB/HSL'};
+pOptions["ShowRGBHSL"]={def:false,ind:1,name:'Show RGB and/or HSL values on the on-page result'};
 pOptions["showPreviewInContentS"]={def:false,ind:0,name:'Show image and hex(/rgb/hsl) preview on page too'};
-pOptions["contSprevZoomd"]={def:false,ind:1,name:'Page preview is also zoomed'};
+pOptions["contSprevZoomd"]={def:false,ind:1,name:'On-Page preview is large size'};
 pOptions["iconIsBitmap"]={def:true,ind:0,name:'Icon is zoomed colorpick pixel preview'};
-pOptions["resetIcon"]={def:false,ind:1,name:'Reset icon on close'};
+pOptions["resetIcon"]={def:false,ind:1,name:'Reset icon on (next) close'};
 pOptions["appleIcon"]={def:false,ind:2,name:'Use Apple color picker logo'};
-pOptions["iconIsPreview"]={def:false,ind:0,name:'Use icon badge square for color preview'};
+pOptions["iconIsPreview"]={def:false,ind:0,name:'Use icon badge square for color preview: ',img:'opt_badge.png'};
 pOptions["autoRedirect"]={def:false,ind:0,name:'Automatically redirect to a pickable version when unavailable (in new tab)'};
-pOptions["redirectSameWindow"]={def:false,ind:1,name:'Use the same window (warning: you may lose anything you entered on that page)'};
-pOptions["autocopyhex"]={def:false,ind:0,name:'Auto copy the hex to the clipboard when you sample a color (overwrites clipboard)'};
+pOptions["redirectSameWindow"]={def:false,ind:1,name:'Use the same window (warning: you may lose form data)'};
+pOptions["autocopyhex"]={def:false,ind:0,name:'Auto copy the hex to the clipboard when you sample a color (WARNING: overwrites clipboard)'};
 pOptions["backgroundColor"]={def:'#FFF',ind:0,name:'Popup Background Color ("#FFFFFF" or "blue")'};
 pOptions["usePrevColorBG"]={def:false,ind:1,name:'Use Previous Color for Background Instead'};
 pOptions["showPreviousClr"]={def:true,ind:0,name:'Show Split color Preview with Previous Color'};
@@ -114,8 +116,28 @@ function init(){
 	b.style.top='1px';b.style.left='1px';
 	a.appendChild(b);
 	
+	//needs some compression 
 	for( i in pOptions){
-		if(typeof(pOptions[i].def)=='boolean'){
+		if(pOptions[i].select){
+			var l=document.createElement('label');
+			var cb=document.createElement('select');
+			cb.setAttribute('type','select');
+			cb.setAttribute('id',i);
+			if(pOptions[i].ind>0)l.appendChild(document.createTextNode('\u00a0\u00a0\u00a0\u00a0'));
+			if(pOptions[i].ind>1)l.appendChild(document.createTextNode('\u00a0\u00a0\u00a0\u00a0'));
+			l.appendChild(document.createTextNode(pOptions[i].name));
+			l.appendChild(cb);
+			
+			
+			for(z in pOptions[i].select){
+				var opt=document.createElement('option');
+				opt.setAttribute('value',z);
+				opt.appendChild(document.createTextNode(pOptions[i].select[z]));
+				cb.appendChild(opt);
+			}
+			
+			document.getElementById('bsave').parentNode.insertBefore(l,document.getElementById('bsave'));
+		}else if(typeof(pOptions[i].def)=='boolean'){
 			var l=document.createElement('label');
 			var cb=document.createElement('input');
 			cb.setAttribute('type','checkbox');
@@ -124,6 +146,13 @@ function init(){
 			if(pOptions[i].ind>1)l.appendChild(document.createTextNode('\u00a0\u00a0\u00a0\u00a0'));
 			l.appendChild(cb);
 			l.appendChild(document.createTextNode(pOptions[i].name));
+			if(pOptions[i].img){
+				var t=pOptions[i].img;
+				i=document.createElement('image');
+				i.setAttribute('src',t);
+				i.setAttribute('align','top');
+				l.appendChild(i);
+			}
 			document.getElementById('bsave').parentNode.insertBefore(l,document.getElementById('bsave'));
 			//.getElementById(i).checked = ((localStorage[i]=='true')?true:pOptions[i].def);
 		}else{
@@ -149,16 +178,20 @@ function init(){
 <div style="float:right;">
 	
 Making money using this extension?  Please donate any amount here: <a href="http://www.vidzbigger.com/index.php?v=donate&colorpick=true&amount=5.00#donate">Thank You!</a>
-<div id="dupli" style="display:block;position:relative;width:300px;margin-bottom:30px;color:white;left:120px;"><b>Help</b><br/><br/>Great!  You got this far.  If the image is loaded you will be able to move your mouse pointer over the webpage to pick colors.  Return to the menu when you are done.
-	<br/><br/>A <a href="http://ficml.org/jemimap/style/color/wheel.html">Color Wheel</a> to test with.  You may have to test with a website instead of an image unfortunately, although at one point this was working on image URLs as well.
+<div id="dupli" style="display:block;position:relative;width:450px;margin-bottom:30px;color:white;left:0px;"><a href="javascript:void(0)" onclick="var nss=this.nextSibling.style;if(nss.display=='block')nss.display='none';else nss.display='block';">Help</a><div id="allhelp" style="display:none;">
+	<br/><br/>Great!  You got this far.  On a standard webpage click the icon then move your mouse pointer over the webpage to pick colors.  
+	
+	<br/><br/>A <a href="http://ficml.org/jemimap/style/color/wheel.html">Color Wheel</a> to test with.  You may have to test with a website instead of an image unfortunately, although for some it may work on image URLs as well, most will have to enable Automatically redirect to have this feature.
 
 	<br/><br/>Some notes about scrolling - when you scroll the window the program has to take another snapshot of the screen for you to pick colors from.  There is a delay while this occurs so the results of scrolling or resizing will not be immediate.  There is also a chance that the screenshot will include the preview box.  If this happens move your mouse before you scroll or click the ColorPicker icon again.
 	
-	<br/><br/>Quick trick - if the preview is ever out of sync, there's no need to click the icon again, you can usually scroll the page using the mousewheel which will refresh the preview
+	<br/><br/>Quick trick - if the preview is ever out of sync, there's no need to click the icon again, you can usually scroll the page using the mousewheel which will refresh the preview.  You can also press [r] or [j].  [esc] typically exits the picker if the web page is in focus.  
 	
-	<br/><br/>Pro tip - If you are moving your mouse while scrolling it is possible to trigger mouse over events.  Target the element you want to activate, then scroll down one click using the mousewheel.  Next slowly slide your mouse horizontally while you scroll the mousewheel up one click again.  The element you targeted should now be activated allowing you to pick colors from mouseover states of buttons.  The hotkeys r or j also allow mouse interaction for a small window.
+	<br/><br/>Pro tip - If you are moving your mouse while scrolling it is possible to trigger mouse over events.  Target the element you want to activate, then scroll down one click using the mousewheel.  Next slowly slide your mouse horizontally while you scroll the mousewheel up one click again.  The element you targeted should now be activated allowing you to pick colors from mouseover states of buttons.  The hotkeys [r] or [j] also allow mouse interaction for a small window.
 	
 	<br/><br/>Hint: If you zoom the popup window or this window, the color picker preview popup will always appear at the zoom you set here or in the popup window (control scroll or ctrl +/-)  To zoom the page you sample from use <a href="calibrate.html" title="Use this to allow normal browser level scaling of the page while you sample colors">Calibrate</a>.
+	
+	<br/><br/>If you switch to a page that is zoomed in, you may find portions of the screen are solid black pixels.  This can be correctd by pressing [r] to refresh the snapshot of the page.  
 <!--<br/><small>Note: zooming the page you sample colors from is unsupported, when samples are inaccurate hit ctrl zero to reset page zoom.  Try the calibrate feature.</small>
 	
 <br/><br/><b>Local Flash Scale Pixel</b>:<br/>
@@ -172,18 +205,26 @@ Making money using this extension?  Please donate any amount here: <a href="http
 	
 	<br/><br/>Does not always work with flash objects, sorry
 	
-	<br/><br/>This software is beta and is provided as is, please provide feedback for improvements at <a href="http://www.vidzbigger.com/index.php?v=contact">vidzbigger.com/contact</a>  Thanks!
+	<br/><br/><big><b>Keyboard Controls</b></big><br/>
+	<b>esc</b> - exit picker<br/>
+	<b>r</b> or <b>j</b> - refresh (pick from new snapshot, useful for brief interaction)<br/>
+	<b>enter</b> - pick color (useful if you do not want to or can't press mouse)<br/>
+	<u><b>From Pop-up Only</b></u><br/>
+	<b>arrow keys</b> - move pixel (when picking mode is active)<br/>
+	<b>enter</b> - pick color, toggle pick mode (arrows and mouse currently incompatible)<br/>
 	
+	<br/><br/>This software is beta and is provided as is, please provide feedback for improvements at <a href="http://www.vidzbigger.com/index.php?v=contact">vidzbigger.com/contact</a>  Thanks!
+</div>
 </div>
 
 
-</div><div style="position:fixed;width:399px">
+</div><div style="position:relative;width:399px">
 	<h3>ColorPick Preferences</h3>
 
 
 <button onclick="save_options()" id="bsave">Save</button> <button onclick="reset_options()" id="defa">Show Defaults</button><br><br>
 <span id="status"></span> | <a href="calibrate.html" title="Use this to allow normal browser level scaling of the page while you sample colors">Calibrate Theme Scale</a> (VERY important in XP or if your browser has thiner than 8px edges)<br/>
-<img src="icon128.png" />
+<img src="icon128.png" style="clear:both;" />
 <!--(Dissable <b>Flash approximate Precision during Page Zoom</b>, if you are using this calibrate, as calibrate is more accurate and once only)-->
 </div>
 

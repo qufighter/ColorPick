@@ -29,7 +29,7 @@
 		}
 	  chrome.extension.onRequest.addListener(
 		  function(request, sender, sendResponse) {
-		    if(request.greeting == "setPreview" && (request.tabi==tabid || tabid==0)){
+		    if(request.setPreview && (request.tabi==tabid || tabid==0)){
 		    	var hex=request.hex;//RGBtoHex(request.c_r+0,request.c_g+0,request.c_b+0);
 		    	
 		    	document.getElementById('pre').src=request.previewURI;
@@ -70,12 +70,30 @@
 		if(typeof(localStorage["EnableHSL"])!='undefined')EnableHSL = ((localStorage["EnableHSL"]=='true')?true:false);
 		
 		
+		function resnap(){
+			chrome.tabs.sendRequest(tabid,{newImage:true},function(r){});
+		}
+		
 		function wk(ev){
 			if(ev.keyCode==27){
 				//dissableColorPickerFromHere();// :D
 			}else if(ev.keyCode==82||ev.keyCode==74){//r or j refresh
-				chrome.tabs.sendRequest(tabid, {greeting: "newImage"}, function(response) {});
+				resnap();
+			}else if(ev.keyCode==38){//u
+				chrome.extension.sendRequest({movePixel:true,_x:0,_y:-1,tabi:tabid},function(r){});
+			}else if(ev.keyCode==40){//d
+				chrome.extension.sendRequest({movePixel:true,_x:0,_y:1,tabi:tabid},function(r){});
+			}else if(ev.keyCode==37){//l
+				chrome.extension.sendRequest({movePixel:true,_x:-1,_y:0,tabi:tabid},function(r){});
+			}else if(ev.keyCode==39){//r
+				chrome.extension.sendRequest({movePixel:true,_x:1,_y:0,tabi:tabid},function(r){});
+			}else if(ev.keyCode==13){//enter
+				ppick();
 			}
+		}
+		
+		function ppick(){
+			chrome.tabs.sendRequest(tabid,{doPick:true},function(r){});//perform pick
 		}
 
 	  function iin(){
@@ -101,6 +119,11 @@
 			  			tabid=tab.id;
 			  			//document.getElementById('dbg').innerHTML+=tab.id+' '
 							//chrome.tabs.executeScript(tab.id,{file:'colorpick.user.js'},function(a){document.getElementById('dbg').innerHTML+='seems to be ok'+a});
+			  		
+			  		
+			  		
+			  		
+			  		
 			  		})
 			  	})
 			  }
@@ -109,7 +132,9 @@
 	  	window.addEventListener('keydown',wk);//window does not work unless inspect mode
 	  	
 			document.getElementById('eclose').innerHTML='<img border="0" align="top" style="position:relative;top:3px;" src="'+chrome.extension.getURL('close.png')+'" />';
-	  	chrome.extension.sendRequest({greeting: "enableColorPicker",tabi:tabid}, function(response) {
+	  	document.getElementById('epick').innerHTML='<img border="0" align="top" style="position:relative;top:3px;" src="'+chrome.extension.getURL('icon19.png')+'" />';
+	  	
+	  	chrome.extension.sendRequest({enableColorPicker:true,tabi:tabid}, function(response) {
 	  		hex=response.hex;
 	  		document.getElementById('hexpre').style.backgroundColor='#'+hex;
 	  		document.getElementById('ohexpre').style.backgroundColor='#'+hex;
@@ -167,16 +192,14 @@
 	  	
 	  }
 	  function oout(){
-	  	chrome.extension.sendRequest({greeting: "disableColorPicker"}, function(response) {
-	  		//hi
-	  	});
+	  	chrome.extension.sendRequest({disableColorPicker:true},function(r){});
 	  }
 	  var x,y;
 	  document.onmousemove=function(ev){
 			x=ev.pageX-window.pageXOffset
 			y=ev.pageY-window.pageYOffset
 			if(isDrag){
-				chrome.extension.sendRequest({movePixel:true,_x:(x1-x),_y:(y1-y),tabi:tabid}, function(response) {});
+				chrome.extension.sendRequest({movePixel:true,_x:((x1-x)/2),_y:((y1-y)/2),tabi:tabid}, function(response) {});
 				x1=x,y1=y;//accoutn for that we moved it already
 			}
 	  }
@@ -213,7 +236,7 @@
 		 popupimage({href:chrome.extension.getURL('popup.html?isPopup')},'colorPickPopup_'+tabid);
 		}
   </script>
-<body onload="iin();"><a href="javascript:oout();window.close()" title="Close and Leave Color Picking Mode" id="eclose">Exit</a> #<input type="text" id="hex" size="6" onmouseover="this.select()" /><br/>
+<body onload="iin();"><a href="javascript:oout();window.close()" title="Close and Leave Color Picking Mode" id="eclose">Exit</a> #<input type="text" id="hex" size="6" onmouseover="this.select()" /> <a href="javascript:ppick()" title="Toggle Pick Color (enter) [Lock/Unlock]" id="epick">+</a><br/>
 <div id="defaultmode">
 <div class="lbrow" id="defrgb"><div class="lb">rgb:</div><input type="text" id="cr" style="width:35px" onmouseover="this.select()" /><input type="text" id="cg" style="width:35px" onmouseover="this.select()" /><input type="text" id="cb" style="width:35px" onmouseover="this.select()" /><br/></div>
 <div class="lbrow" id="defhsl"><div class="lb">hsl:</div><input type="text" id="ch" style="width:35px" onmouseover="this.select()" /><input type="text" id="cs" style="width:35px" onmouseover="this.select()" /><input type="text" id="cv" style="width:35px" onmouseover="this.select()" /><br/></div>
@@ -226,5 +249,5 @@
 <div id="ohexpre" style="z-index:0;position:absolute;left:0px;top:0px;width:150px;min-height:36px;"> </div>
 <div id="hexpre" style="z-index:9999;position:absolute;left:0px;top:0px;width:75px;min-height:36px;"> </div>
 </div>
-<a href="javascript:window.close()" title="Pick colors underneath this window">Hide</a><a target="_blank" href="options.html">Help</a><a href="javascript:void(0)" onclick="popOut()">Pop-out</a><div id="dbg"></div></body>
+<a href="javascript:window.close()" title="Pick colors underneath this window">Hide</a><a href="javascript:void(0)" onclick="popOut()">Pop-out</a><a href="javascript:void(0)" onclick="resnap()" title="Take New Picture of Page [r]">Refresh</a><a target="_blank" href="options.html" title="Help">?</a><div id="dbg"></div></body>
 </html>
