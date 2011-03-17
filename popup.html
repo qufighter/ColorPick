@@ -13,6 +13,9 @@
 	</style>
   <script>
   	var tabid=0;
+  	var cpw=165,cph=303;
+  	var cpScaleOffset=(navigator.platform=='win32'?16:0)
+		if(typeof(localStorage["cpScaleOffset"])!='undefined')cpScaleOffset = localStorage["cpScaleOffset"]-0;
   	function rgb2hsv(red, grn, blu) {
 			var x, val, f, i, hue, sat, val;
 			red/=255;//http://www.actionscript.org/forums/showthread.php3?t=15155
@@ -118,6 +121,12 @@
 	  	//if( !globalPopout ){
 		  	if( window.name.indexOf('colorPickPopup')>-1 ){
 		  		tabid=window.name.replace('colorPickPopup_','')-0;
+		  		window.setTimeout(function(){
+			  		if(innerWidth){
+			  			scal=(outerWidth-cpScaleOffset)/innerWidth;
+			  			if(scal>1)window.resizeTo(cpw*scal,cph*scal);
+			  		}
+			  	},50);
 		  		finishSetup()
 		  	}else{
 			  	chrome.windows.getCurrent(function(window){
@@ -222,7 +231,7 @@
 			if (! window.focus)return true;
 			mylink = new String( mylink.href );
 			if( win2 == 0 || typeof(win2) != 'object' || typeof(win2.location) != 'string'  ){
-				win2 = window.open(mylink, windowname, 'fullscreen=no,toolbar=no,status=yes,menubar=no,scrollbars=yes,resizable=yes,directories=no,location=yes,width=160,height=264');
+				win2 = window.open(mylink, windowname, 'fullscreen=no,toolbar=no,status=yes,menubar=no,scrollbars=yes,resizable=yes,directories=no,location=yes,width=160,height=294');
 			}else{
 				win2.location = mylink;
 			}

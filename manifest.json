@@ -1,5 +1,5 @@
 {
-   "description": "A simple color picker eye drop.",
+   "description": "A simple color picker eye dropper.",
    "name": "Color Pick",
    "browser_action": {
 	    "default_icon": "icon19.png",
@@ -9,7 +9,7 @@
 	 "content_scripts": [ {
       "js": [ "colorpick.user.js" ],
       "run_at": "document_start",
-      "matches": [ "http://*/*", "https://*/*" ]
+      "matches": [ "*://*/*" ]
    } ],
    "background_page": "background.html",
    "options_page": "options.html",
@@ -19,7 +19,7 @@
            "64": "icon64.png",
           "128": "icon128.png" },
    "permissions": [
-				  "http://vidzbigger.com/","tabs"
+				  "*://*/*","tabs"
 				],
-   "version": "0.0.1.24"
+   "version": "0.0.1.26"
 }

@@ -28,7 +28,6 @@
 		//reiterate defaults, eventually prefs will read config from here, no?
 		var iconIsBitmap=true,usePNG=true,resetIcon=false,appleIcon=false,iconIsPreview=false,autoRedirect=false,redirectSameWindow=false,showPreviewInContentS=false,contSprevZoomd=false,borderValue='1px solid grey',showPreviousClr=true,flashScalePix=false,shareClors=false,autocopyhex=false,ShowRGBHSL=false,EnableRGB=true,EnableHSL=true,pixelatedPreview=true,fishEye=5;
 		var cpScaleOffset=(navigator.platform=='win32'?16:0)
-		
 		var iconPath = '';
 		
 		function fromPrefs(){
@@ -61,7 +60,10 @@
 			if(appleIcon)iconPath='apple/';
 			if(resetIcon)chrome.browserAction.setIcon({path:chrome.extension.getURL(iconPath+'icon19.png')});//update icon (to be configurable)
 		}
-
+		
+		//on change visible tab, is cp active on this tab, if so, resnapshot..?
+		//888888888888888888888888888888888888888888888888888888888888888888888
+		
 		//globals
 		var cvs,ctx;
 		var x,y,tabid=0,winid=0; //current pixel
