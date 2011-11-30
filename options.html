@@ -23,18 +23,20 @@ pOptions["showPreviewInContentS"]={def:false,ind:0,name:'Show image and hex(/rgb
 pOptions["contSprevZoomd"]={def:false,ind:1,name:'On-Page preview is large size'};
 pOptions["iconIsBitmap"]={def:true,ind:0,name:'Icon is zoomed colorpick pixel preview'};
 pOptions["resetIcon"]={def:false,ind:1,name:'Reset icon on (next) close'};
-pOptions["appleIcon"]={def:false,ind:2,name:'Use Apple color picker logo'};
+pOptions["appleIcon"]={def:false,ind:2,name:'Use Apple color picker logo (4 you logo haters!)'};
 pOptions["iconIsPreview"]={def:false,ind:0,name:'Use icon badge square for color preview: ',img:'opt_badge.png'};
 pOptions["autoRedirect"]={def:false,ind:0,name:'Automatically redirect to a pickable version when unavailable (in new tab)'};
 pOptions["redirectSameWindow"]={def:false,ind:1,name:'Use the same window (warning: you may lose form data)'};
-pOptions["autocopyhex"]={def:false,ind:0,name:'Auto copy the hex to the clipboard when you sample a color (WARNING: overwrites clipboard)'};
-pOptions["backgroundColor"]={def:'#FFF',ind:0,name:'Popup Background Color ("#FFFFFF" or "blue")'};
+pOptions["autocopyhex"]={def:false,ind:0,name:'Auto copy the hex to the clipboard when you sample a color (WARNING: overwrites clipboard, may not work)'};
+pOptions["bbackgroundColor"]={def:'#FFF',ind:0,name:'Popup Background Color ("#FFFFFF" or "blue")'};
 pOptions["usePrevColorBG"]={def:false,ind:1,name:'Use Previous Color for Background Instead'};
 pOptions["showPreviousClr"]={def:true,ind:0,name:'Show Split color Preview with Previous Color'};
 pOptions["borderValue"]={def:'1px solid grey',ind:0,name:'Borders to use ("1px solid #000" or "none")'};
 //pOptions["flashScalePix"]={def:false,ind:0,name:'Flash approximate Precision during Page Zoom (NOT recommended - use calibrate below instead)'};
 //pOptions["localflScalePix"]={def:false,ind:1,name:'Local Flash Scale Pixel? (read help)'};
 pOptions["usePNG"]={def:true,ind:0,name:'Use PNG quality when available'};
+pOptions["clrAccuracyOverPrecision"]={def:false,ind:0,name:'ColorAccuracyOverPrecision - Improves color accuracy but decreases location accuracy.  Negative: possibly inaccessible page locations.'};
+pOptions["showActualPickTarget"]={def:false,ind:1,name:'ShowActualPickTarget - Helps a great deal when the above is checked, you see the image you\'re picking from instead of the webpage.'};
 pOptions["shareClors"]={def:false,ind:0,name:'Share Colors - Participate in upcoming Color of the Day statistics'};
 
 //pOptions["previewOnPage"]={def:false,ind:0,name:'On page zoomed preview'};
@@ -177,7 +179,7 @@ function init(){
 
 <div style="float:right;">
 	
-Making money using this extension?  Please donate any amount here: <a href="http://www.vidzbigger.com/index.php?v=donate&colorpick=true&amount=5.00#donate">Thank You!</a>
+Making money using this extension?  Please donate here: <a href="http://www.vidzbigger.com/index.php?v=donate&colorpick=true&amount=5.00#donate">Thank You!</a>
 <div id="dupli" style="display:block;position:relative;width:450px;margin-bottom:30px;color:white;left:0px;"><a href="javascript:void(0)" onclick="var nss=this.nextSibling.style;if(nss.display=='block')nss.display='none';else nss.display='block';">Help</a><div id="allhelp" style="display:none;">
 	<br/><br/>Great!  You got this far.  On a standard webpage click the icon then move your mouse pointer over the webpage to pick colors.  
 	
@@ -226,7 +228,7 @@ Making money using this extension?  Please donate any amount here: <a href="http
 
 <button onclick="save_options()" id="bsave">Save</button> <button onclick="reset_options()" id="defa">Show Defaults</button><br><br>
 <span id="status"></span> | <a href="calibrate.html" title="Use this to allow normal browser level scaling of the page while you sample colors">Calibrate Theme Scale</a> (VERY important in XP or if your browser has thiner than 8px edges)<br/>
-<img src="icon128.png" style="clear:both;" />
+
 <!--(Dissable <b>Flash approximate Precision during Page Zoom</b>, if you are using this calibrate, as calibrate is more accurate and once only)-->
 </div>
 

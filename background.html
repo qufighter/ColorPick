@@ -26,11 +26,14 @@
 			return({h:hue, s:sat, v:val});
 		}
 		//reiterate defaults, eventually prefs will read config from here, no?
-		var iconIsBitmap=true,usePNG=true,resetIcon=false,appleIcon=false,iconIsPreview=false,autoRedirect=false,redirectSameWindow=false,showPreviewInContentS=false,contSprevZoomd=false,borderValue='1px solid grey',showPreviousClr=true,flashScalePix=false,shareClors=false,autocopyhex=false,ShowRGBHSL=false,EnableRGB=true,EnableHSL=true,pixelatedPreview=true,fishEye=5;
+		var iconIsBitmap=true,usePNG=true,resetIcon=false,appleIcon=false,iconIsPreview=false,autoRedirect=false,redirectSameWindow=false,showPreviewInContentS=false,contSprevZoomd=false,borderValue='1px solid grey',showPreviousClr=true,flashScalePix=false,shareClors=false,autocopyhex=false,ShowRGBHSL=false,EnableRGB=true,EnableHSL=true,pixelatedPreview=true,fishEye=5,clrAccuracyOverPrecision=false,showActualPickTarget=false;
 		var cpScaleOffset=(navigator.platform=='win32'?16:0)
 		var iconPath = '';
 		
 		function fromPrefs(){
+			if(typeof(localStorage["clrAccuracyOverPrecision"])!='undefined')clrAccuracyOverPrecision = ((localStorage["clrAccuracyOverPrecision"]=='true')?true:false);
+			if(typeof(localStorage["showActualPickTarget"])!='undefined')showActualPickTarget = ((localStorage["showActualPickTarget"]=='true')?true:false);
+			if(typeof(localStorage["appleIcon"])!='undefined')appleIcon = ((localStorage["appleIcon"]=='true')?true:false);
 			if(typeof(localStorage["iconIsBitmap"])!='undefined')iconIsBitmap = ((localStorage["iconIsBitmap"]=='true')?true:false);
 			if(typeof(localStorage["resetIcon"])!='undefined')resetIcon = ((localStorage["resetIcon"]=='true')?true:false);
 			if(typeof(localStorage["appleIcon"])!='undefined')appleIcon = ((localStorage["appleIcon"]=='true')?true:false);
@@ -74,6 +77,7 @@
 		var clrgb={r:0,g:0,b:0}
 		var clhsv={h:0,s:0,v:0}
 		var isCurrentEnableReady=false;
+		var wid, hei;
 		
 		function attemptReinitPicker(tabid){
 			var tid=tabid;
@@ -100,7 +104,7 @@
 		
 		chrome.extension.onRequest.addListener(
 	  function(request, sender, sendResponse) {
-	  		if(sender.tab){
+	  		if(sender.tab && sender.tab.id >= 0){
 	  			tabid=sender.tab.id;
 	  			winid=sender.tab.windowId;
 	  		}
@@ -110,8 +114,8 @@
 	  		if(request.setPreview){
 	  			 sendResponse({});//not handled by this listener
 	  		}else if (request.newImage){	
-	  			var wid=request._x;
-   				var hei=request._y;
+	  			wid=request._x;
+   				hei=request._y;
    				var cbf=function(dataUrl){
  						var pim=document.getElementById('pim');
  						pim.src=dataUrl;
@@ -128,10 +132,8 @@
 	 					if(usePNG)chrome.tabs.captureVisibleTab(winid, {format:'png'}, cbf);
 	 					else chrome.tabs.captureVisibleTab(winid, {format:'jpg',quality:100}, cbf);
 	 				}catch(ex){
-				 		//ex = Error: Too many arguments.
 	 					chrome.tabs.captureVisibleTab(winid, cbf);
 	 				}
- 					
  					
  				}else if (request.movePixel){
 	  			x+=(request._x);//or otherwise use the current scale
@@ -225,7 +227,11 @@
 					if(!imageDataIsRendered){//cleans up the image src
 						var pim=document.getElementById('pim');
 						if(pim.complete){
-							ctx.putImageData(getImageDataFromImage(pim), 0, 0);
+							//ctx.putImageData(getImageDataFromImage(pim).data, 0, 0);
+							if(clrAccuracyOverPrecision)
+								ctx.drawImage(pim,0,0);
+							else
+								ctx.drawImage(pim,0,0,wid,hei);
 							pim.src='';
 							imageDataIsRendered=true;
 						}
@@ -246,8 +252,18 @@
 				if(!imageDataIsRendered){
 					var pim=document.getElementById('pim');
 					if(pim.complete){
-						ctx.putImageData(getImageDataFromImage(pim), 0, 0);
+						//ctx.putImageData(getImageDataFromImage(pim), 0, 0);
+						if(clrAccuracyOverPrecision)
+							ctx.drawImage(pim,0,0);
+						else
+							ctx.drawImage(pim,0,0,wid,hei);
 						pim.src='';
+						if(showActualPickTarget){
+							setTimeout(function(){
+								chrome.tabs.sendRequest(tabid, {setPickerImage:true,pickerImage:cvs.toDataURL()}, function(response) {});
+								console.log('got there but...');
+							},10);
+						}
 						imageDataIsRendered=true;
 					}else{
 						//image not ready to render...
@@ -259,6 +275,8 @@
 				}
 			//page paint is either ready or finalized
 
+			
+
 			var icvs = document.createElement('canvas');//icon canvas
 			var sx,sy;
 			var totalWidth = 150;
@@ -266,14 +284,18 @@
 			icvs.height=totalWidth
 			var ictx = icvs.getContext("2d");
 			var startPoint=Math.floor(totalWidth/2);
-			sx=x-startPoint;
-			sy=y-startPoint;
-			var data = ctx.getImageData(x, y, 1, 1).data;
+			
+			//strangest thing, the image clientWidth is different size on background page
+			var ox=x;//(x/wid)*(wid-16);
+			var oy=y;//(y/hei)*(hei-16);
+			sx=ox-startPoint;
+			sy=oy-startPoint;
+			var data = ctx.getImageData(ox, oy, 1, 1).data;
 			
 			//var img=ctx.getImageData(sx, sy, totalWidth, totalWidth);
 			if(!pixelatedPreview){
 				ictx.scale(2,2);
-				ictx.drawImage(cvs,-x+(startPoint/2),-y+(startPoint/2));//application of scale
+				ictx.drawImage(cvs,-ox+(startPoint/2),-oy+(startPoint/2));//application of scale
 				ictx.scale(0.5,0.5);
 				
 				ictx.fillStyle = "rgba(0,0,0,0.3)";//croshair
@@ -296,7 +318,7 @@
 				ictx.fill();
 				
 			}else{
-				ictx.drawImage(cvs,-x+(startPoint),-y+(startPoint));
+				ictx.drawImage(cvs,-ox+(startPoint),-oy+(startPoint));
 				var smi,spi,mp=fishEye;
 				//xx,yy
 				for(var i=0;i<startPoint;i+=2){
@@ -314,9 +336,11 @@
 															
 					ictx.drawImage(icvs,0,0,totalWidth,smi+1,
 															0,-1,totalWidth,smi+1);
-					
-					if(i==0)ictx.fillStyle = "rgba("+(255-data[0])+","+(255-data[1])+","+(255-data[2])+",0.9)";
-					else ictx.fillStyle = "rgba(255,255,255,0.4)";
+
+					if(i==0){
+						var data = ictx.getImageData(startPoint, startPoint, 1, 1).data;//notarget
+						ictx.fillStyle = "rgba("+(255-data[0])+","+(255-data[1])+","+(255-data[2])+",0.9)";
+					}else ictx.fillStyle = "rgba(255,255,255,0.4)";
 						
 					for(var c=0;c<mp;c++){
 						i+=1;
@@ -398,8 +422,7 @@
 					chrome.tabs.sendRequest(tabid, {setPixelPreview:true,previewURI:lastPreviewURI,zoomed:contSprevZoomd,hex:curentHex,lhex:lastHex}, function(response) {});
 
 				}
-			
-			
+
 			ictx=null;icvs=null;
 
 			//console.log('requesting:'+x+','+y + ' '+"#"+data[0]+" "+data[1]+" "+data[2]);

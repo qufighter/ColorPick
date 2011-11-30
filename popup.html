@@ -10,6 +10,7 @@
 		#pres{position:relative;width:150px;height:36px;border:1px solid grey;}
 		#ohexpre{z-index:0;position:absolute;left:0px;top:0px;width:150px;min-height:36px;}
 		#hexpre{z-index:9999;position:absolute;left:0px;top:0px;width:75px;min-height:36px;}
+		#ctrls{margin-top:3px;}
 	</style>
   <script>
   	var tabid=0;
@@ -116,7 +117,6 @@
 	  		document.getElementById('csshsl').style.display="none";
 	  	}
 	  	document.getElementById('eclose').innerHTML='<img border="0" align="top" style="position:relative;top:3px;" src="'+chrome.extension.getURL('close.png')+'" />';
-	  	document.getElementById('epick').innerHTML='<img border="0" align="top" style="position:relative;top:3px;" src="'+chrome.extension.getURL('icon19.png')+'" />';
 
 	  	//if( !globalPopout ){
 		  	if( window.name.indexOf('colorPickPopup')>-1 ){
@@ -124,7 +124,9 @@
 		  		window.setTimeout(function(){
 			  		if(innerWidth){
 			  			scal=(outerWidth-cpScaleOffset)/innerWidth;
-			  			if(scal>1)window.resizeTo(cpw*scal,cph*scal);
+			  			cpw=document.body.clientWidth + 50;
+			  			cph=document.body.clientHeight + 75;
+			  			window.resizeTo(cpw*scal,cph*scal);
 			  		}
 			  	},50);
 		  		finishSetup()
@@ -166,8 +168,9 @@
 				if(usePrevColorBG){
 					if(hex>0)document.body.style.backgroundColor='#'+hex;
 				}else{
-					if(typeof(localStorage["backgroundColor"])!='undefined')backgroundColor = (localStorage["backgroundColor"]);
-					document.body.style.backgroundColor=backgroundColor;
+					bbackgroundColor='white';
+					if(typeof(localStorage["bbackgroundColor"])!='undefined')bbackgroundColor = (localStorage["bbackgroundColor"]);
+					document.body.style.backgroundColor=bbackgroundColor;
 				}
 				
 				
@@ -243,7 +246,7 @@
 		 popupimage({href:chrome.extension.getURL('popup.html?isPopup')},'colorPickPopup_'+tabid);
 		}
   </script>
-<body onload="iin();"><a href="javascript:oout();window.close()" title="Close and Leave Color Picking Mode" id="eclose">Exit</a> #<input type="text" id="hex" size="6" onmouseover="this.select()" /> <a href="javascript:toglPick()" title="Toggle Pick Color (enter) [Lock/Unlock]" id="epick">+</a><br/>
+<body onload="iin();"><a href="javascript:oout();window.close()" title="Close and Leave Color Picking Mode" id="eclose">Exit</a> #<input type="text" id="hex" size="6" onmouseover="this.select()" /> <a href="javascript:window.close()" title="Hide/Minimize">_-</a><br/>
 <div id="defaultmode">
 <div class="lbrow" id="defrgb"><div class="lb">rgb:</div><input type="text" id="cr" style="width:35px" onmouseover="this.select()" /><input type="text" id="cg" style="width:35px" onmouseover="this.select()" /><input type="text" id="cb" style="width:35px" onmouseover="this.select()" /><br/></div>
 <div class="lbrow" id="defhsl"><div class="lb">hsl:</div><input type="text" id="ch" style="width:35px" onmouseover="this.select()" /><input type="text" id="cs" style="width:35px" onmouseover="this.select()" /><input type="text" id="cv" style="width:35px" onmouseover="this.select()" /><br/></div>
@@ -256,5 +259,11 @@
 <div id="ohexpre"> </div>
 <div id="hexpre"> </div>
 </div>
-<a href="javascript:window.close()" title="Pick colors underneath this window">Hide</a><a href="javascript:void(0)" onclick="popOut()">Pop-out</a><a href="javascript:void(0)" onclick="resnap()" title="Take New Picture of Page [r]">Refresh</a><a target="_blank" href="options.html" title="Help">?</a><div id="dbg"></div></body>
+<div id="ctrls">
+<a href="javascript:toglPick()" title="Pick Again (enter) [Lock/Unlock]" id="epick"><img border="0" align="top" style="position:relative;top:-1px;" src="crosshair.png" width="19" /></a>
+<a href="javascript:void(0)" onclick="resnap()" title="Take New Picture of Page [r]">Refresh</a>
+<a target="_blank" href="options.html" title="Help & Options">?</a>
+<a title="Pop-Out (seperate window)" href="javascript:void(0)" onclick="popOut()"><img align="top" src="popout.gif"></a>
+</div>
+<div id="dbg"></div></body>
 </html>

@@ -7,6 +7,9 @@ function(request, sender, sendResponse) {
   	borders=request.borders;
   	scaleOffset=request.scOffset;
   	enableColorPicker()
+  }else if (request.setPickerImage){
+  	c.src=request.pickerImage;
+  	//c.style.backgroundImage=request.pickerImage;
   }else if (request.newImage){
   	ssf()
   }else if (request.doPick){
@@ -102,11 +105,12 @@ function enableColorPicker(){
 		n.style.zIndex="2147483647";
 		n.style.cursor="default";
 		n.style.padding="4px";
-		c=document.createElement('div');
+		c=document.createElement('img');
 		c.style.zIndex="2147483647";
 		c.style.position='fixed';
 		c.style.top='0px';
 		c.style.left='0px';
+		c.style.overflow='hidden';
 		c.id='color_pick_click_box';
 		c.addEventListener('click',picked,true);
 		document.body.appendChild(c);
@@ -119,10 +123,10 @@ function enableColorPicker(){
 	if(!isEnabled){
 		n.style.display="none";
 		c.style.display="none";
-		if(isLocked)picked();
+		if(isLocked)picked();//unlocks for next pick
 		document.body.style.cursor='url('+chrome.extension.getURL('crosshair.png')+') 16 16,crosshair';
 		isEnabled=true;
-		window.setTimeout(newImage,250);//yeah i know...c razy
+		window.setTimeout(newImage,1);
 	}
 }
 function keepOnScreen(){
@@ -164,21 +168,19 @@ function newImage(){
 		lastNewTimeout=window.setTimeout(function(){newImage()},500);
 		return;
 	}
+	isMakingNew=true;
 	n.style.display="none";
 	c.style.display="none";
-	isMakingNew=true;
 	var x,y;//wid hei
-  x=window.innerWidth
+  x=window.innerWidth //NON inclusive of scroll bar (yet the image we get has one, and is innerWidth wide in the background page)
 	y=window.innerHeight
 	c.style.width=x+'px';
 	c.style.height=y+'px';
-	if(scal!=1){
-		x*=scal;
-		y*=scal;
-	}
+	scal=(outerWidth-scaleOffset)/innerWidth;
+	x*=scal;
+	y*=scal;
 	chrome.extension.sendRequest({newImage:true,_x:x,_y:y}, function(response){
-		isMakingNew=false;
-		scal=(outerWidth-scaleOffset)/innerWidth
+		isMakingNew=false;//perhaps we wait unitl it's really 'new'
 		window.setTimeout(function(){c.style.display="block";n.style.display="block";updateColorPreview();},500)
 	});
 }
