@@ -1,9 +1,9 @@
 {
-   "description": "A simple color picker eye dropper.",
-   "name": "Color Pick",
+   "description": "A simple eye dropper tool allowing you to pick colors from webpages.",
+   "name": "Color Picker",
    "browser_action": {
 	    "default_icon": "icon19.png",
-	    "default_title": "Color Pick",
+	    "default_title": "Color Picker",
 	    "popup": "popup.html"
 	  },
 	 "content_scripts": [ {
@@ -21,5 +21,5 @@
    "permissions": [
 				  "*://*/*","tabs"
 				],
-   "version": "0.0.1.28"
+   "version": "0.0.1.29"
 }
