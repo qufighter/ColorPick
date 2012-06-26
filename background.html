@@ -26,7 +26,7 @@
 			return({h:hue, s:sat, v:val});
 		}
 		//reiterate defaults, eventually prefs will read config from here, no?
-		var iconIsBitmap=true,usePNG=true,resetIcon=false,appleIcon=false,iconIsPreview=false,autoRedirect=false,redirectSameWindow=false,showPreviewInContentS=false,contSprevZoomd=false,borderValue='1px solid grey',showPreviousClr=true,flashScalePix=false,shareClors=false,autocopyhex=false,ShowRGBHSL=false,EnableRGB=true,EnableHSL=true,pixelatedPreview=true,fishEye=5,clrAccuracyOverPrecision=false,showActualPickTarget=false;
+		var iconIsBitmap=false,usePNG=true,resetIcon=false,appleIcon=false,iconIsPreview=false,autoRedirectPickable=false,redirectSameWindow=false,showPreviewInContentS=false,contSprevZoomd=false,borderValue='1px solid grey',showPreviousClr=true,flashScalePix=false,shareClors=false,autocopyhex=false,ShowRGBHSL=false,EnableRGB=true,EnableHSL=true,pixelatedPreview=true,fishEye=5,clrAccuracyOverPrecision=false,showActualPickTarget=false;
 		var cpScaleOffset=(navigator.platform=='win32'?16:0), customCalibration=false;
 		var iconPath = '';
 		
@@ -39,7 +39,7 @@
 			if(typeof(localStorage["appleIcon"])!='undefined')appleIcon = ((localStorage["appleIcon"]=='true')?true:false);
 			if(typeof(localStorage["usePNG"])!='undefined')usePNG = ((localStorage["usePNG"]=='true')?true:false);
 			if(typeof(localStorage["iconIsPreview"])!='undefined')iconIsPreview = ((localStorage["iconIsPreview"]=='true')?true:false);
-			if(typeof(localStorage["autoRedirect"])!='undefined')autoRedirect = ((localStorage["autoRedirect"]=='true')?true:false);
+			if(typeof(localStorage["autoRedirectPickable"])!='undefined')autoRedirectPickable = ((localStorage["autoRedirectPickable"]=='true')?true:false);
 			if(typeof(localStorage["redirectSameWindow"])!='undefined')redirectSameWindow = ((localStorage["redirectSameWindow"]=='true')?true:false);
 			if(typeof(localStorage["showPreviewInContentS"])!='undefined')showPreviewInContentS = ((localStorage["showPreviewInContentS"]=='true')?true:false);
 			if(typeof(localStorage["contSprevZoomd"])!='undefined')contSprevZoomd = ((localStorage["contSprevZoomd"]=='true')?true:false);
@@ -56,6 +56,7 @@
 			if(typeof(localStorage["EnableHSL"])!='undefined')EnableHSL = ((localStorage["EnableHSL"]=='true')?true:false);
 			if(typeof(localStorage["pixelatedPreview"])!='undefined')pixelatedPreview = ((localStorage["pixelatedPreview"]=='true')?true:false);
 			if(typeof(localStorage["fishEye"])!='undefined')fishEye=localStorage["fishEye"]-0;
+			if(typeof(localStorage["colorPickHistory"])=='undefined')localStorage['colorPickHistory']="";
 			
 			defaultIcon();
 		}
@@ -158,11 +159,11 @@
 					if(shareClors){
 						var xhr = new XMLHttpRequest();
 						xhr.onreadystatechange=function(){if(xhr.readyState == 4){ }};
-						xhr.open('GET', 'http://vidzbigger.com/vcolors.php?colorhex='+lastHex, true);
+						xhr.open('GET', 'http://vidzbigger.com/vcolors.php?colorhex='+curentHex, true);
 						xhr.send();
 					}
-					//testing this feature to determine volume
-					
+					//store colors
+					localStorage['colorPickHistory']+="#"+curentHex;
 					sendResponse({docopy:autocopyhex});
 				}else if(request.reportingIn){
 					isCurrentEnableReady=true;
@@ -197,7 +198,7 @@
 	  							chrome.extension.sendRequest({greeting: "error_picker",errno:1}, function(response) {
 		  								//console.log('disabled!');
 		  						});		
-		  						if(autoRedirect){
+		  						if(autoRedirectPickable){
 		  							
 		  							if( !redirectSameWindow ){
 			  							chrome.tabs.getSelected(null,function(tab){
@@ -327,7 +328,8 @@
 					smi=startPoint-i;
 					spi=startPoint+i;
 					
-					ictx.drawImage(icvs,spi,0,smi,totalWidth,
+					////drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight) //CANVAS
+					ictx.drawImage(icvs,spi,0,smi,totalWidth,//total width really??
 															spi+1,0,smi,totalWidth);
 															
 					ictx.drawImage(icvs,0,0,smi+1,totalWidth,
@@ -345,7 +347,7 @@
 					}else ictx.fillStyle = "rgba(255,255,255,0.4)";
 						
 					for(var c=0;c<mp;c++){
-						i+=1;
+						++i;
 						smi=startPoint-i;
 						spi=startPoint+i;
 						ictx.drawImage(icvs,spi,0,smi,totalWidth,
