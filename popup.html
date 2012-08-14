@@ -143,6 +143,14 @@
 			//}
 			
 	  	window.addEventListener('keydown',wk);//window does not work unless inspect mode
+	  	
+	  	
+	  	if(document.getElementById('plat_prev')){
+				if(navigator.userAgent.indexOf('Windows') < 0){
+					document.getElementById('plat_prev').src="ico_mac.png";
+				}
+				document.getElementById('plat_prev').style.display="inline";
+			}
 	  }
 	  function finishSetup(){
 	  	chrome.extension.sendRequest({enableColorPicker:true,tabi:tabid}, function(response) {
@@ -267,6 +275,7 @@
 <a href="javascript:toglPick()" title="Pick Again (Lock/Unlock) [enter key]" id="epick"><img border="0" align="top" style="position:relative;top:-1px;" src="crosshair.png" width="19" /></a>
 <a href="javascript:void(0)" onclick="resnap()" title="Refresh Picture of Page [r]"><img align="top" src="refresh.png"></a>
 <a target="_blank" href="options.html" title="Help & Options"><img align="top" src="settings.png"></a>
+<a target="_blank" href="options.html" title="ColorPick Standalone Application"><img align="top" id="plat_prev" src="ico_win.png" style="display:none;"></a>
 <a title="Pop-Out (seperate window)" href="javascript:void(0)" onclick="popOut()"><img align="top" src="popout.gif"></a>
 </div>
 <div id="dbg"></div></body>

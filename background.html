@@ -164,6 +164,9 @@
 					}
 					//store colors
 					localStorage['colorPickHistory']+="#"+curentHex;
+					chrome.extension.sendRequest({historypush: true}, function(response) {
+							//console.log('disabled!');
+					});		
 					sendResponse({docopy:autocopyhex});
 				}else if(request.reportingIn){
 					isCurrentEnableReady=true;
@@ -197,7 +200,7 @@
 
 	  							chrome.extension.sendRequest({greeting: "error_picker",errno:1}, function(response) {
 		  								//console.log('disabled!');
-		  						});		
+		  						});
 		  						if(autoRedirectPickable){
 		  							
 		  							if( !redirectSameWindow ){

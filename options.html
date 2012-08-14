@@ -232,26 +232,53 @@ function init(){
 	createOptions(pAdvOptions, document.getElementById('adv_options'))
 	restore_options();
 	
-	
 	load_history();
+	
+	
+	if(document.getElementById('plat_prev')){
+		if(navigator.userAgent.indexOf('Windows') < 0){
+			document.getElementById('plat_prev').src="osx.png";
+		}
+	}
 }
+
+chrome.extension.onRequest.addListener(
+  function(request, sender, sendResponse) {
+    if(request.historypush){
+    	load_history();
+    	sendResponse({});
+    }
+  });
 
 </script>
 </head>
-<body onload="init()" style="background-image:url(bg1.jpg);">
+<body onload="init()">
 
 <div style="float:right;">
 	
+	<!--
 <br/>Making money using ColorPick? <a href="http://www.vidzbigger.com/index.php?v=donate&colorpick=true&amount=5.00#donate">Donate</a>
+-->
 
 <div style="clear:both;">
 
-<img src="win32.png" style="float:left;margin-right:22px;" />
-
+<img id="plat_prev" src="win32.png" style="float:left;margin-right:22px;" />
+	<br/><br/>
 	<h4>Win32 and OSX ColorPick</h4>
-	
-	Coming Soon!  Get Excited!
 
+	Exclusive Starter License<br/><br/>
+
+	<a href="http://vidsbee.com/ColorPick/Download/">Get it before anyone else!</a><br/><br/>
+	
+	Please report any bugs or issues.<br/>
+	<br style="clear:left;"/><br/>
+	<span style="color:green;font-weight:bold;">Free ColorPick Starter License</span> (will expire over time)<br/>
+		<div style="width:400px;text-align:right;">
+		Name: <input style="width:300px;" type="text" onmouseover="this.select()" value="StarterLicense" /><br/>
+		Key: <input style="width:300px;" type="text" onmouseover="this.select()" value="BVR883G-A2L2TC4-08Q046-0574C-D6656Q" />
+		</div>
+		
+		<a href="http://vidsbee.com/ColorPick/Download/">Download ColorPick App!</a><br/><br/>
 	
 	<!--
 	Fast - Light Weight - Easy
