@@ -2,8 +2,26 @@
 <head><title>ColorPicker Options</title>
 <style>
 	label{display:block;}
-	body{max-width:1000px;}
+	body{max-width:1100px;font-family:sans-serif;}
 	h3{margin:4px;}
+	#req_win, #req_mac{display:none;}
+	.rounded{
+		border:2px solid #AAA;
+		text-decoration:none;
+		padding:6px;margin:3px;
+		-moz-border-radius: 8px;
+		border-radius: 8px;
+		background-color:#9A9A9A;
+		text-shadow:black 1px 1px 3px;
+		color:white;
+		box-shadow:black 2px 2px 2px;
+	}
+	.rounded:hover{
+		text-shadow:black 1px 1px 2px;
+		box-shadow:black 1px 1px 2px;
+	}
+	#dupli a{color:grey;}
+	#nota a{color:blue;}
 </style>
 <script type="text/javascript">
 
@@ -238,6 +256,9 @@ function init(){
 	if(document.getElementById('plat_prev')){
 		if(navigator.userAgent.indexOf('Windows') < 0){
 			document.getElementById('plat_prev').src="osx.png";
+			document.getElementById('req_mac').style.display="block";
+		}else{
+			document.getElementById('req_win').style.display="block";
 		}
 	}
 }
@@ -254,7 +275,7 @@ chrome.extension.onRequest.addListener(
 </head>
 <body onload="init()">
 
-<div style="float:right;">
+<div style="float:right;width:500px;">
 	
 	<!--
 <br/>Making money using ColorPick? <a href="http://www.vidzbigger.com/index.php?v=donate&colorpick=true&amount=5.00#donate">Donate</a>
@@ -268,9 +289,29 @@ chrome.extension.onRequest.addListener(
 
 	Exclusive Starter License<br/><br/>
 
-	<a href="http://vidsbee.com/ColorPick/Download/">Get it before anyone else!</a><br/><br/>
+	Get it before anyone else!<br/><br/>
 	
-	Please report any bugs or issues.<br/>
+	Please report any bugs or issues.<br/><br/>
+	
+
+<div id="req_mac">
+<h3>Requirements</h3>
+<ul>
+	<li>Intel Mac OS X 10.5+</li>
+</ul>
+</div>
+<div id="req_win">
+<h3>Requirements</h3>
+<ul>
+	<li>Windows XP / Vista / Windows 7</li>
+	<li><a target="_blank" href="http://www.microsoft.com/en-us/download/details.aspx?id=5555">Microsoft Visual C++ Redistributable Package 2010</a></li>
+	<li><a target="_blank" href="http://www.microsoft.com/en-us/download/details.aspx?id=17851">Microsoft .NET Framework 4.0</a></li>
+</ul>
+
+<span style="color:red;">NOTE: You must have the above two packages installed for ColorPick to run on windows.</span>
+
+</div>
+
 	<br style="clear:left;"/><br/>
 	<span style="color:green;font-weight:bold;">Free ColorPick Starter License</span> (will expire over time)<br/>
 		<div style="width:400px;text-align:right;">
@@ -278,8 +319,11 @@ chrome.extension.onRequest.addListener(
 		Key: <input style="width:300px;" type="text" onmouseover="this.select()" value="BVR883G-A2L2TC4-08Q046-0574C-D6656Q" />
 		</div>
 		
-		<a href="http://vidsbee.com/ColorPick/Download/">Download ColorPick App!</a><br/><br/>
-	
+		<br/><center>
+		<a class="rounded" target="_blank" href="http://vidsbee.com/ColorPick/Download/">Download ColorPick App!</a>
+		<a class="rounded" target="_blank" href="http://vidsbee.com/ColorPick/">Buy License</a>
+		<br/><br/>
+		</center>
 	<!--
 	Fast - Light Weight - Easy
 	<br/><br/>
@@ -309,7 +353,7 @@ chrome.extension.onRequest.addListener(
 	
 </div>
 		<br style="clear:both;" /><hr/>
-<div id="dupli" style="display:block;position:relative;width:450px;margin-bottom:30px;color:white;left:0px;"><a href="javascript:void(0)" onclick="var nss=this.nextSibling.style;if(nss.display=='block')nss.display='none';else nss.display='block';">Help</a><div id="allhelp" style="display:none;">
+<div id="dupli" style="display:block;position:relative;width:450px;margin-bottom:30px;color:white;left:0px;"><a href="javascript:void(0)" onclick="var nss=this.nextSibling.style;if(nss.display=='block')nss.display='none';else nss.display='block';">ColorPick Chrome Extension Help</a><div id="allhelp" style="display:none;">
 	<br/><br/>On a standard http:// webpage click the icon then move your mouse pointer over the webpage to pick colors.  On a mac you may have to pop out the preview window using <img src="popout.gif" />.  
 	
 	<br/><br/>A <a href="http://ficml.org/jemimap/style/color/wheel.html">Color Wheel</a> to test with.  You may have to test with a website instead of an image unfortunately, although for some it may work on image URLs as well, most will have to enable Automatically redirect to have this feature.
