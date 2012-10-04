@@ -1,25 +1,32 @@
 {
+   "manifest_version": 2,
    "description": "A simple eye dropper tool allowing you to pick colors from webpages.",
    "name": "Color Picker",
    "browser_action": {
-	    "default_icon": "icon19.png",
-	    "default_title": "Color Picker",
-	    "popup": "popup.html"
-	  },
-	 "content_scripts": [ {
+      "default_icon": "icon19.png",
+      "default_title": "Color Picker",
+      "default_popup": "popup.html"
+    },
+   "content_scripts": [ {
       "js": [ "colorpick.user.js" ],
       "run_at": "document_start",
       "matches": [ "*://*/*" ]
    } ],
-   "background_page": "background.html",
+   "background": {
+      "scripts": ["background.js"]
+   },
    "options_page": "options.html",
    "icons": { "16": "icon16.png",
            "32": "icon32.png",
            "48": "icon48.png",
            "64": "icon64.png",
           "128": "icon128.png" },
+   "web_accessible_resources": [
+     "crosshair.png",
+     "close.png"
+   ],
    "permissions": [
-				  "*://*/*","tabs"
-				],
+      "*://*/*","tabs"
+   ],
    "version": "0.0.1.32"
 }
