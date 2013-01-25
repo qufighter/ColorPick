@@ -1,4 +1,5 @@
 var tabid=0;
+var isScriptAlive=false,scriptAliveTimeout=0;
 var cpw=165,cph=303;
 var cpScaleOffset=(navigator.platform=='win32'?16:0)
 if(typeof(localStorage["cpScaleOffset"])!='undefined')cpScaleOffset = localStorage["cpScaleOffset"]-0;
@@ -128,14 +129,12 @@ function iin(){
 	  			window.resizeTo(cpw*scal,cph*scal);
 	  		}
 	  	},50);
-  		finishSetup()
+  		setupInjectScripts()
   	}else{
 	  	chrome.windows.getCurrent(function(window){
 	  		chrome.tabs.getSelected(window.id, function(tab){
 	  			tabid=tab.id;
-	  			//document.getElementById('dbg').innerHTML+=tab.id+' '
-					//chrome.tabs.executeScript(tab.id,{file:'colorpick.user.js'},function(a){document.getElementById('dbg').innerHTML+='seems to be ok'+a});
-	  			finishSetup()
+	  			setupInjectScripts()
 	  		})
 	  	})
 	  }
@@ -151,8 +150,38 @@ function iin(){
 		document.getElementById('plat_prev').style.display="inline";
 	}
 }
+
+function setupInjectScripts(){
+	//document.getElementById('dbg').innerHTML+=tab.id+' '
+	//chrome.tabs.executeScript(tab.id,{file:'colorpick.user.js'},function(a){document.getElementById('dbg').innerHTML+='seems to be ok'+a});
+
+//	   "content_scripts": [ {
+//      "js": [ "colorpick.user.js" ],
+//      "run_at": "document_start",
+//      "matches": [ "*://*/*" ]
+//   } ],
+
+	isScriptAlive=false;
+	chrome.tabs.sendRequest(tabid, {testAlive:true}, function(response) {
+		if(response&&response.result){
+			isScriptAlive=true;
+			scriptsInjectedResult();
+		}
+	});
+	scriptAliveTimeout=setTimeout(scriptsInjectedResult,20);
+}
+function scriptsInjectedResult(){
+	clearTimeout(scriptAliveTimeout);
+	if(!isScriptAlive){
+		chrome.tabs.executeScript(tabid, {file: "colorpick.user.js"});
+		isScriptAlive=true;
+	}
+	finishSetup();
+}
 function finishSetup(){
 	chrome.extension.sendRequest({enableColorPicker:true,tabi:tabid}, function(response) {
+		
+		
 		hex=response.hex;
 		document.getElementById('hexpre').style.backgroundColor='#'+hex;
 		document.getElementById('ohexpre').style.backgroundColor='#'+hex;

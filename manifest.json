@@ -7,11 +7,6 @@
       "default_title": "Color Picker",
       "default_popup": "popup.html"
     },
-   "content_scripts": [ {
-      "js": [ "colorpick.user.js" ],
-      "run_at": "document_start",
-      "matches": [ "*://*/*" ]
-   } ],
    "background": {
       "scripts": ["background.js"]
    },
@@ -28,5 +23,5 @@
    "permissions": [
       "*://*/*","tabs"
    ],
-   "version": "0.0.1.32"
+   "version": "0.0.1.33"
 }

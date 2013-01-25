@@ -1,7 +1,11 @@
+colorPickBlock: {
+if(document.getElementById('ChromeExtension:Color-Pick.com')){break colorPickBlock;/*illegal return; is better because script parse may not need to complete..?*/}
 var n=false,c=false,hex=0,rgb=null;hsv=null;scal=1,ex=0,ey=0,isEnabled=false,isLocked=false,scaleOffset=0,borders='1px solid black';
 chrome.extension.onRequest.addListener(
 function(request, sender, sendResponse) {
-	if (request.setPixelPreview)
+	if (request.testAlive){
+		//disableColorPicker();
+	}else	if (request.setPixelPreview)
   	setPixelPreview(request.previewURI,request.zoomed,request.hex,request.lhex)
   else if (request.enableColorPicker){
   	borders=request.borders;
@@ -17,7 +21,7 @@ function(request, sender, sendResponse) {
   }else if (request.movedPixel){
   	setColor(request);
   }else if (request.disableColorPicker)disableColorPicker()
-  sendResponse({});
+  sendResponse({result:true});
 });
 function setPixelPreview(pix,zoom,hex,lhex){
 	if(n.innerHTML=='&nbsp;' || n.innerHTML.indexOf('<img')==0){
@@ -28,6 +32,7 @@ function setPixelPreview(pix,zoom,hex,lhex){
 	}
 }
 function setColor(r){
+	if(!n)return;
 	hex=r.hex,isUpdating=false,rgb=null,hsv=null;
 	n.style.backgroundColor='#'+hex;
 	if(r.rgb)rgb=r.rgb;
@@ -35,10 +40,10 @@ function setColor(r){
 	if(!isLocked){if(r.msg)n.innerHTML=r.msg;}
 	else setDisplay();
 }
-function setDisplay(){
+function setDisplay(){//Cr.elm
 	n.innerHTML='#<input size="7" style="font-size:10pt;border:'+borders+';" type="text" id="cphexvl" value="'+hex + '" onmouseover="this.select()" /> <input type="image" id="exitbtn" src="'+chrome.extension.getURL('close.png')+'" alt="Close" title="Close and Exit Color Pick Mode (esc)" />'+(rgb?'<br><input onmouseover="this.select()" type="text" value="rgb('+rgb.r+', '+rgb.g+', '+rgb.b+')"/>':'')+(hsv?'<br><input onmouseover="this.select()" type="text" value="hsl('+hsv.h+', '+hsv.s+', '+hsv.v+')"/>':'');
-	document.getElementById('exitbtn').addEventListener('click',dissableColorPickerFromHere,true);
-	document.getElementById('cphexvl').select();
+	if(document.getElementById('exitbtn'))document.getElementById('exitbtn').addEventListener('click',dissableColorPickerFromHere,true);
+	if(document.getElementById('cphexvl'))document.getElementById('cphexvl').select();
 	keepOnScreen();
 }
 function picked(){
@@ -95,6 +100,7 @@ function enableColorPicker(){
 	if(!n){
 		n=document.createElement('div');
 		n.innerHTML='&nbsp;';
+		n.id='ChromeExtension:Color-Pick.com';
 		n.style.position='fixed';//background-color: black; background-image: url();background-repeat: no-repeat no-repeat; 
 		n.style.minWidth="30px";
 		n.style.maxWidth="200px";
@@ -184,3 +190,4 @@ function newImage(){
 		window.setTimeout(function(){c.style.display="block";n.style.display="block";updateColorPreview();},500)
 	});
 }
+}//end block
