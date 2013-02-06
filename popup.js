@@ -80,8 +80,32 @@ if(typeof(localStorage["EnableHSL"])!='undefined')EnableHSL = ((localStorage["En
 function resnap(){
 	chrome.tabs.sendRequest(tabid,{newImage:true},function(r){});
 }
+function setButtonState(isPicking){
+	if(isPicking){
+		document.getElementById('epick').className='btnActive'+(pickEveryTime?' autocast':'');
+	}else{
+		document.getElementById('epick').className='btnInactive'+(pickEveryTime?' autocast':'');
+	}
+}
 function toglPick(){
-	chrome.tabs.sendRequest(tabid,{doPick:true},function(r){});//perform pick
+	chrome.tabs.sendRequest(tabid,{doPick:true},function(r){
+		setButtonState(r.isPicking);
+	});//perform pick
+}
+function preventEventDefault(ev){
+	ev = ev || event;
+	if(ev.preventDefault)ev.preventDefault();
+	ev.returnValue=false;
+	return false;
+}
+function toglAutoPick(ev){
+	pickEveryTime = !pickEveryTime;
+	localStorage["pickEveryTime"]=pickEveryTime;
+	document.getElementById('epick').className=document.getElementById('epick').className.replace('autocast','').replace(' ','');
+	if(pickEveryTime){
+		document.getElementById('epick').className+=' autocast';
+	}
+	return preventEventDefault(ev)
 }
 
 function wk(ev){
@@ -152,32 +176,32 @@ function iin(){
 }
 
 function setupInjectScripts(){
-	//document.getElementById('dbg').innerHTML+=tab.id+' '
-	//chrome.tabs.executeScript(tab.id,{file:'colorpick.user.js'},function(a){document.getElementById('dbg').innerHTML+='seems to be ok'+a});
+	finishSetup();return;
 
 //	   "content_scripts": [ {
 //      "js": [ "colorpick.user.js" ],
 //      "run_at": "document_start",
 //      "matches": [ "*://*/*" ]
 //   } ],
-
-	isScriptAlive=false;
-	chrome.tabs.sendRequest(tabid, {testAlive:true}, function(response) {
-		if(response&&response.result){
-			isScriptAlive=true;
-			scriptsInjectedResult();
-		}
-	});
-	scriptAliveTimeout=setTimeout(scriptsInjectedResult,20);
+//eventually re-enable this block (removing above) - since after first install it gets us running - however
+//gotta make sure that any pre-installed version responds to testAlive first!
+//	isScriptAlive=false;
+//	chrome.tabs.sendRequest(tabid, {testAlive:true}, function(response) {
+//		if(response&&response.result){
+//			isScriptAlive=true;
+//			scriptsInjectedResult();
+//		}
+//	});
+//	scriptAliveTimeout=setTimeout(scriptsInjectedResult,100);
 }
-function scriptsInjectedResult(){
-	clearTimeout(scriptAliveTimeout);
-	if(!isScriptAlive){
-		chrome.tabs.executeScript(tabid, {file: "colorpick.user.js"});
-		isScriptAlive=true;
-	}
-	finishSetup();
-}
+//function scriptsInjectedResult(){
+//	clearTimeout(scriptAliveTimeout);
+//	if(!isScriptAlive){
+//		chrome.tabs.executeScript(tabid, {file: "colorpick.user.js"});
+//		isScriptAlive=true;
+//	}
+//	finishSetup();
+//}
 function finishSetup(){
 	chrome.extension.sendRequest({enableColorPicker:true,tabi:tabid}, function(response) {
 		
@@ -239,7 +263,16 @@ function finishSetup(){
 	
 	pickEveryTime=true;
 	if(typeof(localStorage["pickEveryTime"])!='undefined')pickEveryTime = ((localStorage["pickEveryTime"]=='true')?true:false);
-	if(pickEveryTime)toglPick();
+
+	//in future cases we will send a testAlive earlier... state will be set already...
+	chrome.tabs.sendRequest(tabid,{testAlive:true},function(r){
+		if(!r.isPicking && pickEveryTime)toglPick();
+		else setButtonState(r.isPicking);
+	});
+	
+	if(localStorage.feedbackOptOut=='true' && localStorage["reg_chk"]!='true'){
+		setTimeout(checkForLicense,500);
+	}
 }
 function oout(){
 	chrome.extension.sendRequest({disableColorPicker:true},function(r){});
@@ -300,6 +333,42 @@ function selectSelfText(ev){
  getEventTarget(ev).select();
 }
 
+var licf=false,lhei=10;
+function checkForLicense(){
+	
+	document.getElementById('unreg_msg').style.display="block";
+	
+	if(localStorage["hasAgreedToLicense"]=='true')return;
+	
+	if(typeof(localStorage["trialPeriod"])=='undefined')localStorage["trialPeriod"]=0;
+	if(localStorage["trialPeriod"]-0 < 5 ){
+		localStorage["trialPeriod"] = localStorage["trialPeriod"]-0+1;
+		return;
+	}
+	
+	return;//do not be super annoying...
+	
+	lhei=10;
+	var f=document.createElement('iframe');
+	f.setAttribute('id','license_frame');
+	f.setAttribute('src','license.html');
+	f.setAttribute('width','146');
+	f.setAttribute('height',lhei);
+	f.setAttribute('frameborder','yes');
+	f.setAttribute('scrolling','no');
+	f.setAttribute('style','position:absolute;top:40px;left:3px;z-index:999;box-shadow: 0px 0px 6px #000;opacity:0.9;');
+	
+	if(document.body.firstChild.id=='license_frame')document.body.removeChild(document.body.firstChild);
+	document.body.insertBefore(f,document.body.firstChild);
+	licf=f;
+	animIn();
+}
+function animIn(){
+	lhei+=5;
+	licf.style.height=lhei+'px';
+	if(lhei < 150)setTimeout(animIn,33)
+}
+
 document.addEventListener('DOMContentLoaded', function () {
 	iin();
   document.getElementById('eclose').addEventListener('click', close_stop_picking);
@@ -319,6 +388,8 @@ document.addEventListener('DOMContentLoaded', function () {
   document.getElementById('chsl').addEventListener('mouseover', selectSelfText);
   
 	document.getElementById('epick').addEventListener('click', toglPick);
+	document.getElementById('epick').addEventListener('contextmenu', toglAutoPick);
 	document.getElementById('resnap').addEventListener('click', resnap);
 	document.getElementById('popout').addEventListener('click', popOut);
+
 });

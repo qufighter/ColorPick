@@ -7,6 +7,11 @@
       "default_title": "Color Picker",
       "default_popup": "popup.html"
     },
+	 "content_scripts": [ {
+      "js": [ "colorpick.user.js" ],
+      "run_at": "document_start",
+      "matches": [ "*://*/*" ]
+   } ],
    "background": {
       "scripts": ["background.js"]
    },
@@ -21,7 +26,8 @@
      "close.png"
    ],
    "permissions": [
-      "*://*/*","tabs"
+      "tabs", "webRequest", "webNavigation", "*://*/*"
    ],
-   "version": "0.0.1.33"
+   "content_security_policy": "script-src 'self' https://cdn.extensionanalytics.com; object-src 'self'",
+   "version": "0.0.1.35"
 }

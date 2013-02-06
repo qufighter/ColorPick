@@ -21,7 +21,7 @@ function(request, sender, sendResponse) {
   }else if (request.movedPixel){
   	setColor(request);
   }else if (request.disableColorPicker)disableColorPicker()
-  sendResponse({result:true});
+  sendResponse({result:true,isPicking:!isLocked});
 });
 function setPixelPreview(pix,zoom,hex,lhex){
 	if(n.innerHTML=='&nbsp;' || n.innerHTML.indexOf('<img')==0){
@@ -174,6 +174,7 @@ function newImage(){
 		lastNewTimeout=window.setTimeout(function(){newImage()},500);
 		return;
 	}
+	document.body.style.cursor='wait';
 	isMakingNew=true;
 	n.style.display="none";
 	c.style.display="none";
@@ -187,7 +188,7 @@ function newImage(){
 	y*=scal;
 	chrome.extension.sendRequest({newImage:true,_x:x,_y:y}, function(response){
 		isMakingNew=false;//perhaps we wait unitl it's really 'new'
-		window.setTimeout(function(){c.style.display="block";n.style.display="block";updateColorPreview();},500)
+		window.setTimeout(function(){c.style.display="block";n.style.display="block";document.body.style.cursor='url('+chrome.extension.getURL('crosshair.png')+') 16 16,crosshair';updateColorPreview();},500)
 	});
 }
 }//end block

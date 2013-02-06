@@ -16,7 +16,7 @@ var pAdvOptions=[];
 //pOptions["hqthumbs"]={def:false,ind:1,name:'HQ Thumbnails (more ram) '};
 
 //WARNIGN you have to set defaults two places for now...
-pOptions["pickEveryTime"]={def:true,ind:0,name:'Start picking agian each time icon is clicked'}; //default false in popup.html
+pOptions["pickEveryTime"]={def:true,ind:0,name:'Start picking agian each time browser button is clicked ',img:'crosshair.png'}; //default false in popup.html
 pOptions["pixelatedPreview"]={adv:false,def:true,ind:0,name:'Zoomed preview is Pixelated'};
 pOptions["fishEye"]={def:5,ind:1,name:'Fish Eye Amount',select:{1:'1 Off',2:2,3:3,4:4,5:'5 default',6:6,7:7,8:8,9:'9 Full',10:10,11:11,12:12,13:13,14:14,15:'15 Max Zoomed'}};
 pOptions["EnableRGB"]={def:true,ind:0,name:'Show RGB'};
@@ -25,9 +25,9 @@ pOptions["useCSSValues"]={def:true,ind:0,name:'Use CSS values for RGB/HSL'};
 pOptions["showPreviewInContentS"]={def:false,ind:0,name:'Show image preview near cursor while picking'};
 pOptions["ShowRGBHSL"]={def:false,ind:1,name:'Show RGB and HSL too'};
 pOptions["contSprevZoomd"]={def:false,ind:1,name:'Large size preview'};
+pOptions["iconIsPreview"]={def:false,ind:0,name:'Use icon badge square color preview: ',img:'opt_badge.png'};
 pOptions["iconIsBitmap"]={def:false,ind:0,name:'Icon is zoomed colorpick pixel preview'};
 pOptions["resetIcon"]={def:false,ind:1,name:'Reset icon between color picks'};
-pOptions["iconIsPreview"]={def:false,ind:0,name:'Use icon badge square color preview: ',img:'opt_badge.png'};
 pAdvOptions["customCalibration"]={def:false,ind:0,name:'Enable usage of the calibration link above. [required for win XP or Themes Disabled]'};
 pAdvOptions["autocopyhex"]={def:false,ind:0,name:'Attempt auto-copy the hex to the clipboard'};
 pAdvOptions["bbackgroundColor"]={def:'#FFF',ind:0,name:'Popup Background Color ("#FFFFFF" or "blue")'};
@@ -42,8 +42,9 @@ pAdvOptions["showActualPickTarget"]={def:false,ind:1,name:'ShowActualPickTarget 
 pAdvOptions["appleIcon"]={def:false,ind:0,name:'Use Apple color picker logo'};
 pAdvOptions["autoRedirectPickable"]={def:false,ind:0,name:'Automatically redirect to a pickable version when unavailable'};
 pAdvOptions["redirectSameWindow"]={def:false,ind:1,name:'Use the same window (warning: you may lose form data)'};
-pOptions["shareClors"]={def:false,ind:0,name:'Share Colors - Color of the Day statistics'};
-
+pOptions["hasAgreedToLicense"]={def:false,ind:0,name:'Has agreed to license Terms of Use',css:'display:none;'};
+pOptions["usageStatistics"]={def:false,ind:0,name:'Gather Usage Statistics (See Terms of Use)'};
+pOptions["shareClors"]={def:false,ind:0,name:'Color of the Day Statistics (See Terms of Use)'};
 
 //pOptions["previewOnPage"]={def:false,ind:0,name:'On page zoomed preview'};
 
@@ -81,6 +82,15 @@ function save_options() {
 		if(appleIcon)iconPath='apple/';
 		chrome.browserAction.setIcon({path:chrome.extension.getURL(iconPath+'icon19.png')});//update icon (to be configurable)
 	}
+	
+	if(typeof(localStorage["usageStatistics"])=='undefined')localStorage["usageStatistics"]=false;
+	if(localStorage["usageStatistics"]=='true'){
+		localStorage.removeItem("feedbackOptOut");
+	}else{
+		localStorage.feedbackOptOut = "true";
+	}
+	
+	showRegistrationStatus();
 	
   // Update status to let user know options were saved.
   var status = document.getElementById("status");
@@ -160,9 +170,44 @@ function load_history(){
 		cb.setAttribute('style','display:inline-block;background-color:#'+hist[i]+';width:22px;height:22px;');
 		cb.setAttribute('title','#'+hist[i]);
 		div_history.appendChild(cb);
-		cb.addEventListener('click',function(){
-			prompt('#'+hist[i],hist[i],hist[i]);
-		},false);
+		var tc=hist[i];
+	}
+	div_history.addEventListener('click',function(ev){
+		var tc=ev.srcElement.title;
+		if(tc)prompt('Copy the color value:',tc,tc);
+	},false);
+	
+	var cb=document.createElement('div');
+	cb.setAttribute('style','display:block;background-color:#CCC;opacity:0.5;width:7px;height:100%;position:absolute;right:-11px;top:0px;cursor:e-resize;');
+	cb.setAttribute('id','hist_drag_sizer');
+	div_history.appendChild(cb);
+	cb.addEventListener('mousedown',dragHist);
+	document.body.addEventListener('mouseup',stopdragHist);
+	document.body.addEventListener('mousemove',mmv);
+}
+
+var histReSize=false;
+var hist_sx=0,hist_sy=0;
+function dragHist(ev){
+	hist_sx=ev.pageX;
+	hist_sy=ev.pageY;
+	histReSize=true;
+}
+function stopdragHist(){
+	histReSize=false;
+}
+function mmv(ev){
+	if(histReSize){
+		var ch=ev.pageX-hist_sx;
+		
+		var his=document.getElementById('history');
+		var hds=document.getElementById('hist_drag_sizer');
+		
+		//hds.style.right = hds.style.right.replace('px','')-0 - ch;
+		his.style.width = his.style.width.replace('px','')-0 + ch;
+
+		hist_sx=ev.pageX;
+		hist_sy=ev.pageY;
 	}
 }
 
@@ -203,7 +248,11 @@ function createOptions(piOptions, elemAppend){
 				i=document.createElement('image');
 				i.setAttribute('src',t);
 				i.setAttribute('align','top');
+				i.setAttribute('width',16);
 				l.appendChild(i);
+			}
+			if(piOptions[i] && piOptions[i].css){
+				l.setAttribute('style',piOptions[i].css);
 			}
 			elemAppend.appendChild(l);
 			//document.getElementById('bsave').parentNode.insertBefore(l,document.getElementById('bsave'));
@@ -225,7 +274,7 @@ function createOptions(piOptions, elemAppend){
 }
 
 function init(){
-	
+
 //	var a=document.getElementById('dupli');
 //	var b=a.cloneNode(true);
 //	b.id='nota';
@@ -249,6 +298,8 @@ function init(){
 			document.getElementById('req_win').style.display="block";
 		}
 	}
+	
+	showRegistrationStatus();
 }
 
 chrome.extension.onRequest.addListener(
@@ -258,7 +309,16 @@ chrome.extension.onRequest.addListener(
     	sendResponse({});
     }
   });
-
+  
+function showRegistrationStatus(){
+	if(localStorage['reg_chk']=='true' || localStorage['usageStatistics']=='true'){
+		document.getElementById('reg_status').innerHTML="Registered";
+		document.getElementById('reg_status').className='registered';
+	}else{
+		document.getElementById('reg_status').innerHTML="Unregistered";
+		document.getElementById('reg_status').className='unregistered';
+	}
+}
 function toggle_next_sibling_display(ev){
 	who=getEventTargetA(ev);
 	//var ns=who.nextSibling;if(ns.style.display=='block'){ns.style.display='none'}else{ns.style.display='block'}

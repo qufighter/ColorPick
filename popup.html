@@ -1,35 +1,43 @@
 <html>
 <head>
 	<style>
-		body{width:150px;font-family:arial,sans-serif;font-size:12px;margin:4px;margin-top:0px;margin-bottom:0px;padding:0px;overflow-y:auto;overflow-x:hidden;}
-		a{text-decoration:none;position:relative;margin;2px;padding:3px;}
+		body{position:relative;width:150px;font-family:arial,sans-serif;font-size:12px;margin:4px;margin-top:0px;margin-bottom:0px;padding:0px;overflow-y:auto;overflow-x:hidden;}
+		a{text-decoration:none;position:relative;margin;2px;padding:3px;border:1px solid transparent;}
 		a:hover{color:#338;background-color:#AAF;border:1px solid #338;}
 		#pre{cursor:move;min-width:150px;border:1px solid grey;}
 		.lbrow{position:relative;padding-left:30px;margin-left:5px;}
 		.lb{position:absolute;top:5px;left:0px;}
 		#cssmode{display:none;}
-		#pres{position:relative;width:150px;height:36px;border:1px solid grey;}
+		#pres{position:relative;width:150px;height:36px;border:1px solid grey;z-index:1;top:-1px;}
 		#ohexpre{z-index:0;position:absolute;left:0px;top:0px;width:150px;min-height:36px;}
 		#hexpre{z-index:9999;position:absolute;left:0px;top:0px;width:75px;min-height:36px;}
-		#ctrls{margin-top:3px;}
+		#ctrls{margin-top:2px;z-index:-1}
+		#ctrls a{margin-right:2px;}
+		#unreg_msg{display:none;position:absolute;bottom:0px;width:150;text-align:center;color:#F33;font-weight:bold;text-shadow:white 1px 1px 1px;padding:5px 0px 5px 0px;}
+		.btnActive{border:1px solid #FFB923;}
+		.autocast{background: -webkit-linear-gradient(-45deg, #fefcea 45%,#ffdc8c 49%,#fefcea 95%);}
+		.btnInactive{border:1px solid #F66;}
 	</style>
   <script src="popup.js"></script>
 </head>
-<body><a href="#" title="Close and Leave Color Picking Mode" id="eclose">Exit</a> #<input type="text" id="hex" size="6" /> <a id="hidemin" href="#" title="Hide/Minimize">_-</a><br/>
+<body><a href="#" title="Close and Leave Color Picking Mode" id="eclose">Exit</a> #<input type="text" spellcheck="false" id="hex" size="6" /> <a id="hidemin" href="#" title="Hide/Minimize">_-</a><br/>
 <div id="defaultmode">
-<div class="lbrow" id="defrgb"><div class="lb">rgb:</div><input type="text" id="cr" style="width:35px" /><input type="text" id="cg" style="width:35px" /><input type="text" id="cb" style="width:35px" /><br/></div>
-<div class="lbrow" id="defhsl"><div class="lb">hsl:</div><input type="text" id="ch" style="width:35px" /><input type="text" id="cs" style="width:35px" /><input type="text" id="cv" style="width:35px" /><br/></div>
+<div class="lbrow" id="defrgb"><div class="lb">rgb:</div><input type="text" spellcheck="false" id="cr" style="width:35px" /><input type="text" spellcheck="false" id="cg" style="width:35px" /><input type="text" spellcheck="false" id="cb" style="width:35px" /><br/></div>
+<div class="lbrow" id="defhsl"><div class="lb">hsl:</div><input type="text" spellcheck="false" id="ch" style="width:35px" /><input type="text" spellcheck="false" id="cs" style="width:35px" /><input type="text" spellcheck="false" id="cv" style="width:35px" /><br/></div>
 </div><div id="cssmode">
-<div class="lbrow" id="cssrgb"><div class="lb">rgb:</div><input type="text" id="crgb" style="width:105px" /><br/></div>
-<div class="lbrow" id="csshsl"><div class="lb">hsl:</div><input type="text" id="chsl" style="width:105px" /><br/></div>
+<div class="lbrow" id="cssrgb"><div class="lb">rgb:</div><input type="text" spellcheck="false" id="crgb" style="width:105px" /><br/></div>
+<div class="lbrow" id="csshsl"><div class="lb">hsl:</div><input type="text" spellcheck="false" id="chsl" style="width:105px" /><br/></div>
 </div>
+<div style="position:relative;width:152px;height:152px;">
+<a id="unreg_msg" target="_blank" href="register.html" title="Click to Register ColorPick or Opt-in.">&hearts;</a>
 <img alt="preview pane" src="default.png" id="pre" width="150" height="150" style="margin-bottom:3px;">
+</div>
 <div id="pres">
 <div id="ohexpre"> </div>
 <div id="hexpre"> </div>
 </div>
 <div id="ctrls">
-<a href="#" title="Pick Again (Lock/Unlock Mouse Picking) [enter key]" id="epick"><img border="0" align="top" style="position:relative;top:-1px;" src="crosshair.png" width="19" /></a>
+<a href="#" title="Pick Again (Lock/Unlock Mouse Picking) [enter key] (rMouse:toggle autocast)" id="epick"><img border="0" align="top" style="position:relative;top:-1px;" src="crosshair.png" width="19" /></a>
 <a href="#" title="Refresh Picture of Page [r]" id="resnap"><img align="top" src="refresh.png"></a>
 <a target="_blank" href="options.html" title="Help & Options"><img align="top" src="settings.png"></a>
 <a target="_blank" href="options.html" title="ColorPick Standalone Application"><img align="top" id="plat_prev" src="ico_win.png" style="display:none;"></a>

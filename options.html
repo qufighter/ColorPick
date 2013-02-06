@@ -20,7 +20,9 @@
 		text-shadow:black 1px 1px 2px;
 		box-shadow:black 1px 1px 2px;
 	}
-
+	.registered{color:#080;font-weight:bold;}
+	.unregistered{color:#F00;font-weight:bold;}
+	#history{position:relative;}
 </style>
 <script src="options.js"></script>
 </head>
@@ -38,7 +40,7 @@
 	<br/><br/>
 	<h4>Win32 and OSX ColorPick</h4>
 
-	Exclusive Starter License<br/><br/>
+	Free Trial Period<br/><br/>
 
 	Get it before anyone else!<br/><br/>
 	
@@ -64,6 +66,11 @@
 </div>
 
 	<br style="clear:left;"/><br/>
+	<br/><center>
+		<a class="rounded" target="_blank" href="http://vidsbee.com/ColorPick/Download/">Download ColorPick App</a>
+		<a class="rounded" href="http://vidsbee.com/ColorPick/">Buy License</a>
+		<br/><br/></center>
+	<!--
 	<span style="color:green;font-weight:bold;">Free ColorPick Starter License</span> (will expire over time)<br/>
 		<div style="width:400px;text-align:right;">
 		Name: <input style="width:300px;" type="text" onmouseover="this.select()" value="StarterLicense" /><br/>
@@ -80,6 +87,8 @@
 		<br style="clear:left;"/><br/>
 		&copy; <a href="http://vidsbee.com/ColorPick/">Vidsbee Enterprises</a> by Sam Larison
 		</center>
+	-->
+	
 	<!--
 	Fast - Light Weight - Easy
 	<br/><br/>
@@ -113,13 +122,13 @@
 	<a name="help">&nbsp;</a>
 	<br/><br/>On a standard http:// webpage click the icon then move your mouse pointer over the webpage to pick colors.  On a mac you may have to pop out the preview window using <img src="popout.gif" />.  
 	
-	<br/><br/>A <a href="http://ficml.org/jemimap/style/color/wheel.html">Color Wheel</a> to test with.  You may have to test with a website instead of an image unfortunately, although for some it may work on image URLs as well, most will have to enable Automatically redirect to have this feature.
+	<br/><br/>A <a href="4096wheel.html">Color Wheel</a> to test with.  You may have to test with a website instead of an image unfortunately, although for some it may work on image URLs as well, most will have to enable Automatically redirect to have this feature.
 
 	<br/><br/>Some notes about scrolling - when you scroll the window the program has to take another snapshot of the screen for you to pick colors from.  There is a delay while this occurs so the results of scrolling or resizing will not be immediate.  There is also a chance that the screenshot will include the preview box.  If this happens move your mouse before you scroll or click the ColorPicker icon again.
 	
 	<br/><br/>Quick trick - if the preview is ever out of sync, there's no need to click the icon again, you can usually scroll the page using the mousewheel which will refresh the preview.  You can also press [r] or [j].  [esc] exits the picker.  
 	
-	<br/><br/>Pro tip - If you are moving your mouse while scrolling it is possible to trigger mouse over events.  Target the element you want to activate, then scroll down one click using the mousewheel.  Next slowly slide your mouse horizontally while you scroll the mousewheel up one click again.  The element you targeted should now be activated allowing you to pick colors from mouseover states of buttons.  The hotkeys [r] or [j] also allow mouse interaction for a small window.
+	<br/><br/>Pro tip - If you are moving your mouse while scrolling it is possible to trigger mouse over events.  Target the element you want to activate, then scroll down one click using the mousewheel.  Next slowly slide your mouse horizontally while you scroll the mousewheel up one click again.  The element you targeted should now be activated allowing you to pick colors from mouseover states of buttons.  The hotkeys [r] or [j] also allow mouse interaction for a short time.
 	
 	<br/><br/>Hint: If you zoom the popup window or this window, the color picker preview popup will always appear at the zoom you set here or in the popup window (control scroll or ctrl +/-)  To zoom the page you sample from use <a href="calibrate.html" title="Use this to allow normal browser level scaling of the page while you sample colors">Calibrate</a>.
 	
@@ -153,22 +162,32 @@
 
 
 </div><div style="position:relative;width:399px">
-	<h3><img src="icon32.png" align="top"/> <a href="https://chrome.google.com/webstore/detail/color-picker/ohcpnigalekghcmgcdcenkpelffpdolg" target="_blank">ColorPick</a> Preferences</h3>
+	<h3><img src="icon32.png" align="bottom"/> <a href="https://chrome.google.com/webstore/detail/color-picker/ohcpnigalekghcmgcdcenkpelffpdolg" target="_blank">Color Picker</a> &copy; <a target="_blank" href="http://vidsbee.com/ColorPick/">Vidsbee.com</a> </h3>
+
+&nbsp;&nbsp;<a style="margin-left:32px;" href="register.html">Color Picker Registration</a> <span id="reg_status"></span><br/><br/>
 
 <div id="options">
 	
 </div>
 
-<a style="display:block" href="#" id="shoadvanc">Advanced Options</a><div id="adv_options" style="display:none;">
+
+<a href="license.html?wide=1">Terms of Use</a> <a style="display:block" href="#" id="shoadvanc">Advanced Options</a><div id="adv_options" style="display:none;">
 	<a href="calibrate.html" title="Use this to allow normal browser level scaling of the page while you sample colors">Calibrate Theme Scale</a><br/>
 	<!-- advanced -->
 </div>
 
-<button id="bsave">Save</button> <button id="defa">Show Defaults</button><br><br>
+<button id="bsave">Save</button> <button id="defa">Show Defaults</button>
+
+<br><br>
 <span id="status"></span> &nbsp; 
 
+
+Color of the day<br/>
+<iframe src="http://vidzbigger.com/vcolors_ofday.php" style="width:100px;height:40px;border:none;overflow:hidden;" scrolling="no"></iframe>
+		
+
 <h4>Hisotry <a href="#" id="clhist" style="font-size:10px;">clear</a></h4>
-<div id="history"></div>
+<div id="history" style="width:399px;"></div>
 
 <!--(Dissable <b>Flash approximate Precision during Page Zoom</b>, if you are using this calibrate, as calibrate is more accurate and once only)-->
 </div>

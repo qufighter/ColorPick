@@ -1,0 +1,56 @@
+<html>
+<head>
+	<style type="text/css">
+		body{font-family:sans-serif;}
+		
+		#regDiv{
+			width:500px;
+			text-align:right;
+			margin-top:3px;
+		}
+		#regDiv input{
+			width:400px;
+		}
+		#license_go{
+			position:relative;left:100px;
+		}
+		#loading{position:relative;left:100px;display:none;}
+		.registered{color:#080;font-weight:bold;}
+		.unregistered{color:#F00;font-weight:bold;}
+	</style>
+	<script src="sha1.js"></script>
+	<script src="register.js"></script>
+	<title>Register Color Pick</title>
+</head>
+<body>
+	
+	<h2><img src="icon32.png" align="bottom"/> Color Picker for Google Chrome by Vidsbee.com</h2>
+	
+	<h3>Register Color Picker</h3>
+	<div id="license_status">Enter License information:</div>
+	
+	<div id="regDiv">
+	Name: <input type="text" id="license_name"><br/>
+	License Key: <input type="text" id="license_key">
+	</div>
+	<input type="button" id="license_go" value="Register" /> <img src="loading.gif" id="loading" />
+	
+	<h3>Upgrade Existing License</h3>
+	Add more hosts to an existing license.  Manage authorized hosts.
+	
+	<a target="_blank" href="http://vidsbee.com/ColorPick/Upgrade/" id="examine">Examine License</a>
+	
+	<h3 style="margin-bottom:7px;">Buy ColorPick License <a target="_blank" href="http://vidsbee.com/ColorPick/"><img title="Buy License in a New Tab." src="popout.gif"/></a></h3>
+	<iframe src="http://vidsbee.com/ColorPick/buy_form.php?so=1" style="width:800px;height:120px;border:none;overflow:hidden;" scrolling="no"></iframe>
+		
+	<br/><small>
+	Your color-pick license not only registeres this Google Chrome extension; 
+	<br/>The same license may also be used to register the color-pick desktop applications
+<br/>for Windows and OSX.  Visit <a target="_blank" href="http://vidsbee.com/ColorPick/">color-pick.com</a> for details.</small>
+	
+	<h3 style="margin-bottom:7px;">Alternative</h3>
+	If you do not wish to purchase a license at this time, <br/>
+	you may still place ColorPick in registered mode by following the <a href="license.html?wide=1">license agreement</a>.
+	
+</body>
+</html>

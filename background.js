@@ -56,13 +56,47 @@ function fromPrefs(){
 	if(typeof(localStorage["fishEye"])!='undefined')fishEye=localStorage["fishEye"]-0;
 	if(typeof(localStorage["colorPickHistory"])=='undefined')localStorage['colorPickHistory']="";
 	
+	if(typeof(localStorage["usageStatistics"])=='undefined')localStorage["usageStatistics"]=false;
+	if(localStorage["usageStatistics"]=='true'){
+		localStorage.removeItem("feedbackOptOut");
+	}else{
+		localStorage.feedbackOptOut = "true";
+	}
+	
 	defaultIcon();
+	feedbackParticipationOversight();
 }
 
 function defaultIcon(){
 	var iconPath='';
 	if(appleIcon)iconPath='apple/';
 	if(resetIcon)chrome.browserAction.setIcon({path:chrome.extension.getURL(iconPath+'icon19.png')});//update icon (to be configurable)
+}
+
+function feedbackParticipationOversight(){
+	if(localStorage.feedbackOptOut!='true' && localStorage["usageStatistics"]=='true'){
+		var d=new Date();
+		if( localStorage["participation_"+d.getMonth()+"_"+d.getFullYear()]!='true' ){
+			var xhr = new XMLHttpRequest();
+			xhr.onreadystatechange=function(){if(xhr.readyState == 4){
+				if(xhr.status==200){
+					if(xhr.responseText == 'SOK'){
+						var d=new Date();
+						localStorage["participation_"+d.getMonth()+"_"+d.getFullYear()]=true;
+						var lastMo=d.getMonth()-1;
+						var lastMoYr=d.getFullYear();
+						if(lastMo < 0){
+							lastMo = 11;
+							lastMoYr-=1;
+						}
+						localStorage.removeItem("participation_"+lastMo+"_"+lastMoYr);
+					}
+				}
+			}};
+			xhr.open('GET', "http://vidzbigger.com/feedback.php?app=1", true);
+			xhr.send();
+		}
+	}
 }
 
 //on change visible tab, is cp active on this tab, if so, resnapshot..?
