@@ -336,7 +336,8 @@ function selectSelfText(ev){
 var licf=false,lhei=10;
 function checkForLicense(){
 	
-	document.getElementById('unreg_msg').style.display="block";
+	//if(document.getElementById('pre').src.indexOf('error') < 0)
+		document.getElementById('unreg_msg').style.display="block";
 	
 	if(localStorage["hasAgreedToLicense"]=='true')return;
 	

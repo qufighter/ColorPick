@@ -333,4 +333,9 @@ document.addEventListener('DOMContentLoaded', function () {
 	
 	document.getElementById('shoadvanc').addEventListener('click', toggle_next_sibling_display);
 	document.getElementById('shohelp').addEventListener('click', toggle_next_sibling_display);
+
+	if(window.location.hash=='#help'){
+		toggle_next_sibling_display({target:document.getElementById('shohelp')})
+	}
+	
 });

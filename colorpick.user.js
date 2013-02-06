@@ -60,7 +60,7 @@ function dissableColorPickerFromHere(){
 	chrome.extension.sendRequest({disableColorPicker:true},function(r){});
 }
 function disableColorPicker(){
-	isEnabled=false;
+	isEnabled=false,isLocked=false;
 	document.removeEventListener('mousemove',mmf);
 	window.removeEventListener('scroll',ssf);
 	window.removeEventListener('resize',ssf);
