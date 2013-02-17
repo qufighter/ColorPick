@@ -16,8 +16,8 @@ var pAdvOptions=[];
 //pOptions["hqthumbs"]={def:false,ind:1,name:'HQ Thumbnails (more ram) '};
 
 //WARNIGN you have to set defaults two places for now...
-pOptions["pickEveryTime"]={def:true,ind:0,name:'Start picking agian each time browser button is clicked ',img:'crosshair.png'}; //default false in popup.html
-pOptions["pixelatedPreview"]={adv:false,def:true,ind:0,name:'Zoomed preview is Pixelated'};
+pOptions["pickEveryTime"]={def:true,ind:0,name:'Start picking each time colorpick button is clicked'}; //default false in popup.html
+pOptions["pixelatedPreview"]={def:true,ind:0,name:'Zoomed preview is Pixelated Fish Eye'};
 pOptions["fishEye"]={def:5,ind:1,name:'Fish Eye Amount',select:{1:'1 Off',2:2,3:3,4:4,5:'5 default',6:6,7:7,8:8,9:'9 Full',10:10,11:11,12:12,13:13,14:14,15:'15 Max Zoomed'}};
 pOptions["EnableRGB"]={def:true,ind:0,name:'Show RGB'};
 pOptions["EnableHSL"]={def:true,ind:0,name:'Show HSL'};
@@ -39,7 +39,7 @@ pAdvOptions["borderValue"]={def:'1px solid grey',ind:0,name:'Borders to use ("1p
 pAdvOptions["usePNG"]={def:true,ind:0,name:'Use PNG quality when available'};
 pAdvOptions["clrAccuracyOverPrecision"]={def:false,ind:0,name:'ColorAccuracyOverPrecision - Improves color accuracy but decreases location accuracy.  Negative: possibly inaccessible page locations.'};
 pAdvOptions["showActualPickTarget"]={def:false,ind:1,name:'ShowActualPickTarget - Helps a great deal when the above is checked, you see the image you\'re picking from instead of the webpage.'};
-pAdvOptions["appleIcon"]={def:false,ind:0,name:'Use Apple color picker logo'};
+pAdvOptions["appleIcon"]={def:false,ind:0,name:'Use Apple Digital Color Meter logo'};
 pAdvOptions["autoRedirectPickable"]={def:false,ind:0,name:'Automatically redirect to a pickable version when unavailable'};
 pAdvOptions["redirectSameWindow"]={def:false,ind:1,name:'Use the same window (warning: you may lose form data)'};
 pOptions["hasAgreedToLicense"]={def:false,ind:0,name:'Has agreed to license Terms of Use',css:'display:none;'};
@@ -128,14 +128,14 @@ function reset_options() {
 function restore_options() {
 	for( i in pOptions){
 		if(typeof(pOptions[i].def)=='boolean')
-			document.getElementById(i).checked = ((localStorage[i]=='true')?true:pOptions[i].def);
+			document.getElementById(i).checked = ((localStorage[i]=='true')?true:((localStorage[i]=='false')?false:pOptions[i].def));
 		else
 			document.getElementById(i).value = ((localStorage[i])?localStorage[i]:pOptions[i].def);
 	}
 	
 	for( i in pAdvOptions){
 		if(typeof(pAdvOptions[i].def)=='boolean')
-			document.getElementById(i).checked = ((localStorage[i]=='true')?true:pAdvOptions[i].def);
+			document.getElementById(i).checked = ((localStorage[i]=='true')?true:((localStorage[i]=='false')?false:pAdvOptions[i].def));
 		else
 			document.getElementById(i).value = ((localStorage[i])?localStorage[i]:pAdvOptions[i].def);
 	}
@@ -317,6 +317,13 @@ function showRegistrationStatus(){
 	}else{
 		document.getElementById('reg_status').innerHTML="Unregistered";
 		document.getElementById('reg_status').className='unregistered';
+	}
+
+	if(localStorage['shareClors']=='true'){
+		document.getElementById('cotd').style.display="block";
+		document.getElementById('ifcotd').src='http://vidzbigger.com/vcolors_ofday.php';
+	}else{
+		document.getElementById('cotd').style.display="none";
 	}
 }
 function toggle_next_sibling_display(ev){

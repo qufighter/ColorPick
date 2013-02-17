@@ -23,6 +23,7 @@
 	.registered{color:#080;font-weight:bold;}
 	.unregistered{color:#F00;font-weight:bold;}
 	#history{position:relative;}
+	#cotd{display:none;}
 </style>
 <script src="options.js"></script>
 </head>
@@ -40,7 +41,7 @@
 	<br/><br/>
 	<h4>Win32 and OSX ColorPick</h4>
 
-	Free Trial Period<br/><br/>
+	Free Trial Useage<br/><br/>
 
 	Get it before anyone else!<br/><br/>
 	
@@ -181,10 +182,10 @@
 <br><br>
 <span id="status"></span> &nbsp; 
 
-
+<div id="cotd">
 Color of the day<br/>
-<iframe src="http://vidzbigger.com/vcolors_ofday.php" style="width:100px;height:40px;border:none;overflow:hidden;" scrolling="no"></iframe>
-		
+<iframe id="ifcotd" src="#" style="width:100px;height:40px;border:none;overflow:hidden;" scrolling="no"></iframe>
+</div>
 
 <h4>Hisotry <a href="#" id="clhist" style="font-size:10px;">clear</a></h4>
 <div id="history" style="width:399px;"></div>
