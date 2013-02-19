@@ -57,7 +57,10 @@ function picked(){
 	}
 }
 function dissableColorPickerFromHere(){
-	chrome.extension.sendRequest({disableColorPicker:true},function(r){});
+	var disableTimeout=setTimeout(disableColorPicker,500)
+	chrome.extension.sendRequest({disableColorPicker:true},function(r){
+		clearTimeout(disableTimeout);
+	});
 }
 function disableColorPicker(){
 	isEnabled=false,isLocked=false;

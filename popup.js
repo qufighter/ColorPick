@@ -176,7 +176,7 @@ function iin(){
 }
 
 function setupInjectScripts(){
-	finishSetup();return;
+//	finishSetup();return;
 
 //	   "content_scripts": [ {
 //      "js": [ "colorpick.user.js" ],
@@ -185,23 +185,23 @@ function setupInjectScripts(){
 //   } ],
 //eventually re-enable this block (removing above) - since after first install it gets us running - however
 //gotta make sure that any pre-installed version responds to testAlive first!
-//	isScriptAlive=false;
-//	chrome.tabs.sendRequest(tabid, {testAlive:true}, function(response) {
-//		if(response&&response.result){
-//			isScriptAlive=true;
-//			scriptsInjectedResult();
-//		}
-//	});
-//	scriptAliveTimeout=setTimeout(scriptsInjectedResult,100);
+	isScriptAlive=false;
+	chrome.tabs.sendRequest(tabid, {testAlive:true}, function(response) {
+		if(response&&response.result){
+			isScriptAlive=true;
+			scriptsInjectedResult();
+		}
+	});
+	scriptAliveTimeout=setTimeout(scriptsInjectedResult,100);
 }
-//function scriptsInjectedResult(){
-//	clearTimeout(scriptAliveTimeout);
-//	if(!isScriptAlive){
-//		chrome.tabs.executeScript(tabid, {file: "colorpick.user.js"});
-//		isScriptAlive=true;
-//	}
-//	finishSetup();
-//}
+function scriptsInjectedResult(){
+	clearTimeout(scriptAliveTimeout);
+	if(!isScriptAlive){
+		chrome.tabs.executeScript(tabid, {file: "colorpick.user.js"});
+		isScriptAlive=true;
+	}
+	finishSetup();
+}
 function finishSetup(){
 	chrome.extension.sendRequest({enableColorPicker:true,tabi:tabid}, function(response) {
 		

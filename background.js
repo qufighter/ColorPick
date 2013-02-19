@@ -375,7 +375,11 @@ function handleRendering(){
 
 			if(i==0){
 				var data = ictx.getImageData(startPoint, startPoint, 1, 1).data;//notarget
-				ictx.fillStyle = "rgba("+(255-data[0])+","+(255-data[1])+","+(255-data[2])+",0.9)";
+				//ictx.fillStyle = "rgba("+(255-data[0])+","+(255-data[1])+","+(255-data[2])+",0.9)";
+				var d=data[0]+data[1]+data[2];
+				if(d > 192) ictx.fillStyle = "rgba(0,0,0,0.8)";
+				else ictx.fillStyle = "rgba(255,255,255,0.8)";
+				
 			}else ictx.fillStyle = "rgba(255,255,255,0.4)";
 				
 			for(var c=0;c<mp;c++){
