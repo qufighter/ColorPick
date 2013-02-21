@@ -6,22 +6,27 @@ function toHex(N) {//http://www.javascripter.net/faq/rgbtohex.htm
  return "0123456789ABCDEF".charAt((N-N%16)/16)
       + "0123456789ABCDEF".charAt(N%16);
 }
-function rgb2hsv(red, grn, blu) {
-	var x, val, f, i, hue, sat, val;
-	red/=255;//http://www.actionscript.org/forums/showthread.php3?t=15155
-	grn/=255;
-	blu/=255;
-	x = Math.min(Math.min(red, grn), blu);
-	val = Math.max(Math.max(red, grn), blu);
-	if (x==val){
-	    return({h:0, s:0, v:Math.floor(val*100)});
-	}
-	f = (red == x) ? grn-blu : ((grn == x) ? blu-red : red-grn);
-	i = (red == x) ? 3 : ((grn == x) ? 5 : 1);
-	hue = Math.floor((i-f/(val-x))*60)%360;
-	sat = Math.floor(((val-x)/val)*100);
-	val = Math.floor(val*100);
-	return({h:hue, s:sat, v:val});
+function rgb2hsl(r, g, b){//http://mjijackson.com/2008/02/rgb-to-hsl-and-rgb-to-hsv-color-model-conversion-algorithms-in-javascript
+    r /= 255, g /= 255, b /= 255;
+    var max = Math.max(r, g, b), min = Math.min(r, g, b);
+    var h, s, l = (max + min) / 2;
+    if(max == min){
+        h = s = 0; // achromatic
+    }else{
+        var d = max - min;
+        s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+        switch(max){
+            case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+            case g: h = (b - r) / d + 2; break;
+            case b: h = (r - g) / d + 4; break;
+        }
+        h /= 6;
+    }
+    return {
+      h: Math.round(h * 360),
+      s: Math.round(s * 100),
+      v: Math.round(l * 100)
+    };
 }
 //reiterate defaults, eventually prefs will read config from here, no?
 var iconIsBitmap=false,usePNG=true,resetIcon=false,appleIcon=false,iconIsPreview=false,autoRedirectPickable=false,redirectSameWindow=false,showPreviewInContentS=false,contSprevZoomd=false,borderValue='1px solid grey',showPreviousClr=true,flashScalePix=false,shareClors=false,autocopyhex=false,ShowRGBHSL=false,EnableRGB=true,EnableHSL=true,pixelatedPreview=true,fishEye=5,clrAccuracyOverPrecision=false,showActualPickTarget=false;
@@ -105,7 +110,7 @@ function feedbackParticipationOversight(){
 //globals
 var cvs,ctx;
 var x,y,tabid=0,winid=0; //current pixel
-var curentHex=0,lastHex='FFF';
+var curentHex=0,lastHex='FFF',lastLastHex='FFF';
 var lastPreviewURI=''; //potentially needs to be cleaned up an not "jump" across sites, if exit triggered from content script the message does not reach us here... (they do now)
 //var fullScreenImageData=[];//potentially huge array of raw image data
 var imageDataIsRendered=false;
@@ -184,7 +189,7 @@ function(request, sender, sendResponse) {
 			handleRendering()//if returns false we could send empty response since there is no hex update... or secret hourglass code as suggested
 			sendResponse(getCurrentClrData());
 		}else if (request.setColor){
-			if(showPreviousClr)lastHex=curentHex;
+			if(showPreviousClr){lastLastHex=lastHex;lastHex=curentHex;}
 			else lastHex='none';
 			//user clicked, optionally store color to database...
 			if(shareClors){
@@ -253,7 +258,7 @@ function(request, sender, sendResponse) {
   				},560);//we expect to hear back from the content script by this time or something is wrong... and we need to use an iframe
 			  }
 			});
-			sendResponse({hex:curentHex,lhex:lastHex,previewURI:lastPreviewURI,cr:clrgb.r,cg:clrgb.g,cb:clrgb.b});
+			sendResponse({hex:curentHex,lhex:lastLastHex,previewURI:lastPreviewURI,cr:clrgb.r,cg:clrgb.g,cb:clrgb.b});
 		}else if (request.disableColorPicker){
 			lastPreviewURI='';
 			defaultIcon();
@@ -467,7 +472,7 @@ function handleRendering(){
 
 	//console.log('requesting:'+x+','+y + ' '+"#"+data[0]+" "+data[1]+" "+data[2]);
 	curentHex=RGBtoHex(data[0],data[1],data[2]);
-	clhsv=rgb2hsv(data[0],data[1],data[2]);
+	clhsv=rgb2hsl(data[0],data[1],data[2]);
 	clrgb.r=data[0],clrgb.g=data[1],clrgb.b=data[2];
 	chrome.extension.sendRequest({setPreview:true,tabi:tabid,previewURI:lastPreviewURI,hex:curentHex,lhex:lastHex,cr:clrgb.r,cg:clrgb.g,cb:clrgb.b}, function(response) {
 		//preview has been sent to the popup in case its showing...

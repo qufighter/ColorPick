@@ -1,26 +1,39 @@
 <html>
 <head>
 	<style>
-		body{position:relative;width:150px;font-family:arial,sans-serif;font-size:12px;margin:0px 4px 0px 4px;padding:0px;overflow-y:auto;overflow-x:hidden;}
+		body{position:relative;width:150px;font-family:arial,sans-serif;font-size:12px;padding:0px 4px 0px 4px;margin:0px;overflow-y:auto;overflow-x:hidden;}
 		a{text-decoration:none;position:relative;margin;2px;padding:3px;}
 		a:hover{color:#338;background-color:#AAF;}
 		#pre{cursor:move;min-width:150px;border:1px solid grey;}
 		.lbrow{position:relative;padding-left:30px;margin-left:5px;}
 		.lb{position:absolute;top:5px;left:0px;}
-		#cssmode{display:none;}
+		#cssmode{display:none;width:150px;}
 		#pres{position:relative;width:150px;height:36px;border:1px solid grey;z-index:1;top:-1px;}
 		#ohexpre{z-index:0;position:absolute;left:0px;top:0px;width:150px;min-height:36px;}
-		#hexpre{z-index:9999;position:absolute;left:0px;top:0px;width:75px;min-height:36px;}
+		#hexpre{z-index:9999;position:absolute;left:0px;top:0px;width:75px;min-height:36px;cursor:hand;}
 		#ctrls{margin-top:2px;z-index:-1}
 		#ctrls a{margin-right:2px;}
 		#unreg_msg{display:none;position:absolute;background-color:rgba(255,255,255,0.5);bottom:0px;width:150;text-align:center;color:black;font-weight:bold;text-shadow:white 1px 1px 1px;padding:5px 0px 5px 0px;}
 		.btnActive{border:1px solid #FFB923;}
 		.autocast{background: -webkit-linear-gradient(-45deg, #fefcea 45%,#ffdc8c 49%,#fefcea 95%);}
 		.btnInactive{border:1px solid #F66;}
+		#chooser{position:absolute;left:163px;top:11px;display:none;}
+		#slider_hue{display:block;position:absolute;top:0px;left:270px;width:35px;}
+		#hue_grad{position:relative;left:8px;}
+		#hue_pos{position:absolute;left:0px;z-index:-1;}
+		#gradi_box{position:relative;overflow:hidden;width:256px;height:256px;cursor:url(crosshair.png) 16 16,crosshair;}
 	</style>
   <script src="popup.js"></script>
 </head>
-<body><a href="#" title="Close and Leave Color Picking Mode" id="eclose">Exit</a> #<input type="text" spellcheck="false" id="hex" size="6" /> <a id="hidemin" href="#" title="Hide/Minimize">_-</a><br/>
+<body>
+<div id="chooser">
+	<div id="gradi_box"><canvas id="gradi" width="257" height="256"></canvas></div>
+	<div id="slider_hue">
+		<img id="hue_pos" src="cp_ar.gif" style="top:-4px">
+		<img id="hue_grad" src="cp_rb.png">
+	</div>
+</div>
+<a href="#" title="Close and Leave Color Picking Mode" id="eclose">Exit</a> #<input type="text" spellcheck="false" id="hex" size="6" /> <a id="hidemin" href="#" title="Hide/Minimize">_-</a><br/>
 <div id="defaultmode">
 <div class="lbrow" id="defrgb"><div class="lb">rgb:</div><input type="text" spellcheck="false" id="cr" style="width:35px" /><input type="text" spellcheck="false" id="cg" style="width:35px" /><input type="text" spellcheck="false" id="cb" style="width:35px" /><br/></div>
 <div class="lbrow" id="defhsl"><div class="lb">hsl:</div><input type="text" spellcheck="false" id="ch" style="width:35px" /><input type="text" spellcheck="false" id="cs" style="width:35px" /><input type="text" spellcheck="false" id="cv" style="width:35px" /><br/></div>
@@ -33,8 +46,7 @@
 <img alt="preview pane" src="default.png" id="pre" width="150" height="150" style="margin-bottom:3px;">
 </div>
 <div id="pres">
-<div id="ohexpre"> </div>
-<div id="hexpre"> </div>
+<div id="ohexpre"> </div><div id="hexpre" title="Show Color Chooser"> </div>
 </div>
 <div id="ctrls">
 <a href="#" title="Pick Again (Lock/Unlock Mouse Picking) [enter key] (rMouse:toggle autocast)" id="epick"><img border="0" align="top" style="position:relative;top:-1px;" src="crosshair.png" width="19" /></a>
