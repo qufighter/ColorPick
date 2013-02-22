@@ -354,7 +354,7 @@ function popupimage(mylink, windowname)
 	if (! window.focus)return true;
 	mylink = new String( mylink.href );
 	if( win2 == 0 || typeof(win2) != 'object' || typeof(win2.location) != 'string'  ){
-		win2 = window.open(mylink, windowname, 'fullscreen=no,toolbar=no,status=yes,menubar=no,scrollbars=yes,resizable=yes,directories=no,location=yes,width=160,height=294');
+		win2 = window.open(mylink, windowname, 'fullscreen=no,toolbar=no,status=no,menubar=no,scrollbars=no,resizable=yes,directories=no,location=no,width=160,height=294');
 	}else{
 		win2.location = mylink;
 	}
