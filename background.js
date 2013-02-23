@@ -341,21 +341,8 @@ function handleRendering(){
 		ictx.fillStyle = "rgba(0,0,0,0.3)";//croshair
 		//ictx.globalAlpha = 1.0;
 		
-		ictx.beginPath();
-		ictx.moveTo(startPoint, 0);
-		ictx.lineTo(startPoint, totalWidth);
-		ictx.lineTo(startPoint+1, totalWidth);
-		ictx.lineTo(startPoint+1, 0);
-		ictx.closePath();
-		ictx.fill();
-		
-		ictx.beginPath();
-		ictx.moveTo(0,startPoint);
-		ictx.lineTo(totalWidth, startPoint);
-		ictx.lineTo(totalWidth, startPoint+1);
-		ictx.lineTo(0, startPoint+1);
-		ictx.closePath();
-		ictx.fill();
+		ictx.fillRect(startPoint, 0, 1, totalWidth);
+		ictx.fillRect(0,startPoint, totalWidth, 1);
 		
 	}else{
 		ictx.drawImage(cvs,-ox+(startPoint),-oy+(startPoint));
@@ -405,42 +392,10 @@ function handleRendering(){
 			}
 			mp--;
 			if(mp<1)mp=1;
-			
-//			ictx.fillRect(spi+1, 0, spi+2, totalWidth);
-			ictx.beginPath();
-			ictx.moveTo(spi+1, 0);
-			ictx.lineTo(spi+1, totalWidth);
-			ictx.lineTo(spi+2, totalWidth);
-			ictx.lineTo(spi+2, 0);
-			ictx.closePath();
-			ictx.fill();
-			
-//			ictx.fillRect(smi, 0, smi-1, totalWidth);
-			ictx.beginPath();
-			ictx.moveTo(smi, 0);
-			ictx.lineTo(smi, totalWidth);
-			ictx.lineTo(smi-1, totalWidth);
-			ictx.lineTo(smi-1, 0);
-			ictx.closePath();
-			ictx.fill();
-			
-//			ictx.fillRect(0, spi+1, totalWidth, spi+2);
-			ictx.beginPath();
-			ictx.moveTo(0,spi+1);
-			ictx.lineTo(totalWidth, spi+1);
-			ictx.lineTo(totalWidth, spi+2);
-			ictx.lineTo(0, spi+2);
-			ictx.closePath();
-			ictx.fill();
-			
-//			ictx.fillRect(0,smi,totalWidth,smi-1);
-			ictx.beginPath();
-			ictx.moveTo(0,smi);
-			ictx.lineTo(totalWidth, smi);
-			ictx.lineTo(totalWidth, smi-1);
-			ictx.lineTo(0, smi-1);
-			ictx.closePath();
-			ictx.fill();
+			ictx.fillRect(spi+1, 0, 1, totalWidth);
+			ictx.fillRect(smi-1, 0, 1, totalWidth);
+			ictx.fillRect(0, spi+1, totalWidth, 1);
+			ictx.fillRect(0,smi-1,totalWidth,1);
 		}
 	}
 	
