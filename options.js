@@ -328,7 +328,6 @@ function showRegistrationStatus(){
 }
 function toggle_next_sibling_display(ev){
 	who=getEventTargetA(ev);
-	//var ns=who.nextSibling;if(ns.style.display=='block'){ns.style.display='none'}else{ns.style.display='block'}
 	var nss=who.nextSibling.style;if(nss.display=='block')nss.display='none';else nss.display='block';
 }
 
