@@ -406,6 +406,7 @@ function handleRendering(){
 			mp--;
 			if(mp<1)mp=1;
 			
+//			ictx.fillRect(spi+1, 0, spi+2, totalWidth);
 			ictx.beginPath();
 			ictx.moveTo(spi+1, 0);
 			ictx.lineTo(spi+1, totalWidth);
@@ -414,6 +415,7 @@ function handleRendering(){
 			ictx.closePath();
 			ictx.fill();
 			
+//			ictx.fillRect(smi, 0, smi-1, totalWidth);
 			ictx.beginPath();
 			ictx.moveTo(smi, 0);
 			ictx.lineTo(smi, totalWidth);
@@ -422,6 +424,7 @@ function handleRendering(){
 			ictx.closePath();
 			ictx.fill();
 			
+//			ictx.fillRect(0, spi+1, totalWidth, spi+2);
 			ictx.beginPath();
 			ictx.moveTo(0,spi+1);
 			ictx.lineTo(totalWidth, spi+1);
@@ -430,6 +433,7 @@ function handleRendering(){
 			ictx.closePath();
 			ictx.fill();
 			
+//			ictx.fillRect(0,smi,totalWidth,smi-1);
 			ictx.beginPath();
 			ictx.moveTo(0,smi);
 			ictx.lineTo(totalWidth, smi);
