@@ -468,13 +468,7 @@ function cp_grad_render(from_current){
 	var hue=document.getElementById('hue_pos').style.top.replace('px','')-0+4;
 	var dat = ctx.getImageData(256, hue, 1, 1).data;
 	ctx.fillStyle = "rgba("+(dat[0])+","+(dat[1])+","+(dat[2])+",1.0)";
-	ctx.beginPath();
-	ctx.moveTo(0, 0);
-	ctx.lineTo(256, 0);
-	ctx.lineTo(256, 256);
-	ctx.lineTo(0, 256);
-	ctx.closePath();
-	ctx.fill();
+	ctx.fillRect(0,0,256,256);
 	ctx.drawImage(i1,0,0);
 	dat = ctx.getImageData(cp_x, cp_y, 1, 1).data;
 	if(!from_current)updateCurrentColor(dat[0],dat[1],dat[2],true);
