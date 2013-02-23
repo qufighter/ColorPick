@@ -1,19 +1,17 @@
-colorPickBlock: {
-if(document.getElementById('ChromeExtension:Color-Pick.com')){break colorPickBlock;/*illegal return; is better because script parse may not need to complete..?*/}
-var n=false,c=false,hex=0,rgb=null;hsv=null;scal=1,ex=0,ey=0,isEnabled=false,isLocked=false,scaleOffset=0,borders='1px solid black';
-chrome.extension.onRequest.addListener(
+if(!document.getElementById('ChromeExtension:Color-Pick.com')){
+var n=false,c=false,hex=0,rgb=null;hsv=null;scal=1,ex=0,ey=0,isEnabled=false,isLocked=false,scaleOffset=0,borders='1px solid black',blankgif='data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==';
+if(!document.getElementById('ChromeExtension:Color-Pick.com'))chrome.extension.onRequest.addListener(
 function(request, sender, sendResponse) {
 	if (request.testAlive){
 		//disableColorPicker();
-	}else	if (request.setPixelPreview)
+	}else	if (request.setPixelPreview){
   	setPixelPreview(request.previewURI,request.zoomed,request.hex,request.lhex)
-  else if (request.enableColorPicker){
+  }else if (request.enableColorPicker){
   	borders=request.borders;
   	scaleOffset=request.scOffset;
   	enableColorPicker()
   }else if (request.setPickerImage){
   	c.src=request.pickerImage;
-  	//c.style.backgroundImage=request.pickerImage;
   }else if (request.newImage){
   	ssf()
   }else if (request.doPick){
@@ -120,6 +118,7 @@ function enableColorPicker(){
 		c.style.top='0px';
 		c.style.left='0px';
 		c.style.overflow='hidden';
+		c.src=blankgif;
 		c.id='color_pick_click_box';
 		c.addEventListener('click',picked,true);
 		document.body.appendChild(c);
@@ -181,17 +180,22 @@ function newImage(){
 	isMakingNew=true;
 	n.style.display="none";
 	c.style.display="none";
+	c.src=blankgif;
 	var x,y;//wid hei
-  x=window.innerWidth //NON inclusive of scroll bar (yet the image we get has one, and is innerWidth wide in the background page)
-	y=window.innerHeight
+	x=window.innerWidth;
+	y=window.innerHeight;
 	c.style.width=x+'px';
 	c.style.height=y+'px';
-	scal=(outerWidth-scaleOffset)/innerWidth;
+	//scal=(outerWidth-scaleOffset)/innerWidth;
+	scal=document.width / document.documentElement.clientWidth;
+	//scal=document.width / document.body.clientWidth;
 	x*=scal;
 	y*=scal;
-	chrome.extension.sendRequest({newImage:true,_x:x,_y:y}, function(response){
-		isMakingNew=false;//perhaps we wait unitl it's really 'new'
-		window.setTimeout(function(){c.style.display="block";n.style.display="block";document.body.style.cursor='url('+chrome.extension.getURL('crosshair.png')+') 16 16,crosshair';updateColorPreview();},500)
-	});
+	setTimeout(function(){
+		chrome.extension.sendRequest({newImage:true,_x:x,_y:y}, function(response){
+			isMakingNew=false;//perhaps we wait unitl it's really 'new'
+			window.setTimeout(function(){c.style.display="block";n.style.display="block";document.body.style.cursor='url('+chrome.extension.getURL('crosshair.png')+') 16 16,crosshair';updateColorPreview();},500)
+		});
+	},500);
 }
-}//end block
+}//enclosing block

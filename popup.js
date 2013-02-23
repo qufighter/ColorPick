@@ -249,7 +249,7 @@ function setupInjectScripts(){
 			scriptsInjectedResult();
 		}
 	});
-	scriptAliveTimeout=setTimeout(scriptsInjectedResult,100);
+	scriptAliveTimeout=setTimeout(scriptsInjectedResult,1000);
 }
 function scriptsInjectedResult(){
 	clearTimeout(scriptAliveTimeout);

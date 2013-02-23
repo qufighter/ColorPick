@@ -153,17 +153,24 @@ function(request, sender, sendResponse) {
 		}
 		if(request.setPreview){
 			 sendResponse({});//not handled by this listener
-		}else if (request.newImage){	
+		}else if (request.newImage){
 			wid=request._x;
 			hei=request._y;
 			var cbf=function(dataUrl){
-				pim.src=dataUrl;
+				imageDataIsRendered=false;
 				cvs = mcan;
+//				pim.onload = function() {
+//					cvs.width = pim.width;
+//					cvs.height = pim.height;
+//					ctx = cvs.getContext("2d");
+//					ctx.clearRect(0,0,pim.width,pim.height);
+//					handleRendering();
+//				};
+				pim.src=dataUrl;
 				cvs.width = wid;
 				cvs.height = hei;
 				ctx = cvs.getContext("2d");
 				ctx.clearRect(0,0,wid,hei);
-				imageDataIsRendered=false;
 				sendResponse({});
 			}
 			
@@ -301,7 +308,6 @@ function handleRendering(){
 				if(showActualPickTarget){
 					setTimeout(function(){
 						chrome.tabs.sendRequest(tabid, {setPickerImage:true,pickerImage:cvs.toDataURL()}, function(response) {});
-						console.log('got there but...');
 					},10);
 				}
 				imageDataIsRendered=true;
@@ -351,27 +357,25 @@ function handleRendering(){
 		for(var i=0;i<startPoint;i+=2){
 			smi=startPoint-i;
 			spi=startPoint+i;
-			
 			////drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight) //CANVAS
 			ictx.drawImage(icvs,spi,0,smi,totalWidth,//total width really??
 													spi+1,0,smi,totalWidth);
-													
+
 			ictx.drawImage(icvs,0,0,smi+1,totalWidth,
 													-1,0,smi+1,totalWidth);
-			
+
 			ictx.drawImage(icvs,0,spi,totalWidth,smi,
 													0,spi+1,totalWidth,smi);
-													
+
 			ictx.drawImage(icvs,0,0,totalWidth,smi+1,
 													0,-1,totalWidth,smi+1);
 
 			if(i==0){
 				var data = ictx.getImageData(startPoint, startPoint, 1, 1).data;//notarget
-				//ictx.fillStyle = "rgba("+(255-data[0])+","+(255-data[1])+","+(255-data[2])+",0.9)";
+//				ictx.fillStyle = "rgba("+(255-data[0])+","+(255-data[1])+","+(255-data[2])+",0.9)";
 				var d=data[0]+data[1]+data[2];
 				if(d > 192) ictx.fillStyle = "rgba(0,0,0,0.8)";
 				else ictx.fillStyle = "rgba(255,255,255,0.8)";
-				
 			}else ictx.fillStyle = "rgba(255,255,255,0.4)";
 				
 			for(var c=0;c<mp;c++){
@@ -380,13 +384,13 @@ function handleRendering(){
 				spi=startPoint+i;
 				ictx.drawImage(icvs,spi,0,smi,totalWidth,
 														spi+1,0,smi,totalWidth);
-														
+
 				ictx.drawImage(icvs,0,0,smi+1,totalWidth,
 														-1,0,smi+1,totalWidth);
-														
+
 				ictx.drawImage(icvs,0,spi,totalWidth,smi,
 														0,spi+1,totalWidth,smi);
-														
+
 				ictx.drawImage(icvs,0,0,totalWidth,smi+1,
 														0,-1,totalWidth,smi+1);
 			}
@@ -400,7 +404,7 @@ function handleRendering(){
 	}
 	
 	lastPreviewURI = icvs.toDataURL();//the last one, large size, is cached for revisiting the menu
-	
+
 		if(iconIsBitmap)
 		chrome.browserAction.setIcon({imageData:ictx.getImageData(startPoint-9, startPoint-9, 19, 19)});//update icon (to be configurable)
 		
