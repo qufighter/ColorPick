@@ -125,7 +125,7 @@ chrome.extension.onRequest.addListener(
 var borderValue='1px solid grey';
 if(typeof(localStorage["borderValue"])!='undefined')borderValue = localStorage["borderValue"];
 
-var useCSSValues=false;
+var useCSSValues=true;
 if(typeof(localStorage["useCSSValues"])!='undefined')useCSSValues = ((localStorage["useCSSValues"]=='true')?true:false);
 EnableRGB=true;
 EnableHSL=true;
