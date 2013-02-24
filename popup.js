@@ -202,14 +202,7 @@ function iin(){
 	//if( !globalPopout ){
   	if( window.name.indexOf('colorPickPopup')>-1 ){
   		tabid=window.name.replace('colorPickPopup_','')-0;
-  		window.setTimeout(function(){
-	  		if(innerWidth){
-	  			scal=(outerWidth-cpScaleOffset)/innerWidth;
-	  			cpw=document.body.clientWidth + 50;
-	  			cph=document.body.clientHeight + 75;
-	  			window.resizeTo(cpw*scal,cph*scal);
-	  		}
-	  	},50);
+  		//document.getElementById('popout').style.display='none';
   		setupInjectScripts()
   	}else{
 	  	chrome.windows.getCurrent(function(window){
@@ -354,7 +347,9 @@ function popupimage(mylink, windowname)
 	if (! window.focus)return true;
 	mylink = new String( mylink.href );
 	if( win2 == 0 || typeof(win2) != 'object' || typeof(win2.location) != 'string'  ){
-		win2 = window.open(mylink, windowname, 'fullscreen=no,toolbar=no,status=no,menubar=no,scrollbars=no,resizable=yes,directories=no,location=no,width=160,height=294');
+		var scal=document.width / document.documentElement.clientWidth;
+		var w=Math.ceil(window.innerWidth*scal)+1,h=Math.ceil(window.innerHeight*scal)+1;
+		win2 = window.open(mylink, windowname, 'fullscreen=no,toolbar=no,status=no,menubar=no,scrollbars=no,resizable=yes,directories=no,location=no,width='+w+',height='+h);
 	}else{
 		win2.location = mylink;
 	}
@@ -479,13 +474,16 @@ function cp_chooser_test_ready(){
 	return cp_chooser_booted;
 }
 function init_color_chooser(){
+	var scal=document.width / document.documentElement.clientWidth;
 	if(document.getElementById('chooser').style.display=='block'){
 		document.getElementById('chooser').style.display='none';
 		document.body.style.width='auto';
+		window.resizeTo(160*scal,window.outterHeight);
 		return;
 	}
 	document.getElementById('chooser').style.display='block';
 	document.body.style.width='470px';
+	window.resizeTo(470*scal,window.outterHeight);
 	if(cp_chooser_booted)return;
 	document.getElementById('gradi_box').addEventListener('mousedown', dragClr);
 	document.getElementById('slider_hue').addEventListener('mousedown', dragHue);
