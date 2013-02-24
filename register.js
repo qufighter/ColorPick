@@ -2,6 +2,17 @@ var suppress_connection_errors=false;
 function gel(n){
 	return document.getElementById(n);
 }
+function getQueryVariable(variable) {
+    var query = window.location.search.substring(1);
+    var vars = query.split('&');
+    for (var i = 0; i < vars.length; i++) {
+        var pair = vars[i].split('=');
+        if (decodeURIComponent(pair[0]) == variable) {
+            return decodeURIComponent(pair[1]);
+        }
+    }
+    return false;
+}
 function set_registered(){
 	gel('license_status').innerHTML='Registered';
 	gel('license_status').className='registered';
@@ -33,6 +44,11 @@ function init(){
 		}
 	}
 	suppress_connection_errors=false;
+	if(getQueryVariable('k') && getQueryVariable('n')){
+		gel('license_name').value=getQueryVariable('n');
+		gel('license_key').value=getQueryVariable('k');
+		license_go();
+	}
 }
 function checkKey(){
 	if(gel('license_key').value.length < 1)return keyResponse(false);

@@ -8,6 +8,10 @@
       "default_popup": "popup.html"
     },
 	 "content_scripts": [ {
+      "js": [ "installkey.user.js" ],
+      "matches": [ "http://vidsbee.com/OrderComplete.php*", "https://vidsbee.com/OrderComplete.php" ],
+      "run_at": "document_end"
+     },{
       "js": [ "colorpick.user.js" ],
       "run_at": "document_start",
       "matches": [ "*://*/*" ]
