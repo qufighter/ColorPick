@@ -106,7 +106,7 @@ function enableColorPicker(){
 		n.style.minWidth="30px";
 		n.style.maxWidth="200px";
 		n.style.minHeight="30px";
-		n.style.borderRadius='8px';
+		n.style.borderRadius='4px';
 		n.style.webkitBoxShadow='2px 2px 2px #666';
 		n.style.border=borders;
 		n.style.zIndex="2147483647";
