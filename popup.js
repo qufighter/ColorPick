@@ -482,10 +482,12 @@ function init_color_chooser(){
 	if(document.getElementById('chooser').style.display=='block'){
 		document.getElementById('chooser').style.display='none';
 		document.body.style.width='auto';
+		window.resizeTo(160,window.outterHeight);
 		return;
 	}
 	document.getElementById('chooser').style.display='block';
 	document.body.style.width='470px';
+	window.resizeTo(470,window.outterHeight);
 	if(cp_chooser_booted)return;
 	document.getElementById('gradi_box').addEventListener('mousedown', dragClr);
 	document.getElementById('slider_hue').addEventListener('mousedown', dragHue);
