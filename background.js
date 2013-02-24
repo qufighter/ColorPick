@@ -80,7 +80,6 @@ function defaultIcon(){
 }
 
 var d=new Date();
-console.log("participation_"+d.getMonth()+"_"+d.getFullYear());
 localStorage.removeItem("participation_"+d.getMonth()+"_"+d.getFullYear());
 localStorage.removeItem("participation_"+(d.getMonth()-1)+"_"+d.getFullYear());
 
@@ -179,7 +178,7 @@ function(request, sender, sendResponse) {
 			}
 			
 			if(usePNG)chrome.tabs.captureVisibleTab(winid, {format:'png'}, cbf);
-			else chrome.tabs.captureVisibleTab(winid, {format:'jpg',quality:100}, cbf);
+			else chrome.tabs.captureVisibleTab(winid, {format:'jpeg',quality:100}, cbf);
 			
 		}else if (request.movePixel){
 			x+=(request._x);//or otherwise use the current scale

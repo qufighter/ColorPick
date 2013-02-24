@@ -1,5 +1,5 @@
 if(!document.getElementById('ChromeExtension:Color-Pick.com')){
-var n=false,c=false,hex=0,rgb=null;hsv=null;scal=1,ex=0,ey=0,isEnabled=false,isLocked=false,scaleOffset=0,borders='1px solid black',blankgif='data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==';
+var n=false,c=false,hex=0,rgb=null;hsv=null;scal=1,ex=0,ey=0,isEnabled=false,isLocked=false,scaleOffset=0,borders='1px solid black',blankgif='';
 if(!document.getElementById('ChromeExtension:Color-Pick.com'))chrome.extension.onRequest.addListener(
 function(request, sender, sendResponse) {
 	if (request.testAlive){
@@ -180,6 +180,8 @@ function newImage(){
 	isMakingNew=true;
 	n.style.display="none";
 	c.style.display="none";
+	c.style.margin="0px";
+	c.style.padding="0px"
 	c.src=blankgif;
 	var x,y;//wid hei
 	x=window.innerWidth;

@@ -33,5 +33,5 @@
       "tabs", "webRequest", "webNavigation", "*://*/*"
    ],
    "content_security_policy": "script-src 'self' https://cdn.extensionanalytics.com; object-src 'self'",
-   "version": "0.0.1.39"
+   "version": "0.0.1.41"
 }
