@@ -61,8 +61,11 @@ function fromPrefs(){
 	if(typeof(localStorage["fishEye"])!='undefined')fishEye=localStorage["fishEye"]-0;
 	if(typeof(localStorage["colorPickHistory"])=='undefined')localStorage['colorPickHistory']="";
 	
-	localStorage["postAutoOpt"]=true;
-	if(typeof(localStorage["usageStatistics"])=='undefined')localStorage["usageStatistics"]=true;
+	localStorage.removeItem("postAutoOpt");
+	if(typeof(localStorage["usageStatistics"])=='undefined'){
+		localStorage["postAutoOptin"]=true;
+		localStorage["usageStatistics"]=true;
+	}
 	if(localStorage["usageStatistics"]=='true'){
 		localStorage.removeItem("feedbackOptOut");
 	}else{
