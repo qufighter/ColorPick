@@ -1,7 +1,7 @@
 {
    "manifest_version": 2,
-   "description": "A simple eye dropper tool allowing you to pick colors from webpages.",
-   "name": "Color Picker",
+   "description": "__MSG_extDescription__",
+   "name": "__MSG_extName__",
    "browser_action": {
       "default_icon": "icon19.png",
       "default_title": "Color Picker",
@@ -33,5 +33,6 @@
       "tabs", "webRequest", "webNavigation", "*://*/*"
    ],
    "content_security_policy": "script-src 'self' https://cdn.extensionanalytics.com; object-src 'self'",
-   "version": "0.0.1.41"
+   "default_locale": "en",
+   "version": "0.0.1.42"
 }

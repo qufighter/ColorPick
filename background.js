@@ -85,6 +85,9 @@ var d=new Date();
 localStorage.removeItem("participation_"+d.getMonth()+"_"+d.getFullYear());
 localStorage.removeItem("participation_"+(d.getMonth()-1)+"_"+d.getFullYear());
 localStorage.removeItem("postAutoOpt");
+if(localStorage["hasAgreedToLicense"]!='true' && (localStorage["usageStatistics"]=='true' || localStorage["shareClors"])){
+	localStorage["postAutoOptin"]=true;//tmp
+}
 
 function getWeek(d){
 	var onejan = new Date(d.getFullYear(),0,1);

@@ -1,0 +1,11 @@
+{
+   "extName": {
+      "message": "Color Picker"
+   },
+   "extDescription": {
+      "message": "A simple eye dropper tool allowing you to pick colors from webpages."
+   },
+   "emptyDesc": {
+      "message": ""
+   }
+}
