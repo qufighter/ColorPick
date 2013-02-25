@@ -60,9 +60,11 @@ function fromPrefs(){
 	if(typeof(localStorage["pixelatedPreview"])!='undefined')pixelatedPreview = ((localStorage["pixelatedPreview"]=='true')?true:false);
 	if(typeof(localStorage["fishEye"])!='undefined')fishEye=localStorage["fishEye"]-0;
 	if(typeof(localStorage["colorPickHistory"])=='undefined')localStorage['colorPickHistory']="";
-	
-	localStorage["postAutoOpt"]=true;
-	if(typeof(localStorage["usageStatistics"])=='undefined')localStorage["usageStatistics"]=true;
+
+	if(typeof(localStorage["usageStatistics"])=='undefined'){
+		localStorage["postAutoOptin"]=true;
+		localStorage["usageStatistics"]=true;
+	}
 	if(localStorage["usageStatistics"]=='true'){
 		localStorage.removeItem("feedbackOptOut");
 	}else{
@@ -82,6 +84,7 @@ function defaultIcon(){
 var d=new Date();
 localStorage.removeItem("participation_"+d.getMonth()+"_"+d.getFullYear());
 localStorage.removeItem("participation_"+(d.getMonth()-1)+"_"+d.getFullYear());
+localStorage.removeItem("postAutoOpt");
 
 function getWeek(d){
 	var onejan = new Date(d.getFullYear(),0,1);
