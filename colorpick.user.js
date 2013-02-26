@@ -1,6 +1,9 @@
-if(!document.getElementById('ChromeExtension:Color-Pick.com')){
+colorPickBlock: {
+if(document.body && document.body.getAttribute('chromeextension-color-pick.com'))break colorPickBlock;
+function bodyReady(){if(document.body){document.body.setAttribute('chromeextension-color-pick.com',true);document.removeEventListener('DOMNodeInserted',bodyReady);}else setTimeout(bodyReady,250);};setTimeout(bodyReady,250);
+function _ge(n){return document.getElementById(n);}
 var n=false,c=false,hex=0,rgb=null;hsv=null;scal=1,ex=0,ey=0,isEnabled=false,isLocked=false,scaleOffset=0,borders='1px solid black',blankgif='';
-if(!document.getElementById('ChromeExtension:Color-Pick.com'))chrome.extension.onRequest.addListener(
+chrome.extension.onRequest.addListener(
 function(request, sender, sendResponse) {
 	if (request.testAlive){
 		//disableColorPicker();
@@ -23,24 +26,26 @@ function(request, sender, sendResponse) {
 });
 function setPixelPreview(pix,zoom,hex,lhex){
 	var wid=75,padr=32;if(zoom)wid=150;
-	if(true || !document.getElementById('cpimprev')){
+	if(!_ge('cpimprev') || (rgb && !_ge('cprgbvl'))){
 		n.innerHTML='';
-		var nodes=[];
-		nodes.push(Cr.elm('img',{id:'cpimprev',height:wid,width:wid,src:pix,style:'margin-left:32px;padding-right:'+padr+'px;'}));
-		nodes.push(Cr.elm('br'));
-		nodes.push(Cr.txt('#'));
-		nodes.push(Cr.elm('input',{type:'text',size:7,style:'max-width:75px;font-size:10pt;border:'+borders,id:'cphexvl',value:hex,event:['mouseover',selectTargElm]}));
-		//nodes.push(Cr.elm('input',{type:'image',src:chrome.extension.getURL('close.png'),alt:'Close',title:chrome.i18n.getMessage('closeAndExit'),id:'exitbtn',event:['click',dissableColorPickerFromHere,true]}));
-		if(lhex!='none')nodes.push(Cr.elm('input',{type:'text',size:1,style:'max-width:50px;font-size:10pt;background-color:#'+lhex+';border:'+borders+';border-left:none;',value:''}));
-		if(rgb)nodes.push(Cr.elm('input',{type:'text',style:'max-width:150px;display:block;',value:'rgb('+rgb.r+','+rgb.g+','+rgb.b+')',id:'cprgbvl',event:['mouseover',selectTargElm]}));
-		if(hsv)nodes.push(Cr.elm('input',{type:'text',style:'max-width:150px;display:block;',value:'hsl('+hsv.h+','+hsv.s+'%,'+hsv.v+'%)',id:'cphslvl',event:['mouseover',selectTargElm]}));
-		Cr.elm('div',{},nodes,n)
+		Cr.elm('div',{},[
+			Cr.elm('img',{id:'cpimprev',height:wid,width:wid,src:pix,style:'margin-left:32px;padding-right:'+padr+'px;'}),
+			Cr.elm('br'),
+			Cr.txt('#'),
+			Cr.elm('input',{type:'text',size:7,style:'max-width:75px;font-size:10pt;border:'+borders,id:'cphexvl',value:hex,event:['mouseover',selectTargElm]}),
+			//Cr.elm('input',{type:'image',src:chrome.extension.getURL('close.png'),alt:'Close',title:chrome.i18n.getMessage('closeAndExit'),id:'exitbtn',event:['click',dissableColorPickerFromHere,true]}),
+			(lhex!='none'?Cr.elm('input',{type:'text',size:1,style:'max-width:50px;font-size:10pt;background-color:#'+lhex+';border:'+borders+';border-left:none;',value:''}):0),
+			(rgb?Cr.elm('input',{type:'text',style:'max-width:150px;display:block;',value:'rgb('+rgb.r+','+rgb.g+','+rgb.b+')',id:'cprgbvl',event:['mouseover',selectTargElm]}):0),
+			(hsv?Cr.elm('input',{type:'text',style:'max-width:150px;display:block;',value:'hsl('+hsv.h+','+hsv.s+'%,'+hsv.v+'%)',id:'cphslvl',event:['mouseover',selectTargElm]}):0)
+		],n)
 		keepOnScreen();
 	}else{
-		document.getElementById('cpimprev').src=pix;
-		document.getElementById('cphexvl').value=hex;
-		document.getElementById('cprgbvl').value='rgb('+rgb.r+','+rgb.g+','+rgb.b+')';
-		document.getElementById('cphslvl').value='hsl('+hsv.h+','+hsv.s+'%,'+hsv.v+'%)';
+		_ge('cpimprev').src=pix,
+		_ge('cpimprev').width=wid,
+		_ge('cpimprev').height=wid;
+		_ge('cphexvl').value=hex;
+		if(rgb)_ge('cprgbvl').value='rgb('+rgb.r+','+rgb.g+','+rgb.b+')';
+		if(hsv)_ge('cphslvl').value='hsl('+hsv.h+','+hsv.s+'%,'+hsv.v+'%)';
 	}
 }
 function setColor(r){
@@ -57,14 +62,14 @@ function selectTargElm(ev){
 }
 function setDisplay(){//Cr.elm
 	n.innerHTML='';
-	var nodes=[];
-	nodes.push(Cr.txt('#'));
-	nodes.push(Cr.elm('input',{type:'text',size:7,style:'max-width:75px;font-size:10pt;border:'+borders,id:'cphexvl',value:hex,event:['mouseover',selectTargElm]}));
-	nodes.push(Cr.elm('input',{type:'image',style:'width:16px;height:16px;',src:chrome.extension.getURL('close.png'),alt:'Close',title:chrome.i18n.getMessage('closeAndExit'),id:'exitbtn',event:['click',dissableColorPickerFromHere,true]}));
-	if(rgb)nodes.push(Cr.elm('input',{type:'text',style:'max-width:150px;display:block;',value:'rgb('+rgb.r+','+rgb.g+','+rgb.b+')',id:'cprgbvl',event:['mouseover',selectTargElm]}));
-	if(hsv)nodes.push(Cr.elm('input',{type:'text',style:'max-width:150px;display:block;',value:'hsl('+hsv.h+','+hsv.s+'%,'+hsv.v+'%)',id:'cphslvl',event:['mouseover',selectTargElm]}));
-	Cr.elm('div',{},nodes,n)
-	if(document.getElementById('cphexvl'))document.getElementById('cphexvl').select();
+	Cr.elm('div',{},[
+		Cr.txt('#'),
+		Cr.elm('input',{type:'text',size:7,style:'max-width:75px;font-size:10pt;border:'+borders,id:'cphexvl',value:hex,event:['mouseover',selectTargElm]}),
+		Cr.elm('input',{type:'image',style:'width:20px;height:20px;',src:chrome.extension.getURL('close.png'),alt:'Close',title:chrome.i18n.getMessage('closeAndExit'),id:'exitbtn',event:['click',dissableColorPickerFromHere,true]}),
+		(rgb?Cr.elm('input',{type:'text',style:'max-width:150px;display:block;',value:'rgb('+rgb.r+','+rgb.g+','+rgb.b+')',id:'cprgbvl',event:['mouseover',selectTargElm]}):0),
+		(hsv?Cr.elm('input',{type:'text',style:'max-width:150px;display:block;',value:'hsl('+hsv.h+','+hsv.s+'%,'+hsv.v+'%)',id:'cphslvl',event:['mouseover',selectTargElm]}):0)
+	],n)
+	if(_ge('cphexvl'))_ge('cphexvl').select();
 	keepOnScreen();
 }
 function picked(){
@@ -122,30 +127,8 @@ function enableColorPicker(){
 		//allows us to detect if the script is running from the bg
 	});
 	if(!n){
-		n=document.createElement('div');
-		n.innerHTML=' ';
-		n.id='ChromeExtension:Color-Pick.com';
-		n.style.position='fixed';//background-color: black; background-image: url();background-repeat: no-repeat no-repeat; 
-		n.style.minWidth="30px";
-		n.style.maxWidth="200px";
-		n.style.minHeight="30px";
-		n.style.borderRadius='4px';
-		n.style.webkitBoxShadow='2px 2px 2px #666';
-		n.style.border=borders;
-		n.style.zIndex="2147483647";
-		n.style.cursor="default";
-		n.style.padding="4px";
-		c=document.createElement('img');
-		c.style.zIndex="2147483647";
-		c.style.position='fixed';
-		c.style.top='0px';
-		c.style.left='0px';
-		c.style.overflow='hidden';
-		c.src=blankgif;
-		c.id='color_pick_click_box';
-		c.addEventListener('click',picked,true);
-		document.body.appendChild(c);
-		document.body.appendChild(n);
+		c=Cr.elm('img',{id:'color_pick_click_box',src:blankgif,style:'position:fixed;top:0px;left:0px;overflow:hidden;z-index:2147483647;',event:['click',picked,true]},[],document.body);
+		n=Cr.elm('div',{id:'ChromeExtension:Color-Pick.com',style:'position:fixed;min-width:30px;max-width:300px;min-height:30px;border-radius:4px;box-shadow:2px 2px 2px #666;border:'+borders+';z-index:2147483647;cursor:default;padding:4px;'},[Cr.txt(' ')],document.body);
 		document.addEventListener('mousemove',mmf);
 		window.addEventListener('scroll',ssf);
 		window.addEventListener('resize',ssf);
@@ -223,4 +206,4 @@ function newImage(){
 		});
 	},500);
 }
-}//enclosing block
+}//end block
