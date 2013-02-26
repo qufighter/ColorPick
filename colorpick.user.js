@@ -22,11 +22,25 @@ function(request, sender, sendResponse) {
   sendResponse({result:true,isPicking:!isLocked});
 });
 function setPixelPreview(pix,zoom,hex,lhex){
-	if(n.innerHTML=='&nbsp;' || n.innerHTML.indexOf('<img')==0){
-		var wid=75,padr=32;
-		if(zoom)wid=150,padr=32;
-		n.innerHTML='<img height="'+wid+'" width="'+wid+'" src="'+pix+'" style="margin-left:32px;padding-right:'+padr+'px;" /><br>#<input size="7" style="font-size:10pt;border:'+borders+';" id="cphexvl" type="text" value="'+hex+'" onmouseover="this.select()" />'+(lhex!='none'?'<input size="1" style="font-size:10pt;background-color:#'+lhex+';border:'+borders+';border-left:none;" type="text" value="" />':'')+(rgb?'<br><input onmouseover="this.select()" type="text" value="rgb('+rgb.r+','+rgb.g+','+rgb.b+')"/>':'')+(hsv?'<br><input onmouseover="this.select()" type="text" value="hsl('+hsv.h+','+hsv.s+'%,'+hsv.v+'%)"/>':'');
+	var wid=75,padr=32;if(zoom)wid=150;
+	if(true || !document.getElementById('cpimprev')){
+		n.innerHTML='';
+		var nodes=[];
+		nodes.push(Cr.elm('img',{id:'cpimprev',height:wid,width:wid,src:pix,style:'margin-left:32px;padding-right:'+padr+'px;'}));
+		nodes.push(Cr.elm('br'));
+		nodes.push(Cr.txt('#'));
+		nodes.push(Cr.elm('input',{type:'text',size:7,style:'max-width:75px;font-size:10pt;border:'+borders,id:'cphexvl',value:hex,event:['mouseover',selectTargElm]}));
+		//nodes.push(Cr.elm('input',{type:'image',src:chrome.extension.getURL('close.png'),alt:'Close',title:chrome.i18n.getMessage('closeAndExit'),id:'exitbtn',event:['click',dissableColorPickerFromHere,true]}));
+		if(lhex!='none')nodes.push(Cr.elm('input',{type:'text',size:1,style:'max-width:50px;font-size:10pt;background-color:#'+lhex+';border:'+borders+';border-left:none;',value:''}));
+		if(rgb)nodes.push(Cr.elm('input',{type:'text',style:'max-width:150px;display:block;',value:'rgb('+rgb.r+','+rgb.g+','+rgb.b+')',id:'cprgbvl',event:['mouseover',selectTargElm]}));
+		if(hsv)nodes.push(Cr.elm('input',{type:'text',style:'max-width:150px;display:block;',value:'hsl('+hsv.h+','+hsv.s+'%,'+hsv.v+'%)',id:'cphslvl',event:['mouseover',selectTargElm]}));
+		Cr.elm('div',{},nodes,n)
 		keepOnScreen();
+	}else{
+		document.getElementById('cpimprev').src=pix;
+		document.getElementById('cphexvl').value=hex;
+		document.getElementById('cprgbvl').value='rgb('+rgb.r+','+rgb.g+','+rgb.b+')';
+		document.getElementById('cphslvl').value='hsl('+hsv.h+','+hsv.s+'%,'+hsv.v+'%)';
 	}
 }
 function setColor(r){
@@ -38,16 +52,25 @@ function setColor(r){
 	if(!isLocked){if(r.msg)n.innerHTML=r.msg;}
 	else setDisplay();
 }
+function selectTargElm(ev){
+	ev.target.select();
+}
 function setDisplay(){//Cr.elm
-	n.innerHTML='#<input size="7" style="font-size:10pt;border:'+borders+';" type="text" id="cphexvl" value="'+hex + '" onmouseover="this.select()" /> <input type="image" id="exitbtn" src="'+chrome.extension.getURL('close.png')+'" alt="Close" title="Close and Exit Color Pick Mode (esc)" />'+(rgb?'<br><input onmouseover="this.select()" type="text" value="rgb('+rgb.r+','+rgb.g+','+rgb.b+')"/>':'')+(hsv?'<br><input onmouseover="this.select()" type="text" value="hsl('+hsv.h+','+hsv.s+'%,'+hsv.v+'%)"/>':'');
-	if(document.getElementById('exitbtn'))document.getElementById('exitbtn').addEventListener('click',dissableColorPickerFromHere,true);
+	n.innerHTML='';
+	var nodes=[];
+	nodes.push(Cr.txt('#'));
+	nodes.push(Cr.elm('input',{type:'text',size:7,style:'max-width:75px;font-size:10pt;border:'+borders,id:'cphexvl',value:hex,event:['mouseover',selectTargElm]}));
+	nodes.push(Cr.elm('input',{type:'image',style:'width:16px;height:16px;',src:chrome.extension.getURL('close.png'),alt:'Close',title:chrome.i18n.getMessage('closeAndExit'),id:'exitbtn',event:['click',dissableColorPickerFromHere,true]}));
+	if(rgb)nodes.push(Cr.elm('input',{type:'text',style:'max-width:150px;display:block;',value:'rgb('+rgb.r+','+rgb.g+','+rgb.b+')',id:'cprgbvl',event:['mouseover',selectTargElm]}));
+	if(hsv)nodes.push(Cr.elm('input',{type:'text',style:'max-width:150px;display:block;',value:'hsl('+hsv.h+','+hsv.s+'%,'+hsv.v+'%)',id:'cphslvl',event:['mouseover',selectTargElm]}));
+	Cr.elm('div',{},nodes,n)
 	if(document.getElementById('cphexvl'))document.getElementById('cphexvl').select();
 	keepOnScreen();
 }
 function picked(){
 	if(isLocked){
 		isLocked=false;
-		n.innerHTML='&nbsp;';
+		n.innerHTML=' ';
 	}else{
 		chrome.extension.sendRequest({setColor:true}, function(response){if(response.docopy)document.execCommand('copy', false, null);});
 		isLocked=true;
@@ -100,7 +123,7 @@ function enableColorPicker(){
 	});
 	if(!n){
 		n=document.createElement('div');
-		n.innerHTML='&nbsp;';
+		n.innerHTML=' ';
 		n.id='ChromeExtension:Color-Pick.com';
 		n.style.position='fixed';//background-color: black; background-image: url();background-repeat: no-repeat no-repeat; 
 		n.style.minWidth="30px";
@@ -138,6 +161,8 @@ function enableColorPicker(){
 	}
 }
 function keepOnScreen(){
+	n.style.top=(ly+8)+"px";
+	n.style.left=(lx+8)+"px";
 	if( n.clientWidth + n.offsetLeft +24 > window.innerWidth ){
 		n.style.left=(lx-8-n.clientWidth)+"px";
 	}
@@ -151,8 +176,6 @@ function updateColorPreview(ev){
 	var x,y,x1,y1;
 	x=ex-window.pageXOffset,y=ey-window.pageYOffset;
 	lx=x,ly=y;
-	n.style.top=(y+8)+"px";
-	n.style.left=(x+8)+"px";
 	keepOnScreen();
 	if(isUpdating){
 		window.clearTimeout(lastTimeout);

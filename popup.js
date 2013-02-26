@@ -247,6 +247,7 @@ function setupInjectScripts(){
 function scriptsInjectedResult(){
 	clearTimeout(scriptAliveTimeout);
 	if(!isScriptAlive){
+		chrome.tabs.executeScript(tabid, {file: "Cr_min.js"});
 		chrome.tabs.executeScript(tabid, {file: "colorpick.user.js"});
 		isScriptAlive=true;
 	}

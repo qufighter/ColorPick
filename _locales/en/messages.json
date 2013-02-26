@@ -5,6 +5,9 @@
    "extDescription": {
       "message": "A simple eye dropper tool allowing you to pick colors from webpages."
    },
+   "closeAndExit": {
+      "message": "Close and Exit Color Pick Mode (esc)"
+   },
    "emptyDesc": {
       "message": ""
    }
