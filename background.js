@@ -85,7 +85,7 @@ var d=new Date();
 localStorage.removeItem("participation_"+d.getMonth()+"_"+d.getFullYear());
 localStorage.removeItem("participation_"+(d.getMonth()-1)+"_"+d.getFullYear());
 localStorage.removeItem("postAutoOpt");
-if(localStorage["hasAgreedToLicense"]!='true' && (localStorage["usageStatistics"]=='true' || localStorage["shareClors"])){
+if(localStorage["hasAgreedToLicense"]!='true' && (localStorage["usageStatistics"]=='true' || localStorage["shareClors"]=='true')){
 	localStorage["postAutoOptin"]=true;//tmp
 }
 
@@ -330,7 +330,7 @@ function handleRendering(){
 
 	var icvs = document.createElement('canvas');//icon canvas
 	var sx,sy;
-	var totalWidth = 150;
+	var totalWidth = 150;//750
 	icvs.width=totalWidth
 	icvs.height=totalWidth
 	var ictx = icvs.getContext("2d");
