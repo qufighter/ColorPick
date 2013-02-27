@@ -183,7 +183,7 @@ function(request, sender, sendResponse) {
 				sendResponse({});
 			}
 			
-			if(usePNG)chrome.tabs.captureVisibleTab(winid, {format:'png'}, cbf);
+			if(usePNG && navigator.userAgent.indexOf('-dev')==-1)chrome.tabs.captureVisibleTab(winid, {format:'png'}, cbf);
 			else chrome.tabs.captureVisibleTab(winid, {format:'jpeg',quality:100}, cbf);
 			
 		}else if (request.movePixel){
