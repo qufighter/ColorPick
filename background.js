@@ -66,7 +66,7 @@ function fromPrefs(){
 		if(!navigator.doNotTrack) localStorage["usageStatistics"]=true;
 		else localStorage["usageStatistics"]=false;
 	}
-	if(localStorage["usageStatistics"]=='true'){
+	if(localStorage["usageStatistics"]=='true' && !navigator.doNotTrack){
 		localStorage.removeItem("feedbackOptOut");
 	}else{
 		localStorage.feedbackOptOut = "true";
