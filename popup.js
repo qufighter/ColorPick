@@ -507,6 +507,96 @@ function init_color_chooser(){
 }
 
 document.addEventListener('DOMContentLoaded', function () {
+
+Cr.elm("div",{},[
+	Cr.elm("div",{id:"chooser"},[
+		Cr.elm("div",{id:"gradi_box"},[
+			Cr.elm("canvas",{id:"gradi",width:"257",height:"256"})
+		]),
+		Cr.elm("div",{id:"slider_hue"},[
+			Cr.elm("img",{id:"hue_pos",src:"cp_ar.gif",style:"top:-4px"}),
+			Cr.elm("img",{id:"hue_grad",src:"cp_rb.png"})
+		])
+	]),
+	Cr.elm("a",{href:"#",title:"Close and Leave Color Picking Mode",id:"eclose"},[
+		Cr.txt("Exit")
+	]),
+	Cr.txt("#"),
+	Cr.elm("input",{type:"text",spellcheck:"false",id:"hex",size:"6"}),
+	Cr.txt(" "),
+	Cr.elm("a",{id:"hidemin",href:"#",title:"Hide/Minimize"},[
+		Cr.txt("_-")
+	]),
+	Cr.elm("br",{}),
+	Cr.elm("div",{id:"defaultmode"},[
+		Cr.elm("div",{class:"lbrow",id:"defrgb"},[
+			Cr.elm("div",{class:"lb"},[
+				Cr.txt("rgb:")
+			]),
+			Cr.elm("input",{type:"text",spellcheck:"false",id:"cr",style:"width:35px"}),
+			Cr.elm("input",{type:"text",spellcheck:"false",id:"cg",style:"width:35px"}),
+			Cr.elm("input",{type:"text",spellcheck:"false",id:"cb",style:"width:35px"}),
+			Cr.elm("br",{})
+		]),
+		Cr.elm("div",{class:"lbrow",id:"defhsl"},[
+			Cr.elm("div",{class:"lb"},[
+				Cr.txt("hsl:")
+			]),
+			Cr.elm("input",{type:"text",spellcheck:"false",id:"ch",style:"width:35px"}),
+			Cr.elm("input",{type:"text",spellcheck:"false",id:"cs",style:"width:35px"}),
+			Cr.elm("input",{type:"text",spellcheck:"false",id:"cv",style:"width:35px"}),
+			Cr.elm("br",{})
+		])
+	]),
+	Cr.elm("div",{id:"cssmode"},[
+		Cr.elm("div",{class:"lbrow",id:"cssrgb"},[
+			Cr.elm("div",{class:"lb"},[
+				Cr.txt("rgb:")
+			]),
+			Cr.elm("input",{type:"text",spellcheck:"false",id:"crgb",style:"width:105px"}),
+			Cr.elm("br",{})
+		]),
+		Cr.elm("div",{class:"lbrow",id:"csshsl"},[
+			Cr.elm("div",{class:"lb"},[
+				Cr.txt("hsl:")
+			]),
+			Cr.elm("input",{type:"text",spellcheck:"false",id:"chsl",style:"width:105px"}),
+			Cr.elm("br",{})
+		])
+	]),
+	Cr.elm("div",{style:"position:relative;width:152px;height:152px;"},[
+		Cr.elm("a",{id:"unreg_msg",target:"_blank",href:"register.html",title:"Click to Buy & Register a ColorPick License or Opt-in."},[
+			Cr.txt("register")
+		]),
+		Cr.elm("img",{alt:"preview pane",src:"default.png",id:"pre",width:"150",height:"150",style:"margin-bottom:3px;"})
+	]),
+	Cr.elm("div",{id:"pres"},[
+		Cr.elm("div",{id:"ohexpre"},[
+			Cr.txt(" ")
+		]),
+		Cr.elm("div",{id:"hexpre",title:"Show Color Chooser"},[
+			Cr.txt(" ")
+		])
+	]),
+	Cr.elm("div",{id:"ctrls"},[
+		Cr.elm("a",{href:"#",title:"Pick Again (Lock/Unlock Mouse Picking) [enter key] (rMouse:toggle autocast)",id:"epick"},[
+			Cr.elm("img",{border:"0",align:"top",style:"position:relative;top:-1px;",src:"crosshair.png",width:"19"})
+		]),
+		Cr.elm("a",{href:"#",title:"Refresh Picture of Page [r]",id:"resnap"},[
+			Cr.elm("img",{align:"top",src:"refresh.png"})
+		]),
+		Cr.elm("a",{target:"_blank",href:"options.html",title:"Help & Options"},[
+			Cr.elm("img",{align:"top",src:"settings.png"})
+		]),
+		Cr.elm("a",{target:"_blank",href:"options.html",title:"ColorPick Standalone Application"},[
+			Cr.elm("img",{align:"top",id:"plat_prev",src:"ico_win.png",style:"display:none;"})
+		]),
+		Cr.elm("a",{title:"Pop-Out (seperate window)",href:"#",id:"popout"},[
+			Cr.elm("img",{align:"top",src:"popout.gif"})
+		])
+	])
+],document.body)
+
 	iin();
   document.getElementById('eclose').addEventListener('click', close_stop_picking);
   document.getElementById('hidemin').addEventListener('click', just_close_preview);

@@ -24,38 +24,10 @@
 		#hue_pos{position:absolute;left:0px;z-index:-1;}
 		#gradi_box{position:relative;overflow:hidden;width:256px;height:256px;cursor:url(crosshair.png) 16 16,crosshair;}
 	</style>
+	<script src="Cr_min.js"></script>
   <script src="popup.js"></script>
   <title>Color Picker</title>
 </head>
 <body>
-<div id="chooser">
-	<div id="gradi_box"><canvas id="gradi" width="257" height="256"></canvas></div>
-	<div id="slider_hue">
-		<img id="hue_pos" src="cp_ar.gif" style="top:-4px">
-		<img id="hue_grad" src="cp_rb.png">
-	</div>
-</div>
-<a href="#" title="Close and Leave Color Picking Mode" id="eclose">Exit</a> #<input type="text" spellcheck="false" id="hex" size="6" /> <a id="hidemin" href="#" title="Hide/Minimize">_-</a><br/>
-<div id="defaultmode">
-<div class="lbrow" id="defrgb"><div class="lb">rgb:</div><input type="text" spellcheck="false" id="cr" style="width:35px" /><input type="text" spellcheck="false" id="cg" style="width:35px" /><input type="text" spellcheck="false" id="cb" style="width:35px" /><br/></div>
-<div class="lbrow" id="defhsl"><div class="lb">hsl:</div><input type="text" spellcheck="false" id="ch" style="width:35px" /><input type="text" spellcheck="false" id="cs" style="width:35px" /><input type="text" spellcheck="false" id="cv" style="width:35px" /><br/></div>
-</div><div id="cssmode">
-<div class="lbrow" id="cssrgb"><div class="lb">rgb:</div><input type="text" spellcheck="false" id="crgb" style="width:105px" /><br/></div>
-<div class="lbrow" id="csshsl"><div class="lb">hsl:</div><input type="text" spellcheck="false" id="chsl" style="width:105px" /><br/></div>
-</div>
-<div style="position:relative;width:152px;height:152px;">
-<a id="unreg_msg" target="_blank" href="register.html" title="Click to Buy & Register a ColorPick License or Opt-in.">register</a>
-<img alt="preview pane" src="default.png" id="pre" width="150" height="150" style="margin-bottom:3px;">
-</div>
-<div id="pres">
-<div id="ohexpre"> </div><div id="hexpre" title="Show Color Chooser"> </div>
-</div>
-<div id="ctrls">
-<a href="#" title="Pick Again (Lock/Unlock Mouse Picking) [enter key] (rMouse:toggle autocast)" id="epick"><img border="0" align="top" style="position:relative;top:-1px;" src="crosshair.png" width="19" /></a>
-<a href="#" title="Refresh Picture of Page [r]" id="resnap"><img align="top" src="refresh.png"></a>
-<a target="_blank" href="options.html" title="Help & Options"><img align="top" src="settings.png"></a>
-<a target="_blank" href="options.html" title="ColorPick Standalone Application"><img align="top" id="plat_prev" src="ico_win.png" style="display:none;"></a>
-<a title="Pop-Out (seperate window)" href="#" id="popout"><img align="top" src="popout.gif"></a>
-</div>
-<div id="dbg"></div></body>
+</body>
 </html>
