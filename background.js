@@ -63,7 +63,8 @@ function fromPrefs(){
 
 	if(typeof(localStorage["usageStatistics"])=='undefined'){
 		localStorage["postAutoOptin"]=true;
-		localStorage["usageStatistics"]=true;
+		if(!navigator.doNotTrack) localStorage["usageStatistics"]=true;
+		else localStorage["usageStatistics"]=false;
 	}
 	if(localStorage["usageStatistics"]=='true'){
 		localStorage.removeItem("feedbackOptOut");
@@ -88,6 +89,7 @@ localStorage.removeItem("postAutoOpt");
 if(localStorage["hasAgreedToLicense"]!='true' && (localStorage["usageStatistics"]=='true' || localStorage["shareClors"]=='true')){
 	localStorage["postAutoOptin"]=true;//tmp
 }
+if(navigator.doNotTrack)localStorage["usageStatistics"]=false;
 
 function getWeek(d){
 	var onejan = new Date(d.getFullYear(),0,1);
