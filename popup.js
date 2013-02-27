@@ -262,17 +262,15 @@ function finishSetup(){
 		document.getElementById('ohexpre').style.backgroundColor='#'+response.lhex;
 		if(response.previewURI.length > 0 )document.getElementById('pre').src=response.previewURI;
 
-		usePrevColorBG=true;
+		usePrevColorBG=false;
 		if(typeof(localStorage["usePrevColorBG"])!='undefined')usePrevColorBG = ((localStorage["usePrevColorBG"]=='true')?true:false);
 		if(usePrevColorBG){
-			if(hex>0)document.body.style.backgroundColor='#'+hex;
+			if(response.hex>0)document.body.style.backgroundColor='#'+response.hex;
 		}else{
 			bbackgroundColor='white';
 			if(typeof(localStorage["bbackgroundColor"])!='undefined')bbackgroundColor = (localStorage["bbackgroundColor"]);
 			document.body.style.backgroundColor=bbackgroundColor;
 		}
-		
-		
 		
 		showPreviousClr=true;
 		if(typeof(localStorage["showPreviousClr"])!='undefined')showPreviousClr = ((localStorage["showPreviousClr"]=='true')?true:false);
