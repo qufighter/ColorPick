@@ -256,7 +256,6 @@ function(request, sender, sendResponse) {
   							
   							if( !redirectSameWindow ){
 	  							chrome.tabs.getSelected(null,function(tab){
-	  								console.log('UM');
 	  								chrome.tabs.create({windowId:tab.windowId,index:tab.index+1,url:'http://vidzbigger.com/anypage.php?page='+escape(tabURL),selected:true}, function(newtab){ })
 	  							})
 	  						}else{

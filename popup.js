@@ -104,6 +104,12 @@ function updateCurrentColor(r,g,b,justFields){
 	if(!justFields)cp_set_from_hsv(hsv.h,hsv.s,hsv.v);
 }
 
+function getPageZoomFactor(){
+	var scal=document.width / document.documentElement.clientWidth;
+	if(!isNaN(scal)||!scal)scal=(outerWidth-scaleOffset)/innerWidth;
+	return scal;
+}
+
 chrome.extension.onRequest.addListener(
   function(request, sender, sendResponse) {
     if(request.setPreview && (request.tabi==tabid || tabid==0)){
@@ -346,7 +352,7 @@ function popupimage(mylink, windowname)
 	if (! window.focus)return true;
 	mylink = new String( mylink.href );
 	if( win2 == 0 || typeof(win2) != 'object' || typeof(win2.location) != 'string'  ){
-		var scal=document.width / document.documentElement.clientWidth;
+		var scal=getPageZoomFactor();
 		var w=Math.ceil(window.innerWidth*scal)+1,h=Math.ceil(window.innerHeight*scal)+1;
 		win2 = window.open(mylink, windowname, 'fullscreen=no,toolbar=no,status=no,menubar=no,scrollbars=no,resizable=yes,directories=no,location=no,width='+w+',height='+h);
 	}else{
@@ -473,7 +479,7 @@ function cp_chooser_test_ready(){
 	return cp_chooser_booted;
 }
 function init_color_chooser(){
-	var scal=document.width / document.documentElement.clientWidth;
+	var scal=getPageZoomFactor();
 	if(document.getElementById('chooser').style.display=='block'){
 		document.getElementById('chooser').style.display='none';
 		document.body.style.width='auto';

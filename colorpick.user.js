@@ -5,7 +5,6 @@ function _ge(n){return document.getElementById(n);}
 var n=false,c=false,hex=0,rgb=null;hsv=null;scal=1,ex=0,ey=0,isEnabled=false,isLocked=false,scaleOffset=0,borders='1px solid black',blankgif='';
 chrome.extension.onRequest.addListener(
 function(request, sender, sendResponse) {
-	console.log(request,sender);
 	if (request.testAlive){
 		//disableColorPicker();
 	}else	if (request.setPixelPreview){
@@ -195,8 +194,8 @@ function newImage(){
 	y=window.innerHeight;
 	c.style.width=x+'px';
 	c.style.height=y+'px';
-	//scal=(outerWidth-scaleOffset)/innerWidth;
 	scal=document.width / document.documentElement.clientWidth;
+	if(!isNaN(scal)||!scal)scal=(outerWidth-scaleOffset)/innerWidth;
 	//scal=document.width / document.body.clientWidth;
 	x*=scal;
 	y*=scal;
