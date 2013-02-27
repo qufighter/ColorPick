@@ -5,6 +5,7 @@ function _ge(n){return document.getElementById(n);}
 var n=false,c=false,hex=0,rgb=null;hsv=null;scal=1,ex=0,ey=0,isEnabled=false,isLocked=false,scaleOffset=0,borders='1px solid black',blankgif='';
 chrome.extension.onRequest.addListener(
 function(request, sender, sendResponse) {
+	console.log(request,sender);
 	if (request.testAlive){
 		//disableColorPicker();
 	}else	if (request.setPixelPreview){
