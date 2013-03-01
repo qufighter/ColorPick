@@ -8,6 +8,33 @@
    "closeAndExit": {
       "message": "Close and Exit Color Pick Mode (esc)"
    },
+   "hideMinimize": {
+      "message": "Hide/Minimize"
+   },
+   "buyRegisterTip": {
+      "message": "Click to Buy & Register a ColorPick License or Opt-in."
+   },
+   "registerBanner": {
+      "message": "register"
+   },
+   "showColorChooser": {
+      "message": "Show Color Chooser"
+   },
+   "pickAgain": {
+      "message": "Pick Again (Lock/Unlock Mouse Picking) [enter key] (rMouse:toggle autocast)"
+   },
+   "reSnapPage": {
+      "message": "Refresh Picture of Page [r]"
+   },
+   "configurationHelp": {
+      "message": "Help & Options"
+   },
+   "getStandaloneApp": {
+      "message": "ColorPick Standalone Application"
+   },
+   "popOutWindow": {
+      "message": "Pop-Out (seperate window)"
+   },
    "emptyDesc": {
       "message": ""
    }
