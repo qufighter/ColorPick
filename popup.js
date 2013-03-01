@@ -17,6 +17,17 @@ function getEventTarget(ev){
 	}
 	return targ;
 }
+
+function setPreviewSRC(duri){
+	var im=new Image();
+	im.onload=function(){
+		var pcvs=document.getElementById('pre').getContext('2d');
+		pcvs.clearRect(0,0,150,150);
+		pcvs.drawImage(im,0,0);
+	}
+	im.src=duri;
+}
+
 function toHex(N) {//http://www.javascripter.net/faq/rgbtohex.htm
  if (N==null) return "00";
  N=parseInt(N); if (N==0 || isNaN(N)) return "00";
@@ -114,15 +125,14 @@ chrome.extension.onRequest.addListener(
   function(request, sender, sendResponse) {
     if(request.setPreview && (request.tabi==tabid || tabid==0)){
       var hex=request.hex;//RGBtoHex(request.c_r+0,request.c_g+0,request.c_b+0);
-      document.getElementById('pre').src=request.previewURI;
+      setPreviewSRC(request.previewURI);
       document.getElementById('ohexpre').style.backgroundColor='#'+request.lhex;
       updateCurrentColor(request.cr,request.cg,request.cb);
       sendResponse({});
     }else if(request.greeting == "re_init_picker"){
-      document.getElementById('pre').src=chrome.extension.getURL('default.png');
       iin()
     }else if(request.greeting == "error_picker"){
-     document.getElementById('pre').src=chrome.extension.getURL('error'+request.errno+'.png')
+     setPreviewSRC(chrome.extension.getURL('error'+request.errno+'.png'));
     }else{
      sendResponse({});
     }
@@ -190,6 +200,7 @@ function wk(ev){
 }
 
 function iin(){
+	setPreviewSRC(chrome.extension.getURL('default.png'));
 	
 	if(useCSSValues){
 		document.getElementById('cssmode').style.display="block";
@@ -266,7 +277,7 @@ function finishSetup(){
 		updateCurrentColor(response.cr,response.cg,response.cb);
 		
 		document.getElementById('ohexpre').style.backgroundColor='#'+response.lhex;
-		if(response.previewURI.length > 0 )document.getElementById('pre').src=response.previewURI;
+		if(response.previewURI.length > 0 )setPreviewSRC(response.previewURI);
 
 		usePrevColorBG=false;
 		if(typeof(localStorage["usePrevColorBG"])!='undefined')usePrevColorBG = ((localStorage["usePrevColorBG"]=='true')?true:false);
@@ -295,7 +306,6 @@ function finishSetup(){
 //		  			document.getElementById('hexpre').style.borderRight='none';
 //		  			document.getElementById('ohexpre').style.borderLeft='none';
 //		  		}
-//	  			document.getElementById('pre').style.border=borderValue;
 		}
 		
 		var hasVScroll = document.body.scrollHeight > document.body.clientHeight;
@@ -321,7 +331,7 @@ function oout(){
 	chrome.extension.sendRequest({disableColorPicker:true},function(r){});
 }
 var x,y;
-document.onmousemove=function(ev){
+function mmove(ev){
 	x=ev.pageX-window.pageXOffset
 	y=ev.pageY-window.pageYOffset
 	if(isDrag){
@@ -381,7 +391,7 @@ function selectSelfText(ev){
 var licf=false,lhei=10;
 function checkForLicense(){
 	
-	//if(document.getElementById('pre').src.indexOf('error') < 0)
+	//if(document.getElementById('pre').src.indexOf('error') < 0)//< pre no longer exists
 		document.getElementById('unreg_msg').style.display="block";
 	
 	if(localStorage["hasAgreedToLicense"]=='true')return;
@@ -552,7 +562,7 @@ Cr.elm("div",{},[
 	]),
 	Cr.elm("div",{style:"position:relative;width:152px;height:152px;"},[
 		Cr.elm("a",{id:"unreg_msg",target:"_blank",href:"register.html",title:"Click to Buy & Register a ColorPick License or Opt-in."},[Cr.txt("register")]),
-		Cr.elm("img",{alt:"preview pane",src:"default.png",id:"pre",width:"150",height:"150",style:"margin-bottom:3px;"})
+		Cr.elm("canvas",{id:"pre",width:"150",height:"150",style:"margin-bottom:3px;"})
 	]),
 	Cr.elm("div",{id:"pres"},[
 		Cr.elm("div",{id:"ohexpre"}),
@@ -578,9 +588,10 @@ Cr.elm("div",{},[
 ],document.body)
 
 	iin();
+	document.addEventListener('mousemove',mmove);
   document.getElementById('eclose').addEventListener('click', close_stop_picking);
   document.getElementById('hidemin').addEventListener('click', just_close_preview);
-  document.getElementById('pre').addEventListener('dragstart', initdrag);
+  document.getElementById('pre').addEventListener('mousedown', initdrag);
   document.getElementById('pre').addEventListener('mouseout', finalizedrag);
   document.getElementById('pre').addEventListener('mouseup', finalizedrag);
   
