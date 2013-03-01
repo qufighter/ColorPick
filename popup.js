@@ -527,11 +527,11 @@ Cr.elm("div",{},[
 			Cr.elm("img",{id:"hue_grad",src:"cp_rb.png"})
 		])
 	]),
-	Cr.elm("a",{href:"#",title:"Close and Leave Color Picking Mode",id:"eclose"},[
+	Cr.elm("a",{href:"#",title:chrome.i18n.getMessage('closeAndExit'),id:"eclose"},[
 		Cr.elm("img",{align:'top',src:chrome.extension.getURL('close.png')})
 	]),
 	Cr.txt("#"),Cr.elm("input",{type:"text",spellcheck:"false",id:"hex",size:"6"}),
-	Cr.elm("a",{id:"hidemin",href:"#",title:"Hide/Minimize"},[Cr.txt("_-")]),
+	Cr.elm("a",{id:"hidemin",href:"#",title:chrome.i18n.getMessage('hideMinimize')},[Cr.txt("_-")]),
 	Cr.elm("br",{}),
 	Cr.elm("div",{id:"defaultmode"},[
 		Cr.elm("div",{class:"lbrow",id:"defrgb"},[
@@ -562,27 +562,27 @@ Cr.elm("div",{},[
 		])
 	]),
 	Cr.elm("div",{style:"position:relative;width:152px;height:152px;"},[
-		Cr.elm("a",{id:"unreg_msg",target:"_blank",href:"register.html",title:"Click to Buy & Register a ColorPick License or Opt-in."},[Cr.txt("register")]),
+		Cr.elm("a",{id:"unreg_msg",target:"_blank",href:"register.html",title:chrome.i18n.getMessage('buyRegisterTip')},[Cr.txt(chrome.i18n.getMessage('registerBanner'))]),
 		Cr.elm("canvas",{id:"pre",width:"150",height:"150",style:"margin-bottom:3px;"})
 	]),
 	Cr.elm("div",{id:"pres"},[
 		Cr.elm("div",{id:"ohexpre"}),
-		Cr.elm("div",{id:"hexpre",title:"Show Color Chooser"})
+		Cr.elm("div",{id:"hexpre",title:chrome.i18n.getMessage('showColorChooser')})
 	]),
 	Cr.elm("div",{id:"ctrls"},[
-		Cr.elm("a",{href:"#",title:"Pick Again (Lock/Unlock Mouse Picking) [enter key] (rMouse:toggle autocast)",id:"epick"},[
+		Cr.elm("a",{href:"#",title:chrome.i18n.getMessage('pickAgain'),id:"epick"},[
 			Cr.elm("img",{border:"0",align:"top",style:"position:relative;top:-1px;",src:"crosshair.png",width:"19"})
 		]),
-		Cr.elm("a",{href:"#",title:"Refresh Picture of Page [r]",id:"resnap"},[
+		Cr.elm("a",{href:"#",title:chrome.i18n.getMessage('reSnapPage'),id:"resnap"},[
 			Cr.elm("img",{align:"top",src:"refresh.png"})
 		]),
-		Cr.elm("a",{target:"_blank",href:"options.html",title:"Help & Options"},[
+		Cr.elm("a",{target:"_blank",href:"options.html",title:chrome.i18n.getMessage('configurationHelp')},[
 			Cr.elm("img",{align:"top",src:"settings.png"})
 		]),
-		Cr.elm("a",{target:"_blank",href:"options.html",title:"ColorPick Standalone Application"},[
+		Cr.elm("a",{target:"_blank",href:"options.html",title:chrome.i18n.getMessage('getStandaloneApp')},[
 			Cr.elm("img",{align:"top",id:"plat_prev",src:"ico_win.png",style:"display:none;"})
 		]),
-		Cr.elm("a",{title:"Pop-Out (seperate window)",href:"#",id:"popout"},[
+		Cr.elm("a",{title:chrome.i18n.getMessage('popOutWindow'),href:"#",id:"popout"},[
 			Cr.elm("img",{align:"top",src:"popout.gif"})
 		])
 	])
