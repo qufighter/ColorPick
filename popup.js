@@ -133,6 +133,7 @@ chrome.extension.onRequest.addListener(
       iin()
     }else if(request.greeting == "error_picker"){
      setPreviewSRC(chrome.extension.getURL('error'+request.errno+'.png'));
+     if(request.errno==0)init_color_chooser();
     }else{
      sendResponse({});
     }
