@@ -214,7 +214,6 @@ function iin(){
 		document.getElementById('defhsl').style.display="none";
 		document.getElementById('csshsl').style.display="none";
 	}
-	document.getElementById('eclose').innerHTML='<img border="0" align="top" style="position:relative;top:3px;" src="'+chrome.extension.getURL('close.png')+'" />';
 
 	//if( !globalPopout ){
   	if( window.name.indexOf('colorPickPopup')>-1 ){
@@ -528,7 +527,9 @@ Cr.elm("div",{},[
 			Cr.elm("img",{id:"hue_grad",src:"cp_rb.png"})
 		])
 	]),
-	Cr.elm("a",{href:"#",title:"Close and Leave Color Picking Mode",id:"eclose"},[Cr.txt("Exit")]),
+	Cr.elm("a",{href:"#",title:"Close and Leave Color Picking Mode",id:"eclose"},[
+		Cr.elm("img",{align:'top',src:chrome.extension.getURL('close.png')})
+	]),
 	Cr.txt("#"),Cr.elm("input",{type:"text",spellcheck:"false",id:"hex",size:"6"}),
 	Cr.elm("a",{id:"hidemin",href:"#",title:"Hide/Minimize"},[Cr.txt("_-")]),
 	Cr.elm("br",{}),
