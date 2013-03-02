@@ -235,7 +235,6 @@ function(request, sender, sendResponse) {
 				var tabURL=tab.url;
 				
 				
-			  //var scaleurl='http://vidzbigger.com/downloads/tools/scalepixel.swf';
 			  chrome.tabs.sendRequest(tab.id, {enableColorPicker:true,borders:borderValue,scOffset:cpScaleOffset}, function(response) {
 			  });
 			  
