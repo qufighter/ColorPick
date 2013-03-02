@@ -25,6 +25,7 @@ echo "cleaning up"
 #remove any build folder in build folder and build.sh
 rm -fr build/1.0/build*
 rm -fr build/1.0/$PROG.*.zip
+rm -fr build/1.0/.git
 
 echo "determining version number"
 vers=`cat manifest.json | awk -f build.awk`
