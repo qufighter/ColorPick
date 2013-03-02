@@ -33,7 +33,7 @@ function setPixelPreview(pix,zoom,hex,lhex){
 			Cr.elm('br'),
 			Cr.txt('#'),
 			Cr.elm('input',{type:'text',size:7,style:'max-width:75px;font-size:10pt;border:'+borders,id:'cphexvl',value:hex,event:['mouseover',selectTargElm]}),
-			//Cr.elm('input',{type:'image',src:chrome.extension.getURL('close.png'),alt:'Close',title:chrome.i18n.getMessage('closeAndExit'),id:'exitbtn',event:['click',dissableColorPickerFromHere,true]}),
+			//Cr.elm('input',{type:'image',src:chrome.extension.getURL('img/close.png'),alt:'Close',title:chrome.i18n.getMessage('closeAndExit'),id:'exitbtn',event:['click',dissableColorPickerFromHere,true]}),
 			(lhex!='none'?Cr.elm('input',{type:'text',size:1,style:'max-width:50px;font-size:10pt;background-color:#'+lhex+';border:'+borders+';border-left:none;',value:''}):0),
 			(rgb?Cr.elm('input',{type:'text',style:'max-width:150px;display:block;',value:'rgb('+rgb.r+','+rgb.g+','+rgb.b+')',id:'cprgbvl',event:['mouseover',selectTargElm]}):0),
 			(hsv?Cr.elm('input',{type:'text',style:'max-width:150px;display:block;',value:'hsl('+hsv.h+','+hsv.s+'%,'+hsv.v+'%)',id:'cphslvl',event:['mouseover',selectTargElm]}):0)
@@ -65,7 +65,7 @@ function setDisplay(){//Cr.elm
 	Cr.elm('div',{},[
 		Cr.txt('#'),
 		Cr.elm('input',{type:'text',size:7,style:'max-width:75px;font-size:10pt;border:'+borders,id:'cphexvl',value:hex,event:['mouseover',selectTargElm]}),
-		Cr.elm('input',{type:'image',style:'width:20px;height:20px;',src:chrome.extension.getURL('close.png'),alt:'Close',title:chrome.i18n.getMessage('closeAndExit'),id:'exitbtn',event:['click',dissableColorPickerFromHere,true]}),
+		Cr.elm('input',{type:'image',style:'width:20px;height:20px;',src:chrome.extension.getURL('img/close.png'),alt:'Close',title:chrome.i18n.getMessage('closeAndExit'),id:'exitbtn',event:['click',dissableColorPickerFromHere,true]}),
 		(rgb?Cr.elm('input',{type:'text',style:'max-width:150px;display:block;',value:'rgb('+rgb.r+','+rgb.g+','+rgb.b+')',id:'cprgbvl',event:['mouseover',selectTargElm]}):0),
 		(hsv?Cr.elm('input',{type:'text',style:'max-width:150px;display:block;',value:'hsl('+hsv.h+','+hsv.s+'%,'+hsv.v+'%)',id:'cphslvl',event:['mouseover',selectTargElm]}):0)
 	],n)
@@ -138,7 +138,7 @@ function enableColorPicker(){
 		n.style.display="none";
 		c.style.display="none";
 		if(isLocked)picked();//unlocks for next pick
-		document.body.style.cursor='url('+chrome.extension.getURL('crosshair.png')+') 16 16,crosshair';
+		document.body.style.cursor='url('+chrome.extension.getURL('img/crosshair.png')+') 16 16,crosshair';
 		isEnabled=true;
 		window.setTimeout(newImage,1);
 	}
@@ -202,7 +202,7 @@ function newImage(){
 	setTimeout(function(){
 		chrome.extension.sendRequest({newImage:true,_x:x,_y:y}, function(response){
 			isMakingNew=false;//perhaps we wait unitl it's really 'new'
-			window.setTimeout(function(){c.style.display="block";n.style.display="block";document.body.style.cursor='url('+chrome.extension.getURL('crosshair.png')+') 16 16,crosshair';updateColorPreview();},500)
+			window.setTimeout(function(){c.style.display="block";n.style.display="block";document.body.style.cursor='url('+chrome.extension.getURL('img/crosshair.png')+') 16 16,crosshair';updateColorPreview();},500)
 		});
 	},500);
 }

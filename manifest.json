@@ -4,12 +4,12 @@
    "name": "__MSG_extName__",
    "browser_action": {
       "default_icon": {
-        "19": "icon19.png",
-        "38": "icon38.png"
+        "19": "img/icon19.png",
+        "38": "img/icon38.png"
       },
       "default_title": "Color Picker",
       "default_popup": "popup.html"
-    },
+   },
    "content_scripts": [ {
       "js": [ "Cr_min.js", "colorpick.user.js" ],
       "run_at": "document_start",
@@ -23,14 +23,16 @@
       "scripts": ["background.js"]
    },
    "options_page": "options.html",
-   "icons": { "16": "icon16.png",
-           "32": "icon32.png",
-           "48": "icon48.png",
-           "64": "icon64.png",
-          "128": "icon128.png" },
+   "icons": {
+       "16": "img/icon16.png",
+       "32": "img/icon32.png",
+       "48": "img/icon48.png",
+       "64": "img/icon64.png",
+      "128": "img/icon128.png"
+   },
    "web_accessible_resources": [
-     "crosshair.png",
-     "close.png"
+     "img/crosshair.png",
+     "img/close.png"
    ],
    "permissions": [
       "tabs", "webRequest", "webNavigation", "*://*/*"

@@ -77,8 +77,8 @@ function fromPrefs(){
 }
 
 function defaultIcon(){
-	var iconPath='';
-	if(appleIcon)iconPath='apple/';
+	var iconPath='img/';
+	if(appleIcon)iconPath+='apple/';
 	if(resetIcon)chrome.browserAction.setIcon({path:chrome.extension.getURL(iconPath+'icon19.png')});//update icon (to be configurable)
 }
 

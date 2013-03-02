@@ -25,7 +25,7 @@ pOptions["useCSSValues"]={def:true,ind:0,name:'Use CSS values for RGB/HSL'};
 pOptions["showPreviewInContentS"]={def:false,ind:0,name:'Show image preview near cursor while picking'};
 pOptions["ShowRGBHSL"]={def:false,ind:1,name:'Show RGB and HSL too'};
 pOptions["contSprevZoomd"]={def:false,ind:1,name:'Large size preview'};
-pOptions["iconIsPreview"]={def:false,ind:0,name:'Use icon badge square color preview: ',img:'opt_badge.png'};
+pOptions["iconIsPreview"]={def:false,ind:0,name:'Use icon badge square color preview: ',img:'img/opt_badge.png'};
 pOptions["iconIsBitmap"]={def:false,ind:0,name:'Icon is zoomed colorpick pixel preview'};
 pOptions["resetIcon"]={def:false,ind:1,name:'Reset icon between color picks'};
 pAdvOptions["customCalibration"]={def:false,ind:0,name:'Enable usage of the calibration link above. [required for win XP or Themes Disabled]'};
@@ -78,8 +78,8 @@ function save_options() {
 	if(typeof(localStorage["iconIsBitmap"])!='undefined')iconbitmap = ((localStorage["iconIsBitmap"]=='true')?true:false);
 	if(typeof(localStorage["appleIcon"])!='undefined')appleIcon = ((localStorage["appleIcon"]=='true')?true:false);
 	if(!iconbitmap){
-		var iconPath='';
-		if(appleIcon)iconPath='apple/';
+		var iconPath='img/';
+		if(appleIcon)iconPath+='apple/';
 		chrome.browserAction.setIcon({path:chrome.extension.getURL(iconPath+'icon19.png')});//update icon (to be configurable)
 	}
 	
@@ -292,7 +292,7 @@ function init(){
 	
 	if(document.getElementById('plat_prev')){
 		if(navigator.userAgent.indexOf('Windows') < 0){
-			document.getElementById('plat_prev').src="osx.png";
+			document.getElementById('plat_prev').src="img/osx.png";
 			document.getElementById('req_mac').style.display="block";
 		}else{
 			document.getElementById('req_win').style.display="block";
