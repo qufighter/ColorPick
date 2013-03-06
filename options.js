@@ -290,14 +290,7 @@ function init(){
 	load_history();
 	
 	
-	if(document.getElementById('plat_prev')){
-		if(navigator.userAgent.indexOf('Windows') < 0){
-			document.getElementById('plat_prev').src="img/osx.png";
-			document.getElementById('req_mac').style.display="block";
-		}else{
-			document.getElementById('req_win').style.display="block";
-		}
-	}
+
 	
 	showRegistrationStatus();
 }
@@ -338,7 +331,6 @@ document.addEventListener('DOMContentLoaded', function () {
 	document.getElementById('clhist').addEventListener('click', clear_history);
 	
 	document.getElementById('shoadvanc').addEventListener('click', toggle_next_sibling_display);
-	document.getElementById('shohelp').addEventListener('click', toggle_next_sibling_display);
 
 	if(window.location.hash=='#help'){
 		toggle_next_sibling_display({target:document.getElementById('shohelp')})

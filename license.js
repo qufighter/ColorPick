@@ -36,7 +36,7 @@ function license_agree(){
 	localStorage["shareClors"]=true;
 	
 	if(typeof(localStorage["usageStatistics"])=='undefined')localStorage["usageStatistics"]=false;
-	if(localStorage["usageStatistics"]=='true'){
+	if(localStorage["usageStatistics"]=='true' && !navigator.doNotTrack){
 		localStorage.removeItem("feedbackOptOut");
 	}else{
 		localStorage.feedbackOptOut = "true";
@@ -46,6 +46,11 @@ function license_agree(){
 	closeLicensePopup(true)
 }
 function license_try(){
+	localStorage["hasAgreedToLicense"]=false;
+	localStorage["usageStatistics"]=false;
+	localStorage["shareClors"]=false;
+	localStorage.feedbackOptOut = "true";
+	
 	if(typeof(localStorage["trialPeriod"])=='undefined')localStorage["trialPeriod"]=0;
 	localStorage["trialPeriod"]=localStorage["trialPeriod"]-5;
 	if(document.body.className=='wide'){

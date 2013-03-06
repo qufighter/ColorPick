@@ -440,6 +440,7 @@ function dragClr(ev){
 	preventEventDefault(ev);
 }
 function dragingClr(ev){
+	if(!ev.offsetY)ev.offsetY=ev.layerY,ev.offsetX=ev.layerX;
 	if(ev.which==0){huedrag=false,clrdrag=false;};
 	if(huedrag){
 		var newPos=ev.offsetY
@@ -577,10 +578,10 @@ Cr.elm("div",{},[
 		Cr.elm("a",{href:"#",title:chrome.i18n.getMessage('reSnapPage'),id:"resnap"},[
 			Cr.elm("img",{align:"top",src:"img/refresh.png"})
 		]),
-		Cr.elm("a",{target:"_blank",href:"options.html",title:chrome.i18n.getMessage('configurationHelp')},[
+		Cr.elm("a",{target:"_blank",href:"options.html",title:chrome.i18n.getMessage('configurationHelp'),id:"optsb"},[
 			Cr.elm("img",{align:"top",src:"img/settings.png"})
 		]),
-		Cr.elm("a",{target:"_blank",href:"options.html",title:chrome.i18n.getMessage('getStandaloneApp')},[
+		Cr.elm("a",{target:"_blank",href:"desktop_app.html",title:chrome.i18n.getMessage('getStandaloneApp')},[
 			Cr.elm("img",{align:"top",id:"plat_prev",src:"img/ico_win.png",style:"display:none;"})
 		]),
 		Cr.elm("a",{title:chrome.i18n.getMessage('popOutWindow'),href:"#",id:"popout"},[
