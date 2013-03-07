@@ -424,7 +424,9 @@ function animIn(){
 	licf.style.height=lhei+'px';
 	if(lhei < 150)setTimeout(animIn,33)
 }
-
+function sizeWindow(x,y){
+	window.resizeTo(x,y);
+}
 //COLOR CHOOSER FUNCTIONS *******************************
 var i1,i2,i3,ctx,cp_x=0,cp_y=0;
 var cp_loads=0,cp_totalLoads=3,cp_chooser_booted=false;
@@ -494,12 +496,12 @@ function init_color_chooser(){
 	if(document.getElementById('chooser').style.display=='block'){
 		document.getElementById('chooser').style.display='none';
 		document.body.style.width='auto';
-		window.resizeTo(160*scal,window.outterHeight);
+		sizeWindow(160*scal,window.outterHeight);
 		return;
 	}
 	document.getElementById('chooser').style.display='block';
 	document.body.style.width='470px';
-	window.resizeTo(470*scal,window.outterHeight);
+	sizeWindow(470*scal,window.outterHeight);
 	if(cp_chooser_booted)return;
 	document.getElementById('gradi_box').addEventListener('mousedown', dragClr);
 	document.getElementById('slider_hue').addEventListener('mousedown', dragHue);
