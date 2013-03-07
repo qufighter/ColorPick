@@ -195,7 +195,7 @@ function wk(ev){
 		chrome.extension.sendRequest({movePixel:true,_x:-1,_y:0,tabi:tabid},function(r){});
 	}else if(ev.keyCode==39){//r
 		chrome.extension.sendRequest({movePixel:true,_x:1,_y:0,tabi:tabid},function(r){});
-	}else if(ev.keyCode==13){//enter
+	}else if(ev.keyCode==13 || ev.keyCode==32 || ev.keyCode==86){//enter, space, v
 		toglPick();
 	}
 }
@@ -519,8 +519,7 @@ function init_color_chooser(){
 	i3.src='img/cp_cr.gif';
 }
 
-document.addEventListener('DOMContentLoaded', function () {
-
+function createDOM() {
 Cr.elm("div",{},[
 	Cr.elm("div",{id:"chooser"},[
 		Cr.elm("div",{id:"gradi_box"},[
@@ -592,7 +591,6 @@ Cr.elm("div",{},[
 	])
 ],document.body)
 
-	iin();
 	document.addEventListener('mousemove',mmove);
   document.getElementById('eclose').addEventListener('click', close_stop_picking);
   document.getElementById('hidemin').addEventListener('click', just_close_preview);
@@ -617,4 +615,8 @@ Cr.elm("div",{},[
 	
 	document.getElementById('hexpre').addEventListener('click', init_color_chooser);
 	document.getElementById('ohexpre').addEventListener('click', init_color_chooser);
-});
+
+	iin();
+}
+
+document.addEventListener('DOMContentLoaded', createDOM);
