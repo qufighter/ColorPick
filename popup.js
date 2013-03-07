@@ -195,7 +195,7 @@ function wk(ev){
 		chrome.extension.sendRequest({movePixel:true,_x:-1,_y:0,tabi:tabid},function(r){});
 	}else if(ev.keyCode==39){//r
 		chrome.extension.sendRequest({movePixel:true,_x:1,_y:0,tabi:tabid},function(r){});
-	}else if(ev.keyCode==13 || ev.keyCode==32 || ev.keyCode==86){//enter, space, v
+	}else if(ev.keyCode==13 || ev.keyCode==86){//enter, v
 		toglPick();
 	}
 }
