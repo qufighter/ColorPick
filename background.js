@@ -201,8 +201,9 @@ function(request, sender, sendResponse) {
 		}else if (request.getPixel){
 			x=request._x;
 			y=request._y;
-			handleRendering()//if returns false we could send empty response since there is no hex update... or secret hourglass code as suggested
-			sendResponse(getCurrentClrData());
+			if(handleRendering()){
+				sendResponse(getCurrentClrData());
+			}else sendResponse({});
 		}else if (request.setColor){
 			if(showPreviousClr){lastLastHex=lastHex;lastHex=curentHex;}
 			else lastHex='none';

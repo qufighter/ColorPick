@@ -49,7 +49,7 @@ function setPixelPreview(pix,zoom,hex,lhex){
 	}
 }
 function setColor(r){
-	if(!n)return;
+	if(!n||!r.hex)return;
 	hex=r.hex,isUpdating=false,rgb=null,hsv=null;
 	n.style.backgroundColor='#'+hex;
 	if(r.rgb)rgb=r.rgb;
