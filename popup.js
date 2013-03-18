@@ -1,8 +1,8 @@
 var tabid=0;
 var isScriptAlive=false,scriptAliveTimeout=0;
 var cpw=165,cph=303;
+var borderValue='1px solid grey',EnableRGB=true,EnableHSL=true,useCSSValues=true;
 var cpScaleOffset=(navigator.platform=='win32'?16:0)
-if(typeof(localStorage["cpScaleOffset"])!='undefined')cpScaleOffset = localStorage["cpScaleOffset"]-0;
 function getEventTargetA(ev){
 	var targ=getEventTarget(ev)
 	if(targ.nodeName != 'A')return targ.parentNode;
@@ -121,6 +121,11 @@ function getPageZoomFactor(){
 	return scal;
 }
 
+//these should never be called, future use
+function movePixel(){}
+function movePixel(){}
+function getPixel(){}
+
 chrome.extension.onRequest.addListener(
   function(request, sender, sendResponse) {
     if(request.setPreview && (request.tabi==tabid || tabid==0)){
@@ -129,6 +134,12 @@ chrome.extension.onRequest.addListener(
       document.getElementById('ohexpre').style.backgroundColor='#'+request.lhex;
       updateCurrentColor(request.cr,request.cg,request.cb);
       sendResponse({});
+    }else if(request.setFullsizeImage){
+      setFullsizeImage(request);
+    }else if (request.movePixel){
+      movePixel(request);
+    }else if (request.getPixel){
+      movePixel(getPixel);
     }else if(request.greeting == "re_init_picker"){
       iin()
     }else if(request.greeting == "error_picker"){
@@ -138,17 +149,6 @@ chrome.extension.onRequest.addListener(
      sendResponse({});
     }
   });
-
-var borderValue='1px solid grey';
-if(typeof(localStorage["borderValue"])!='undefined')borderValue = localStorage["borderValue"];
-
-var useCSSValues=true;
-if(typeof(localStorage["useCSSValues"])!='undefined')useCSSValues = ((localStorage["useCSSValues"]=='true')?true:false);
-EnableRGB=true;
-EnableHSL=true;
-if(typeof(localStorage["EnableRGB"])!='undefined')EnableRGB = ((localStorage["EnableRGB"]=='true')?true:false);
-if(typeof(localStorage["EnableHSL"])!='undefined')EnableHSL = ((localStorage["EnableHSL"]=='true')?true:false);
-
 
 function resnap(){
 	chrome.tabs.sendRequest(tabid,{newImage:true},function(r){});
@@ -201,6 +201,12 @@ function wk(ev){
 }
 
 function iin(){
+	if(typeof(localStorage["borderValue"])!='undefined')borderValue = localStorage["borderValue"];
+	if(typeof(localStorage["useCSSValues"])!='undefined')useCSSValues = ((localStorage["useCSSValues"]=='true')?true:false);
+	if(typeof(localStorage["EnableRGB"])!='undefined')EnableRGB = ((localStorage["EnableRGB"]=='true')?true:false);
+	if(typeof(localStorage["EnableHSL"])!='undefined')EnableHSL = ((localStorage["EnableHSL"]=='true')?true:false);
+	if(typeof(localStorage["cpScaleOffset"])!='undefined')cpScaleOffset = localStorage["cpScaleOffset"]-0;
+
 	setPreviewSRC(chrome.extension.getURL('img/default.png'));
 	
 	if(useCSSValues){

@@ -99,7 +99,11 @@ function save_options() {
     status.innerHTML = "";
   }, 750);
   
-  chrome.extension.sendRequest({greeting: "reloadprefs"}, function(response) { });
+  sendReloadPrefs();
+}
+
+function sendReloadPrefs(){
+	chrome.extension.sendRequest({greeting: "reloadprefs"}, function(response) { });
 }
 
 function reset_options() {

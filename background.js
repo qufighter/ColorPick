@@ -201,9 +201,8 @@ function(request, sender, sendResponse) {
 		}else if (request.getPixel){
 			x=request._x;
 			y=request._y;
-			if(handleRendering()){
-				sendResponse(getCurrentClrData());
-			}else sendResponse({});
+			handleRendering()
+			sendResponse(getCurrentClrData());
 		}else if (request.setColor){
 			if(showPreviousClr){lastLastHex=lastHex;lastHex=curentHex;}
 			else lastHex='none';
