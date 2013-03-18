@@ -62,10 +62,12 @@ function fromPrefs(){
 	if(typeof(localStorage["colorPickHistory"])=='undefined')localStorage['colorPickHistory']="";
 
 	if(typeof(localStorage["usageStatistics"])=='undefined'){
-		localStorage["postAutoOptin"]=true;
-		if(!navigator.doNotTrack) localStorage["usageStatistics"]=true;
-		else localStorage["usageStatistics"]=false;
+		//localStorage["postAutoOptin"]=true;
+		//if(!navigator.doNotTrack) localStorage["usageStatistics"]=true;
+		//else
+		localStorage["usageStatistics"]=false;
 	}
+
 	if(localStorage["usageStatistics"]=='true' && !navigator.doNotTrack){
 		localStorage.removeItem("feedbackOptOut");
 	}else{
@@ -83,13 +85,6 @@ function defaultIcon(){
 }
 
 var d=new Date();
-localStorage.removeItem("participation_"+d.getMonth()+"_"+d.getFullYear());
-localStorage.removeItem("participation_"+(d.getMonth()-1)+"_"+d.getFullYear());
-localStorage.removeItem("postAutoOpt");
-if(localStorage["hasAgreedToLicense"]!='true' && (localStorage["usageStatistics"]=='true' || localStorage["shareClors"]=='true')){
-	localStorage["postAutoOptin"]=true;//tmp
-}
-if(navigator.doNotTrack)localStorage["usageStatistics"]=false;
 
 function getWeek(d){
 	var onejan = new Date(d.getFullYear(),0,1);
@@ -97,7 +92,7 @@ function getWeek(d){
 }
 
 function feedbackParticipationOversight(){
-	if(localStorage.feedbackOptOut!='true' && localStorage["usageStatistics"]=='true'){
+	if(localStorage["hasAgreedToLicense"]=='true' && localStorage.feedbackOptOut!='true' && localStorage["usageStatistics"]=='true'){
 		var d=new Date();
 		if( localStorage["participation"]!=d.getFullYear()+'_'+getWeek(d) ){
 			var xhr = new XMLHttpRequest();

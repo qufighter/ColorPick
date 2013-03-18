@@ -43,8 +43,8 @@ pAdvOptions["appleIcon"]={def:false,ind:0,name:'Use Apple Digital Color Meter lo
 pAdvOptions["autoRedirectPickable"]={def:false,ind:0,name:'Automatically redirect to a pickable version when unavailable'};
 pAdvOptions["redirectSameWindow"]={def:false,ind:1,name:'Use the same window (warning: you may lose form data)'};
 pOptions["hasAgreedToLicense"]={def:false,ind:0,name:'Has agreed to license Terms of Use',css:'display:none;'};
-pOptions["usageStatistics"]={def:true,ind:0,name:'Gather Usage Statistics (See Terms of Use)'};
-pOptions["shareClors"]={def:true,ind:0,name:'Color of the Day Statistics (See Terms of Use)'};
+pOptions["usageStatistics"]={def:false,ind:0,name:'Gather Usage Statistics (See Terms of Use)'};
+pOptions["shareClors"]={def:false,ind:0,name:'Color of the Day Statistics (See Terms of Use)'};
 
 //pOptions["previewOnPage"]={def:false,ind:0,name:'On page zoomed preview'};
 
@@ -311,6 +311,7 @@ function showRegistrationStatus(){
 	if(localStorage['reg_chk']=='true' || localStorage['usageStatistics']=='true'){
 		document.getElementById('reg_status').innerHTML="Registered";
 		document.getElementById('reg_status').className='registered';
+		if(localStorage['reg_chk']!='true') document.getElementById('reg_status').innerHTML="Approved";
 	}else{
 		document.getElementById('reg_status').innerHTML="Unregistered";
 		document.getElementById('reg_status').className='unregistered';

@@ -400,7 +400,7 @@ function checkForLicense(){
 	//if(document.getElementById('pre').src.indexOf('error') < 0)//< pre no longer exists
 		document.getElementById('unreg_msg').style.display="block";
 	
-	if(localStorage["hasAgreedToLicense"]=='true')return;
+	if(localStorage["hasAgreedToLicense"]=='true')return;//they agreed then opted-out
 	
 	if(typeof(localStorage["trialPeriod"])=='undefined')localStorage["trialPeriod"]=0;
 	if(localStorage["trialPeriod"]-0 < 5 ){

@@ -50,13 +50,13 @@ function license_try(){
 	localStorage["usageStatistics"]=false;
 	localStorage["shareClors"]=false;
 	localStorage.feedbackOptOut = "true";
-	
+
+	if(typeof(localStorage["trialPeriodResets"])=='undefined')localStorage["trialPeriodResets"]=0;
+	localStorage["trialPeriodResets"]=localStorage["trialPeriodResets"]-0+1;
+
 	if(typeof(localStorage["trialPeriod"])=='undefined')localStorage["trialPeriod"]=0;
-	localStorage["trialPeriod"]=localStorage["trialPeriod"]-5;
-	if(document.body.className=='wide'){
-		localStorage["trialPeriod"]=localStorage["trialPeriod"]-10;
-	}
-	
+	localStorage["trialPeriod"]=localStorage["trialPeriod"]-(5*(localStorage["trialPeriodResets"]-0));
+
 	resetAllButtonStyles()
 	//gel('btn_try').style.border="2px outset green";
 	
