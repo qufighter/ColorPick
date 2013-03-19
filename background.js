@@ -180,9 +180,8 @@ function(request, sender, sendResponse) {
 				sendResponse({});
 			}
 			
-//			if(usePNG)chrome.tabs.captureVisibleTab(winid, {format:'png'}, cbf);
-//			else 
-			chrome.tabs.captureVisibleTab(winid, {format:'jpeg',quality:100}, cbf);
+			if(usePNG)chrome.tabs.captureVisibleTab(winid, {format:'png'}, cbf);
+			else chrome.tabs.captureVisibleTab(winid, {format:'jpeg',quality:100}, cbf);
 			
 		}else if (request.movePixel){
 			x+=(request._x);//or otherwise use the current scale

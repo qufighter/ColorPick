@@ -117,7 +117,7 @@ function updateCurrentColor(r,g,b,justFields){
 
 function getPageZoomFactor(){
 	var scal=document.width / document.documentElement.clientWidth;
-	if(!isNaN(scal)||!scal)scal=(outerWidth-cpScaleOffset)/innerWidth;
+	if(isNaN(scal)||!scal)scal=(outerWidth-cpScaleOffset)/innerWidth;
 	return scal;
 }
 

@@ -195,7 +195,7 @@ function newImage(){
 	c.style.width=x+'px';
 	c.style.height=y+'px';
 	scal=document.width / document.documentElement.clientWidth;
-	if(!isNaN(scal)||!scal)scal=(outerWidth-scaleOffset)/innerWidth;
+	if(isNaN(scal)||!scal)scal=(outerWidth-scaleOffset)/innerWidth;
 	//scal=document.width / document.body.clientWidth;
 	x*=scal;
 	y*=scal;
