@@ -23,9 +23,9 @@ var pAdvOptions=[];
 //WARNIGN you have to set defaults two places for now...
 pOptions["pickEveryTime"]={def:true,ind:0,name:'Start picking each time colorpick button is clicked'}; //default false in popup.html
 pOptions["pixelatedPreview"]={def:true,ind:0,name:'Zoomed preview is Pixelated Fish Eye'};
-pOptions["fishEye"]={def:5,ind:1,name:'Fish Eye Amount ',select:{1:'1 Off',2:2,3:3,4:4,5:'5 default',6:6,7:7,8:8,9:'9 Full',10:10,11:11,12:12,13:13,14:14,15:'15 Max Zoomed'}};
-pOptions["EnableRGB"]={def:true,ind:0,name:'Show RGB',css:'display:inline;'};
-pOptions["EnableHSL"]={def:true,ind:0,name:'Show HSL',css:'display:inline;margin-left:35px;'};
+pOptions["fishEye"]={def:5,ind:1,name:' Fish Eye Amount ',select:{1:'1 Off',2:2,3:3,4:4,5:'5 default',6:6,7:7,8:8,9:'9 Full',10:10,11:11,12:12,13:13,14:14,15:'15 Max Zoomed'}};
+pOptions["EnableRGB"]={def:true,ind:0,name:'Show RGB',css:'display:inline-block;'};
+pOptions["EnableHSL"]={def:true,ind:0,name:'Show HSL',css:'display:inline-block;margin-left:35px;'};
 pOptions["showPreviewInContentS"]={def:false,ind:0,name:'Show image preview near cursor while picking'};
 pOptions["ShowRGBHSL"]={def:false,ind:1,name:'Show RGB and HSL on page too'};
 pOptions["contSprevZoomd"]={def:true,ind:1,name:'Large size on page preview'};
