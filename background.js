@@ -29,11 +29,16 @@ function rgb2hsl(r, g, b){//http://mjijackson.com/2008/02/rgb-to-hsl-and-rgb-to-
     };
 }
 //reiterate defaults, eventually prefs will read config from here, no?
-var iconIsBitmap=false,usePNG=true,resetIcon=false,appleIcon=false,iconIsPreview=false,autoRedirectPickable=false,redirectSameWindow=false,showPreviewInContentS=false,contSprevZoomd=false,borderValue='1px solid grey',showPreviousClr=true,flashScalePix=false,shareClors=false,autocopyhex=false,ShowRGBHSL=false,EnableRGB=true,EnableHSL=true,pixelatedPreview=true,fishEye=5,clrAccuracyOverPrecision=false,showActualPickTarget=false;
+var iconIsBitmap=false,usePNG=true,resetIcon=false,appleIcon=false,iconIsPreview=false,showPreviewInContentS=false,contSprevZoomd=false,borderValue='1px solid grey',showPreviousClr=true,flashScalePix=false,shareClors=false,autocopyhex=false,ShowRGBHSL=false,EnableRGB=true,EnableHSL=true,pixelatedPreview=true,fishEye=5,clrAccuracyOverPrecision=false,showActualPickTarget=false;
 var cpScaleOffset=(navigator.platform=='win32'?16:0), customCalibration=false;
 var iconPath = '';
 
 function fromPrefs(){
+
+	//remove defunct options
+	localStorage.removeItem("autoRedirectPickable");
+	localStorage.removeItem("redirectSameWindow");
+
 	if(typeof(localStorage["clrAccuracyOverPrecision"])!='undefined')clrAccuracyOverPrecision = ((localStorage["clrAccuracyOverPrecision"]=='true')?true:false);
 	if(typeof(localStorage["showActualPickTarget"])!='undefined')showActualPickTarget = ((localStorage["showActualPickTarget"]=='true')?true:false);
 	if(typeof(localStorage["appleIcon"])!='undefined')appleIcon = ((localStorage["appleIcon"]=='true')?true:false);
@@ -42,8 +47,6 @@ function fromPrefs(){
 	if(typeof(localStorage["appleIcon"])!='undefined')appleIcon = ((localStorage["appleIcon"]=='true')?true:false);
 	if(typeof(localStorage["usePNG"])!='undefined')usePNG = ((localStorage["usePNG"]=='true')?true:false);
 	if(typeof(localStorage["iconIsPreview"])!='undefined')iconIsPreview = ((localStorage["iconIsPreview"]=='true')?true:false);
-	if(typeof(localStorage["autoRedirectPickable"])!='undefined')autoRedirectPickable = ((localStorage["autoRedirectPickable"]=='true')?true:false);
-	if(typeof(localStorage["redirectSameWindow"])!='undefined')redirectSameWindow = ((localStorage["redirectSameWindow"]=='true')?true:false);
 	if(typeof(localStorage["showPreviewInContentS"])!='undefined')showPreviewInContentS = ((localStorage["showPreviewInContentS"]=='true')?true:false);
 	if(typeof(localStorage["contSprevZoomd"])!='undefined')contSprevZoomd = ((localStorage["contSprevZoomd"]=='true')?true:false);
 	if(typeof(localStorage["showPreviousClr"])!='undefined')showPreviousClr = ((localStorage["showPreviousClr"]=='true')?true:false);
@@ -245,22 +248,6 @@ function(request, sender, sendResponse) {
 							chrome.extension.sendRequest({greeting: "error_picker",errno:1}, function(response) {
   								//console.log('disabled!');
   						});
-  						if(autoRedirectPickable){
-  							
-  							if( !redirectSameWindow ){
-	  							chrome.tabs.getSelected(null,function(tab){
-	  								chrome.tabs.create({windowId:tab.windowId,index:tab.index+1,url:'http://vidzbigger.com/anypage.php?page='+escape(tabURL),selected:true}, function(newtab){ })
-	  							})
-	  						}else{
-		  						chrome.tabs.update(tabId, {url:'http://vidzbigger.com/anypage.php?page='+escape(tabURL)}, function(t){
-		  							x=75;
-		  							y=187;
-		  							window.setTimeout(function(){
-		  								attemptReinitPicker(tabId);
-		  							},500);
-		  						});
-		  					}
-  						}
   					}
   				},560);//we expect to hear back from the content script by this time or something is wrong... and we need to use an iframe
 			  }

@@ -4,6 +4,10 @@
 	label{display:block;}
 	body{max-width:1100px;font-family:sans-serif;}
 	h3{margin:4px;}
+	label{padding:5px 5px 5px 0px;}
+	label:hover{background-color:#EEE;}
+	#shoadvanc{padding:5px 5px 5px 0px;display:block;}
+	#shoadvanc:hover{background-color:#EEE;}
 	#req_win, #req_mac{display:none;}
 	.rounded{
 		border:2px solid #AAA;
@@ -24,6 +28,11 @@
 	.unregistered{color:#F00;font-weight:bold;}
 	#history{position:relative;}
 	#cotd{display:none;}
+	#adv_options{
+		border:1px solid #888;
+		padding:15px;
+	}
+	#status{display:block;height:30px;padding:5px;}
 </style>
 <script src="options.js"></script>
 </head>
@@ -38,15 +47,14 @@
 	
 </div>
 
-<small>NOTE: No worries, gathering of usage statistics is not yet in effect.</small>
-<a href="license.html?wide=1">Terms of Use</a> <a style="display:block" href="#" id="shoadvanc">Advanced Options</a><div id="adv_options" style="display:none;">
+<a href="#" id="shoadvanc"><img src="img/expand.png"/> Advanced Options</a><div id="adv_options" style="display:none;">
 	<a href="calibrate.html" title="Use this to allow normal browser level scaling of the page while you sample colors">Calibrate Theme Scale</a><br/>
 	<!-- advanced -->
 </div>
 
-<button id="bsave">Save</button> <button id="defa">Show Defaults</button>
+<button id="bsave">Save Options</button> <button id="defa">Load Defaults</button>
 
-<br><br>
+
 <span id="status"></span> &nbsp; 
 
 <div id="cotd">
@@ -58,7 +66,8 @@ Color of the day<br/>
 <!--
 <br/>Making money using ColorPick? <a href="http://www.vidzbigger.com/index.php?v=donate&colorpick=true&amount=5.00#donate">Donate</a>
 -->
-<a href="desktop_app.html">Desktop Color Pick!</a>
+<a href="license.html?wide=1">Terms of Use</a>
+| <a href="desktop_app.html">Desktop Color Pick!</a>
 | <a href="help.html"">Help Info</a>
 
 
