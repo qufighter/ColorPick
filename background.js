@@ -30,7 +30,7 @@ function rgb2hsl(r, g, b){//http://mjijackson.com/2008/02/rgb-to-hsl-and-rgb-to-
 }
 //reiterate defaults, eventually prefs will read config from here, no?
 var iconIsBitmap=false,usePNG=true,resetIcon=false,appleIcon=false,iconIsPreview=false,showPreviewInContentS=false,contSprevZoomd=false,borderValue='1px solid grey',showPreviousClr=true,flashScalePix=false,shareClors=false,autocopyhex=false,ShowRGBHSL=false,EnableRGB=true,EnableHSL=true,pixelatedPreview=true,fishEye=5,clrAccuracyOverPrecision=false,showActualPickTarget=false;
-var cpScaleOffset=(navigator.platform=='win32'?16:0), customCalibration=false;
+var cpScaleOffset=0;
 var iconPath = '';
 
 function fromPrefs(){
@@ -38,6 +38,8 @@ function fromPrefs(){
 	//remove defunct options
 	localStorage.removeItem("autoRedirectPickable");
 	localStorage.removeItem("redirectSameWindow");
+	localStorage.removeItem("customCalibration");
+	localStorage.removeItem("cpScaleOffset");
 
 	if(typeof(localStorage["clrAccuracyOverPrecision"])!='undefined')clrAccuracyOverPrecision = ((localStorage["clrAccuracyOverPrecision"]=='true')?true:false);
 	if(typeof(localStorage["showActualPickTarget"])!='undefined')showActualPickTarget = ((localStorage["showActualPickTarget"]=='true')?true:false);
@@ -51,9 +53,6 @@ function fromPrefs(){
 	if(typeof(localStorage["contSprevZoomd"])!='undefined')contSprevZoomd = ((localStorage["contSprevZoomd"]=='true')?true:false);
 	if(typeof(localStorage["showPreviousClr"])!='undefined')showPreviousClr = ((localStorage["showPreviousClr"]=='true')?true:false);
 	if(typeof(localStorage["borderValue"])!='undefined')borderValue = localStorage["borderValue"];
-	if(typeof(localStorage["customCalibration"])!='undefined')customCalibration = ((localStorage["customCalibration"]=='true')?true:false);
-	if(customCalibration)
-		if(typeof(localStorage["cpScaleOffset"])!='undefined')cpScaleOffset = localStorage["cpScaleOffset"]-0;
 	//if(typeof(localStorage["flashScalePix"])!='undefined')flashScalePix = ((localStorage["flashScalePix"]=='true')?true:false);
 	if(typeof(localStorage["shareClors"])!='undefined')shareClors = ((localStorage["shareClors"]=='true')?true:false);
 	if(typeof(localStorage["autocopyhex"])!='undefined')autocopyhex = ((localStorage["autocopyhex"]=='true')?true:false);

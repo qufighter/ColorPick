@@ -22,22 +22,22 @@ var pAdvOptions=[];
 
 //WARNIGN you have to set defaults two places for now...
 pOptions["pickEveryTime"]={def:true,ind:0,name:'Start picking each time colorpick button is clicked'}; //default false in popup.html
-pOptions["pixelatedPreview"]={def:true,ind:0,name:'Zoomed preview is Pixelated Fish Eye'};
+pOptions["pixelatedPreview"]={def:true,ind:0,name:'Zoomed preview is Pixelated'};
 pOptions["fishEye"]={def:5,ind:1,name:' Fish Eye Amount ',select:{1:'1 Off',2:2,3:3,4:4,5:'5 default',6:6,7:7,8:8,9:'9 Full',10:10,11:11,12:12,13:13,14:14,15:'15 Max Zoomed'}};
 pOptions["EnableRGB"]={def:true,ind:0,name:'Show RGB',css:'display:inline-block;'};
-pOptions["EnableHSL"]={def:true,ind:0,name:'Show HSL',css:'display:inline-block;margin-left:35px;'};
+pOptions["EnableHSL"]={def:true,ind:0,name:'Show HSL',css:'display:inline-block;margin-left:38px;'};
 pOptions["showPreviewInContentS"]={def:false,ind:0,name:'Show image preview near cursor while picking'};
 pOptions["ShowRGBHSL"]={def:false,ind:1,name:'Show RGB and HSL on page too'};
 pOptions["contSprevZoomd"]={def:true,ind:1,name:'Large size on page preview'};
-pAdvOptions["customCalibration"]={def:false,ind:0,name:'Enable the defunct calibration link above.'};
+//pAdvOptions["customCalibration"]={def:false,ind:0,name:'Enable the defunct calibration link above.'};
 pAdvOptions["usePNG"]={def:true,ind:0,name:'Use PNG quality when available'};
 pAdvOptions["useCSSValues"]={def:true,ind:0,name:'Use CSS values for RGB/HSL'};
-pAdvOptions["iconIsPreview"]={def:false,ind:0,name:'Use icon badge square color preview: ',img:'img/opt_badge.png'};
-pAdvOptions["appleIcon"]={def:false,ind:0,name:'Use Apple Digital Color Meter logo: ',img:'img/apple/icon16.png'};
+pAdvOptions["iconIsPreview"]={def:false,ind:0,name:'Use icon badge square color preview ',img:'img/opt_badge.png'};
+pAdvOptions["appleIcon"]={def:false,ind:0,name:'Use Apple Digital Color Meter logo ',img:'img/apple/icon16.png'};
 pAdvOptions["iconIsBitmap"]={def:false,ind:0,name:'Icon is zoomed colorpick pixel preview ',img:'img/icon_pixel.png'};
 pAdvOptions["resetIcon"]={def:true,ind:1,name:'Back to normal icon when done'};
 pAdvOptions["autocopyhex"]={def:false,ind:0,name:'Attempt auto-copy the hex to the clipboard'};
-pAdvOptions["bbackgroundColor"]={def:'#FFF',ind:0,name:'Popup Background Color ("#FFFFFF" or "blue")'};
+pAdvOptions["bbackgroundColor"]={def:'#FFF',ind:0,name:'Popup Background Color'};
 pAdvOptions["usePrevColorBG"]={def:false,ind:1,name:'Use Previous Color for Background Instead'};
 pAdvOptions["showPreviousClr"]={def:true,ind:0,name:'Show Split color Preview with Previous Color'};
 pAdvOptions["borderValue"]={def:'1px solid grey',ind:0,name:'Borders to use ("1px solid #000" or "none")'};
@@ -164,8 +164,10 @@ function restore_options() {
 }
 
 function clear_history(ev){
-	localStorage['colorPickHistory']='';
-	load_history();
+	if(confirm("are you sure?")){
+		localStorage['colorPickHistory']='';
+		load_history();
+	}
 }
 
 function load_history(){
