@@ -126,7 +126,7 @@ function movePixel(){}
 function movePixel(){}
 function getPixel(){}
 
-chrome.extension.onRequest.addListener(
+chrome.runtime.onMessage.addListener(
   function(request, sender, sendResponse) {
     if(request.setPreview && (request.tabi==tabid || tabid==0)){
       var hex=request.hex;//RGBtoHex(request.c_r+0,request.c_g+0,request.c_b+0);
@@ -151,7 +151,7 @@ chrome.extension.onRequest.addListener(
   });
 
 function resnap(){
-	chrome.tabs.sendRequest(tabid,{newImage:true},function(r){});
+	chrome.tabs.sendMessage(tabid,{newImage:true},function(r){});
 }
 function setButtonState(isPicking){
 	if(isPicking){
@@ -161,7 +161,7 @@ function setButtonState(isPicking){
 	}
 }
 function toglPick(){
-	chrome.tabs.sendRequest(tabid,{doPick:true},function(r){
+	chrome.tabs.sendMessage(tabid,{doPick:true},function(r){
 		setButtonState(r.isPicking);
 	});//perform pick
 }
@@ -188,13 +188,13 @@ function wk(ev){
 	}else if(ev.keyCode==82||ev.keyCode==74){//r or j refresh
 		resnap();
 	}else if(ev.keyCode==38){//u
-		chrome.extension.sendRequest({movePixel:true,_x:0,_y:-1,tabi:tabid},function(r){});
+		chrome.runtime.sendMessage({movePixel:true,_x:0,_y:-1,tabi:tabid},function(r){});
 	}else if(ev.keyCode==40){//d
-		chrome.extension.sendRequest({movePixel:true,_x:0,_y:1,tabi:tabid},function(r){});
+		chrome.runtime.sendMessage({movePixel:true,_x:0,_y:1,tabi:tabid},function(r){});
 	}else if(ev.keyCode==37){//l
-		chrome.extension.sendRequest({movePixel:true,_x:-1,_y:0,tabi:tabid},function(r){});
+		chrome.runtime.sendMessage({movePixel:true,_x:-1,_y:0,tabi:tabid},function(r){});
 	}else if(ev.keyCode==39){//r
-		chrome.extension.sendRequest({movePixel:true,_x:1,_y:0,tabi:tabid},function(r){});
+		chrome.runtime.sendMessage({movePixel:true,_x:1,_y:0,tabi:tabid},function(r){});
 	}else if(ev.keyCode==13 || ev.keyCode==86){//enter, v
 		toglPick();
 	}
@@ -259,7 +259,7 @@ function setupInjectScripts(){
 //eventually re-enable this block (removing above) - since after first install it gets us running - however
 //gotta make sure that any pre-installed version responds to testAlive first!
 	isScriptAlive=false;
-	chrome.tabs.sendRequest(tabid, {testAlive:true}, function(response) {
+	chrome.tabs.sendMessage(tabid, {testAlive:true}, function(response) {
 		if(response&&response.result){
 			isScriptAlive=true;
 			scriptsInjectedResult();
@@ -277,7 +277,7 @@ function scriptsInjectedResult(){
 	finishSetup();
 }
 function finishSetup(){
-	chrome.extension.sendRequest({enableColorPicker:true,tabi:tabid}, function(response) {
+	chrome.runtime.sendMessage({enableColorPicker:true,tabi:tabid}, function(response) {
 		
 		//hex=response.hex;
 		updateCurrentColor(response.cr,response.cg,response.cb);
@@ -324,7 +324,7 @@ function finishSetup(){
 	if(typeof(localStorage["pickEveryTime"])!='undefined')pickEveryTime = ((localStorage["pickEveryTime"]=='true')?true:false);
 
 	//in future cases we will send a testAlive earlier... state will be set already...
-	chrome.tabs.sendRequest(tabid,{testAlive:true},function(r){
+	chrome.tabs.sendMessage(tabid,{testAlive:true},function(r){
 		if(!r.isPicking && pickEveryTime)toglPick();
 		else setButtonState(r.isPicking);
 	});
@@ -334,14 +334,14 @@ function finishSetup(){
 	}
 }
 function oout(){
-	chrome.extension.sendRequest({disableColorPicker:true},function(r){});
+	chrome.runtime.sendMessage({disableColorPicker:true},function(r){});
 }
 var x,y;
 function mmove(ev){
 	x=ev.pageX-window.pageXOffset
 	y=ev.pageY-window.pageYOffset
 	if(isDrag){
-		chrome.extension.sendRequest({movePixel:true,_x:((x1-x)/2),_y:((y1-y)/2),tabi:tabid}, function(response) {});
+		chrome.runtime.sendMessage({movePixel:true,_x:((x1-x)/2),_y:((y1-y)/2),tabi:tabid}, function(response) {});
 		x1=x,y1=y;//accoutn for that we moved it already
 	}
 }
@@ -357,7 +357,7 @@ function initdrag(ev){
 function finalizedrag(){
 	if(isDrag){
   	//document.getElementById('dbg').innerHTML=(x-x1)+' ' +(y-y1);
-  	chrome.extension.sendRequest({movePixel:true,_x:(x1-x),_y:(y1-y),tabi:tabid}, function(response) {});
+  	chrome.runtime.sendMessage({movePixel:true,_x:(x1-x),_y:(y1-y),tabi:tabid}, function(response) {});
   	isDrag=false;
   }
 }

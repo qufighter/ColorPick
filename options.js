@@ -108,7 +108,7 @@ function save_options() {
 }
 
 function sendReloadPrefs(){
-	chrome.extension.sendRequest({greeting: "reloadprefs"}, function(response) { });
+	chrome.runtime.sendMessage({greeting: "reloadprefs"}, function(response) { });
 }
 
 function reset_options() {
@@ -304,7 +304,7 @@ function init(){
 	showRegistrationStatus();
 }
 
-chrome.extension.onRequest.addListener(
+chrome.runtime.onMessage.addListener(
   function(request, sender, sendResponse) {
     if(request.historypush){
     	load_history();

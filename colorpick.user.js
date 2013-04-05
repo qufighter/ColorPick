@@ -3,7 +3,7 @@ if(document.body && document.body.getAttribute('chromeextension-color-pick.com')
 function bodyReady(){if(document.body){document.body.setAttribute('chromeextension-color-pick.com',true);document.removeEventListener('DOMNodeInserted',bodyReady);}else setTimeout(bodyReady,250);};setTimeout(bodyReady,250);
 function _ge(n){return document.getElementById(n);}
 var n=false,c=false,hex=0,rgb=null;hsv=null;scal=1,ex=0,ey=0,isEnabled=false,isLocked=false,scaleOffset=0,borders='1px solid black',blankgif='';
-chrome.extension.onRequest.addListener(
+chrome.runtime.onMessage.addListener(
 function(request, sender, sendResponse) {
 	if (request.testAlive){
 		//disableColorPicker();
@@ -77,14 +77,14 @@ function picked(){
 		isLocked=false;
 		n.innerHTML=' ';
 	}else{
-		chrome.extension.sendRequest({setColor:true}, function(response){if(response.docopy)document.execCommand('copy', false, null);});
+		chrome.runtime.sendMessage({setColor:true}, function(response){if(response.docopy)document.execCommand('copy', false, null);});
 		isLocked=true;
 		setDisplay();
 	}
 }
 function dissableColorPickerFromHere(){
 	var disableTimeout=setTimeout(disableColorPicker,500)
-	chrome.extension.sendRequest({disableColorPicker:true},function(r){
+	chrome.runtime.sendMessage({disableColorPicker:true},function(r){
 		clearTimeout(disableTimeout);
 	});
 }
@@ -123,7 +123,7 @@ function ssf(ev){
 	},10);
 }
 function enableColorPicker(){
-	chrome.extension.sendRequest({reportingIn:true}, function(response) {
+	chrome.runtime.sendMessage({reportingIn:true}, function(response) {
 		//allows us to detect if the script is running from the bg
 	});
 	if(!n){
@@ -170,7 +170,7 @@ function updateColorPreview(ev){
 		x*=scal;
 		y*=scal;
 	}
-	chrome.extension.sendRequest({getPixel:true,_x:x,_y:y}, function(response){
+	chrome.runtime.sendMessage({getPixel:true,_x:x,_y:y}, function(response){
 		setColor(response);
 	});
 }
@@ -200,7 +200,7 @@ function newImage(){
 	x*=scal;
 	y*=scal;
 	setTimeout(function(){
-		chrome.extension.sendRequest({newImage:true,_x:x,_y:y}, function(response){
+		chrome.runtime.sendMessage({newImage:true,_x:x,_y:y}, function(response){
 			isMakingNew=false;//perhaps we wait unitl it's really 'new'
 			window.setTimeout(function(){c.style.display="block";n.style.display="block";document.body.style.cursor='url('+chrome.extension.getURL('img/crosshair.png')+') 16 16,crosshair';updateColorPreview();},500)
 		});

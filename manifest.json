@@ -39,5 +39,5 @@
    ],
    "content_security_policy": "script-src 'self' https://cdn.extensionanalytics.com; object-src 'self'",
    "default_locale": "en",
-   "version": "0.0.1.48"
+   "version": "0.0.1.49"
 }

@@ -132,7 +132,7 @@ function attemptReinitPicker(tabid){
 	var tid=tabid;
 	chrome.tabs.get(tabid, function(tab) {
 		if(tab.status=='complete'){
-			chrome.extension.sendRequest({greeting: "re_init_picker"}, function(response) {
+			chrome.runtime.sendMessage({greeting: "re_init_picker"}, function(response) {
 				//console.log('enabled!');
 			});
 		}else{
@@ -151,7 +151,7 @@ function getCurrentClrData(){
 	return dobj;
 }
 
-chrome.extension.onRequest.addListener(
+chrome.runtime.onMessage.addListener(
 function(request, sender, sendResponse) {
 		if(sender.tab && sender.tab.id >= 0){
 			tabid=sender.tab.id;
@@ -193,7 +193,7 @@ function(request, sender, sendResponse) {
 			dobj=getCurrentClrData();
 			dobj.movedPixel=true;
 			dobj.msg='Press Enter to Pick Color';
-			chrome.tabs.sendRequest(tabid,dobj,function(r){});
+			chrome.tabs.sendMessage(tabid,dobj,function(r){});
 			sendResponse({});
 		}else if (request.getPixel){
 			x=request._x;
@@ -212,7 +212,7 @@ function(request, sender, sendResponse) {
 			}
 			//store colors
 			localStorage['colorPickHistory']+="#"+curentHex;
-			chrome.extension.sendRequest({historypush: true}, function(response) {
+			chrome.runtime.sendMessage({historypush: true}, function(response) {
 					//console.log('disabled!');
 			});		
 			sendResponse({docopy:autocopyhex});
@@ -232,12 +232,12 @@ function(request, sender, sendResponse) {
 				var tabURL=tab.url;
 				
 				
-			  chrome.tabs.sendRequest(tab.id, {enableColorPicker:true,borders:borderValue,scOffset:cpScaleOffset}, function(response) {
+			  chrome.tabs.sendMessage(tab.id, {enableColorPicker:true,borders:borderValue,scOffset:cpScaleOffset}, function(response) {
 			  });
 			  
 			  if(tabURL.indexOf('https://chrome.google.com/extensions/')==0 ||tabURL.indexOf('chrome')==0 ||tabURL.indexOf('about')==0 ){
 						//console.log( 'Unsupported page type :/');
-						chrome.extension.sendRequest({greeting: "error_picker",errno:0}, function(response) {
+						chrome.runtime.sendMessage({greeting: "error_picker",errno:0}, function(response) {
 								//console.log('disabled!');
 						});
 				}else if(tabURL.indexOf('http://vidzbigger.com/anypage.php')!=0){
@@ -245,7 +245,7 @@ function(request, sender, sendResponse) {
   					if(!isCurrentEnableReady){
   						//console.log('detecting image or non supported page '+tabURL)
 
-							chrome.extension.sendRequest({greeting: "error_picker",errno:1}, function(response) {
+							chrome.runtime.sendMessage({greeting: "error_picker",errno:1}, function(response) {
   								//console.log('disabled!');
   						});
   					}
@@ -258,7 +258,7 @@ function(request, sender, sendResponse) {
 			defaultIcon();
 			chrome.browserAction.setBadgeText({text:''});
 //	  			chrome.tabs.getSelected(null, function(tab) {
-//					  chrome.tabs.sendRequest(tab.id, {disableColorPicker:true}, function(response) {});
+//					  chrome.tabs.sendMessage(tab.id, {disableColorPicker:true}, function(response) {});
 //					});'
 			if(!imageDataIsRendered){//cleans up the image src
 				if(pim.complete){
@@ -271,7 +271,7 @@ function(request, sender, sendResponse) {
 					imageDataIsRendered=true;
 				}
 			}
-			chrome.tabs.sendRequest(tabid, {disableColorPicker:true}, function(response) {});
+			chrome.tabs.sendMessage(tabid, {disableColorPicker:true}, function(response) {});
 			sendResponse({});
     }else if(request.greeting == "reloadprefs"){
     	fromPrefs();sendResponse({});
@@ -294,7 +294,7 @@ function handleRendering(){
 				pim.src='';
 				if(showActualPickTarget){
 					setTimeout(function(){
-						chrome.tabs.sendRequest(tabid, {setPickerImage:true,pickerImage:cvs.toDataURL()}, function(response) {});
+						chrome.tabs.sendMessage(tabid, {setPickerImage:true,pickerImage:cvs.toDataURL()}, function(response) {});
 					},10);
 				}
 				imageDataIsRendered=true;
@@ -409,12 +409,12 @@ function handleRendering(){
 		//couls also jsut send this back with the hex code later, not sure! (rather not slow that down but who gets there first?/)
 		if(showPreviewInContentS){
 //					chrome.tabs.getSelected(null, function(tab) {
-//					  chrome.tabs.sendRequest(tab.id, {setPixelPreview:true,previewURI:lastPreviewURI,zoomed:contSprevZoomd,hex:curentHex,lhex:lastHex}, function(response) {
+//					  chrome.tabs.sendMessage(tab.id, {setPixelPreview:true,previewURI:lastPreviewURI,zoomed:contSprevZoomd,hex:curentHex,lhex:lastHex}, function(response) {
 //				  		//preview has been sent to the contentscript in case its showing...
 //						});
 //					});
 			
-			chrome.tabs.sendRequest(tabid, {setPixelPreview:true,previewURI:lastPreviewURI,zoomed:contSprevZoomd,hex:curentHex,lhex:lastHex}, function(response) {});
+			chrome.tabs.sendMessage(tabid, {setPixelPreview:true,previewURI:lastPreviewURI,zoomed:contSprevZoomd,hex:curentHex,lhex:lastHex}, function(response) {});
 
 		}
 
@@ -424,7 +424,7 @@ function handleRendering(){
 	curentHex=RGBtoHex(data[0],data[1],data[2]);
 	clhsv=rgb2hsl(data[0],data[1],data[2]);
 	clrgb.r=data[0],clrgb.g=data[1],clrgb.b=data[2];
-	chrome.extension.sendRequest({setPreview:true,tabi:tabid,previewURI:lastPreviewURI,hex:curentHex,lhex:lastHex,cr:clrgb.r,cg:clrgb.g,cb:clrgb.b}, function(response) {
+	chrome.runtime.sendMessage({setPreview:true,tabi:tabid,previewURI:lastPreviewURI,hex:curentHex,lhex:lastHex,cr:clrgb.r,cg:clrgb.g,cb:clrgb.b}, function(response) {
 		//preview has been sent to the popup in case its showing...
 	});
 }
