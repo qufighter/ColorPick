@@ -1,9 +1,9 @@
 {
-    "name": "Color Picker Eye Dropper", 
+    "name": "color-picker-eye-dropper", 
     "license": "MPL 2.0", 
     "author": "Sam Larison - Vidsbee.com", 
     "version": "0.1", 
-    "fullName": "ff-ColorPick", 
+    "fullName": "ff-colorpick", 
     "id": "jid1-kCS67LPIOiGf2Q", 
     "description": "Allows one to select color values from webpages"
 }
