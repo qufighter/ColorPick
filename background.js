@@ -28,9 +28,7 @@ function rgb2hsl(r, g, b){//http://mjijackson.com/2008/02/rgb-to-hsl-and-rgb-to-
       v: Math.round(l * 100)
     };
 }
-//reiterate defaults, eventually prefs will read config from here, no?
-var iconIsBitmap=false,usePNG=true,resetIcon=false,appleIcon=false,iconIsPreview=false,showPreviewInContentS=false,contSprevZoomd=false,borderValue='1px solid grey',showPreviousClr=true,flashScalePix=false,shareClors=false,autocopyhex=false,ShowRGBHSL=false,EnableRGB=true,EnableHSL=true,pixelatedPreview=true,fishEye=5,clrAccuracyOverPrecision=false,showActualPickTarget=false;
-var cpScaleOffset=0;
+
 var iconPath = '';
 
 function fromPrefs(){
@@ -40,31 +38,27 @@ function fromPrefs(){
 	localStorage.removeItem("redirectSameWindow");
 	localStorage.removeItem("customCalibration");
 	localStorage.removeItem("cpScaleOffset");
+	localStorage.removeItem("flashScalePix");
+	localStorage.removeItem("postAutoOptin");
 
-	if(typeof(localStorage["clrAccuracyOverPrecision"])!='undefined')clrAccuracyOverPrecision = ((localStorage["clrAccuracyOverPrecision"]=='true')?true:false);
-	if(typeof(localStorage["showActualPickTarget"])!='undefined')showActualPickTarget = ((localStorage["showActualPickTarget"]=='true')?true:false);
-	if(typeof(localStorage["appleIcon"])!='undefined')appleIcon = ((localStorage["appleIcon"]=='true')?true:false);
-	if(typeof(localStorage["iconIsBitmap"])!='undefined')iconIsBitmap = ((localStorage["iconIsBitmap"]=='true')?true:false);
-	if(typeof(localStorage["resetIcon"])!='undefined')resetIcon = ((localStorage["resetIcon"]=='true')?true:false);
-	if(typeof(localStorage["appleIcon"])!='undefined')appleIcon = ((localStorage["appleIcon"]=='true')?true:false);
-	if(typeof(localStorage["usePNG"])!='undefined')usePNG = ((localStorage["usePNG"]=='true')?true:false);
-	if(typeof(localStorage["iconIsPreview"])!='undefined')iconIsPreview = ((localStorage["iconIsPreview"]=='true')?true:false);
-	if(typeof(localStorage["showPreviewInContentS"])!='undefined')showPreviewInContentS = ((localStorage["showPreviewInContentS"]=='true')?true:false);
-	if(typeof(localStorage["contSprevZoomd"])!='undefined')contSprevZoomd = ((localStorage["contSprevZoomd"]=='true')?true:false);
-	if(typeof(localStorage["showPreviousClr"])!='undefined')showPreviousClr = ((localStorage["showPreviousClr"]=='true')?true:false);
-	if(typeof(localStorage["borderValue"])!='undefined')borderValue = localStorage["borderValue"];
-	//if(typeof(localStorage["flashScalePix"])!='undefined')flashScalePix = ((localStorage["flashScalePix"]=='true')?true:false);
-	if(typeof(localStorage["shareClors"])!='undefined')shareClors = ((localStorage["shareClors"]=='true')?true:false);
-	if(typeof(localStorage["autocopyhex"])!='undefined')autocopyhex = ((localStorage["autocopyhex"]=='true')?true:false);
-	if(typeof(localStorage["ShowRGBHSL"])!='undefined')ShowRGBHSL = ((localStorage["ShowRGBHSL"]=='true')?true:false);
-	if(typeof(localStorage["EnableRGB"])!='undefined')EnableRGB = ((localStorage["EnableRGB"]=='true')?true:false);
-	if(typeof(localStorage["EnableHSL"])!='undefined')EnableHSL = ((localStorage["EnableHSL"]=='true')?true:false);
-	if(typeof(localStorage["pixelatedPreview"])!='undefined')pixelatedPreview = ((localStorage["pixelatedPreview"]=='true')?true:false);
-	if(typeof(localStorage["fishEye"])!='undefined')fishEye=localStorage["fishEye"]-0;
-	if(typeof(localStorage["colorPickHistory"])=='undefined')localStorage['colorPickHistory']="";
+	//future additions -
+	//storage.remove(['','',''], function(){})
+
+	for(var i in pOptions){
+		if(typeof(pOptions[i].def)=='boolean')
+			window[i] = ((localStorage[i]=='true')?true:((localStorage[i]=='false')?false:pOptions[i].def));
+		else
+			window[i] = ((localStorage[i])?localStorage[i]:pOptions[i].def);
+	}
+
+	for(var i in pAdvOptions){
+		if(typeof(pAdvOptions[i].def)=='boolean')
+			window[i] = ((localStorage[i]=='true')?true:((localStorage[i]=='false')?false:pAdvOptions[i].def));
+		else
+			window[i] = ((localStorage[i])?localStorage[i]:pAdvOptions[i].def);
+	}
 
 	if(typeof(localStorage["usageStatistics"])=='undefined'){
-		//localStorage["postAutoOptin"]=true;
 		//if(!navigator.doNotTrack) localStorage["usageStatistics"]=true;
 		//else
 		localStorage["usageStatistics"]=false;
@@ -179,12 +173,11 @@ function(request, sender, sendResponse) {
 				cvs.height = hei;
 				ctx = cvs.getContext("2d");
 				ctx.clearRect(0,0,wid,hei);
-				sendResponse({});
 			}
 			
 			if(usePNG)chrome.tabs.captureVisibleTab(winid, {format:'png'}, cbf);
 			else chrome.tabs.captureVisibleTab(winid, {format:'jpeg',quality:100}, cbf);
-			
+			sendResponse({});
 		}else if (request.movePixel){
 			x+=(request._x);//or otherwise use the current scale
 			y+=(request._y);
@@ -231,7 +224,7 @@ function(request, sender, sendResponse) {
 				var tabURL=tab.url;
 				
 				
-			  chrome.tabs.sendMessage(tab.id, {enableColorPicker:true,borders:borderValue,scOffset:cpScaleOffset}, function(response) {
+			  chrome.tabs.sendMessage(tab.id, {enableColorPicker:true,borders:borderValue}, function(response) {
 			  });
 			  
 			  if(tabURL.indexOf('https://chrome.google.com/extensions/')==0 ||tabURL.indexOf('chrome')==0 ||tabURL.indexOf('about')==0 ){
@@ -272,7 +265,7 @@ function(request, sender, sendResponse) {
 			}
 			chrome.tabs.sendMessage(tabid, {disableColorPicker:true}, function(response) {});
 			sendResponse({});
-    }else if(request.greeting == "reloadprefs"){
+    }else if(request.reloadprefs){
     	fromPrefs();sendResponse({});
     }else
     	sendResponse({});
@@ -441,4 +434,12 @@ function getImageDataFromImage(idOrElement){
 
 var pim = document.createElement('img');
 var mcan = document.createElement('canvas');
-fromPrefs();
+
+document.addEventListener('DOMContentLoaded', function () {
+	//difficult to say when best time to do this is.... chrome running at 2 locations with different settings may produce odd results!
+	loadSettingsFromChromeSyncStorage(function(){
+		fromPrefs();
+	});
+
+	saveToChromeSyncStorage(); //temporary... but may help cover some users who haven't pressed the save button in preferences but use sync
+});

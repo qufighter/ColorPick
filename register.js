@@ -2,6 +2,12 @@ var suppress_connection_errors=false;
 function gel(n){
 	return document.getElementById(n);
 }
+function preventEventDefault(ev){
+	ev = ev || event;
+	if(ev.preventDefault)ev.preventDefault();
+	ev.returnValue=false;
+	return false;
+}
 function getQueryVariable(variable) {
     var query = window.location.search.substring(1);
     var vars = query.split('&');
@@ -36,8 +42,10 @@ function set_unregistered(){
 function init(){
 	if(localStorage['reg_chk']=='true'){
 		set_registered()
-		suppress_connection_errors=true;
-		VerifyHashToLicSrv(localStorage['reg_hash'],localStorage['reg_name']);
+		if(localStorage['reg_inapp']!='true'){
+			suppress_connection_errors=true;
+			VerifyHashToLicSrv(localStorage['reg_hash'],localStorage['reg_name']);
+		}
 	}else{
 		if(localStorage['reg_hash'] && localStorage['reg_hash'].length == 40){
 			VerifyHashToLicSrv(localStorage['reg_hash'],localStorage['reg_name']);
@@ -91,14 +99,16 @@ function keyResponse(isValid,validHash,validName){
 		localStorage['reg_hash']=validHash;
 		localStorage['reg_name']=validName;
 		set_registered();
-	}else
+	}else{
 		set_unregistered();
+	}
+	saveSyncItemsToChromeSyncStorage();
 }
 
 function license_go(){
 	
 	
-	if(localStorage['reg_chk']=='true'){
+	if(localStorage['reg_chk']=='true' && localStorage['reg_inapp']!='true'){
 		set_unregistered();
 		gel('license_key').value='';
 	}
@@ -109,5 +119,63 @@ function license_go(){
 document.addEventListener('DOMContentLoaded', function () {
 	init()
 	gel('license_go').addEventListener('click', license_go);
-
+	gel('unlocker').addEventListener('click', unlockInApp);
+	if(window.location.href.indexOf('showoneclick')==-1){
+		gel('unlockExtOnly').innerHTML="Comings Soon";
+	}
 });
+
+function performPayment(token){
+	google.payments.inapp.buy({
+		'jwt'     : token,
+		'success' : function(result) {
+			localStorage['reg_chk']=true;
+			localStorage['reg_inapp']=true;
+			saveSyncItemsToChromeSyncStorage();
+		},
+		'failure' : function(result) {
+			console.log("failure", result);
+			if (result && result.response) {
+				if (result.response.errorType == "PURCHASE_CANCELED") {
+					//alert('Canceled!');
+				} else {
+					/*
+						MERCHANT_ERROR - purchase request contains errors such as a badly formatted JWT
+						PURCHASE_CANCELED - buyer canceled purchase or declined payment
+						POSTBACK_ERROR - failure to acknowledge postback notification
+						INTERNAL_SERVER_ERROR - internal Google error
+					*/
+					alert('Failed: '+result.response.errorType);
+				}
+			} else {
+				alert("Unknown failure!  Internet connectivity?");
+			}
+		}
+	});
+}
+
+function unlockInApp(ev){
+	var attempt=0;
+	var params=	'?name=Color+Picker+Chrome+Extension'+
+							'&description=Color+Picker+for+Google+Chrome+Sign in/Sync+-+Single+User+License'+
+							'&itemID=ColorPickChromeExt'+
+							'&price=1.00';
+	var xhr = new XMLHttpRequest();
+	xhr.onreadystatechange=function(){if(xhr.readyState == 4){
+		if(xhr.status==200){
+			performPayment(xhr.responseText);
+		}else if(xhr.status==403 && attempt < 1){
+			attempt++;
+			xhr.open('GET', "http://vidsbee.com/generateJWTJSON.php"+params, true);
+			xhr.send();
+		}else{
+			alert("Temporary problem with this payment method (Check your Internet connectivity), please try again later, try the buy license key method, or contact the developer sam@vidsbee.com");
+		}
+	}};
+	xhr.open('GET', "https://vidsbee.appspot.com/"+params, true);
+	xhr.send();
+
+	//app engine will return a 403 Forbidden when over quotta... 
+
+	return preventEventDefault(ev);
+}

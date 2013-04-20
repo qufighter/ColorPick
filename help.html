@@ -28,39 +28,36 @@
 	<h3>Help</h3>
 	<br/><br/>On a standard http:// webpage click the icon then move your mouse pointer over the webpage to pick colors.  On a mac you may have to pop out the preview window using <img src="img/popout.gif" />.  
 	
-	<br/><br/>A <a target="_blank" href="http://vidsbee.com/4096+Color+Wheel/">Color Wheel</a> to test with.  You may have to test with a website instead of an image unfortunately, although for some it may work on image URLs as well, most will have to enable Automatically redirect to have this feature.
+	<br/><br/>A <a target="_blank" href="http://vidsbee.com/4096+Color+Wheel/">Color Wheel</a> to test with.  You may have to test with a website instead of an image unfortunately, although for some it may work on image URLs as well.
 
-	<br/><br/>Some notes about scrolling - when you scroll the window the program has to take another snapshot of the screen for you to pick colors from.  There is a delay while this occurs so the results of scrolling or resizing will not be immediate.  There is also a chance that the screenshot will include the preview box.  If this happens move your mouse before you scroll or click the refresh snapshot button.
+	<br/><br/>Some notes about scrolling - when you scroll the window the program has to take another snapshot of the screen for you to pick colors from.  There is a delay while this occurs so the results of scrolling or resizing will not be immediate.  There is also a chance that the screenshot will include the preview box.  If this happens move your mouse before you scroll or click the <img src="img/refresh.png"/> refresh snapshot button.
 	
-	<br/><br/>Quick trick - if the preview is ever out of sync, there's no need to click the icon again, you can usually scroll the page using the mousewheel which will refresh the preview.  You can also press [r] or [j].  [esc] exits the picker.  
+	<br/><br/>Quick trick - if the preview is ever out of sync, there's no need to click the icon again, you can usually scroll the page using the mousewheel which will refresh the preview.  You can also press [r] or [j] or click  <img src="img/refresh.png"/>.  [esc] exits the picker.  
 	
-	<br/><br/>Pro tip - If you are moving your mouse while scrolling it is possible to trigger mouse over events.  Target the element you want to activate, then scroll down one click using the mousewheel.  Next slowly slide your mouse horizontally while you scroll the mousewheel up one click again.  The element you targeted should now be activated allowing you to pick colors from mouseover states of buttons.  The hotkeys [r] or [j] also allow mouse interaction for a short time.
+	<br/><br/>Pro tip - If you are moving your mouse while scrolling it is possible to trigger mouse-over events and states.  Target the element you want to activate, then scroll down one notch using the mousewheel.  Next slowly slide your mouse horizontally while you scroll the mousewheel back up one notch.  The element you targeted should now be activated allowing you to pick colors from mouseover states of buttons.  The hotkeys [r] or [j] also allow mouse interaction for a short time.
 	
-	<br/><br/>Hint: If you zoom the popup window or this window, the color picker preview popup will always appear at the zoom you set here or in the popup window (control scroll or ctrl +/-)  To zoom the page you sample from use <a href="calibrate.html" title="Use this to allow normal browser level scaling of the page while you sample colors">Calibrate</a>.
+	<br/><br/>Zoom Hints: If you zoom the popup window or this window, the color picker preview popup will always appear at the zoom you set here or in the popup window (control scroll or ctrl +/-)  If the zoom of the preview window is messed up press control-0 (command-0) or otherwise reset the zoom of this page or the options page.
 	
-	<br/><br/>If you switch to a page that is zoomed in, you may find portions of the screen are solid black pixels.  This can be correctd by pressing [r] to refresh the snapshot of the page.  
+	<br/><br/>If you switch to a page that is zoomed in, you may find portions of the screen are solid black pixels.  This can be correctd by pressing [r] or <img src="img/refresh.png"/> to refresh the snapshot of the page.  
 
-<br/><br/><small>Note: zooming this page is not supported, it may cause other things to be zoomed too, such as the picker, which may be good, and it may produce funny results too, it will also cause the pop-out version of the pop-up to be zoomed, you can use this pop-out to adjust or reset zoom.  Ctrl-Zero resets the page zoom.  Try the calibrate feature.</small>
-	
-	<!--
-<br/><br/><b>Local Flash Scale Pixel (this feature may no longer be relevant)</b>:<br/>
-	In order to get the Local Flash Scale Pixel working, you need to add permissions so that the extension is allowed to run flash files that are stored in the extension (as opposed to on my remote server)
-	To accomplish this simply visit this page
-	<a target="_blank" href="http://www.macromedia.com/support/documentation/en/flashplayer/help/settings_manager04.html">Flash Security Settings</a>
-	and click on Edit Locations dropdown, the select add location and paste <input onmouseover="this.focus();this.select()" type="text" value="chrome-extension://ohcpnigalekghcmgcdcenkpelffpdolg/*" /> to the list of approved URLs.  To allow flash for all extensions you can possibly add chrome-extensions://*
-	-->
+<br/><br/><small>Note: zooming this page is not supported, it may cause other things to be zoomed too, such as the picker, which may be good, and it may produce funny results too, it will also cause the pop-out version of the pop-up to be zoomed, you can use this pop-out to adjust or reset zoom.  Ctrl-Zero resets the page zoom.</small>
 	
 	<br/><br/>If it doesn't seem to be working, make sure you are on an http:// or https:// page and not on the extensions site.  Refresh the page if you just enabled ColorPicker.  You have to wait until the page is fully loaded before clicking color picker.
 	
 	<br/><br/>Does not always work with flash objects, try adding wmode="opaque" to the embed code.
 	
+	<br/><br/>Click the current color box (below the preview and above the <img src="img/crosshair.png" width="19"/> button) to toggle the color chooser  <img src="img/icon19.png"/>
+	
+	<br/><br/>The preference Icon is zoomed colorpick pixel preview has this effect:  <img src="img/icon_pixelated.png"/>
+	<br/>The amount of zoom for the icon is modified by the  Fish Eye Amount setting.
+	
 	<br/><br/><big><b>Keyboard Controls</b></big><br/>
-	<b>esc</b> - exit picker<br/>
-	<b>r</b> or <b>j</b> - refresh (pick from new snapshot, useful for brief interaction)<br/>
-	<b>enter</b> - pick color (useful if you do not want to or can't press mouse)<br/>
+	<b>esc</b> - <img src="img/close.png"/> exit picker<br/>
+	<b>r</b> or <b>j</b> - <img src="img/refresh.png"/> refresh (pick from new snapshot, useful for brief interaction)<br/>
+	<b>enter</b> - <img src="img/crosshair.png" width="19"/> pick color (useful if you do not want to or can't press mouse)<br/>
 	<u><b>From Pop-up Only</b></u><br/>
 	<b>arrow keys</b> - move pixel (when picking mode is active)<br/>
-	<b>enter</b> - pick color, toggle pick mode (arrows and mouse currently incompatible)<br/>
+	<b>enter</b> - <img src="img/crosshair.png" width="19"/> pick color, toggle pick mode (arrows and mouse currently incompatible)<br/>
 	
 	<br/><br/>This software is beta and is provided as is, please provide feedback for improvements at <a href="http://vidsbee.com/Contact/">vidsbee.com/Contact</a>  Thanks!
 </div>

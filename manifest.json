@@ -16,11 +16,11 @@
       "matches": [ "*://*/*" ]
    },{
       "js": [ "installkey.user.js" ],
-      "matches": [ "http://vidsbee.com/OrderComplete.php*", "https://vidsbee.com/OrderComplete.php" ],
+      "matches": [ "http://vidsbee.com/OrderComplete.php*", "https://vidsbee.com/OrderComplete.php*" ],
       "run_at": "document_idle"
    } ],
    "background": {
-      "scripts": ["background.js"]
+      "scripts": ["options_prefs.js", "background.js"]
    },
    "options_page": "options.html",
    "icons": {
@@ -35,9 +35,9 @@
      "img/close.png"
    ],
    "permissions": [
-      "tabs", "webRequest", "webNavigation", "*://*/*"
+      "tabs", "storage", "webRequest", "webNavigation", "*://*/*"
    ],
-   "content_security_policy": "script-src 'self' https://cdn.extensionanalytics.com; object-src 'self'",
+   "content_security_policy": "script-src 'self' https://www.google.com https://checkout.google.com https://wallet.google.com https://cdn.extensionanalytics.com; object-src 'self'",
    "default_locale": "en",
-   "version": "0.0.1.50"
+   "version": "0.0.1.51"
 }

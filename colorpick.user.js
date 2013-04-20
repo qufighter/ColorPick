@@ -11,7 +11,6 @@ function(request, sender, sendResponse) {
   	setPixelPreview(request.previewURI,request.zoomed,request.hex,request.lhex)
   }else if (request.enableColorPicker){
   	borders=request.borders;
-  	scaleOffset=request.scOffset;
   	enableColorPicker()
   }else if (request.setPickerImage){
   	c.src=request.pickerImage;
