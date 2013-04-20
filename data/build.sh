@@ -26,7 +26,8 @@ echo "cleaning up"
 rm -fr build/1.0/build*
 rm -fr build/1.0/$PROG.*.zip
 rm -fr build/1.0/.git
-rm -fr build/1.0/*ff-extra.js
+rm -fr build/1.0/*-ff-extra.js
+rm -fr build/1.0/*-ff.html
 rm -fr build/1.0/chrome-api*
 
 echo "determining version number"
