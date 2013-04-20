@@ -26,6 +26,8 @@ echo "cleaning up"
 rm -fr build/1.0/build*
 rm -fr build/1.0/$PROG.*.zip
 rm -fr build/1.0/.git
+rm -fr build/1.0/*ff-extra.js
+rm -fr build/1.0/chrome-api*
 
 echo "determining version number"
 vers=`cat manifest.json | awk -f build.awk`
@@ -42,14 +44,21 @@ echo "Cleaning up temporary files ..."
 cd ..
 rm -rf build
 
-echo "the built zip is now in the current directory"
+echo "the built zip is now in the current directory (data)"
 mv "$PROG.$vers.zip" "../$PROG.$vers.zip"
 
 echo "The built zip should be up one level from your current location"
 
 cd ..
+
+mv "$PROG.$vers.zip" "../$PROG.$vers.zip"
+
+echo "The built zip should be up two levels from your current location"
+
+cd ..
+
 pwd
-echo "the built zip is now in your builds folder one level up from pwd"
+echo "the built zip is now in your builds folder two levels up from pwd"
 
 mv "$PROG.$vers.zip" "builds/$PROG.$vers.zip"
 
