@@ -1,6 +1,6 @@
 {
    "extName": {
-      "message": "Color Picker"
+      "message": "Color Pick Eye Dropper"
    },
    "extDescription": {
       "message": "A simple eye dropper tool allowing you to pick colors from webpages."
@@ -34,6 +34,12 @@
    },
    "popOutWindow": {
       "message": "Pop-Out (seperate window)"
+   },
+   "pressEnterToPick": {
+      "message": "Press Enter to Pick Color"
+   },
+   "bgPageUnavailable": {
+      "message": "Sorry - Background Page Snapshot Unavailable - Please refresh the page and/or reload Color Pick."
    },
    "emptyDesc": {
       "message": ""

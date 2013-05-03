@@ -51,6 +51,14 @@ function setColor(r){
 	if(!n||!r.hex)return;
 	hex=r.hex,isUpdating=false,rgb=null,hsv=null;
 	n.style.backgroundColor='#'+hex;
+	if(!hex){
+		if(!_ge('bgPageUnavailMsg')){
+			n.appendChild(Cr.elm('div',{'id':'bgPageUnavailMsg'},[Cr.elm(chrome.i18n.getMessage('bgPageUnavailable'))]));
+			n.style.backgroundColor='#000',n.style.color='#FFF';
+		}else _ge('bgPageUnavailMsg').style.display='block';
+	}else{
+		if(_ge('bgPageUnavailMsg'))_ge('bgPageUnavailMsg').style.display='none';
+	}
 	if(r.rgb)rgb=r.rgb;
 	if(r.hsv)hsv=r.hsv;
 	if(!isLocked){if(r.msg)n.innerHTML=r.msg;}
@@ -152,7 +160,7 @@ function keepOnScreen(){
 		n.style.top=(ly-8-n.clientHeight)+"px";
 	}
 }
-var isUpdating=false,lastTimeout=0,lx=0,ly=0;
+var isUpdating=false,lastTimeout=0,timeoutCount=0,lx=0,ly=0;
 function updateColorPreview(ev){
 	if(!isEnabled||isLocked)return;
 	var x,y,x1,y1;
@@ -161,10 +169,14 @@ function updateColorPreview(ev){
 	keepOnScreen();
 	if(isUpdating){
 		window.clearTimeout(lastTimeout);
-		lastTimeout=window.setTimeout(function(){updateColorPreview()},250);
+		lastTimeout=window.setTimeout(function(){updateColorPreview()},250),timeoutCount++;
+//		if(timeoutCount > 25){
+//			n.innerHTML=chrome.i18n.getMessage('bgPageUnavailable');
+//			n.style.backgroundColor='#000',n.style.color='#FFF';
+//		}
 		return;
 	}
-	isUpdating=true;
+	timeoutCount=0,isUpdating=true;
 	if(scal!=1){
 		x*=scal;
 		y*=scal;

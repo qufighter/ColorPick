@@ -184,7 +184,7 @@ function(request, sender, sendResponse) {
 			handleRendering()
 			dobj=getCurrentClrData();
 			dobj.movedPixel=true;
-			dobj.msg='Press Enter to Pick Color';
+			dobj.msg=chrome.i18n.getMessage('pressEnterToPick');
 			chrome.tabs.sendMessage(tabid,dobj,function(r){});
 			sendResponse({});
 		}else if (request.getPixel){

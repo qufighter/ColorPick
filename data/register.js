@@ -2,11 +2,38 @@ var suppress_connection_errors=false;
 function gel(n){
 	return document.getElementById(n);
 }
+function getEventTargetA(ev){
+	ev = ev || event;
+	var targ=(typeof(ev.target)!='undefined') ? ev.target : ev.srcElement;
+	if(targ !=null){
+	    if(targ.nodeType==3)
+	        targ=targ.parentNode;
+	}
+	if(targ.nodeName != 'A')return targ.parentNode;
+	return targ;
+}
 function preventEventDefault(ev){
 	ev = ev || event;
 	if(ev.preventDefault)ev.preventDefault();
 	ev.returnValue=false;
 	return false;
+}
+function toggle_next_sibling_display(ev){
+	var who=getEventTargetA(ev);
+	var nss=who.nextSibling.style;
+	var arr=who.firstChild;
+	var tes='block';
+	console.log(nss.name);
+	if(who.nextSibling.className=='toInline')tes='inline';
+	if(!arr || arr.nodeName != 'IMG')arr=new Image();
+	if(nss.display==tes){
+		nss.display='none';
+		arr.src='img/expand.png';
+	}else{
+		nss.display=tes;
+		arr.src='img/expanded.png';
+	}
+	return preventEventDefault(ev);
 }
 function getQueryVariable(variable) {
     var query = window.location.search.substring(1);
@@ -120,9 +147,14 @@ document.addEventListener('DOMContentLoaded', function () {
 	init()
 	gel('license_go').addEventListener('click', license_go);
 	gel('unlocker').addEventListener('click', unlockInApp);
-	if(window.location.href.indexOf('showoneclick')==-1){
-		gel('unlockExtOnly').innerHTML="Comings Soon";
-	}
+	
+	gel('expandReginfo').addEventListener('click', toggle_next_sibling_display);
+	gel('expandBuyinfo').addEventListener('click', toggle_next_sibling_display);
+	gel('expandExtinfo').addEventListener('click', toggle_next_sibling_display);
+	
+//	if(window.location.href.indexOf('showoneclick')==-1){
+//		gel('unlockExtOnly').innerHTML="Comings Soon";
+//	}
 });
 
 function performPayment(token){
@@ -159,7 +191,7 @@ function unlockInApp(ev){
 	var params=	'?name=Color+Picker+Chrome+Extension'+
 							'&description=Color+Picker+for+Google+Chrome+Sign in/Sync+-+Single+User+License'+
 							'&itemID=ColorPickChromeExt'+
-							'&price=1.00';
+							'&price=4.99';
 	var xhr = new XMLHttpRequest();
 	xhr.onreadystatechange=function(){if(xhr.readyState == 4){
 		if(xhr.status==200){

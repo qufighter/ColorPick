@@ -14,7 +14,20 @@ function preventEventDefault(ev){
 	ev.returnValue=false;
 	return false;
 }
-
+function toggle_next_sibling_display(ev){
+	who=getEventTargetA(ev);
+	var nss=who.nextSibling.style;
+	var arr=who.firstChild;
+	if(!arr || arr.nodeName != 'IMG')arr=new Image();
+	if(nss.display=='block'){
+		nss.display='none';
+		arr.src='img/expand.png';
+	}else{
+		nss.display='block';
+		arr.src='img/expanded.png';
+	}
+	return preventEventDefault(ev);
+}
 function load_syncd_options() {
 	loadSettingsFromChromeSyncStorage(function(){
 		restore_options();
@@ -303,19 +316,6 @@ function showRegistrationStatus(){
 	}else{
 		document.getElementById('cotd').style.display="none";
 	}
-}
-function toggle_next_sibling_display(ev){
-	who=getEventTargetA(ev);
-	var nss=who.nextSibling.style;
-	var arr=who.firstChild;
-	if(nss.display=='block'){
-		nss.display='none';
-		arr.src='img/expand.png';
-	}else{
-		nss.display='block';
-		arr.src='img/expanded.png';
-	}
-	return preventEventDefault(ev);
 }
 
 document.addEventListener('DOMContentLoaded', function () {
