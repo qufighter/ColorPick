@@ -47,22 +47,22 @@ function getQueryVariable(variable) {
     return false;
 }
 function set_registered(){
-	gel('license_status').innerHTML='Registered';
+	gel('license_status').innerHTML=chrome.i18n.getMessage('registered');
 	gel('license_status').className='registered';
 	gel('license_name').disabled=true;
 	gel('license_key').disabled=true;
 	gel('license_name').value = localStorage['reg_name'];
 	gel('license_key').value='************************';
-	gel('license_go').value="Modify License";
+	gel('license_go').value=chrome.i18n.getMessage('modifyLicense');
 	localStorage['reg_chk']=true;
 	gel('examine').href='http://vidsbee.com/ColorPick/Upgrade?khash='+localStorage['reg_hash'];
 }
 function set_unregistered(){
-	gel('license_status').innerHTML='Unegistered';
+	gel('license_status').innerHTML=chrome.i18n.getMessage('unregistered');
 	gel('license_status').className='unregistered';
 	gel('license_name').disabled=false;
 	gel('license_key').disabled=false;
-	gel('license_go').value="Register";
+	gel('license_go').value=chrome.i18n.getMessage('registerButton');
 	localStorage['reg_chk']=false;
 	gel('examine').href='http://vidsbee.com/ColorPick/Upgrade/';
 }
@@ -105,13 +105,13 @@ function VerifyHashToLicSrv(p_khash,p_kname){
 		if(xhr.status==200){
 			if(xhr.responseText == 'VERIFIED') keyResponse(true,khash,kname);
 			else if(xhr.responseText == 'MAXIMUM_USE_EXCEEDED'){
-				if(confirm('License may be in use on the maximum number of hosts.  Upgrading your license may resolve the issue... Launch upgrade webpage now?')){
+				if(confirm(chrome.i18n.getMessage('licenseExceeded'))){
 					window.location = 'http://vidsbee.com/ColorPick/Upgrade?khash='+localStorage['reg_hash'];
 				}
 			}else if(!suppress_connection_errors) keyResponse(false);
 		}else{
 			if(!suppress_connection_errors)
-				alert("Problem communicating with license server.  Make sure your firewall is open on port 80 or contact your system administrator.  Please try again soon!");
+				alert(chrome.i18n.getMessage('licenseComError'));
 		}
 	}};
 	xhr.open('GET', "http://vidsbee.com/key_chk.php?khash=" + khash, true);
@@ -177,10 +177,10 @@ function performPayment(token){
 						POSTBACK_ERROR - failure to acknowledge postback notification
 						INTERNAL_SERVER_ERROR - internal Google error
 					*/
-					alert('Failed: '+result.response.errorType);
+					alert(chrome.i18n.getMessage('error')+': '+result.response.errorType);
 				}
 			} else {
-				alert("Unknown failure!  Internet connectivity?");
+				alert(chrome.i18n.getMessage('inappPurchaseError'));
 			}
 		}
 	});
@@ -201,7 +201,7 @@ function unlockInApp(ev){
 			xhr.open('GET', "http://vidsbee.com/generateJWTJSON.php"+params, true);
 			xhr.send();
 		}else{
-			alert("Temporary problem with this payment method (Check your Internet connectivity), please try again later, try the buy license key method, or contact the developer sam@vidsbee.com");
+			alert(chrome.i18n.getMessage('inappComError'));
 		}
 	}};
 	xhr.open('GET', "https://vidsbee.appspot.com/"+params, true);

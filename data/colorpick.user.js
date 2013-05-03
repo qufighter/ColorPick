@@ -48,7 +48,7 @@ function setPixelPreview(pix,zoom,hex,lhex){
 	}
 }
 function setColor(r){
-	if(!n||!r.hex)return;
+	if(!n)return;
 	hex=r.hex,isUpdating=false,rgb=null,hsv=null;
 	n.style.backgroundColor='#'+hex;
 	if(!hex){
@@ -170,10 +170,12 @@ function updateColorPreview(ev){
 	if(isUpdating){
 		window.clearTimeout(lastTimeout);
 		lastTimeout=window.setTimeout(function(){updateColorPreview()},250),timeoutCount++;
-//		if(timeoutCount > 25){
-//			n.innerHTML=chrome.i18n.getMessage('bgPageUnavailable');
-//			n.style.backgroundColor='#000',n.style.color='#FFF';
-//		}
+		if(timeoutCount > 25){
+			if(!_ge('bgPageUnavailMsg')){
+				n.appendChild(Cr.elm('div',{'id':'bgPageUnavailMsg'},[Cr.elm(chrome.i18n.getMessage('bgPageUnavailable'))]));
+				n.style.backgroundColor='#000',n.style.color='#FFF';
+			}else _ge('bgPageUnavailMsg').style.display='block';
+		}
 		return;
 	}
 	timeoutCount=0,isUpdating=true;

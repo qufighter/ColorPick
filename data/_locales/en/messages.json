@@ -6,7 +6,7 @@
       "message": "A simple eye dropper tool allowing you to pick colors from webpages."
    },
    "closeAndExit": {
-      "message": "Close and Exit Color Pick Mode (esc)"
+      "message": "Close and Exit Color Pick Mode [esc]"
    },
    "hideMinimize": {
       "message": "Hide/Minimize"
@@ -39,7 +39,97 @@
       "message": "Press Enter to Pick Color"
    },
    "bgPageUnavailable": {
-      "message": "Sorry - Background Page Snapshot Unavailable - Please refresh the page and/or reload Color Pick."
+      "message": "Sorry - Background Page Snapshot Unavailable - Please refresh the page and perhaps reload Color Pick."
+   },
+   "registered": {
+      "message": "Registered"
+   },
+   "unregistered": {
+      "message": "Unregistered"
+   },
+   "approved": {
+      "message": "Approved"
+   },
+   "registerButton": {
+      "message": "Register"
+   },
+   "modifyLicense": {
+      "message": "Modify License"
+   },
+   "licenseExceeded": {
+      "message": "License may be in use on the maximum number of hosts.  Upgrading your license may resolve the issue... Launch upgrade webpage now?"
+   },
+   "licenseComError": {
+      "message": "Problem communicating with license server.  Make sure your firewall is open on port 80 or contact your system administrator.  Please try again soon!"
+   },
+   "inappComError": {
+      "message": "Temporary problem with this payment method (Check your Internet connectivity), please try again later, try the buy license key method, or contact the developer sam@vidsbee.com"
+   },
+   "inappPurchaseError": {
+      "message": "Unknown failure!  Internet connectivity?"
+   },
+   "error": {
+      "message": "Error"
+   },
+   "showdefaults": {
+      "message": "You still need to press save, defaults are showing now."
+   },
+   "saveoptions": {
+      "message": "Options Saved."
+   },
+   "loadsyncOptions": {
+      "message": "Sync Storage options have been loaded and Saved."
+   },
+   "on": {
+      "message": "On"
+   },
+   "off": {
+      "message": "Off"
+   },
+   "default": {
+      "message": "default"
+   },
+   "full": {
+      "message": "Full"
+   },
+   "maxZoom": {
+      "message": "Max Zoomed"
+   },
+   "pickEveryTime": {
+      "message": "Start picking each time colorpick button is clicked"
+   },
+   "pixelatedPreview": {
+      "message": "Zoomed preview is Pixelated"
+   },
+   "fishEye": {
+      "message": " Fish Eye Amount "
+   },
+   "EnableRGB": {
+      "message": "Show RGB"
+   },
+   "EnableHSL": {
+      "message": "Show HSL"
+   },
+   "showPreviewInContentS": {
+      "message": "Show image preview near cursor while picking"
+   },
+   "ShowRGBHSL": {
+      "message": "Show RGB and HSL on page too"
+   },
+   "contSprevZoomd": {
+      "message": "Large size on page preview"
+   },
+   "hasAgreedToLicense": {
+      "message": "Has agreed to license Terms of Use"
+   },
+   "seeTerms": {
+      "message": "See Terms of Use"
+   },
+   "usageStatistics": {
+      "message": "Gather Usage Statistics"
+   },
+   "shareClors": {
+      "message": "Color of the Day Statistics"
    },
    "emptyDesc": {
       "message": ""

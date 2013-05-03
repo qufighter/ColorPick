@@ -33,7 +33,7 @@ function load_syncd_options() {
 		restore_options();
 	});
 	var status = document.getElementById("status");
-  status.innerHTML = "Sync Storage options have been loaded and Saved.";
+  status.innerHTML = chrome.i18n.getMessage('loadsyncOptions');
   setTimeout(function() {
     status.innerHTML = "";
   }, 1750);
@@ -85,7 +85,7 @@ function save_options() {
 	
   // Update status to let user know options were saved.
   var status = document.getElementById("status");
-  status.innerHTML = "Options Saved.";
+  status.innerHTML = chrome.i18n.getMessage('saveoptions');
   setTimeout(function() {
     status.innerHTML = "";
   }, 750);
@@ -110,7 +110,7 @@ function reset_options() {
 	}
 	
 	var status = document.getElementById("status");
-  status.innerHTML = "You still need to press save, defaults are showing now.";
+  status.innerHTML = chrome.i18n.getMessage('showdefaults');
   setTimeout(function() {
     status.innerHTML = "";
   }, 3000);
@@ -302,11 +302,11 @@ chrome.runtime.onMessage.addListener(
   
 function showRegistrationStatus(){
 	if(localStorage['reg_chk']=='true' || localStorage['usageStatistics']=='true'){
-		document.getElementById('reg_status').innerHTML="Registered";
+		document.getElementById('reg_status').innerHTML=chrome.i18n.getMessage('registered');
 		document.getElementById('reg_status').className='registered';
-		if(localStorage['reg_chk']!='true') document.getElementById('reg_status').innerHTML="Approved";
+		if(localStorage['reg_chk']!='true') document.getElementById('reg_status').innerHTML=chrome.i18n.getMessage('approved');
 	}else{
-		document.getElementById('reg_status').innerHTML="Unregistered";
+		document.getElementById('reg_status').innerHTML=chrome.i18n.getMessage('unregistered');
 		document.getElementById('reg_status').className='unregistered';
 	}
 

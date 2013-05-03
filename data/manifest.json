@@ -13,7 +13,7 @@
    "content_scripts": [ {
       "js": [ "Cr_min.js", "colorpick.user.js" ],
       "run_at": "document_start",
-      "matches": [ "*://*/*" ]
+      "matches": [ "*://*/*", "file:///*" ]
    },{
       "js": [ "installkey.user.js" ],
       "matches": [ "http://vidsbee.com/OrderComplete.php*", "https://vidsbee.com/OrderComplete.php*" ],
@@ -35,7 +35,7 @@
      "img/close.png"
    ],
    "permissions": [
-      "tabs", "storage", "webRequest", "webNavigation", "*://*/*"
+      "tabs", "storage", "webRequest", "webNavigation", "*://*/*", "file:///*"
    ],
    "content_security_policy": "script-src 'self' https://www.google.com https://checkout.google.com https://wallet.google.com https://cdn.extensionanalytics.com; object-src 'self'",
    "default_locale": "en",
