@@ -129,6 +129,12 @@ function ssf(ev){
 		newImage()//some delay required OR it won't update
 	},10);
 }
+function getBase64Image(im) {
+  var canvas = Cr.elm("canvas",{width:im.width,height:im.height});
+  var ctx = canvas.getContext("2d");
+  ctx.drawImage(im, 0, 0);
+  return canvas.toDataURL("image/png");
+}
 function enableColorPicker(){
 	chrome.runtime.sendMessage({reportingIn:true}, function(response) {
 		//allows us to detect if the script is running from the bg
@@ -140,6 +146,19 @@ function enableColorPicker(){
 		window.addEventListener('scroll',ssf);
 		window.addEventListener('resize',ssf);
 		window.addEventListener('keyup',wk);//removed through here
+		if(window.location.href.indexOf('file://')==0){
+			var im = new Image();
+			im.onload=function(){
+				//console.log(getBase64Image(im));
+				x=window.innerWidth;
+				y=window.innerHeight;
+				scal=document.width / document.documentElement.clientWidth;
+				if(isNaN(scal)||!scal)scal=(outerWidth-scaleOffset)/innerWidth;
+				x*=scal,y*=scal;
+				chrome.runtime.sendMessage({setImage:getBase64Image(im),_x:x,_y:y}, function(response){});
+			}
+		  im.src=window.location.href;
+		}
 	}
 	if(!isEnabled){
 		n.style.display="none";
@@ -210,8 +229,7 @@ function newImage(){
 	scal=document.width / document.documentElement.clientWidth;
 	if(isNaN(scal)||!scal)scal=(outerWidth-scaleOffset)/innerWidth;
 	//scal=document.width / document.body.clientWidth;
-	x*=scal;
-	y*=scal;
+	x*=scal,y*=scal;
 	setTimeout(function(){
 		chrome.runtime.sendMessage({newImage:true,_x:x,_y:y}, function(response){
 			isMakingNew=false;//perhaps we wait unitl it's really 'new'
