@@ -396,7 +396,7 @@ function selectSelfText(ev){
 
 var licf=false,lhei=10;
 function checkForLicense(){
-	
+	return;
 	//if(document.getElementById('pre').src.indexOf('error') < 0)//< pre no longer exists
 		document.getElementById('unreg_msg').style.display="block";
 	
