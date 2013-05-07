@@ -227,11 +227,11 @@ function(request, sender, sendResponse) {
 				}else if(tabURL.indexOf('http://vidzbigger.com/anypage.php')!=0){
   				window.setTimeout(function(){
   					if(!isCurrentEnableReady){
-  						//console.log('detecting image or non supported page '+tabURL)
-
-							chrome.runtime.sendMessage({greeting: "error_picker",errno:1}, function(response) {
-  								//console.log('disabled!');
-  						});
+							if(tabURL.indexOf('file://')==0){
+								chrome.runtime.sendMessage({greeting: "error_picker",errno:2}, function(response) {});
+							}else{
+								chrome.runtime.sendMessage({greeting: "error_picker",errno:1}, function(response) {});
+							}
   					}
   				},560);//we expect to hear back from the content script by this time or something is wrong... and we need to use an iframe
 			  }
