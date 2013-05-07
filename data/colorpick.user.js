@@ -146,19 +146,6 @@ function enableColorPicker(){
 		window.addEventListener('scroll',ssf);
 		window.addEventListener('resize',ssf);
 		window.addEventListener('keyup',wk);//removed through here
-		if(window.location.href.indexOf('file://')==0){
-			var im = new Image();
-			im.onload=function(){
-				//console.log(getBase64Image(im));
-				x=window.innerWidth;
-				y=window.innerHeight;
-				scal=document.width / document.documentElement.clientWidth;
-				if(isNaN(scal)||!scal)scal=(outerWidth-scaleOffset)/innerWidth;
-				x*=scal,y*=scal;
-				chrome.runtime.sendMessage({setImage:getBase64Image(im),_x:x,_y:y}, function(response){});
-			}
-		  im.src=window.location.href;
-		}
 	}
 	if(!isEnabled){
 		n.style.display="none";

@@ -155,15 +155,6 @@ function(request, sender, sendResponse) {
 		}
 		if(request.setPreview){
 			 sendResponse({});//not handled by this listener
-		}else if (request.setImage){
-			imageDataIsRendered=false;
-			pim.src=request.setImage;
-			mcan.width = request._x;
-			mcan.height = request._y;
-			ctx = mcan.getContext("2d");
-			ctx.clearRect(0,0,wid,hei);
-			handleRendering()
-			sendResponse({});
 		}else if (request.newImage){
 			wid=request._x;
 			hei=request._y;
