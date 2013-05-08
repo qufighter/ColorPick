@@ -223,7 +223,7 @@ function(request, sender, sendResponse) {
 			  chrome.tabs.sendMessage(tab.id, {enableColorPicker:true,borders:borderValue}, function(response) {
 			  });
 			  
-			  if(tabURL.indexOf('https://chrome.google.com/extensions/')==0 ||tabURL.indexOf('chrome')==0 ||tabURL.indexOf('about')==0 ){
+			  if(tabURL.indexOf('https://chrome.google.com')==0 ||tabURL.indexOf('chrome')==0 ||tabURL.indexOf('about')==0 ){
 						//console.log( 'Unsupported page type :/');
 						chrome.runtime.sendMessage({greeting: "error_picker",errno:0}, function(response) {
 								//console.log('disabled!');
