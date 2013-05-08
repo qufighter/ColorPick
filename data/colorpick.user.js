@@ -84,7 +84,7 @@ function picked(){
 		isLocked=false;
 		n.innerHTML=' ';
 	}else{
-		chrome.runtime.sendMessage({setColor:true}, function(response){if(response.docopy)document.execCommand('copy', false, null);});
+		chrome.runtime.sendMessage({setColor:true}, function(response){});
 		isLocked=true;
 		setDisplay();
 	}

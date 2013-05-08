@@ -198,8 +198,12 @@ function(request, sender, sendResponse) {
 			localStorage['colorPickHistory']+="#"+curentHex;
 			chrome.runtime.sendMessage({historypush: true}, function(response) {
 					//console.log('disabled!');
-			});		
-			sendResponse({docopy:autocopyhex});
+			});
+			sendResponse();
+			if(autocopyhex){
+				var n=document.createElement('input');document.body.appendChild(n);
+				n.value=curentHex;n.select();document.execCommand('copy');n.parentNode.removeChild(n);
+			}
 		}else if(request.reportingIn){
 			isCurrentEnableReady=true;
 			 
