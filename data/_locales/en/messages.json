@@ -119,6 +119,9 @@
    "contSprevZoomd": {
       "message": "Large size on page preview"
    },
+   "autocopyhex": {
+      "message": "Attempt auto-copy the hex to the clipboard"
+   },
    "hasAgreedToLicense": {
       "message": "Has agreed to license Terms of Use"
    },

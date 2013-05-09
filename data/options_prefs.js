@@ -16,6 +16,8 @@ pOptions["EnableHSL"]={def:true,ind:0,name:chrome.i18n.getMessage('EnableHSL'),c
 pOptions["showPreviewInContentS"]={def:false,ind:0,name:chrome.i18n.getMessage('showPreviewInContentS')};
 pOptions["ShowRGBHSL"]={def:false,ind:1,name:chrome.i18n.getMessage('ShowRGBHSL')};
 pOptions["contSprevZoomd"]={def:true,ind:1,name:chrome.i18n.getMessage('contSprevZoomd')};
+pOptions["autocopyhex"]={def:false,ind:0,name:chrome.i18n.getMessage('autocopyhex')};
+
 //pAdvOptions["customCalibration"]={def:false,ind:0,name:'Enable the defunct calibration link above.'};
 pAdvOptions["usePNG"]={def:true,ind:0,name:'Use PNG quality when available'};
 pAdvOptions["useCSSValues"]={def:true,ind:0,name:'Use CSS values for RGB/HSL'};
@@ -23,7 +25,6 @@ pAdvOptions["iconIsPreview"]={def:false,ind:0,name:'Use icon badge square color 
 pAdvOptions["appleIcon"]={def:false,ind:0,name:'Use Apple Digital Color Meter logo ',img:'img/apple/icon16.png'};
 pAdvOptions["iconIsBitmap"]={def:false,ind:0,name:'Icon is zoomed colorpick pixel preview ',img:'img/icon_pixel.png'};
 pAdvOptions["resetIcon"]={def:true,ind:1,name:'Back to normal icon when done'};
-pAdvOptions["autocopyhex"]={def:false,ind:0,name:'Attempt auto-copy the hex to the clipboard'};
 pAdvOptions["bbackgroundColor"]={def:'#FFF',ind:0,name:'Popup Background Color'};
 pAdvOptions["usePrevColorBG"]={def:false,ind:1,name:'Use Previous Color for Background Instead'};
 pAdvOptions["showPreviousClr"]={def:true,ind:0,name:'Show Split color Preview with Previous Color'};
