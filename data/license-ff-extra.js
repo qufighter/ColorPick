@@ -1,4 +1,4 @@
-DESC_INCL='options.js ';
+DESC_INCL='license.js ';
 firefoxChromeApi.setResponseIDbase(3000);
 
 function ff_createDOM(){
@@ -19,10 +19,20 @@ function ff_createDOM(){
 			preventEventDefault(ev);
 		});
 	}
-	if(document.getElementById('register_link')){
-		document.getElementById('register_link').addEventListener('click',function(ev){
+	if(document.getElementById('btn_register')){
+		document.getElementById('btn_register').addEventListener('click',function(ev){
 			self.port.emit('show_popup','REGISTER_SCREEN');
 			preventEventDefault(ev);
+		});
+	}
+	if(document.getElementById('btn_agree')){
+		document.getElementById('btn_agree').addEventListener('click',function(ev){
+			self.port.emit('destroyPopupSoon');
+		});
+	}
+	if(document.getElementById('btn_try')){
+		document.getElementById('btn_try').addEventListener('click',function(ev){
+			self.port.emit('destroyPopupSoon');
 		});
 	}
 }
@@ -38,10 +48,7 @@ function checkResourcesReady(){
 checkResourcesReady();
 
 
-function sendReloadPrefs(){
-	var m_prefs={};
-	for(var i in localStorage){
-		m_prefs[i]=localStorage[i];
-	}
-	chrome.extension.sendRequest({reloadprefs: true,prefs:m_prefs}, function(response) { });
-}
+
+//gel('btn_agree').addEventListener('click', license_agree);
+//gel('btn_try').addEventListener('click', license_try);
+//gel('btn_register').addEventListener('click', license_register);

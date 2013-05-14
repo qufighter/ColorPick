@@ -1,0 +1,36 @@
+body{font-family:sans-serif;}
+#regDiv{
+	width:500px;
+	text-align:right;
+	margin-top:3px;
+}
+#regDiv input{
+	width:400px;
+}
+#license_go{
+	position:relative;left:100px;
+}
+#loading{position:relative;left:100px;display:none;}
+.registered{color:#080;font-weight:bold;}
+.unregistered{color:#F00;font-weight:bold;}
+.rounded{
+	display:inline-block;
+	text-align:center;
+	border:2px solid #333;
+	text-decoration:none;
+	padding:6px;margin:3px;
+	border-radius: 8px;
+	background: -webkit-linear-gradient(top, #f6f8f9 0%,#e5ebee 50%,#d7dee3 51%,#f5f7f9 100%);
+	text-shadow:white 1px 1px 3px;
+	color:black;
+	box-shadow:black 1px 1px 2px;
+	position:relative;
+}
+.rounded:hover{
+	text-shadow:#AAA 1px 1px 2px;
+	box-shadow:black 2px 2px 3px;
+}
+.logod img{vertical-align:middle;}
+h2 .subh{font-size:12px;position:relative;}
+a{text-decoration:none;color:blue;}
+a:hover{text-decoration:underline;}

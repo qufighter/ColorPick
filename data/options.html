@@ -1,94 +1,9 @@
 <html>
-<head><title>ColorPicker Options</title>
-<style>
-	label{display:block;}
-	body{font-family:sans-serif;margin:20px;}
-	#logo{float:left;margin-right:10px;}
-	h3{margin:4px;}
-	a{text-decoration:none;color:blue;}
-	a:hover{text-decoration:underline;}
-	label{padding:5px 5px 5px 5px;}
-	label:hover{background-color:#DDD;}
-	#shoadvanc{padding:5px 5px 5px 5px;display:block;width:400px;}
-	#shoadvanc:hover{background-color:#DDD;}
-	#req_win, #req_mac{display:none;}
-	.rounded{
-		border:2px solid #AAA;
-		text-decoration:none;
-		padding:6px;margin:3px;
-		-moz-border-radius: 8px;
-		border-radius: 8px;
-		background-color:#9A9A9A;
-		text-shadow:black 1px 1px 3px;
-		color:white;
-		box-shadow:black 2px 2px 2px;
-	}
-	.rounded:hover{
-		text-shadow:black 1px 1px 2px;
-		box-shadow:black 1px 1px 2px;
-	}
-	.registered{color:#080;font-weight:bold;}
-	.unregistered{color:#F00;font-weight:bold;}
-	#history{position:relative;}
-	#cotd{display:none;}
-	#options{width:400px;}
-	#adv_options{
-		border:1px solid #888;
-		padding:15px;
-	}
-	#status{display:block;height:30px;padding:5px;}
-</style>
+<head><title>Color Pick Options</title>
+<link href="options.css" rel="stylesheet" type="text/css">
+<script src="Cr_min.js"></script>
 <script src="options_prefs.js"></script>
 <script src="options.js"></script>
 </head>
-<body>
-
-<div style="position:relative;width:399px">
-	<h3><img src="img/icon48.png" style="float:left;margin-right:10px;" /> 
-		<a href="https://chrome.google.com/webstore/detail/color-picker/ohcpnigalekghcmgcdcenkpelffpdolg" target="_blank">Color Pick Eye Dropper</a>
-		
-		<br/><a href="register.html"><span id="reg_status"></span></a><br/><br/>
-	</h3>
-
-<br/>
-
-<div id="options">
-	
-</div>
-
-<a href="#" id="shoadvanc"><img src="img/expand.png"/> Advanced Options</a><div id="adv_options" style="display:none;">
-	<button id="bload">Fetch settings from Google Account Sync Storage</button>
-	<!--<a style="font-size:9px;" href="calibrate.html" title="(defunct) Use this to allow normal browser level scaling of the page while you sample colors">Calibrate Theme Scale</a><br/>-->
-	<!-- advanced -->
-</div>
-
-<button id="bsave">Save Options</button> <button id="defa">Show Defaults</button>
-
-
-<span id="status"></span> &nbsp; 
-
-<div id="cotd">
-Color of the day<br/>
-<iframe id="ifcotd" src="about:blank" style="width:100px;height:40px;border:none;overflow:hidden;" scrolling="no"></iframe>
-</div>
-
-
-<!--
-<br/>Making money using ColorPick? <a href="http://www.vidzbigger.com/index.php?v=donate&colorpick=true&amount=5.00#donate">Donate</a>
--->
-<a href="license.html?wide=1">Terms of Use</a>
-| <a href="desktop_app.html">Desktop Color Pick!</a>
-| <a href="help.html"">Help Info</a>
-
-
-<h4>History <a href="#" id="clhist" style="font-size:10px;">clear</a></h4>
-<div id="history" style="width:399px;"></div>
-
-<!--(Dissable <b>Flash approximate Precision during Page Zoom</b>, if you are using this calibrate, as calibrate is more accurate and once only)-->
-
-<br/>Color Pick Eye Dropper &copy; <a target="_blank" href="http://vidsbee.com/ColorPick/">Vidsbee.com</a>
-</div>
-
-
-</body>
+<body></body>
 </html>

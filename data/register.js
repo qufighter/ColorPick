@@ -23,7 +23,6 @@ function toggle_next_sibling_display(ev){
 	var nss=who.nextSibling.style;
 	var arr=who.firstChild;
 	var tes='block';
-	console.log(nss.name);
 	if(who.nextSibling.className=='toInline')tes='inline';
 	if(!arr || arr.nodeName != 'IMG')arr=new Image();
 	if(nss.display==tes){
@@ -108,10 +107,12 @@ function VerifyHashToLicSrv(p_khash,p_kname){
 				if(confirm(chrome.i18n.getMessage('licenseExceeded'))){
 					window.location = 'http://vidsbee.com/ColorPick/Upgrade?khash='+localStorage['reg_hash'];
 				}
+				gel('loading').style.display='none';
 			}else if(!suppress_connection_errors) keyResponse(false);
 		}else{
 			if(!suppress_connection_errors)
 				alert(chrome.i18n.getMessage('licenseComError'));
+			gel('loading').style.display='none';
 		}
 	}};
 	xhr.open('GET', "http://vidsbee.com/key_chk.php?khash=" + khash, true);
@@ -143,7 +144,109 @@ function license_go(){
 	checkKey();
 	
 }
-document.addEventListener('DOMContentLoaded', function () {
+
+function createDOM(){
+Cr.elm("div",{id:"mainbox"},[
+	Cr.elm("h2",{},[
+		Cr.elm("img",{src:"img/icon32.png",align:"bottom"}),
+		Cr.txt("Color Picker for Google Chrome"),
+		Cr.elm("br"),
+		Cr.txt(" "),
+		Cr.elm("span",{class:"subh",style:"left:42px;"},[
+			Cr.ent("&copy; Vidsbee.com by Sam Larison")
+		])
+	]),
+	Cr.txt("Color Pick is an Amazing Eye Dropper that allows precise selection of color values through it's one-of-a-kind zoomed preview!"),
+	Cr.elm("h3",{},[
+		Cr.txt("Register Color Picker")
+	]),
+	Cr.elm("div",{id:"license_status"},[
+		Cr.txt("Enter License")
+	]),
+	Cr.elm("div",{id:"regDiv"},[
+		Cr.txt("Name: "),
+		Cr.elm("input",{type:"text",id:"license_name"}),
+		Cr.elm("br"),
+		Cr.txt("License Key: "),
+		Cr.elm("input",{type:"text",id:"license_key"})
+	]),
+	Cr.elm("input",{type:"button",id:"license_go",value:"Register"}),
+	Cr.txt(" "),
+	Cr.elm("img",{src:"img/loading.gif",id:"loading"}),
+	Cr.elm("a",{href:"javascript:;",id:"expandReginfo"},[
+		Cr.elm("img",{src:"img/expand.png"})
+	]),
+	Cr.elm("small",{style:"display:none;"},[
+		Cr.txt("License applies wherever else you sign into chrome."),
+		Cr.elm("br"),
+		Cr.txt("Upgrade your license; add & manage authorized hosts from the "),
+		Cr.elm("a",{target:"_blank",href:"http://vidsbee.com/ColorPick/Upgrade/",id:"examine"},[
+			Cr.txt("License Manager")
+		])
+	]),
+	Cr.elm("h3",{style:"margin-bottom:7px;"},[
+		Cr.txt("Buy ColorPick License")
+	]),
+	Cr.elm("br"),
+	Cr.elm("a",{style:"float:left;margin-right:20px;top:-10px;",class:"rounded",target:"_blank",href:"http://vidsbee.com/ColorPick/"},[
+		Cr.txt("Purchase License Key"),
+		Cr.elm("br"),
+		Cr.elm("img",{width:"130",height:"41",src:"img/paypal.png"}),
+		Cr.elm("br"),
+		Cr.elm("img",{width:"130",height:"35",src:"https://checkout.google.com/buttons/checkout.gif?merchant_id=157920074963920&w=160&h=43&style=trans&variant=text&loc=en_US"})
+	]),
+	Cr.elm("span",{style:"float:left;margin-right:12px;"},[
+		Cr.elm("a",{target:"_blank",href:"http://vidsbee.com/ColorPick/"},[
+			Cr.elm("img",{height:"50",align:"middle",src:"img/chrome.png",style:"padding-right:10px;"}),
+			Cr.elm("img",{height:"50",align:"middle",src:"img/win32.png",style:"padding-right:10px;"}),
+			Cr.elm("img",{height:"57",align:"middle",src:"img/osx.png"})
+		])
+	]),
+	Cr.elm("a",{href:"javascript:;",id:"expandBuyinfo"},[
+		Cr.elm("img",{src:"img/expand.png"})
+	]),
+	Cr.elm("small",{style:"display:none;",class:"toInline"},[
+		Cr.txt("Your color-pick license not only works here;"),
+		Cr.elm("br"),
+		Cr.txt("The same license also registers the color-pick desktop applications"),
+		Cr.elm("br"),
+		Cr.txt("for both Windows and OSX. "),
+		Cr.elm("a",{target:"_blank",href:"http://vidsbee.com/ColorPick/"},[
+			Cr.txt("color-pick.com")
+		]),
+		Cr.txt(" or "),
+		Cr.elm("a",{target:"_blank",href:"http://vidsbee.com/ColorPick/"},[
+			Cr.txt("vidsbee.com/ColorPick")
+		]),
+		Cr.elm("br"),
+		Cr.elm("br"),
+		Cr.txt("A button to automatically install the license will appear after purchase.")
+	]),
+	Cr.elm("h3",{style:"clear:both;position:relative;top:12px;"},[
+		Cr.txt("Unlock Extension Only")
+	]),
+	Cr.elm("div",{id:"unlockExtOnly"},[
+		Cr.elm("a",{href:"#",id:"unlocker"},[
+			Cr.elm("img",{id:"donateButtonGoogleCheckoutImage",style:"margin-top:2px;padding-top:6px;padding-bottom:0",align:"top",src:"https://checkout.google.com/buttons/checkout.gif?merchant_id=157920074963920&w=160&h=43&style=trans&variant=text&loc=en_US"})
+		]),
+		Cr.elm("a",{href:"javascript:;",id:"expandExtinfo"},[
+			Cr.elm("img",{src:"img/expand.png",align:"middle"})
+		]),
+		Cr.elm("small",{style:"display:none;"},[
+			Cr.txt("Unlock the Color Picker Google Chrome Extension without buying a license key.")
+		])
+	]),
+	Cr.elm("h3",{style:"margin-bottom:7px;"},[
+		Cr.txt("Alternative")
+	]),
+	Cr.txt("If you do not wish to purchase a license at this time,"),
+	Cr.elm("br"),
+	Cr.txt("you may still place ColorPick in registered mode by following the "),
+	Cr.elm("a",{id:"license_link",href:"license.html?wide=1"},[
+		Cr.txt("license agreement")
+	]),
+	Cr.txt(".")
+],document.body)
 	init()
 	gel('license_go').addEventListener('click', license_go);
 	gel('unlocker').addEventListener('click', unlockInApp);
@@ -151,6 +254,11 @@ document.addEventListener('DOMContentLoaded', function () {
 	gel('expandReginfo').addEventListener('click', toggle_next_sibling_display);
 	gel('expandBuyinfo').addEventListener('click', toggle_next_sibling_display);
 	gel('expandExtinfo').addEventListener('click', toggle_next_sibling_display);
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+	createDOM()
+	
 	
 //	if(window.location.href.indexOf('showoneclick')==-1){
 //		gel('unlockExtOnly').innerHTML="Comings Soon";
@@ -166,7 +274,6 @@ function performPayment(token){
 			saveSyncItemsToChromeSyncStorage();
 		},
 		'failure' : function(result) {
-			console.log("failure", result);
 			if (result && result.response) {
 				if (result.response.errorType == "PURCHASE_CANCELED") {
 					//alert('Canceled!');
@@ -182,6 +289,7 @@ function performPayment(token){
 			} else {
 				alert(chrome.i18n.getMessage('inappPurchaseError'));
 			}
+			console.log("failure", result);
 		}
 	});
 }

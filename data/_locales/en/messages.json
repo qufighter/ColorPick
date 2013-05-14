@@ -128,11 +128,14 @@
    "seeTerms": {
       "message": "See Terms of Use"
    },
+   "disableRewriting": {
+      "message": "Disable URL rewriting of affiliate links"
+   },
    "usageStatistics": {
-      "message": "Gather Usage Statistics"
+      "message": "Gather Usage Statistics (See Terms of Use)"
    },
    "shareClors": {
-      "message": "Color of the Day Statistics"
+      "message": "Color of the Day Statistics (See Terms of Use)"
    },
    "emptyDesc": {
       "message": ""

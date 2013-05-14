@@ -1,5 +1,4 @@
 var storage = chrome.storage.sync;
-var seeTerms = ' ('+chrome.i18n.getMessage('seeTerms')+')';
 var pOptions=[];
 var pAdvOptions=[];
 var pSyncItems=[];
@@ -8,15 +7,15 @@ var pSyncItems=[];
 //pOptions["hqthumbs"]={def:false,ind:1,name:'HQ Thumbnails (more ram) '};
 
 //WARNIGN you have to set defaults two places for now...
-pOptions["pickEveryTime"]={def:true,ind:0,name:chrome.i18n.getMessage('pickEveryTime')}; //default false in popup.html
-pOptions["pixelatedPreview"]={def:true,ind:0,name:chrome.i18n.getMessage('pixelatedPreview')};
-pOptions["fishEye"]={def:5,ind:1,name:chrome.i18n.getMessage('fishEye'),select:{1:'1 '+chrome.i18n.getMessage('off'),2:2,3:3,4:4,5:'5 '+chrome.i18n.getMessage('default'),6:6,7:7,8:8,9:'9 '+chrome.i18n.getMessage('full'),10:10,11:11,12:12,13:13,14:14,15:'15 '+chrome.i18n.getMessage('maxZoom')}};
-pOptions["EnableRGB"]={def:true,ind:0,name:chrome.i18n.getMessage('EnableRGB'),css:'display:inline-block;'};
-pOptions["EnableHSL"]={def:true,ind:0,name:chrome.i18n.getMessage('EnableHSL'),css:'display:inline-block;margin-left:38px;'};
-pOptions["showPreviewInContentS"]={def:false,ind:0,name:chrome.i18n.getMessage('showPreviewInContentS')};
-pOptions["ShowRGBHSL"]={def:false,ind:1,name:chrome.i18n.getMessage('ShowRGBHSL')};
-pOptions["contSprevZoomd"]={def:true,ind:1,name:chrome.i18n.getMessage('contSprevZoomd')};
-pOptions["autocopyhex"]={def:false,ind:0,name:chrome.i18n.getMessage('autocopyhex')};
+pOptions["pickEveryTime"]={def:true,ind:0}; //default false in popup.html
+pOptions["pixelatedPreview"]={def:true,ind:0};
+pOptions["fishEye"]={def:5,ind:1,select:{1:'1 '+chrome.i18n.getMessage('off'),2:2,3:3,4:4,5:'5 '+chrome.i18n.getMessage('default'),6:6,7:7,8:8,9:'9 '+chrome.i18n.getMessage('full'),10:10,11:11,12:12,13:13,14:14,15:'15 '+chrome.i18n.getMessage('maxZoom')}};
+pOptions["EnableRGB"]={def:true,ind:0,css:'display:inline-block;'};
+pOptions["EnableHSL"]={def:true,ind:0,css:'display:inline-block;margin-left:38px;'};
+pOptions["showPreviewInContentS"]={def:false,ind:0};
+pOptions["ShowRGBHSL"]={def:false,ind:1};
+pOptions["contSprevZoomd"]={def:true,ind:1};
+pOptions["autocopyhex"]={def:false,ind:0};
 
 //pAdvOptions["customCalibration"]={def:false,ind:0,name:'Enable the defunct calibration link above.'};
 pAdvOptions["usePNG"]={def:true,ind:0,name:'Use PNG quality when available'};
@@ -34,9 +33,10 @@ pAdvOptions["showActualPickTarget"]={def:false,ind:0,name:'ShowActualPickTarget 
 pAdvOptions["clrAccuracyOverPrecision"]={def:false,ind:0,name:'ColorAccuracyOverPrecision - Never scale screenshot.  Improves color accuracy sometimes (rarely) but decreases location accuracy.  Negative: possibly inaccessible page locations.'};
 //pAdvOptions["autoRedirectPickable"]={def:false,ind:0,name:'Automatically redirect to a pickable version when unavailable (no longer useful!)'};
 //pAdvOptions["redirectSameWindow"]={def:false,ind:1,name:'Use the same window (warning: you may lose form data)'};
-pOptions["hasAgreedToLicense"]={def:false,ind:0,name:chrome.i18n.getMessage('hasAgreedToLicense'),css:'display:none;'};
-//pOptions["usageStatistics"]={def:false,ind:0,name:chrome.i18n.getMessage('usageStatistics')+seeTerms};
-pOptions["shareClors"]={def:false,ind:0,name:chrome.i18n.getMessage('shareClors')+seeTerms};
+pOptions["hasAgreedToLicense"]={def:false,ind:0,css:'display:none;'};
+pOptions["disableRewriting"]={def:false,ind:0};
+pOptions["usageStatistics"]={def:false,ind:0};
+pOptions["shareClors"]={def:false,ind:0};
 pSyncItems["reg_chk"]={def:false};
 pSyncItems["reg_hash"]={def:""};
 pSyncItems["reg_name"]={def:""};

@@ -1,0 +1,38 @@
+label{display:block;}
+body{font-family:sans-serif;margin:20px;}
+#logo{float:left;margin-right:10px;}
+h3{margin:4px;}
+a{text-decoration:none;color:blue;}
+a:hover{text-decoration:underline;}
+label{padding:5px 5px 5px 5px;}
+label:hover{background-color:#DDD;}
+#shoadvanc{padding:5px 5px 5px 5px;display:block;width:400px;}
+#shoadvanc:hover{background-color:#DDD;}
+#req_win, #req_mac{display:none;}
+.rounded{
+	border:2px solid #AAA;
+	text-decoration:none;
+	padding:6px;margin:3px;
+	-moz-border-radius: 8px;
+	border-radius: 8px;
+	background-color:#9A9A9A;
+	text-shadow:black 1px 1px 3px;
+	color:white;
+	box-shadow:black 2px 2px 2px;
+}
+.rounded:hover{
+	text-shadow:black 1px 1px 2px;
+	box-shadow:black 1px 1px 2px;
+}
+.registered{color:#080;font-weight:bold;}
+.unregistered{color:#F00;font-weight:bold;}
+#history{position:relative;width:399px;}
+#cotd{display:none;}
+#options{width:400px;}
+#adv_options{
+	border:1px solid #888;
+	padding:15px;
+	display:none;
+}
+#status{display:block;height:30px;padding:5px;}
+#ifcotd{width:100px;height:40px;border:none;overflow:hidden;}

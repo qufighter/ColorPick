@@ -1,4 +1,4 @@
-DESC_INCL='options.js ';
+DESC_INCL='license.js ';
 firefoxChromeApi.setResponseIDbase(3000);
 
 function ff_createDOM(){
@@ -36,12 +36,3 @@ function checkResourcesReady(){
 	}
 }
 checkResourcesReady();
-
-
-function sendReloadPrefs(){
-	var m_prefs={};
-	for(var i in localStorage){
-		m_prefs[i]=localStorage[i];
-	}
-	chrome.extension.sendRequest({reloadprefs: true,prefs:m_prefs}, function(response) { });
-}

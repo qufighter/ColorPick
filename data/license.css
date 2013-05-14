@@ -1,0 +1,28 @@
+body{background-color:#FEE;padding:0px;margin:0px;font-family:sans-serif;}
+#container{
+	position:relative;
+	height:146px;width:146px;
+}
+#license{
+	height:106px;
+	padding:5px;
+	font-size:8pt;
+	overflow:scroll;
+	overflow-x:hidden;
+}
+#controls{
+	position:absolute;
+	bottom:0px;
+	text-align:center;
+	width:100%;
+}
+#controls input{font-size:8pt;}
+.wide #container{
+	width:506px;
+	height:556px;
+}
+.wide #license{
+	height:506px;
+	font-size:10pt;
+	border-bottom:1px solid #CCC;
+}

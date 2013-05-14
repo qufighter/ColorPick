@@ -318,7 +318,71 @@ function showRegistrationStatus(){
 	}
 }
 
-document.addEventListener('DOMContentLoaded', function () {
+function createDOM(){
+Cr.elm("div",{id:"mainbox"},[
+	Cr.elm("h3",{},[
+		Cr.elm("img",{src:"img/icon48.png",id:"logo"}),
+		Cr.elm("a",{href:"https://chrome.google.com/webstore/detail/color-picker/ohcpnigalekghcmgcdcenkpelffpdolg",target:"_blank"},[
+			Cr.txt(chrome.i18n.getMessage('extName'))
+		]),
+		Cr.elm("br",{}),
+		Cr.elm("a",{id:'register_link',href:"register.html"},[
+			Cr.elm("span",{id:"reg_status"})
+		]),
+		Cr.elm("br",{}),
+		Cr.elm("br",{})
+	]),
+	Cr.elm("br",{}),
+	Cr.elm("div",{id:"options"},[
+
+	]),
+	Cr.elm("a",{href:"#",id:"shoadvanc"},[
+		Cr.elm("img",{src:"img/expand.png"}),
+		Cr.txt(chrome.i18n.getMessage('advancedOptions'))
+	]),
+	Cr.elm("div",{id:"adv_options"},[
+		Cr.elm("button",{id:"bload"},[
+			Cr.txt(chrome.i18n.getMessage('fetchSync'))
+		])
+	]),
+	Cr.elm("button",{id:"bsave"},[
+		Cr.txt(chrome.i18n.getMessage('saveOptions'))
+	]),
+	Cr.txt(" "),
+	Cr.elm("button",{id:"defa"},[
+		Cr.txt(chrome.i18n.getMessage('showDefaults'))
+	]),
+	Cr.elm("span",{id:"status"}),
+	Cr.elm("div",{id:"cotd"},[
+		Cr.txt(chrome.i18n.getMessage('colorOfDay')),
+		Cr.elm("br",{}),
+		Cr.elm("iframe",{id:"ifcotd",src:"about:blank",scrolling:"no"})
+	]),
+	Cr.elm("a",{id:"license_link",href:"license.html?wide=1"},[
+		Cr.txt(chrome.i18n.getMessage('terms'))
+	]),
+	Cr.txt(" | "),
+	Cr.elm("a",{target:"_blank",href:"desktop_app.html"},[
+		Cr.txt(chrome.i18n.getMessage('desktopapp'))
+	]),
+	Cr.txt(" | "),
+	Cr.elm("a",{target:"_blank",href:"help.html"},[
+		Cr.txt(chrome.i18n.getMessage('help'))
+	]),
+	Cr.elm("h4",{},[
+		Cr.txt(chrome.i18n.getMessage('history')),
+		Cr.elm("a",{href:"#",id:"clhist",style:"font-size:10px;"},[
+			Cr.txt(chrome.i18n.getMessage('clear'))
+		])
+	]),
+	Cr.elm("div",{id:"history"}),
+	Cr.elm("br",{}),
+	Cr.ent(chrome.i18n.getMessage('extName')+" &copy;"),
+	Cr.elm("a",{target:"_blank",href:"http://vidsbee.com/ColorPick/"},[
+		Cr.txt("Vidsbee.com")
+	])
+],document.body)
+
 	init()
 	document.getElementById('bsave').addEventListener('click', save_options);
 	document.getElementById('defa').addEventListener('click', reset_options);
@@ -327,5 +391,8 @@ document.addEventListener('DOMContentLoaded', function () {
 	document.getElementById('shoadvanc').addEventListener('click', toggle_next_sibling_display);
 
 	document.getElementById('bload').addEventListener('click', load_syncd_options);
+}
 
+document.addEventListener('DOMContentLoaded', function () {
+	createDOM();
 });
