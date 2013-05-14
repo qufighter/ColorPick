@@ -28,14 +28,14 @@ function ff_createDOM(){
 }
 
 
+
 function checkResourcesReady(){
-	if(RSC_READY==0){
+	if(RSC_READY==0 && gotMainPrefs){
 		ff_createDOM();
 	}else{
 		setTimeout(checkResourcesReady,33);
 	}
 }
-checkResourcesReady();
 
 
 function sendReloadPrefs(){
@@ -45,3 +45,18 @@ function sendReloadPrefs(){
 	}
 	chrome.extension.sendRequest({reloadprefs: true,prefs:m_prefs}, function(response) { });
 }
+
+var gotMainPrefs=false;
+function fetchMainPrefs(){
+	chrome.extension.sendRequest({getprefs: true}, function(response) {
+		gotMainPrefs=true;
+		for(i in response.prefs){
+			localStorage[i]=response.prefs[i];
+		}
+		load_history();
+		//console.log('got resp'+response.prefs.colorPickHistory)
+	});
+}
+
+fetchMainPrefs();
+checkResourcesReady();

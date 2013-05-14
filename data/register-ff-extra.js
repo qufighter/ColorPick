@@ -25,6 +25,10 @@ function ff_createDOM(){
 			preventEventDefault(ev);
 		});
 	}
+	
+	if(document.getElementById('inapp-unlock')){
+		document.getElementById('inapp-unlock').style.display='none';
+	}
 }
 
 
@@ -36,3 +40,31 @@ function checkResourcesReady(){
 	}
 }
 checkResourcesReady();
+
+var ffxmlhttpobject={
+	url : '',
+	readyState : 4,
+	status : 0,
+	responseText : '',
+	open : function(method,url){
+		this.url=url;
+	},
+	onreadystatechange : function(){
+		
+	},
+	send : function(){
+		self.port.emit('XMLHttpRequest',this.url);
+	}
+};
+self.port.on('XMLHttpResponse', function(status,responseText){
+	ffxmlhttpobject.readyState=4;
+	ffxmlhttpobject.status=status;
+	ffxmlhttpobject.responseText=responseText;
+	ffxmlhttpobject.onreadystatechange();
+});
+function getXMLhttpObject(){
+	ffxmlhttpobject.readyState=0;
+	ffxmlhttpobject.status=0;
+	ffxmlhttpobject.responseText='';
+	return ffxmlhttpobject;
+}

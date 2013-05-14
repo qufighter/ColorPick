@@ -150,10 +150,12 @@ function clear_history(ev){
 	if(confirm("are you sure?")){
 		localStorage['colorPickHistory']='';
 		load_history();
+		sendReloadPrefs();
 	}
 }
 
 function load_history(){
+	if(!document.getElementById('history'))return;
 	if(typeof(localStorage["colorPickHistory"])=='undefined')localStorage['colorPickHistory']="";
 	var hist=localStorage['colorPickHistory'].split("#");
 	var div_history=document.getElementById('history');
@@ -292,7 +294,8 @@ function init(){
 chrome.runtime.onMessage.addListener(
   function(request, sender, sendResponse) {
     if(request.historypush){
-    	load_history();
+    	if(typeof(fetchMainPrefs)=='function')fetchMainPrefs();
+    	else load_history();
     	sendResponse({});
     }else if(request.reloadprefs){
     	restore_options();

@@ -45,6 +45,9 @@ function getQueryVariable(variable) {
     }
     return false;
 }
+function getXMLhttpObject(){
+	return new XMLHttpRequest();
+}
 function set_registered(){
 	gel('license_status').innerHTML=chrome.i18n.getMessage('registered');
 	gel('license_status').className='registered';
@@ -98,7 +101,7 @@ function VerifyHashToLicSrv(p_khash,p_kname){
 	var khash=p_khash;
 	var kname=p_kname;
 	
-	var xhr = new XMLHttpRequest();
+	var xhr = getXMLhttpObject();
 	//console.log(request.url +' '+ params);
 	xhr.onreadystatechange=function(){if(xhr.readyState == 4){
 		if(xhr.status==200){
@@ -222,21 +225,23 @@ Cr.elm("div",{id:"mainbox"},[
 		Cr.elm("br"),
 		Cr.txt("A button to automatically install the license will appear after purchase.")
 	]),
-	Cr.elm("h3",{style:"clear:both;position:relative;top:12px;"},[
-		Cr.txt("Unlock Extension Only")
-	]),
-	Cr.elm("div",{id:"unlockExtOnly"},[
-		Cr.elm("a",{href:"#",id:"unlocker"},[
-			Cr.elm("img",{id:"donateButtonGoogleCheckoutImage",style:"margin-top:2px;padding-top:6px;padding-bottom:0",align:"top",src:"https://checkout.google.com/buttons/checkout.gif?merchant_id=157920074963920&w=160&h=43&style=trans&variant=text&loc=en_US"})
+	Cr.elm("div",{id:"inapp-unlock",style:"clear:both;position:relative;top:12px;"},[
+		Cr.elm("h3",{},[
+			Cr.txt("Unlock Extension Only")
 		]),
-		Cr.elm("a",{href:"javascript:;",id:"expandExtinfo"},[
-			Cr.elm("img",{src:"img/expand.png",align:"middle"})
+		Cr.elm("div",{id:"unlockExtOnly"},[
+			Cr.elm("a",{href:"#",id:"unlocker"},[
+				Cr.elm("img",{id:"donateButtonGoogleCheckoutImage",style:"margin-top:2px;padding-top:6px;padding-bottom:0",align:"top",src:"https://checkout.google.com/buttons/checkout.gif?merchant_id=157920074963920&w=160&h=43&style=trans&variant=text&loc=en_US"})
+			]),
+			Cr.elm("a",{href:"javascript:;",id:"expandExtinfo"},[
+				Cr.elm("img",{src:"img/expand.png",align:"middle"})
+			]),
+			Cr.elm("small",{style:"display:none;"},[
+				Cr.txt("Unlock the Color Picker Google Chrome Extension without buying a license key.")
+			])
 		]),
-		Cr.elm("small",{style:"display:none;"},[
-			Cr.txt("Unlock the Color Picker Google Chrome Extension without buying a license key.")
-		])
 	]),
-	Cr.elm("h3",{style:"margin-bottom:7px;"},[
+	Cr.elm("h3",{style:"margin-bottom:7px;clear:both;"},[
 		Cr.txt("Alternative")
 	]),
 	Cr.txt("If you do not wish to purchase a license at this time,"),
@@ -300,7 +305,7 @@ function unlockInApp(ev){
 							'&description=Color+Picker+for+Google+Chrome+Sign in/Sync+-+Single+User+License'+
 							'&itemID=ColorPickChromeExt'+
 							'&price=4.99';
-	var xhr = new XMLHttpRequest();
+	var xhr = getXMLhttpObject();
 	xhr.onreadystatechange=function(){if(xhr.readyState == 4){
 		if(xhr.status==200){
 			performPayment(xhr.responseText);
