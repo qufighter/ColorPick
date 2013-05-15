@@ -47,8 +47,12 @@ function checkResourcesReady(){
 }
 checkResourcesReady();
 
-
-
-//gel('btn_agree').addEventListener('click', license_agree);
-//gel('btn_try').addEventListener('click', license_try);
-//gel('btn_register').addEventListener('click', license_register);
+function sendReloadPrefs(cb){
+	var cbf=cb;
+	if(typeof(cbf)!='function')cbf=function(){};
+	var m_prefs={};
+	for(var i in localStorage){
+		m_prefs[i]=localStorage[i];
+	}
+	chrome.extension.sendRequest({reloadprefs: true,prefs:m_prefs}, function(response) {cbf()});
+}

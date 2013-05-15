@@ -30,16 +30,18 @@ function init(){
 	}
 }
 function closeLicensePopup(closewin){
-	if(window.parent){
-		var doc=window.parent.document;
-		var dby=doc.body;
-		if(doc.getElementById('license_frame')){
-			dby.removeChild(doc.getElementById('license_frame'));
-		}else{
-			if(closewin)
-				window.close();
+	sendReloadPrefs(function(){
+		if(window.parent){
+			var doc=window.parent.document;
+			var dby=doc.body;
+			if(doc.getElementById('license_frame')){
+				dby.removeChild(doc.getElementById('license_frame'));
+			}else{
+				if(closewin)
+					window.close();
+			}
 		}
-	}
+	});
 }
 function resetAllButtonStyles(){
 	gel('btn_agree').style.border="";
@@ -53,7 +55,8 @@ function license_agree(){
 	
 	if(typeof(localStorage["usageStatistics"])=='undefined')localStorage["usageStatistics"]=false;
 	if(localStorage["usageStatistics"]=='true' && !navigator.doNotTrack){
-		localStorage.removeItem("feedbackOptOut");
+		if(localStorage.removeItem)localStorage.removeItem("feedbackOptOut");
+		else delete localStorage["feedbackOptOut"];
 	}else{
 		localStorage.feedbackOptOut = "true";
 	}

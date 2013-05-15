@@ -1,9 +1,9 @@
 {
    "extName": {
-      "message": "Color Pick Eye Dropper"
+      "message": "ColorPick Eyedropper"
    },
    "extDescription": {
-      "message": "A simple eyedropper tool allowing you to pick colors from webpages."
+      "message": "A simple eye-dropper & color-picker tool allowing you to select color values from webpages."
    },
    "closeAndExit": {
       "message": "Close and Exit Color Pick Mode [esc]"

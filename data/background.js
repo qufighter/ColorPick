@@ -77,7 +77,7 @@ function fromPrefs(){
 function defaultIcon(){
 	var iconPath='img/';
 	if(appleIcon)iconPath+='apple/';
-	if(resetIcon)chrome.browserAction.setIcon({path:chrome.extension.getURL(iconPath+'icon19.png')});//update icon (to be configurable)
+	if(resetIcon)chrome.browserAction.setIcon({path:chrome.extension.getURL(iconPath+(window.devicePixelRatio>1?'icon38.png':'icon19.png'))});//update icon (to be configurable)
 }
 
 var d=new Date();
@@ -380,8 +380,11 @@ function handleRendering(){
 	
 	lastPreviewURI = icvs.toDataURL();//the last one, large size, is cached for revisiting the menu
 
-		if(iconIsBitmap)
-		chrome.browserAction.setIcon({imageData:ictx.getImageData(startPoint-9, startPoint-9, 19, 19)});//update icon (to be configurable)
+		if(iconIsBitmap){
+			var browseIconWidth=19;
+			var browseIconHalfWidth = Math.floor(browseIconWidth*0.5);
+			chrome.browserAction.setIcon({imageData:ictx.getImageData(startPoint-browseIconHalfWidth, startPoint-browseIconHalfWidth, browseIconWidth, browseIconWidth)});
+		}
 		
 		if(iconIsPreview){
 			if(data[0]||data[1]||data[2]){

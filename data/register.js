@@ -130,6 +130,7 @@ function keyResponse(isValid,validHash,validName){
 		localStorage['reg_hash']=validHash;
 		localStorage['reg_name']=validName;
 		set_registered();
+		sendReloadPrefs();
 	}else{
 		set_unregistered();
 	}

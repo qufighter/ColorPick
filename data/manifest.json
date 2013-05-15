@@ -7,7 +7,7 @@
         "19": "img/icon19.png",
         "38": "img/icon38.png"
       },
-      "default_title": "Color Picker",
+      "default_title": "__MSG_extName__",
       "default_popup": "popup.html"
    },
    "content_scripts": [ {

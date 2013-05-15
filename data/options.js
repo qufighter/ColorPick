@@ -76,7 +76,8 @@ function save_options() {
 	
 	if(typeof(localStorage["usageStatistics"])=='undefined')localStorage["usageStatistics"]=false;
 	if(localStorage["usageStatistics"]=='true' && !navigator.doNotTrack){
-		localStorage.removeItem("feedbackOptOut");
+		if(localStorage.removeItem)localStorage.removeItem("feedbackOptOut");
+		else delete localStorage["feedbackOptOut"];
 	}else{
 		localStorage.feedbackOptOut = "true";
 	}

@@ -41,6 +41,16 @@ function checkResourcesReady(){
 }
 checkResourcesReady();
 
+function sendReloadPrefs(cb){
+	var cbf=cb;
+	if(typeof(cbf)!='function')cbf=function(){};
+	var m_prefs={};
+	for(var i in localStorage){
+		m_prefs[i]=localStorage[i];
+	}
+	chrome.extension.sendRequest({reloadprefs: true,prefs:m_prefs}, function(response) {cbf()});
+}
+
 var ffxmlhttpobject={
 	url : '',
 	readyState : 4,

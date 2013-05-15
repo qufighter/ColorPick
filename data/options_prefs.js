@@ -42,8 +42,10 @@ pSyncItems["reg_hash"]={def:""};
 pSyncItems["reg_name"]={def:""};
 pSyncItems["reg_inapp"]={def:false};
 
-function sendReloadPrefs(){
-	chrome.runtime.sendMessage({reloadprefs: true}, function(response) { });
+function sendReloadPrefs(cb){
+	var cbf=cb;
+	if(typeof(cbf)!='function')cbf=function(){};
+	chrome.runtime.sendMessage({reloadprefs: true}, function(response) {cbf()});
 }
 
 function chromeStorageSaveALocalStor(tosave){
