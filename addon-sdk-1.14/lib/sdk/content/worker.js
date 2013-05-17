@@ -549,6 +549,10 @@ const Worker = EventEmitter.compose({
     this._frozen = true;
   },
 
+  get unfrozen() { //sam added this
+    return !this._frozen;
+  },
+
   get url() {
     // this._window will be null after detach
     return this._window ? this._window.document.location.href : null;
