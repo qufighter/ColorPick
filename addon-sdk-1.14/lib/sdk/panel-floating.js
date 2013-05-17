@@ -80,6 +80,8 @@ const Panel = Symbiont.resolve({
       this.width = options.width;
     if ('height' in options)
       this.height = options.height;
+    if ('title' in options)
+      this.title = options.title;
     if ('contentURL' in options)
       this.contentURL = options.contentURL;
 
@@ -128,7 +130,13 @@ const Panel = Symbiont.resolve({
     let xulPanel = this._xulPanel;
     if (!xulPanel) {
       xulPanel = this._xulPanel = document.createElementNS(XUL_NS, 'panel');
-      xulPanel.setAttribute("type", "arrow");
+      //xulPanel.setAttribute("type", "arrow");
+      xulPanel.setAttribute("noautohide", "true");
+      xulPanel.setAttribute("titlebar", "normal");
+      xulPanel.setAttribute("backdrag", "true");
+      xulPanel.setAttribute("ignorekeys", "false");
+      xulPanel.setAttribute("label", this.title?this.title:"Color Pick");
+      xulPanel.setAttribute("close", "true");
 
       // One anonymous node has a big padding that doesn't work well with
       // Jetpack, as we would like to display an iframe that completely fills
