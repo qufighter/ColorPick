@@ -110,7 +110,7 @@ function feedbackParticipationOversight(){
 //888888888888888888888888888888888888888888888888888888888888888888888
 
 //globals
-var cvs,ctx;
+var ctx;
 var x,y,tabid=0,winid=0; //current pixel
 var curentHex=0,lastHex='FFF',lastLastHex='FFF';
 var lastPreviewURI=''; //potentially needs to be cleaned up an not "jump" across sites, if exit triggered from content script the message does not reach us here... (they do now)
@@ -173,7 +173,8 @@ function(request, sender, sendResponse) {
 		}else if (request.movePixel){
 			x+=(request._x);//or otherwise use the current scale
 			y+=(request._y);
-			handleRendering()
+			getNewColorData();
+			handleRendering();
 			dobj=getCurrentClrData();
 			dobj.movedPixel=true;
 			dobj.msg=chrome.i18n.getMessage('pressEnterToPick');
@@ -182,8 +183,9 @@ function(request, sender, sendResponse) {
 		}else if (request.getPixel){
 			x=request._x;
 			y=request._y;
-			handleRendering()
+			getNewColorData();
 			sendResponse(getCurrentClrData());
+			setTimeout(handleRendering,10);
 		}else if (request.setColor){
 			if(showPreviousClr){lastLastHex=lastHex;lastHex=curentHex;}
 			else lastHex='none';
@@ -257,6 +259,8 @@ function(request, sender, sendResponse) {
 						ctx.drawImage(pim,0,0,wid,hei);
 					pim.src='';
 					imageDataIsRendered=true;
+				}else{
+					pim.src='';
 				}
 			}
 			chrome.tabs.sendMessage(tabid, {disableColorPicker:true}, function(response) {});
@@ -267,56 +271,67 @@ function(request, sender, sendResponse) {
     	sendResponse({});
   
 });
-function handleRendering(){
-	cvs = mcan;
-	ctx = cvs.getContext("2d");
+function getNewColorData(){
+	ctx = mcan.getContext("2d");
+	var ox=Math.round(x),oy=Math.round(y);
+	var data = ctx.getImageData(ox, oy, 1, 1).data;
 
-	//repainting hte image should not be necessary... but wahtever
-		if(!imageDataIsRendered){
-			if(pim.complete){
-				//ctx.putImageData(getImageDataFromImage(pim), 0, 0);
-				if(clrAccuracyOverPrecision)
-					ctx.drawImage(pim,0,0);
-				else
-					ctx.drawImage(pim,0,0,wid,hei);
-				pim.src='';
-				if(showActualPickTarget){
-					setTimeout(function(){
-						chrome.tabs.sendMessage(tabid, {setPickerImage:true,pickerImage:cvs.toDataURL()}, function(response) {});
-					},10);
-				}
-				imageDataIsRendered=true;
-			}else{
-				//image not ready to render...
-				//sendResponse({}); //hourglass
-				return false;
-			}
+	if(iconIsPreview){
+		if(data[0]||data[1]||data[2]){
+			chrome.browserAction.setBadgeBackgroundColor({color:[data[0],data[1],data[2],255]})
+			chrome.browserAction.setBadgeText({text:'  '});
 		}else{
-			//ctx.putImageData(fullScreenImageData, 0, 0);	
+			chrome.browserAction.setBadgeText({text:''});
 		}
-	//page paint is either ready or finalized
+	}else{
+		chrome.browserAction.setBadgeText({text:''});
+	}
 
-	
+	curentHex=RGBtoHex(data[0],data[1],data[2]);
+	clhsv=rgb2hsl(data[0],data[1],data[2]);
+	clrgb.r=data[0],clrgb.g=data[1],clrgb.b=data[2];
+}
+function handleRendering(){
+	ctx = mcan.getContext("2d");
+
+	if(!imageDataIsRendered){
+		if(pim.complete){
+			//ctx.putImageData(getImageDataFromImage(pim), 0, 0);
+			if(clrAccuracyOverPrecision)
+				ctx.drawImage(pim,0,0);
+			else
+				ctx.drawImage(pim,0,0,wid,hei);
+			pim.src='';
+			if(showActualPickTarget){
+				setTimeout(function(){
+					chrome.tabs.sendMessage(tabid, {setPickerImage:true,pickerImage:mcan.toDataURL()}, function(response) {});
+				},10);
+			}
+			imageDataIsRendered=true;
+		}else{
+			//image not ready to render...
+			//sendResponse({}); //hourglass
+			return false;
+		}
+	}
+
+// under some circumstances we do not need to render anything....
+// toImplement: popupIsShowing
+//	if(!iconIsBitmap && !showPreviewInContentS && !popupIsShowing){
+//		return;
+//	}
 
 	var icvs = document.createElement('canvas');//icon canvas
-	var sx,sy;
 	var totalWidth = 150;//750
 	icvs.width=totalWidth
 	icvs.height=totalWidth
 	var ictx = icvs.getContext("2d");
 	var startPoint=Math.floor(totalWidth/2);
-	
-	//strangest thing, the image clientWidth is different size on background page
-	var ox=x;//(x/wid)*(wid-16);
-	var oy=y;//(y/hei)*(hei-16);
-	sx=ox-startPoint;
-	sy=oy-startPoint;
-	var data = ctx.getImageData(ox, oy, 1, 1).data;
-	
-	//var img=ctx.getImageData(sx, sy, totalWidth, totalWidth);
+	var ox=Math.round(x),oy=Math.round(y);
+
 	if(!pixelatedPreview){
 		ictx.scale(2,2);
-		ictx.drawImage(cvs,-ox+(startPoint/2),-oy+(startPoint/2));//application of scale
+		ictx.drawImage(mcan,-ox+(startPoint/2),-oy+(startPoint/2));//application of scale
 		ictx.scale(0.5,0.5);
 		
 		ictx.fillStyle = "rgba(0,0,0,0.3)";//croshair
@@ -326,7 +341,7 @@ function handleRendering(){
 		ictx.fillRect(0,startPoint, totalWidth, 1);
 		
 	}else{
-		ictx.drawImage(cvs,-ox+(startPoint),-oy+(startPoint));
+		ictx.drawImage(mcan,-ox+(startPoint),-oy+(startPoint));
 		var smi,spi,mp=fishEye;
 		//xx,yy
 		for(var i=0;i<startPoint;i+=2){
@@ -346,9 +361,9 @@ function handleRendering(){
 													0,-1,totalWidth,smi+1);
 
 			if(i==0){
-				var data = ictx.getImageData(startPoint, startPoint, 1, 1).data;//notarget
+				var dat = ictx.getImageData(startPoint, startPoint, 1, 1).data;//notarget
 //				ictx.fillStyle = "rgba("+(255-data[0])+","+(255-data[1])+","+(255-data[2])+",0.9)";
-				var d=data[0]+data[1]+data[2];
+				var d=dat[0]+dat[1]+dat[2];
 				if(d > 192) ictx.fillStyle = "rgba(30,30,30,0.8)";
 				else ictx.fillStyle = "rgba(225,225,225,0.8)";
 			}else ictx.fillStyle = "rgba(255,255,255,0.4)";
@@ -380,55 +395,21 @@ function handleRendering(){
 	
 	lastPreviewURI = icvs.toDataURL();//the last one, large size, is cached for revisiting the menu
 
-		if(iconIsBitmap){
-			var browseIconWidth=19;
-			var browseIconHalfWidth = Math.floor(browseIconWidth*0.5);
-			chrome.browserAction.setIcon({imageData:ictx.getImageData(startPoint-browseIconHalfWidth, startPoint-browseIconHalfWidth, browseIconWidth, browseIconWidth)});
-		}
-		
-		if(iconIsPreview){
-			if(data[0]||data[1]||data[2]){
-				chrome.browserAction.setBadgeBackgroundColor({color:[data[0],data[1],data[2],255]})
-				chrome.browserAction.setBadgeText({text:'  '});
-			}else{
-				chrome.browserAction.setBadgeText({text:''});
-			}
-		}else{
-			chrome.browserAction.setBadgeText({text:''});
-		}
+	if(iconIsBitmap){
+		var browseIconWidth=(window.devicePixelRatio>1?38:19);
+		var browseIconHalfWidth = Math.floor(browseIconWidth*0.5);
+		chrome.browserAction.setIcon({imageData:ictx.getImageData(startPoint-browseIconHalfWidth, startPoint-browseIconHalfWidth, browseIconWidth, browseIconWidth)});
+	}
 
-		//couls also jsut send this back with the hex code later, not sure! (rather not slow that down but who gets there first?/)
-		if(showPreviewInContentS){
-//					chrome.tabs.getSelected(null, function(tab) {
-//					  chrome.tabs.sendMessage(tab.id, {setPixelPreview:true,previewURI:lastPreviewURI,zoomed:contSprevZoomd,hex:curentHex,lhex:lastHex}, function(response) {
-//				  		//preview has been sent to the contentscript in case its showing...
-//						});
-//					});
-			
-			chrome.tabs.sendMessage(tabid, {setPixelPreview:true,previewURI:lastPreviewURI,zoomed:contSprevZoomd,hex:curentHex,lhex:lastHex}, function(response) {});
+	if(showPreviewInContentS){
+		chrome.tabs.sendMessage(tabid, {setPixelPreview:true,previewURI:lastPreviewURI,zoomed:contSprevZoomd,hex:curentHex,lhex:lastHex}, function(response) {});
+	}
 
-		}
-
-	ictx=null;icvs=null;
-
-	//console.log('requesting:'+x+','+y + ' '+"#"+data[0]+" "+data[1]+" "+data[2]);
-	curentHex=RGBtoHex(data[0],data[1],data[2]);
-	clhsv=rgb2hsl(data[0],data[1],data[2]);
-	clrgb.r=data[0],clrgb.g=data[1],clrgb.b=data[2];
 	chrome.runtime.sendMessage({setPreview:true,tabi:tabid,previewURI:lastPreviewURI,hex:curentHex,lhex:lastHex,cr:clrgb.r,cg:clrgb.g,cb:clrgb.b}, function(response) {
 		//preview has been sent to the popup in case its showing...
 	});
-}
-function getImageDataFromImage(idOrElement){
-	var theImg = (typeof(idOrElement)=='string')? document.getElementById(idOrElement):idOrElement;
-	var tcvs = document.createElement('canvas');
-	tcvs.width = theImg.width;
-	tcvs.height = theImg.height;
-	var tctx = tcvs.getContext("2d");
-	tctx.drawImage(theImg,0,0);
-	var theData = tctx.getImageData(0, 0, tcvs.width, tcvs.height);
-	tctx=null;tcvs=null;
-	return theData;
+
+	ictx=null,icvs=null;
 }
 
 var pim = document.createElement('img');
