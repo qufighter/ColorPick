@@ -71,10 +71,10 @@
    "error": {
       "message": "Error"
    },
-   "showdefaults": {
+   "showndefaults": {
       "message": "You still need to press save, defaults are showing now."
    },
-   "saveoptions": {
+   "savedoptions": {
       "message": "Options Saved."
    },
    "loadsyncOptions": {
@@ -120,7 +120,7 @@
       "message": "Large size on page preview"
    },
    "autocopyhex": {
-      "message": "Attempt auto-copy the hex to the clipboard"
+      "message": "Attempt auto copy hex value to clipboard"
    },
    "hasAgreedToLicense": {
       "message": "Has agreed to license Terms of Use"
@@ -136,6 +136,69 @@
    },
    "shareClors": {
       "message": "Color of the Day Statistics (See Terms of Use)"
+   },
+   "usePNG": {
+      "message": "Use PNG quality when available"
+   },
+   "useCSSValues": {
+      "message": "Use CSS values for RGB/HSL"
+   },
+   "iconIsPreview": {
+      "message": "Use icon badge square color preview"
+   },
+   "appleIcon": {
+      "message": "Use Apple Digital Color Meter logo"
+   },
+   "iconIsBitmap": {
+      "message": "Icon is zoomed colorpick pixel preview"
+   },
+   "resetIcon": {
+      "message": "Back to normal icon when done"
+   },
+   "bbackgroundColor": {
+      "message": "Popup Background Color"
+   },
+   "usePrevColorBG": {
+      "message": "Use Previous Color for Background Instead"
+   },
+   "showPreviousClr": {
+      "message": "Show Split color Preview with Previous Color"
+   },
+   "borderValue": {
+      "message": "Borders to use (css value)"
+   },
+   "advancedOptions": {
+      "message": "Advanced Options"
+   },
+   "fetchSync": {
+      "message": "Fetch settings from Google Account Sync Storage"
+   },
+   "saveOptions": {
+      "message": "Save Options"
+   },
+   "showDefaults": {
+      "message": "Show Defaults"
+   },
+   "colorOfDay": {
+      "message": "Color of the day"
+   },
+   "terms": {
+      "message": "Terms of Use"
+   },
+   "desktopapp": {
+      "message": "Desktop Color Pick App"
+   },
+   "help": {
+      "message": "Help/Info"
+   },
+   "history": {
+      "message": "History"
+   },
+   "clear": {
+      "message": "clear"
+   },
+   "copycolorval": {
+      "message": "Copy the color value"
    },
    "emptyDesc": {
       "message": ""

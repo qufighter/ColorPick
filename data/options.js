@@ -86,7 +86,7 @@ function save_options() {
 	
   // Update status to let user know options were saved.
   var status = document.getElementById("status");
-  status.innerHTML = chrome.i18n.getMessage('saveoptions');
+  status.innerHTML = chrome.i18n.getMessage('savedoptions');
   setTimeout(function() {
     status.innerHTML = "";
   }, 750);
@@ -111,7 +111,7 @@ function reset_options() {
 	}
 	
 	var status = document.getElementById("status");
-  status.innerHTML = chrome.i18n.getMessage('showdefaults');
+  status.innerHTML = chrome.i18n.getMessage('showndefaults');
   setTimeout(function() {
     status.innerHTML = "";
   }, 3000);
@@ -171,7 +171,7 @@ function load_history(){
 	}
 	div_history.addEventListener('click',function(ev){
 		var tc=ev.srcElement.title;
-		if(tc)prompt('Copy the color value:',tc,tc);
+		if(tc)prompt(chrome.i18n.getMessage('copycolorval')+':',tc,tc);
 	},false);
 	
 	var cb=document.createElement('div');
@@ -211,6 +211,7 @@ function mmv(ev){
 function createOptions(piOptions, elemAppend){
 	//needs some compression 
 	for( i in piOptions){
+		if(!piOptions[i].name)piOptions[i].name=chrome.i18n.getMessage(i);
 		if(piOptions[i].select){
 			var l=document.createElement('label');
 			var cb=document.createElement('select');
@@ -246,6 +247,7 @@ function createOptions(piOptions, elemAppend){
 				i.setAttribute('src',t);
 				i.setAttribute('align','top');
 				i.setAttribute('width',16);
+				l.appendChild(document.createTextNode(' '));
 				l.appendChild(i);
 			}
 			if(piOptions[i] && piOptions[i].css){
