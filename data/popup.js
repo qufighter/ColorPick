@@ -259,13 +259,17 @@ function setupInjectScripts(){
 //eventually re-enable this block (removing above) - since after first install it gets us running - however
 //gotta make sure that any pre-installed version responds to testAlive first!
 	isScriptAlive=false;
-	chrome.tabs.sendMessage(tabid, {testAlive:true}, function(response) {
-		if(response&&response.result){
-			isScriptAlive=true;
+	try{
+		chrome.tabs.sendMessage(tabid, {testAlive:true}, function(response) {
+			if(response&&response.result){
+				isScriptAlive=true;
+			}
 			scriptsInjectedResult();
-		}
-	});
-	scriptAliveTimeout=setTimeout(scriptsInjectedResult,1000);
+		});
+		scriptAliveTimeout=setTimeout(scriptsInjectedResult,3000);
+	}catch(e){
+		scriptsInjectedResult();//I don't think we ever get here
+	}
 }
 function scriptsInjectedResult(){
 	clearTimeout(scriptAliveTimeout);

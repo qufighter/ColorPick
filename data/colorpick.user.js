@@ -1,10 +1,8 @@
-colorPickBlock: {
-if(document.body && document.body.getAttribute('chromeextension-color-pick.com'))break colorPickBlock;
-function bodyReady(){if(document.body){document.body.setAttribute('chromeextension-color-pick.com',true);document.removeEventListener('DOMNodeInserted',bodyReady);}else setTimeout(bodyReady,250);};setTimeout(bodyReady,250);
+var elmid1='color_pick_click_box',elmid2='ChromeExtension:Color-Pick.com';
+if(typeof(exitAndDetach)=='function')exitAndDetach();
 function _ge(n){return document.getElementById(n);}
-var n=false,c=false,hex=0,rgb=null;hsv=null;scal=1,ex=0,ey=0,isEnabled=false,isLocked=false,scaleOffset=0,borders='1px solid black',blankgif='';
-chrome.runtime.onMessage.addListener(
-function(request, sender, sendResponse) {
+var n=false,c=false,hex=0,rgb=null;hsv=null;scal=1,ex=0,ey=0,isEnabled=false,isLocked=false,scaleOffset=0,borders='1px solid black',blankgif='',msg_bg_unavail=chrome.i18n.getMessage('bgPageUnavailable');
+function reqLis(request, sender, sendResponse) {
 	if (request.testAlive){
 		//disableColorPicker();
 	}else	if (request.setPixelPreview){
@@ -22,7 +20,8 @@ function(request, sender, sendResponse) {
   	setColor(request);
   }else if (request.disableColorPicker)disableColorPicker()
   sendResponse({result:true,isPicking:!isLocked});
-});
+}
+chrome.runtime.onMessage.addListener(reqLis);
 function setPixelPreview(pix,zoom,hex,lhex){
 	var wid=75,padr=32;if(zoom)wid=150;
 	if(!_ge('cpimprev') || (rgb && !_ge('cprgbvl'))){
@@ -53,7 +52,7 @@ function setColor(r){
 	n.style.backgroundColor='#'+hex;
 	if(!hex){
 		if(!_ge('bgPageUnavailMsg')){
-			n.appendChild(Cr.elm('div',{'id':'bgPageUnavailMsg'},[Cr.elm(chrome.i18n.getMessage('bgPageUnavailable'))]));
+			n.appendChild(Cr.elm('div',{'id':'bgPageUnavailMsg'},[Cr.elm(msg_bg_unavail)]));
 			n.style.backgroundColor='#000',n.style.color='#FFF';
 		}else _ge('bgPageUnavailMsg').style.display='block';
 	}else{
@@ -84,10 +83,18 @@ function picked(){
 		isLocked=false;
 		n.innerHTML=' ';
 	}else{
-		chrome.runtime.sendMessage({setColor:true}, function(response){});
+		try{
+			chrome.runtime.sendMessage({setColor:true}, function(response){});
+		}catch(e){
+			exitAndDetach();
+		}
 		isLocked=true;
 		setDisplay();
 	}
+}
+function exitAndDetach(){
+	chrome.runtime.onMessage.removeListener(reqLis);
+	disableColorPicker();
 }
 function dissableColorPickerFromHere(){
 	var disableTimeout=setTimeout(disableColorPicker,500)
@@ -101,10 +108,13 @@ function disableColorPicker(){
 	window.removeEventListener('scroll',ssf);
 	window.removeEventListener('resize',ssf);
 	window.removeEventListener('keyup',wk);
-	document.body.removeChild(c);
-	document.body.removeChild(n);
-	c=false,n=false;
-	document.body.style.cursor='default';
+	c=_ge(elmid1),n=_ge(elmid2);
+	if(document.body){
+		if(c)document.body.removeChild(c);
+		if(n)document.body.removeChild(n);
+		c=false,n=false;
+		document.body.style.cursor='default';
+	}
 }
 function wk(ev){
 	if(!isEnabled)return;
@@ -140,8 +150,8 @@ function enableColorPicker(){
 		//allows us to detect if the script is running from the bg
 	});
 	if(!n){
-		c=Cr.elm('img',{id:'color_pick_click_box',src:blankgif,style:'position:fixed;top:0px;left:0px;overflow:hidden;z-index:2147483647;',event:['click',picked,true]},[],document.body);
-		n=Cr.elm('div',{id:'ChromeExtension:Color-Pick.com',style:'position:fixed;min-width:30px;max-width:300px;min-height:30px;border-radius:4px;box-shadow:2px 2px 2px #666;border:'+borders+';z-index:2147483647;cursor:default;padding:4px;'},[Cr.txt(' ')],document.body);
+		c=Cr.elm('img',{id:elmid1,src:blankgif,style:'position:fixed;top:0px;left:0px;overflow:hidden;z-index:2147483647;',event:['click',picked,true]},[],document.body);
+		n=Cr.elm('div',{id:elmid2,style:'position:fixed;min-width:30px;max-width:300px;min-height:30px;border-radius:4px;box-shadow:2px 2px 2px #666;border:'+borders+';z-index:2147483647;cursor:default;padding:4px;'},[Cr.txt(' ')],document.body);
 		document.addEventListener('mousemove',mmf);
 		window.addEventListener('scroll',ssf);
 		window.addEventListener('resize',ssf);
@@ -169,16 +179,15 @@ function keepOnScreen(){
 var isUpdating=false,lastTimeout=0,timeoutCount=0,lx=0,ly=0;
 function updateColorPreview(ev){
 	if(!isEnabled||isLocked)return;
-	var x,y,x1,y1;
-	x=ex-window.pageXOffset,y=ey-window.pageYOffset;
+	var x=ex-window.pageXOffset,y=ey-window.pageYOffset;
 	lx=x,ly=y;
 	keepOnScreen();
 	if(isUpdating){
 		window.clearTimeout(lastTimeout);
-		lastTimeout=window.setTimeout(function(){updateColorPreview()},250),timeoutCount++;
-		if(timeoutCount > 25){
+		lastTimeout=window.setTimeout(function(){updateColorPreview()},500),timeoutCount++;
+		if(timeoutCount > 50){
 			if(!_ge('bgPageUnavailMsg')){
-				n.appendChild(Cr.elm('div',{'id':'bgPageUnavailMsg'},[Cr.elm(chrome.i18n.getMessage('bgPageUnavailable'))]));
+				n.appendChild(Cr.elm('div',{'id':'bgPageUnavailMsg'},[Cr.elm(msg_bg_unavail)]));
 				n.style.backgroundColor='#000',n.style.color='#FFF';
 			}else _ge('bgPageUnavailMsg').style.display='block';
 		}
@@ -189,9 +198,13 @@ function updateColorPreview(ev){
 		x*=scal;
 		y*=scal;
 	}
-	chrome.runtime.sendMessage({getPixel:true,_x:x,_y:y}, function(response){
-		setColor(response);
-	});
+//	try{
+		chrome.runtime.sendMessage({getPixel:true,_x:x,_y:y}, function(response){
+			setColor(response);
+		});
+//	}catch(e){
+//		exitAndDetach();
+//	}
 }
 var isMakingNew=false,lastNewTimeout=0;
 function newImage(){
@@ -220,8 +233,9 @@ function newImage(){
 	setTimeout(function(){
 		chrome.runtime.sendMessage({newImage:true,_x:x,_y:y}, function(response){
 			isMakingNew=false;//perhaps we wait unitl it's really 'new'
-			window.setTimeout(function(){c.style.display="block";n.style.display="block";document.body.style.cursor='url('+chrome.extension.getURL('img/crosshair.png')+') 16 16,crosshair';updateColorPreview();},500)
+			//window.setTimeout(function(){
+				c.style.display="block";n.style.display="block";document.body.style.cursor='url('+chrome.extension.getURL('img/crosshair.png')+') 16 16,crosshair';updateColorPreview();
+			//},500)
 		});
 	},500);
 }
-}//end block

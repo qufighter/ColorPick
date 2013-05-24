@@ -121,20 +121,6 @@ var clhsv={h:0,s:0,v:0}
 var isCurrentEnableReady=false;
 var wid, hei;
 
-function attemptReinitPicker(tabid){
-	var tid=tabid;
-	chrome.tabs.get(tabid, function(tab) {
-		if(tab.status=='complete'){
-			chrome.runtime.sendMessage({greeting: "re_init_picker"}, function(response) {
-				//console.log('enabled!');
-			});
-		}else{
-			setTimeout(function(){attemptReinitPicker(tid)},200);
-		}
-	})
-	
-}
-
 function getCurrentClrData(){
 	var dobj={hex:curentHex}
 	if(ShowRGBHSL){
