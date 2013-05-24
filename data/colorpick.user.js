@@ -132,12 +132,14 @@ function mmf(ev){
 	ey=ev.pageY;
 	updateColorPreview()
 }
+
 function ssf(ev){
 	if(!isEnabled)return;
 	n.style.display="none";c.style.display="none";//redundent?
-	window.setTimeout(function(){
+	window.clearTimeout(lastNewTimeout);
+	lastNewTimeout=window.setTimeout(function(){
 		newImage()//some delay required OR it won't update
-	},10);
+	},250);
 }
 function getBase64Image(im) {
   var canvas = Cr.elm("canvas",{width:im.width,height:im.height});
@@ -210,8 +212,8 @@ var isMakingNew=false,lastNewTimeout=0;
 function newImage(){
 	if(!isEnabled)return;
 	if(isMakingNew){
-		window.clearTimeout(lastNewTimeout);
-		lastNewTimeout=window.setTimeout(function(){newImage()},500);
+//		window.clearTimeout(lastNewTimeout);
+//		lastNewTimeout=window.setTimeout(function(){newImage()},250);
 		return;
 	}
 	document.body.style.cursor='wait';

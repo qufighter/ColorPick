@@ -3,6 +3,7 @@ var isScriptAlive=false,scriptAliveTimeout=0;
 var cpw=165,cph=303;
 var borderValue='1px solid grey',EnableRGB=true,EnableHSL=true,useCSSValues=true;
 var cpScaleOffset=(navigator.platform=='win32'?16:0)
+var pickEveryTime=true;
 function getEventTargetA(ev){
 	var targ=getEventTarget(ev)
 	if(targ.nodeName != 'A')return targ.parentNode;
@@ -160,10 +161,14 @@ function setButtonState(isPicking){
 		document.getElementById('epick').className='btnInactive'+(pickEveryTime?' autocast':'');
 	}
 }
-function toglPick(){
-	chrome.tabs.sendMessage(tabid,{doPick:true},function(r){
-		setButtonState(r.isPicking);
-	});//perform pick
+function toglPick(ev){
+	if (ev && (ev.which === 2 || ev.which === 3)){
+	    return toglAutoPick(ev);
+	}else{
+		chrome.tabs.sendMessage(tabid,{doPick:true},function(r){
+			setButtonState(r.isPicking);
+		});//perform pick
+	}
 }
 function preventEventDefault(ev){
 	ev = ev || event;
@@ -237,7 +242,7 @@ function iin(){
 	  }
 	//}
 	
-	window.addEventListener('keydown',wk);//window does not work unless inspect mode
+	
 	
 	
 	if(document.getElementById('plat_prev')){
@@ -618,13 +623,15 @@ Cr.elm("div",{},[
   document.getElementById('crgb').addEventListener('mouseover', selectSelfText);
   document.getElementById('chsl').addEventListener('mouseover', selectSelfText);
   
-	document.getElementById('epick').addEventListener('click', toglPick);
-	document.getElementById('epick').addEventListener('contextmenu', toglAutoPick);
+	document.getElementById('epick').addEventListener('mousedown', toglPick);
+	document.getElementById('epick').addEventListener('contextmenu', preventEventDefault);
 	document.getElementById('resnap').addEventListener('click', resnap);
 	document.getElementById('popout').addEventListener('click', popOut);
 	
 	document.getElementById('hexpre').addEventListener('click', init_color_chooser);
 	document.getElementById('ohexpre').addEventListener('click', init_color_chooser);
+
+	window.addEventListener('keydown',wk);
 
 	iin();
 }

@@ -1,10 +1,13 @@
 var rkey='000-000-000-000-000';
 var rname='default_reg_name';
 if(document.getElementById('n.colorpick.com')){
-	rname=document.getElementById('n.colorpick.com').innerText;
+	rname=document.getElementById('n.colorpick.com').innerText || document.getElementById('n.colorpick.com').innerHTML;
 }
 if(document.getElementById('k.colorpick.com')){
-	rkey=document.getElementById('k.colorpick.com').innerText;
+	rkey=document.getElementById('k.colorpick.com').innerText || document.getElementById('k.colorpick.com').innerHTML;
+}
+function clickedInstallKey(){
+	installKey();
 }
 function installKey(){
 	window.location=chrome.extension.getURL('register.html')+'?k='+rkey+'&n='+rname;
@@ -17,5 +20,5 @@ if(document.getElementById('autoinstall.colorpick.com') && rname != 'default_reg
 	b.setAttribute('style','margin:20px 0px 20px 0px;');
 	b.setAttribute('value','Click here to Automatically Install this License into your Color Picker Chrome Extension');
 	destNode.appendChild(b);
-	b.addEventListener('click',installKey);
+	b.addEventListener('click',clickedInstallKey);
 }

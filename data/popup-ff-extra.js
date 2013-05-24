@@ -1,6 +1,10 @@
 DESC_INCL='popup.js ';
 firefoxChromeApi.setResponseIDbase(2000);
 
+function setupInjectScripts(){
+	//override as empty function, since this will lead to auto-enabling the extension when the popup is created.
+}
+
 self.port.on('shown',function(){
 	//we culd just as well create the dom here if we have not already....
 	//else
@@ -12,10 +16,11 @@ self.port.on('shown',function(){
 	document.getElementById('cssrgb').style.display="block";
 	document.getElementById('defhsl').style.display="block";
 	document.getElementById('csshsl').style.display="block";
-	
-	
+	document.getElementById('chooser').style.display='none';
+	document.body.style.width='auto';
 	
 	iin();
+	finishSetup();//since this actually enablesColorPicker do not call until shown!
 });
 //on mac, when "on hidden" need to potentially pick from screen, lock picker
 //self.port.on('shown',function(){
