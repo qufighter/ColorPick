@@ -105,6 +105,9 @@ var chrome={
 		onMessage : {
 			addListener : function(fn){
 				chrome.extension.onRequest.addListener(fn);
+			},
+			removeListener : function(fn){
+				chrome.extension.onRequest.removeListener(fn);
 			}
 		},
 	},
@@ -119,6 +122,9 @@ var chrome={
 						self.port.emit('response',response);
 					});
 				});
+			},
+			removeListener : function(fn){
+				self.port.on('request',function(request,sender,sendResponse){});
 			}
 		},
 		sendRequest: function(requestObj,responseFn){
