@@ -115,7 +115,7 @@ var x,y,tabid=0,winid=0; //current pixel
 var curentHex=0,lastHex='FFF',lastLastHex='FFF';
 var lastPreviewURI=''; //potentially needs to be cleaned up an not "jump" across sites, if exit triggered from content script the message does not reach us here... (they do now)
 //var fullScreenImageData=[];//potentially huge array of raw image data
-var imageDataIsReady=false;
+var imageDataIsReady=false,popupIsShowing=false;
 var clrgb={r:0,g:0,b:0}
 var clhsv={h:0,s:0,v:0}
 var isCurrentEnableReady=false;
@@ -129,6 +129,15 @@ function getCurrentClrData(){
 	}
 	return dobj;
 }
+
+chrome.runtime.onConnect.addListener(function(port) {
+	if(port.name == "popupshown"){
+		popupIsShowing=true;
+		port.onDisconnect.addListener(function(msg) {
+			popupIsShowing=false;
+		});
+	}
+});
 
 chrome.runtime.onMessage.addListener(
 function(request, sender, sendResponse) {
@@ -184,6 +193,7 @@ function(request, sender, sendResponse) {
 			}
 			//store colors
 			localStorage['colorPickHistory']+="#"+curentHex;
+//logs error when options is not showing... not sure of best way to prevent
 			chrome.runtime.sendMessage({historypush: true}, function(response) {
 					//console.log('disabled!');
 			});
@@ -196,7 +206,8 @@ function(request, sender, sendResponse) {
 			isCurrentEnableReady=true;
 			 
 		}else if (request.enableColorPicker){
-			
+			popupIsShowing=true;
+			handleRendering();
 			chrome.tabs.getSelected(null, function(tab) {
 				var tabId=tab.id;
 				if(request.tabi>0 && request.tabi!=tabId){
@@ -299,10 +310,9 @@ function handleRendering(){
 	if(!imageDataIsReady) return false;
 
 // under some circumstances we do not need to render anything....
-// toImplement: popupIsShowing
-//	if(!iconIsBitmap && !showPreviewInContentS && !popupIsShowing){
-//		return;
-//	}
+	if(!iconIsBitmap && !showPreviewInContentS && !popupIsShowing){
+		return;
+	}
 
 	var icvs = document.createElement('canvas');//icon canvas
 	var totalWidth = 150;//750
@@ -388,10 +398,9 @@ function handleRendering(){
 		chrome.tabs.sendMessage(tabid, {setPixelPreview:true,previewURI:lastPreviewURI,zoomed:contSprevZoomd,hex:curentHex,lhex:lastHex}, function(response) {});
 	}
 
-	chrome.runtime.sendMessage({setPreview:true,tabi:tabid,previewURI:lastPreviewURI,hex:curentHex,lhex:lastHex,cr:clrgb.r,cg:clrgb.g,cb:clrgb.b}, function(response) {
-		//preview has been sent to the popup in case its showing...
-	});
-
+	if(popupIsShowing){
+		chrome.runtime.sendMessage({setPreview:true,tabi:tabid,previewURI:lastPreviewURI,hex:curentHex,lhex:lastHex,cr:clrgb.r,cg:clrgb.g,cb:clrgb.b}, function(response) {});
+	}
 	ictx=null,icvs=null;
 }
 

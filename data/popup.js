@@ -547,7 +547,7 @@ function init_color_chooser(){
 	i2.src='img/cp_rb.png';
 	i3.src='img/cp_cr.gif';
 }
-
+//END COLOR CHOOSER FUNCTIONS ***************************
 function createDOM() {
 Cr.elm("div",{},[
 	Cr.elm("div",{id:"chooser"},[
@@ -647,6 +647,12 @@ Cr.elm("div",{},[
 	window.addEventListener('keyup',wk);
 	document.addEventListener('mousemove',mmove);
 	document.body.addEventListener('click', popupClicked,false);
+
+	var port = chrome.runtime.connect({name:"popupshown"});
+
+//log to bg page
+//var background = chrome.extension.getBackgroundPage();
+//background.console.log('hello bg');
 
 	iin();
 }
