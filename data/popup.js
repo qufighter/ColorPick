@@ -620,8 +620,6 @@ Cr.elm("div",{},[
 	])
 ],document.body)
 
-	document.addEventListener('mousemove',mmove);
-	document.body.addEventListener('click', popupClicked,false);
   document.getElementById('eclose').addEventListener('click', close_stop_picking);
   document.getElementById('hidemin').addEventListener('click', just_close_preview);
   document.getElementById('pre').addEventListener('mousedown', initdrag);
@@ -647,6 +645,8 @@ Cr.elm("div",{},[
 	document.getElementById('ohexpre').addEventListener('click', init_color_chooser);
 
 	window.addEventListener('keyup',wk);
+	document.addEventListener('mousemove',mmove);
+	document.body.addEventListener('click', popupClicked,false);
 
 	iin();
 }
