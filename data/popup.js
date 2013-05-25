@@ -3,7 +3,7 @@ var isScriptAlive=false,scriptAliveTimeout=0;
 var cpw=165,cph=303;
 var borderValue='1px solid grey',EnableRGB=true,EnableHSL=true,useCSSValues=true;
 var cpScaleOffset=(navigator.platform=='win32'?16:0)
-var pickEveryTime=true;
+var pickEveryTime=true,isPicking=false,keyInputMode=false;
 function getEventTargetA(ev){
 	var targ=getEventTarget(ev)
 	if(targ.nodeName != 'A')return targ.parentNode;
@@ -28,14 +28,14 @@ function setPreviewSRC(duri){
 	}
 	im.src=duri;
 }
-
-function toHex(N) {//http://www.javascripter.net/faq/rgbtohex.htm
- if (N==null) return "00";
- N=parseInt(N); if (N==0 || isNaN(N)) return "00";
- N=Math.max(0,N); N=Math.min(N,255); N=Math.round(N);
- return "0123456789ABCDEF".charAt((N-N%16)/16)
-      + "0123456789ABCDEF".charAt(N%16);
+function fromHexClr(H){
+	if(H.length == 6){
+		return {r:fromHex(H.substr(0,2)),g:fromHex(H.substr(2,2)),b:fromHex(H.substr(4,2))}
+	}
+	return false;
 }
+function fromHex(h){return parseInt(h,16);}
+function toHex(d){return ("00" + d.toString(16).toUpperCase()).slice(-2);}
 function RGBtoHex(R,G,B) {return toHex(R)+toHex(G)+toHex(B)}
 function rgb2hsl(r, g, b){//http://mjijackson.com/2008/02/rgb-to-hsl-and-rgb-to-hsv-color-model-conversion-algorithms-in-javascript
     r /= 255, g /= 255, b /= 255;
@@ -98,22 +98,20 @@ function rgb2hsv () {
     };
 }
 
-function updateCurrentColor(r,g,b,justFields){
+function updateCurrentColor(r,g,b,justFields,omitId){
 	var hex=RGBtoHex(r,g,b);
 	document.getElementById('hexpre').style.backgroundColor='#'+hex;
-	document.getElementById('hex').value=hex;
-	document.getElementById('cr').value=r;
-	document.getElementById('cg').value=g;
-	document.getElementById('cb').value=b;
+	if(omitId!='hex')document.getElementById('hex').value=hex;
+	if(omitId!='cr')document.getElementById('cr').value=r;
+	if(omitId!='cg')document.getElementById('cg').value=g;
+	if(omitId!='cb')document.getElementById('cb').value=b;
 	var hsl=rgb2hsl(r,g,b);
-	var hsv=rgb2hsv(r,g,b);
 	document.getElementById('ch').value=hsl.h;
 	document.getElementById('cs').value=hsl.s;
 	document.getElementById('cv').value=hsl.v;
-	document.getElementById('crgb').value='rgb('+document.getElementById('cr').value+','+document.getElementById('cg').value+','+document.getElementById('cb').value+')';
-	document.getElementById('chsl').value='hsl('+document.getElementById('ch').value+','+document.getElementById('cs').value+'%,'+document.getElementById('cv').value+'%)';
-	var hsv=rgb2hsv(r,g,b);
-	if(!justFields)cp_set_from_hsv(hsv.h,hsv.s,hsv.v);
+	if(omitId!='crgb')document.getElementById('crgb').value='rgb('+document.getElementById('cr').value+','+document.getElementById('cg').value+','+document.getElementById('cb').value+')';
+	if(omitId!='chsl')document.getElementById('chsl').value='hsl('+document.getElementById('ch').value+','+document.getElementById('cs').value+'%,'+document.getElementById('cv').value+'%)';
+	if(!justFields){var hsv=rgb2hsv(r,g,b);cp_set_from_hsv(hsv.h,hsv.s,hsv.v);}
 }
 
 function getPageZoomFactor(){
@@ -130,7 +128,8 @@ function getPixel(){}
 chrome.runtime.onMessage.addListener(
   function(request, sender, sendResponse) {
     if(request.setPreview && (request.tabi==tabid || tabid==0)){
-      var hex=request.hex;//RGBtoHex(request.c_r+0,request.c_g+0,request.c_b+0);
+      //var hex=request.hex;//RGBtoHex(request.c_r+0,request.c_g+0,request.c_b+0);
+      keyInputMode=false;
       setPreviewSRC(request.previewURI);
       document.getElementById('ohexpre').style.backgroundColor='#'+request.lhex;
       updateCurrentColor(request.cr,request.cg,request.cb);
@@ -154,7 +153,8 @@ chrome.runtime.onMessage.addListener(
 function resnap(){
 	chrome.tabs.sendMessage(tabid,{newImage:true},function(r){});
 }
-function setButtonState(isPicking){
+function setButtonState(picking){
+	isPicking=picking;
 	if(isPicking){
 		document.getElementById('epick').className='btnActive'+(pickEveryTime?' autocast':'');
 	}else{
@@ -169,6 +169,9 @@ function toglPick(ev){
 			setButtonState(r.isPicking);
 		});//perform pick
 	}
+}
+function stopPick(){
+	if(isPicking)toglPick();
 }
 function preventEventDefault(ev){
 	ev = ev || event;
@@ -186,22 +189,31 @@ function toglAutoPick(ev){
 	}
 	return preventEventDefault(ev)
 }
-
+function popupClicked(ev){
+	var t=getEventTarget(ev);
+	if(t.nodeName=='INPUT')keyInputMode=true;
+	else keyInputMode=false;
+}
 function wk(ev){
+	var t=getEventTarget(ev);
 	if(ev.keyCode==27){
 		//dissableColorPickerFromHere();// :D
 	}else if(ev.keyCode==82||ev.keyCode==74){//r or j refresh
 		resnap();
-	}else if(ev.keyCode==38){//u
+	}else if(!keyInputMode && ev.keyCode==38){//u
 		chrome.runtime.sendMessage({movePixel:true,_x:0,_y:-1,tabi:tabid},function(r){});
-	}else if(ev.keyCode==40){//d
+	}else if(!keyInputMode && ev.keyCode==40){//d
 		chrome.runtime.sendMessage({movePixel:true,_x:0,_y:1,tabi:tabid},function(r){});
-	}else if(ev.keyCode==37){//l
+	}else if(!keyInputMode && ev.keyCode==37){//l
 		chrome.runtime.sendMessage({movePixel:true,_x:-1,_y:0,tabi:tabid},function(r){});
-	}else if(ev.keyCode==39){//r
+	}else if(!keyInputMode && ev.keyCode==39){//r
 		chrome.runtime.sendMessage({movePixel:true,_x:1,_y:0,tabi:tabid},function(r){});
-	}else if(ev.keyCode==13 || ev.keyCode==86){//enter, v
+	}else if(!keyInputMode && (ev.keyCode==13 || ev.keyCode==86)){//enter, v
 		toglPick();
+	}else if(t.id=='hex'){
+		keyInputMode=true;stopPick();var rgb=fromHexClr(t.value);if(rgb)updateCurrentColor(rgb.r,rgb.g,rgb.b,false,t.id);
+	}else if(t.id=='crgb'){
+		keyInputMode=true;stopPick();var comp=t.value.match(/\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)/);if(comp)updateCurrentColor(comp[1]-0,comp[2]-0,comp[3]-0,false,t.id);
 	}
 }
 
@@ -607,6 +619,7 @@ Cr.elm("div",{},[
 ],document.body)
 
 	document.addEventListener('mousemove',mmove);
+	document.body.addEventListener('click', popupClicked,false);
   document.getElementById('eclose').addEventListener('click', close_stop_picking);
   document.getElementById('hidemin').addEventListener('click', just_close_preview);
   document.getElementById('pre').addEventListener('mousedown', initdrag);
@@ -631,7 +644,7 @@ Cr.elm("div",{},[
 	document.getElementById('hexpre').addEventListener('click', init_color_chooser);
 	document.getElementById('ohexpre').addEventListener('click', init_color_chooser);
 
-	window.addEventListener('keydown',wk);
+	window.addEventListener('keyup',wk);
 
 	iin();
 }
