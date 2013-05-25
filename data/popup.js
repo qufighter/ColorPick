@@ -243,6 +243,7 @@ function iin(){
   	if( window.name.indexOf('colorPickPopup')>-1 ){
   		tabid=window.name.replace('colorPickPopup_','')-0;
   		//document.getElementById('popout').style.display='none';
+			if(window.innerWidth > 200)init_color_chooser();
   		setupInjectScripts()
   	}else{
 	  	chrome.windows.getCurrent(function(window){
@@ -389,8 +390,9 @@ function popupimage(mylink, windowname)
 	if (! window.focus)return true;
 	mylink = new String( mylink.href );
 	if( win2 == 0 || typeof(win2) != 'object' || typeof(win2.location) != 'string'  ){
-		var scal=getPageZoomFactor();
-		var w=Math.ceil(window.innerWidth*scal)+1,h=Math.ceil(window.innerHeight*scal)+1;
+		//var scal=getPageZoomFactor();
+		//var w=Math.ceil(window.innerWidth*scal)+1,h=Math.ceil(window.innerHeight*scal)+1;
+		var w=Math.round(window.outerWidth*1.114),h=Math.round(window.outerHeight*1.15);
 		win2 = window.open(mylink, windowname, 'fullscreen=no,toolbar=no,status=no,menubar=no,scrollbars=no,resizable=yes,directories=no,location=no,width='+w+',height='+h);
 	}else{
 		win2.location = mylink;
