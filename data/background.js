@@ -115,7 +115,7 @@ var x,y,tabid=0,winid=0; //current pixel
 var curentHex=0,lastHex='FFF',lastLastHex='FFF';
 var lastPreviewURI=''; //potentially needs to be cleaned up an not "jump" across sites, if exit triggered from content script the message does not reach us here... (they do now)
 //var fullScreenImageData=[];//potentially huge array of raw image data
-var imageDataIsRendered=false;
+var imageDataIsReady=false;
 var clrgb={r:0,g:0,b:0}
 var clhsv={h:0,s:0,v:0}
 var isCurrentEnableReady=false;
@@ -145,7 +145,7 @@ function(request, sender, sendResponse) {
 			wid=request._x;
 			hei=request._y;
 			var cbf=function(dataUrl){
-				imageDataIsRendered=false;
+				imageDataIsReady=false;
 				pim.src=dataUrl;
 				mcan.width = wid;
 				mcan.height = hei;
@@ -236,7 +236,7 @@ function(request, sender, sendResponse) {
 //	  			chrome.tabs.getSelected(null, function(tab) {
 //					  chrome.tabs.sendMessage(tab.id, {disableColorPicker:true}, function(response) {});
 //					});'
-			if(!imageDataIsRendered){//cleans up the image src
+			if(!imageDataIsReady){//cleans up the image src
 				if(pim.complete){
 					//ctx.putImageData(getImageDataFromImage(pim).data, 0, 0);
 					if(clrAccuracyOverPrecision)
@@ -244,7 +244,7 @@ function(request, sender, sendResponse) {
 					else
 						ctx.drawImage(pim,0,0,wid,hei);
 					pim.src='';
-					imageDataIsRendered=true;
+					imageDataIsReady=true;
 				}else{
 					pim.src='';
 				}
@@ -259,6 +259,23 @@ function(request, sender, sendResponse) {
 });
 function getNewColorData(){
 	ctx = mcan.getContext("2d");
+	if(!imageDataIsReady){
+		if(pim.complete){
+			if(clrAccuracyOverPrecision)
+				ctx.drawImage(pim,0,0);
+			else
+				ctx.drawImage(pim,0,0,wid,hei);
+			pim.src='';
+			if(showActualPickTarget){
+				setTimeout(function(){
+					chrome.tabs.sendMessage(tabid, {setPickerImage:true,pickerImage:mcan.toDataURL()}, function(response) {});
+				},10);
+			}
+			imageDataIsReady=true;
+		}else{
+			return false;//image not ready to render...
+		}
+	}
 	var ox=Math.round(x),oy=Math.round(y);
 	var data = ctx.getImageData(ox, oy, 1, 1).data;
 
@@ -279,27 +296,7 @@ function getNewColorData(){
 }
 function handleRendering(){
 	ctx = mcan.getContext("2d");
-
-	if(!imageDataIsRendered){
-		if(pim.complete){
-			//ctx.putImageData(getImageDataFromImage(pim), 0, 0);
-			if(clrAccuracyOverPrecision)
-				ctx.drawImage(pim,0,0);
-			else
-				ctx.drawImage(pim,0,0,wid,hei);
-			pim.src='';
-			if(showActualPickTarget){
-				setTimeout(function(){
-					chrome.tabs.sendMessage(tabid, {setPickerImage:true,pickerImage:mcan.toDataURL()}, function(response) {});
-				},10);
-			}
-			imageDataIsRendered=true;
-		}else{
-			//image not ready to render...
-			//sendResponse({}); //hourglass
-			return false;
-		}
-	}
+	if(!imageDataIsReady) return false;
 
 // under some circumstances we do not need to render anything....
 // toImplement: popupIsShowing
