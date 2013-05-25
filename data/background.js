@@ -115,7 +115,7 @@ var x,y,tabid=0,winid=0; //current pixel
 var curentHex=0,lastHex='FFF',lastLastHex='FFF';
 var lastPreviewURI=''; //potentially needs to be cleaned up an not "jump" across sites, if exit triggered from content script the message does not reach us here... (they do now)
 //var fullScreenImageData=[];//potentially huge array of raw image data
-var imageDataIsReady=false,popupIsShowing=0;
+var imageDataIsReady=false,popupsShowing=0;
 var clrgb={r:0,g:0,b:0}
 var clhsv={h:0,s:0,v:0}
 var isCurrentEnableReady=false;
@@ -132,9 +132,10 @@ function getCurrentClrData(){
 
 chrome.runtime.onConnect.addListener(function(port) {
 	if(port.name == "popupshown"){
-		popupIsShowing++;
+		popupsShowing++;
 		port.onDisconnect.addListener(function(msg) {
-			popupIsShowing--;
+			popupsShowing--;
+			if(popupsShowing < 0)popupsShowing=0;
 		});
 	}
 });
@@ -206,7 +207,7 @@ function(request, sender, sendResponse) {
 			isCurrentEnableReady=true;
 			 
 		}else if (request.enableColorPicker){
-			//popupIsShowing=true;
+			//popupsShowing=true;
 			handleRendering();
 			chrome.tabs.getSelected(null, function(tab) {
 				var tabId=tab.id;
@@ -309,7 +310,7 @@ function handleRendering(){
 	if(!imageDataIsReady) return false;
 
 // under some circumstances we do not need to render anything....
-	if(!iconIsBitmap && !showPreviewInContentS && popupIsShowing < 1){
+	if(!iconIsBitmap && !showPreviewInContentS && popupsShowing < 1){
 		return;
 	}
 
@@ -397,7 +398,7 @@ function handleRendering(){
 		chrome.tabs.sendMessage(tabid, {setPixelPreview:true,previewURI:lastPreviewURI,zoomed:contSprevZoomd,hex:curentHex,lhex:lastHex}, function(response) {});
 	}
 
-	if(popupIsShowing > 0){
+	if(popupsShowing > 0){
 		chrome.runtime.sendMessage({setPreview:true,tabi:tabid,previewURI:lastPreviewURI,hex:curentHex,lhex:lastHex,cr:clrgb.r,cg:clrgb.g,cb:clrgb.b}, function(response) {});
 	}
 	ictx=null,icvs=null;
