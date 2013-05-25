@@ -216,7 +216,17 @@ function wk(ev){
 		keyInputMode=true;stopPick();var comp=t.value.match(/\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)/);if(comp)updateCurrentColor(comp[1]-0,comp[2]-0,comp[3]-0,false,t.id);
 	}
 }
-
+function mwheel(ev){
+	var oldFisheye=localStorage["fishEye"];
+	if(ev.wheelDelta > 0){
+		localStorage['fishEye']++;
+	}else{
+		localStorage['fishEye']--;
+	}
+	if(typeof(pOptions["fishEye"].select[localStorage['fishEye']])=='undefined')localStorage['fishEye']=oldFisheye;
+	sendReloadPrefs();
+	return preventEventDefault(ev);
+}
 function iin(){
 	if(typeof(localStorage["borderValue"])!='undefined')borderValue = localStorage["borderValue"];
 	if(typeof(localStorage["useCSSValues"])!='undefined')useCSSValues = ((localStorage["useCSSValues"]=='true')?true:false);
@@ -644,6 +654,7 @@ Cr.elm("div",{},[
 	document.getElementById('hexpre').addEventListener('click', init_color_chooser);
 	document.getElementById('ohexpre').addEventListener('click', init_color_chooser);
 
+	window.addEventListener('mousewheel',mwheel);
 	window.addEventListener('keyup',wk);
 	document.addEventListener('mousemove',mmove);
 	document.body.addEventListener('click', popupClicked,false);
