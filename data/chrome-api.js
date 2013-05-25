@@ -110,6 +110,14 @@ var chrome={
 				chrome.extension.onRequest.removeListener(fn);
 			}
 		},
+		connect : function(opts){
+			//opts.name //{name:"popupshown"}
+		},
+		onConnect : {
+			addListener : function(fn){
+
+			}
+		}
 	},
 	extension : {
 		getURL: function(u){return DATA_URLP+u},

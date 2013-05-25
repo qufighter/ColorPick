@@ -130,7 +130,7 @@ function getCurrentClrData(){
 	return dobj;
 }
 
-chrome.runtime.onConnect.addListener(function(port) {
+chrome.runtime.onConnect.addListener(function(port){
 	if(port.name == "popupshown"){
 		popupsShowing++;
 		port.onDisconnect.addListener(function(msg) {
