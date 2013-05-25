@@ -35,7 +35,7 @@ function fromHexClr(H){
 	return false;
 }
 function fromHex(h){return parseInt(h,16);}
-function toHex(d){return ("00" + d.toString(16).toUpperCase()).slice(-2);}
+function toHex(d){return ("00" + (d-0).toString(16).toUpperCase()).slice(-2);}
 function RGBtoHex(R,G,B) {return toHex(R)+toHex(G)+toHex(B)}
 function rgb2hsl(r, g, b){//http://mjijackson.com/2008/02/rgb-to-hsl-and-rgb-to-hsv-color-model-conversion-algorithms-in-javascript
     r /= 255, g /= 255, b /= 255;
