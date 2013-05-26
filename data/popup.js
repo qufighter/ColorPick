@@ -368,13 +368,16 @@ function finishSetup(){
 function oout(){
 	chrome.runtime.sendMessage({disableColorPicker:true},function(r){});
 }
-var x,y;
+var x,y,xm,ym;
 function mmove(ev){
-	x=ev.pageX-window.pageXOffset
-	y=ev.pageY-window.pageYOffset
 	if(isDrag){
-		chrome.runtime.sendMessage({movePixel:true,_x:((x1-x)/2),_y:((y1-y)/2),tabi:tabid}, function(response) {});
-		x1=x,y1=y;//accoutn for that we moved it already
+		x=ev.pageX-window.pageXOffset,
+		y=ev.pageY-window.pageYOffset;
+		xm=Math.round((x1-x)/localStorage['fishEye']),
+		ym=Math.round((y1-y)/localStorage['fishEye']);
+		chrome.runtime.sendMessage({movePixel:true,_x:xm,_y:ym,tabi:tabid}, function(response) {});
+		if(xm!=0)x1=x;
+		if(ym!=0)y1=y;
 	}
 }
 var x1=0,y1=0,isDrag=false;;
@@ -387,11 +390,7 @@ function initdrag(ev){
 	//document.getElementById('dbg').innerHTML=(x1)+' ' +(y1);
 }
 function finalizedrag(){
-	if(isDrag){
-  	//document.getElementById('dbg').innerHTML=(x-x1)+' ' +(y-y1);
-  	chrome.runtime.sendMessage({movePixel:true,_x:(x1-x),_y:(y1-y),tabi:tabid}, function(response) {});
-  	isDrag=false;
-  }
+	isDrag=false;
 }
 
 var win2 = 0;

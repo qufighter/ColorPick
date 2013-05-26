@@ -319,7 +319,7 @@ function handleRendering(){
 	icvs.width=totalWidth
 	icvs.height=totalWidth
 	var ictx = icvs.getContext("2d");
-	var startPoint=Math.floor(totalWidth/2);
+	var startPoint=Math.floor(totalWidth*0.5);
 	var ox=Math.round(x),oy=Math.round(y);
 
 	if(!pixelatedPreview){
@@ -362,7 +362,7 @@ function handleRendering(){
 			}else ictx.fillStyle = "rgba(255,255,255,0.4)";
 				
 			for(var c=0;c<mp;c++){
-				++i;
+				if(++i>=startPoint)break;
 				smi=startPoint-i;
 				spi=startPoint+i;
 				ictx.drawImage(icvs,spi,0,smi,totalWidth,
