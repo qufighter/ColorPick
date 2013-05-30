@@ -31,6 +31,9 @@ rm -fr build/1.0/*-ff.html
 rm -fr build/1.0/*-ff.js
 rm -fr build/1.0/*-ff.css
 rm -fr build/1.0/chrome-api*
+rm -fr build/1.0/*.psd
+rm -fr build/1.0/*.sh
+rm -fr build/1.0/*.awk
 
 echo "determining version number"
 vers=`cat manifest.json | awk -f build.awk`

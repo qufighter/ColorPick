@@ -35,7 +35,7 @@
      "img/close.png"
    ],
    "permissions": [
-      "tabs", "storage", "webRequest", "webNavigation", "<all_urls>", "webRequestBlocking"
+      "tabs", "storage", "webRequest", "webNavigation", "<all_urls>", "webRequestBlocking", "alarms"
    ],
    "content_security_policy": "script-src 'self' https://ssl.google-analytics.com https://apis.google.com https://www.google.com https://checkout.google.com https://wallet.google.com https://cdn.extensionanalytics.com; object-src 'self'",
    "default_locale": "en",

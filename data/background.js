@@ -118,7 +118,7 @@ var lastPreviewURI=''; //potentially needs to be cleaned up an not "jump" across
 var imageDataIsReady=false,popupsShowing=0;
 var clrgb={r:0,g:0,b:0}
 var clhsv={h:0,s:0,v:0}
-var isCurrentEnableReady=false;
+var isCurrentEnableReady=false,isRunning=false,updateAvailable=false;
 var wid, hei;
 
 function getCurrentClrData(){
@@ -198,7 +198,7 @@ function(request, sender, sendResponse) {
 			chrome.runtime.sendMessage({historypush: true}, function(response) {
 					//console.log('disabled!');
 			});
-			sendResponse();
+			sendResponse({});
 			if(autocopyhex){
 				var n=document.createElement('input');document.body.appendChild(n);
 				n.value=curentHex;n.select();document.execCommand('copy');n.parentNode.removeChild(n);
@@ -218,11 +218,11 @@ function(request, sender, sendResponse) {
 				isCurrentEnableReady=false;
 				var tabURL=tab.url;
 				
-				
-			  chrome.tabs.sendMessage(tab.id, {enableColorPicker:true,borders:borderValue}, function(response) {
-			  });
-			  
-			  if(tabURL.indexOf('https://chrome.google.com')==0 ||tabURL.indexOf('chrome')==0 ||tabURL.indexOf('about')==0 ){
+				chrome.tabs.sendMessage(tab.id, {enableColorPicker:true,borders:borderValue}, function(response) {
+					isRunning=true;
+				});
+
+				if(tabURL.indexOf('https://chrome.google.com')==0 ||tabURL.indexOf('chrome')==0 ||tabURL.indexOf('about')==0 ){
 						//console.log( 'Unsupported page type :/');
 						chrome.runtime.sendMessage({greeting: "error_picker",errno:0}, function(response) {
 								//console.log('disabled!');
@@ -241,6 +241,7 @@ function(request, sender, sendResponse) {
 			});
 			sendResponse({hex:curentHex,lhex:lastLastHex,previewURI:lastPreviewURI,cr:clrgb.r,cg:clrgb.g,cb:clrgb.b});
 		}else if (request.disableColorPicker){
+			isRunning=false;
 			lastPreviewURI='';
 			defaultIcon();
 			chrome.browserAction.setBadgeText({text:''});
@@ -407,11 +408,22 @@ function handleRendering(){
 var pim = document.createElement('img');
 var mcan = document.createElement('canvas');
 
-document.addEventListener('DOMContentLoaded', function () {
+chrome.runtime.onUpdateAvailable.addListener(function(details){
+	updateAvailable=true;
+});
+
+//we need to save periodically in some way that won't over-use the sync api
+chrome.alarms.create("sync colorpick", {delayInMinutes:40,periodInMinutes:80});
+chrome.alarms.onAlarm.addListener(function(alarm){
+	saveToChromeSyncStorage();//we should also find a way to save before the extension is being restarted
+	if(!isRunning&&updateAvailable) chrome.runtime.reload();//applies a pending update
+	if(!isRunning)chrome.runtime.reload();//testing only, force update apply
+});
+
+function DOMloaded(){
 	//difficult to say when best time to do this is.... chrome running at 2 locations with different settings may produce odd results!
 	loadSettingsFromChromeSyncStorage(function(){
 		fromPrefs();
 	});
-
-	saveToChromeSyncStorage(); //temporary... but may help cover some users who haven't pressed the save button in preferences but use sync
-});
+}
+document.addEventListener('DOMContentLoaded', DOMloaded);
