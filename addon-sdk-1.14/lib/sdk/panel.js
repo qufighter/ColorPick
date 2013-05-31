@@ -80,8 +80,6 @@ const Panel = Symbiont.resolve({
       this.width = options.width;
     if ('height' in options)
       this.height = options.height;
-    if ('title' in options)
-      this.title = options.title;
     if ('contentURL' in options)
       this.contentURL = options.contentURL;
 
@@ -101,13 +99,6 @@ const Panel = Symbiont.resolve({
   destroy: function destroy() {
     this._destructor();
   },
-
-	get is_attached() this._docked,
-	get x() !this._xulPanel?0:this._xulPanel.popupBoxObject.x,
-	get y() !this._xulPanel?0:this._xulPanel.popupBoxObject.y,
-	get screenX() !this._xulPanel?0:this._xulPanel.popupBoxObject.x.left+getMostRecentBrowserWindow().screenX,
-	get screenY() !this._xulPanel?0:this._xulPanel.popupBoxObject.y.top+getMostRecentBrowserWindow().screenY,
-
   /* Public API: Panel.width */
   get width() this._width,
   set width(value)
@@ -122,19 +113,8 @@ const Panel = Symbiont.resolve({
   /* Public API: Panel.isShowing */
   get isShowing() !!this._xulPanel && this._xulPanel.state == "open",
 
-   /* Public API: Panel.detach */
-  detach: function detach() {
-     this.show();
-  },
-
-  /* Public API: Panel.reattach */
-  reattach: function reattach() {
-     this.show(this._lastAnchor);
-  },
-
   /* Public API: Panel.show */
   show: function show(anchor) {
-    this.hide();//in case of re-attaching to widget
     anchor = anchor || null;
     let anchorWindow = getWindow(anchor);
 
@@ -148,13 +128,7 @@ const Panel = Symbiont.resolve({
     let xulPanel = this._xulPanel;
     if (!xulPanel) {
       xulPanel = this._xulPanel = document.createElementNS(XUL_NS, 'panel');
-//       xulPanel.setAttribute("type", "arrow");
-//       xulPanel.setAttribute("noautohide", "true");
-       xulPanel.setAttribute("titlebar", "normal");
-       xulPanel.setAttribute("backdrag", "true");
-       xulPanel.setAttribute("ignorekeys", "false");
-       xulPanel.setAttribute("label", this.title?this.title:"Color Pick");
-       xulPanel.setAttribute("close", "true");
+      xulPanel.setAttribute("type", "arrow");
 
       // One anonymous node has a big padding that doesn't work well with
       // Jetpack, as we would like to display an iframe that completely fills
@@ -198,16 +172,8 @@ const Panel = Symbiont.resolve({
       x = document.documentElement.clientWidth / 2 - width / 2;
       y = document.documentElement.clientHeight / 2 - height / 2;
       position = null;
-      xulPanel.setAttribute("type", "");
-      xulPanel.setAttribute("noautohide", "true");
-      this._docked=false;
     }
     else {
-      xulPanel.setAttribute("type", "arrow");
-      xulPanel.setAttribute("noautohide", "false");
-      this._docked=true;
-      this._lastAnchor=anchor;
-
       // Open the popup by the anchor.
       let rect = anchor.getBoundingClientRect();
 
@@ -282,14 +248,6 @@ const Panel = Symbiont.resolve({
       xulPanel.firstChild.style.width = width + "px";
       xulPanel.firstChild.style.height = height + "px";
     }
-  },
-
-  /* Public API: Panel.move */
-  move: function move(x, y) {
-    //this._xulPanel.openPopup(null,null,x,y);
-    this._xulPanel.left=x+'px';
-    this._xulPanel.top=y+'px';
-    //this._xulPanel.moveTo(x,y);
   },
 
   // While the panel is visible, this is the XUL <panel> we use to display it.
