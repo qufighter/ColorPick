@@ -230,6 +230,7 @@ function newImage(){
 	c.style.height=y+'px';
 	scal=document.width / document.documentElement.clientWidth;
 	if(isNaN(scal)||!scal)scal=(outerWidth-scaleOffset)/innerWidth;
+	if(scal < 0.25 || scal > 5) scal = 1.0;
 	//scal=document.width / document.body.clientWidth;
 	x*=scal,y*=scal;
 	setTimeout(function(){
