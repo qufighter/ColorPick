@@ -417,7 +417,7 @@ chrome.alarms.create("sync colorpick", {delayInMinutes:40,periodInMinutes:80});
 chrome.alarms.onAlarm.addListener(function(alarm){
 	saveToChromeSyncStorage();//we should also find a way to save before the extension is being restarted
 	if(!isRunning&&updateAvailable) chrome.runtime.reload();//applies a pending update
-	if(!isRunning)chrome.runtime.reload();//testing only, force update apply
+	//if(!isRunning)chrome.runtime.reload();//testing only, force update apply
 });
 
 function DOMloaded(){

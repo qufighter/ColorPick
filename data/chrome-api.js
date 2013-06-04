@@ -96,7 +96,24 @@ var chrome={
 		},
 		sendMessage: function(tabid,requestObj,responseFn){
 			chrome.tabs.sendRequest(tabid,requestObj,responseFn);
+		},
+		captureVisibleTab: function(winid, opt, cbf){
+			//{format:'jpeg',quality:100}
+			self.port.on('captureVisibleTabResp',function(resp){
+				cbf(resp);
+			});
+			self.port.emit('captureVisibleTabReq');
 		}
+	},
+	alarms : {
+		create : function(opts){
+
+		},
+		onAlarm : {
+			addListener : function(fn){
+
+			}
+		},
 	},
 	runtime : {
 		sendMessage : function(requestObj,responseFn){
@@ -114,6 +131,11 @@ var chrome={
 			//opts.name //{name:"popupshown"}
 		},
 		onConnect : {
+			addListener : function(fn){
+
+			}
+		},
+		onUpdateAvailable : {
 			addListener : function(fn){
 
 			}
