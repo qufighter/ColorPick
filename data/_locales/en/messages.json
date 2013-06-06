@@ -39,7 +39,7 @@
       "message": "Press Enter to Pick Color"
    },
    "bgPageUnavailable": {
-      "message": "Background Page Snapshot Not Responding - Please Try Again."
+      "message": "Background Snapshot Not Responding - Please refresh the page and try again."
    },
    "registered": {
       "message": "Registered"

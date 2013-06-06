@@ -3,13 +3,14 @@ if(typeof(exitAndDetach)=='function')exitAndDetach();
 function _ge(n){return document.getElementById(n);}
 var n=false,c=false,hex=0,rgb=null;hsv=null;scal=1,ex=0,ey=0,isEnabled=false,isLocked=false,scaleOffset=0,borders='1px solid black',blankgif='',msg_bg_unavail=chrome.i18n.getMessage('bgPageUnavailable');
 function reqLis(request, sender, sendResponse) {
+	var resp={result:true};
 	if (request.testAlive){
 		//disableColorPicker();
 	}else	if (request.setPixelPreview){
   	setPixelPreview(request.previewURI,request.zoomed,request.hex,request.lhex)
   }else if (request.enableColorPicker){
   	borders=request.borders;
-  	enableColorPicker()
+		resp.wasAlreadyEnabled=enableColorPicker()
   }else if (request.setPickerImage){
   	c.src=request.pickerImage;
   }else if (request.newImage){
@@ -19,7 +20,8 @@ function reqLis(request, sender, sendResponse) {
   }else if (request.movedPixel){
   	setColor(request);
   }else if (request.disableColorPicker)disableColorPicker()
-  sendResponse({result:true,isPicking:!isLocked});
+  resp.isPicking=!isLocked;
+  sendResponse(resp);
 }
 chrome.runtime.onMessage.addListener(reqLis);
 function setPixelPreview(pix,zoom,hex,lhex){
@@ -157,7 +159,7 @@ function enableColorPicker(){
 		document.addEventListener('mousemove',mmf);
 		window.addEventListener('scroll',ssf);
 		window.addEventListener('resize',ssf);
-		window.addEventListener('keyup',wk);//removed through here
+		window.addEventListener('keyup',wk);
 	}
 	if(!isEnabled){
 		n.style.display="none";
@@ -166,7 +168,9 @@ function enableColorPicker(){
 		document.body.style.cursor='url('+chrome.extension.getURL('img/crosshair.png')+') 16 16,crosshair';
 		isEnabled=true;
 		window.setTimeout(newImage,1);
+		return false;
 	}
+	return true;
 }
 function keepOnScreen(){
 	n.style.top=(ly+8)+"px";

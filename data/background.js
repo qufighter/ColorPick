@@ -111,10 +111,9 @@ function feedbackParticipationOversight(){
 
 //globals
 var ctx;
-var x,y,tabid=0,winid=0; //current pixel
+var x,y,tabid=0,lsnaptabid=0,winid=0;
 var curentHex=0,lastHex='FFF',lastLastHex='FFF';
-var lastPreviewURI=''; //potentially needs to be cleaned up an not "jump" across sites, if exit triggered from content script the message does not reach us here... (they do now)
-//var fullScreenImageData=[];//potentially huge array of raw image data
+var lastPreviewURI='';
 var imageDataIsReady=false,popupsShowing=0;
 var clrgb={r:0,g:0,b:0}
 var clhsv={h:0,s:0,v:0}
@@ -152,6 +151,7 @@ function(request, sender, sendResponse) {
 		if(request.setPreview){
 			 sendResponse({});//not handled by this listener
 		}else if (request.newImage){
+			lsnaptabid=tabid;
 			wid=request._x;
 			hei=request._y;
 			var cbf=function(dataUrl){
@@ -218,8 +218,12 @@ function(request, sender, sendResponse) {
 				isCurrentEnableReady=false;
 				var tabURL=tab.url;
 				
-				chrome.tabs.sendMessage(tab.id, {enableColorPicker:true,borders:borderValue}, function(response) {
+				chrome.tabs.sendMessage(tab.id, {enableColorPicker:true,borders:borderValue}, function(r) {
 					isRunning=true;
+					if(r.wasAlreadyEnabled && lsnaptabid != tab.id){
+						//we were already running on this tab, yet our snapshot is of a different tab
+						chrome.tabs.sendMessage(tab.id, {newImage:true}, function(r) {});
+					}
 				});
 
 				if(tabURL.indexOf('https://chrome.google.com')==0 ||tabURL.indexOf('chrome')==0 ||tabURL.indexOf('about')==0 ){
