@@ -32,7 +32,6 @@ function rgb2hsl(r, g, b){//http://mjijackson.com/2008/02/rgb-to-hsl-and-rgb-to-
 var iconPath = '';
 
 function fromPrefs(){
-
 	//remove defunct options
 	localStorage.removeItem("autoRedirectPickable");
 	localStorage.removeItem("redirectSameWindow");
@@ -340,7 +339,7 @@ function handleRendering(){
 		
 	}else{
 		ictx.drawImage(mcan,-ox+(startPoint),-oy+(startPoint));
-		var smi,spi,mp=fishEye;
+		var smi,spi,mp=fishEye-0;
 		//xx,yy
 		for(var i=0;i<startPoint;i+=2){
 			smi=startPoint-i;
@@ -396,7 +395,13 @@ function handleRendering(){
 	if(iconIsBitmap){
 		var browseIconWidth=(window.devicePixelRatio>1?38:19);
 		var browseIconHalfWidth = Math.floor(browseIconWidth*0.5);
-		chrome.browserAction.setIcon({imageData:ictx.getImageData(startPoint-browseIconHalfWidth, startPoint-browseIconHalfWidth, browseIconWidth, browseIconWidth)});
+		//chrome.browserAction.setIcon({imageData:ictx.getImageData(startPoint-browseIconHalfWidth, startPoint-browseIconHalfWidth, browseIconWidth, browseIconWidth)});
+
+		var tmpCvs=document.createElement('canvas');
+		tmpCvs.width=browseIconWidth,tmpCvs.height=browseIconWidth;
+		var tctx=tmpCvs.getContext("2d");
+		tctx.drawImage(icvs,startPoint-browseIconHalfWidth, startPoint-browseIconHalfWidth, browseIconWidth, browseIconWidth,0,0,browseIconWidth,browseIconWidth);
+		chrome.browserAction.setIcon({path:tmpCvs.toDataURL()});//update icon (to be configurable)
 	}
 
 	if(showPreviewInContentS){
