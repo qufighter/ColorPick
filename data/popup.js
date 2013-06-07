@@ -259,7 +259,10 @@ function iin(){
 	  	chrome.windows.getCurrent(function(window){
 	  		chrome.tabs.getSelected(window.id, function(tab){
 	  			tabid=tab.id;
-	  			setupInjectScripts()
+					if(tab.url.indexOf('chrome')==0){
+						finishSetup();
+					}else
+						setupInjectScripts();
 	  		})
 	  	})
 	  }

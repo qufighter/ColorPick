@@ -218,10 +218,12 @@ function(request, sender, sendResponse) {
 				var tabURL=tab.url;
 				
 				chrome.tabs.sendMessage(tab.id, {enableColorPicker:true,borders:borderValue}, function(r) {
-					isRunning=true;
-					if(r.wasAlreadyEnabled && lsnaptabid != tab.id){
-						//we were already running on this tab, yet our snapshot is of a different tab
-						chrome.tabs.sendMessage(tab.id, {newImage:true}, function(r) {});
+					if(r){
+						isRunning=true;
+						if(r.wasAlreadyEnabled && lsnaptabid != tab.id){
+							//we were already running on this tab, yet our snapshot is of a different tab
+							chrome.tabs.sendMessage(tab.id, {newImage:true}, function(r) {});
+						}
 					}
 				});
 
