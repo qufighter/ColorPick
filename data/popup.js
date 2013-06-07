@@ -123,7 +123,6 @@ function getPageZoomFactor(){
 
 //these should never be called, future use
 function movePixel(){}
-function movePixel(){}
 function getPixel(){}
 
 chrome.runtime.onMessage.addListener(
@@ -137,10 +136,10 @@ chrome.runtime.onMessage.addListener(
       sendResponse({});
     }else if(request.setFullsizeImage){
       setFullsizeImage(request);
-    }else if (request.movePixel){
-      movePixel(request);
-    }else if (request.getPixel){
-      movePixel(getPixel);
+//    }else if (request.movePixel){
+//      movePixel(request);
+//    }else if (request.getPixel){
+//      movePixel(getPixel);
     }else if(request.greeting == "re_init_picker"){
       iin()
     }else if(request.greeting == "error_picker"){
@@ -369,20 +368,23 @@ function finishSetup(){
 function oout(){
 	chrome.runtime.sendMessage({disableColorPicker:true},function(r){});
 }
-var x,y,xm,ym;
+var x=0,y=0,x1=0,y1=0,isDrag=false,xm,ym;
 function mmove(ev){
 	if(isDrag){
 		x=ev.pageX-window.pageXOffset,
 		y=ev.pageY-window.pageYOffset;
-		xm=Math.round((x1-x)/localStorage['fishEye']),
-		ym=Math.round((y1-y)/localStorage['fishEye']);
-		chrome.runtime.sendMessage({movePixel:true,_x:xm,_y:ym,tabi:tabid}, function(response) {});
-		if(xm!=0)x1=x;
-		if(ym!=0)y1=y;
+		xm=Math.round((x1-x)/(localStorage['fishEye']-0)),
+		ym=Math.round((y1-y)/(localStorage['fishEye']-0));
+		if(xm!=0||ym!=0){
+			chrome.runtime.sendMessage({movePixel:true,_x:xm,_y:ym,tabi:tabid}, function(response) {});
+			if(xm!=0)x1=x;
+			if(ym!=0)y1=y;
+		}
 	}
 }
-var x1=0,y1=0,isDrag=false;;
 function initdrag(ev){
+	x=ev.pageX-window.pageXOffset,
+	y=ev.pageY-window.pageYOffset;
 	x1=x,y1=y;
 	isDrag=true;
 	
