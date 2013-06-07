@@ -1,6 +1,12 @@
-self.port.on('setIconURI', function(iuri){
-	if(iuri)
-		document.getElementById('widgeticon').src=iuri;
+self.port.on('setIconURI', function(r){
+	if(r){
+		if(r.path)
+			document.getElementById('widgeticon').src=r.path;
+//		else if(r.imageData){
+//			//handle image data object (returned from)
+//			//Result of html5 Canvas getImageData
+//		}
+	}
 });
 self.port.on('setBadgeBackground', function(clr){
 	document.getElementById('widgetbadge').style.backgroundColor='rgb('+clr[0]+','+clr[1]+','+clr[2]+')';

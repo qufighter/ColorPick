@@ -99,10 +99,10 @@ var chrome={
 		},
 		captureVisibleTab: function(winid, opt, cbf){
 			//{format:'jpeg',quality:100}
-			self.port.on('captureVisibleTabResp',function(resp){
+			self.port.on('captureVisibleTab_Resp',function(resp){
 				cbf(resp);
 			});
-			self.port.emit('captureVisibleTabReq');
+			self.port.emit('captureVisibleTab_Req');
 		}
 	},
 	alarms : {
@@ -170,9 +170,15 @@ var chrome={
 		}
 	},
 	browserAction: {
-		setIcon: function(){},
-		setBadgeBackgroundColor: function(){},
-		setBadgeText: function(){}
+		setIcon: function(r){
+			self.port.emit('browserAction_setIcon_Req',r);
+		},
+		setBadgeBackgroundColor: function(r){
+			self.port.emit('browserAction_setBadgeBackgroundColor_Req',r);
+		},
+		setBadgeText: function(r){
+			self.port.emit('browserAction_setBadgeText_Req',r);
+		}
 	},
 	windows : {
 		getCurrent: function(fn){

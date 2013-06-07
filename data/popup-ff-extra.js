@@ -67,23 +67,23 @@ function close_stop_picking(){
  oout();just_close_preview()
 }
 
-function movePixel(request){
-	
-}
-
-function movePixel(request){
-  x+=(request._x);//or otherwise use the current scale
-  y+=(request._y);
-  handleRendering()
-  dobj=getCurrentClrData();
-  dobj.movedPixel=true;
-  dobj.msg='Press Enter to Pick Color';
-  chrome.tabs.sendRequest(tabid,dobj,function(r){});
-}
-
-function getPixel(request){
-  x=request._x;
-  y=request._y;
-  handleRendering();
-  sendResponse(getCurrentClrData());
-}
+//function movePixel(request){
+//	
+//}
+//
+//function movePixel(request){
+//  x+=(request._x);//or otherwise use the current scale
+//  y+=(request._y);
+//  handleRendering()
+//  dobj=getCurrentClrData();
+//  dobj.movedPixel=true;
+//  dobj.msg='Press Enter to Pick Color';
+//  chrome.tabs.sendRequest(tabid,dobj,function(r){});
+//}
+//
+//function getPixel(request){
+//  x=request._x;
+//  y=request._y;
+//  handleRendering();
+//  sendResponse(getCurrentClrData());
+//}
