@@ -18,6 +18,7 @@ self.port.on('shown',function(){
 	document.getElementById('csshsl').style.display="block";
 	document.getElementById('chooser').style.display='none';
 	document.body.style.width='auto';
+	sizeWindow(160,window.outterHeight);
 	
 	iin();
 	finishSetup();//since this actually enablesColorPicker do not call until shown!
