@@ -217,6 +217,8 @@ function(request, sender, sendResponse) {
 				isCurrentEnableReady=false;
 				var tabURL=tab.url;
 				
+				if(request.workerHasChanged) lsnaptabid=-1;
+
 				chrome.tabs.sendMessage(tab.id, {enableColorPicker:true,borders:borderValue}, function(r) {
 					if(r){
 						isRunning=true;

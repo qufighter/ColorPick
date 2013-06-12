@@ -248,6 +248,12 @@ function iin(){
 		document.getElementById('defhsl').style.display="none";
 		document.getElementById('csshsl').style.display="none";
 	}
+	if(document.getElementById('plat_prev')){
+		if(navigator.userAgent.indexOf('Windows') < 0){
+			document.getElementById('plat_prev').src="img/ico_mac.png";
+		}
+		document.getElementById('plat_prev').style.display="inline";
+	}
 
 	//if( !globalPopout ){
   	if( window.name.indexOf('colorPickPopup')>-1 ){
@@ -267,16 +273,6 @@ function iin(){
 	  	})
 	  }
 	//}
-	
-	
-	
-	
-	if(document.getElementById('plat_prev')){
-		if(navigator.userAgent.indexOf('Windows') < 0){
-			document.getElementById('plat_prev').src="img/ico_mac.png";
-		}
-		document.getElementById('plat_prev').style.display="inline";
-	}
 }
 
 function setupInjectScripts(){
