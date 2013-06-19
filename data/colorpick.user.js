@@ -1,7 +1,7 @@
 var elmid1='color_pick_click_box',elmid2='ChromeExtension:Color-Pick.com';
 if(typeof(exitAndDetach)=='function')exitAndDetach();
 function _ge(n){return document.getElementById(n);}
-var n=false,c=false,hex=0,rgb=null;hsv=null;scal=1,ex=0,ey=0,isEnabled=false,isLocked=false,scaleOffset=0,borders='1px solid black',blankgif='',msg_bg_unavail=chrome.i18n.getMessage('bgPageUnavailable');
+var n=false,c=false,hex=0,rgb=null;hsv=null;scal=1,ex=0,ey=0,isEnabled=false,isLocked=false,borders='1px solid black',blankgif='',msg_bg_unavail=chrome.i18n.getMessage('bgPageUnavailable');
 function reqLis(request, sender, sendResponse) {
 	var resp={result:true};
 	if (request.testAlive){
@@ -12,7 +12,14 @@ function reqLis(request, sender, sendResponse) {
   	borders=request.borders;
 		resp.wasAlreadyEnabled=enableColorPicker()
   }else if (request.setPickerImage){
-  	c.src=request.pickerImage;
+		c.onload=function(){
+			c.style.height='auto';
+			if(c.naturalWidth/c.naturalHeight > window.innerWidth/window.innerHeight){
+				c.style.width=(window.innerWidth+1)+'px';
+			}
+			//c.style.width='auto';
+		}
+		c.src=request.pickerImage;
   }else if (request.newImage){
   	ssf()
   }else if (request.doPick){
@@ -25,6 +32,7 @@ function reqLis(request, sender, sendResponse) {
 }
 chrome.runtime.onMessage.addListener(reqLis);
 function setPixelPreview(pix,zoom,hex,lhex){
+	if(isLocked)return;
 	var wid=75,padr=32;if(zoom)wid=150;
 	if(!_ge('cpimprev') || (rgb && !_ge('cprgbvl'))){
 		n.innerHTML='';
@@ -54,8 +62,7 @@ function setColor(r){
 	n.style.backgroundColor='#'+hex;
 	if(!hex){
 		if(!_ge('bgPageUnavailMsg')){
-			n.appendChild(Cr.elm('div',{'id':'bgPageUnavailMsg'},[Cr.elm(msg_bg_unavail)]));
-			n.style.backgroundColor='#000',n.style.color='#FFF';
+			Cr.elm('div',{'id':'bgPageUnavailMsg',style:"color:#FFF;background-color:#000;"},[Cr.elm(msg_bg_unavail)],n);
 		}else _ge('bgPageUnavailMsg').style.display='block';
 	}else{
 		if(_ge('bgPageUnavailMsg'))_ge('bgPageUnavailMsg').style.display='none';
@@ -154,7 +161,7 @@ function enableColorPicker(){
 		//allows us to detect if the script is running from the bg
 	});
 	if(!n){
-		c=Cr.elm('img',{id:elmid1,src:blankgif,style:'position:fixed;top:0px;left:0px;overflow:hidden;z-index:2147483647;',event:['click',picked,true]},[],document.body);
+		c=Cr.elm('img',{id:elmid1,src:blankgif,style:'position:fixed;max-width:none;top:0px;left:0px;overflow:hidden;z-index:2147483647;',event:['click',picked,true]},[],document.body);
 		n=Cr.elm('div',{id:elmid2,style:'position:fixed;min-width:30px;max-width:300px;min-height:30px;border-radius:4px;box-shadow:2px 2px 2px #666;border:'+borders+';z-index:2147483647;cursor:default;padding:4px;'},[Cr.txt(' ')],document.body);
 		document.addEventListener('mousemove',mmf);
 		window.addEventListener('scroll',ssf);
@@ -193,12 +200,12 @@ function updateColorPreview(ev){
 		lastTimeout=window.setTimeout(function(){updateColorPreview()},500),timeoutCount++;
 		if(timeoutCount > 50){
 			if(!_ge('bgPageUnavailMsg')){
-				n.appendChild(Cr.elm('div',{'id':'bgPageUnavailMsg'},[Cr.elm(msg_bg_unavail)]));
-				n.style.backgroundColor='#000',n.style.color='#FFF';
+				Cr.elm('div',{'id':'bgPageUnavailMsg',style:"color:#FFF;background-color:#000;"},[Cr.elm(msg_bg_unavail)],n);
 			}else _ge('bgPageUnavailMsg').style.display='block';
 		}
 		return;
 	}
+	if(_ge('bgPageUnavailMsg'))_ge('bgPageUnavailMsg').style.display='none';
 	timeoutCount=0,isUpdating=true;
 	if(scal!=1){
 		x*=scal;
@@ -232,9 +239,21 @@ function newImage(){
 	y=window.innerHeight;
 	c.style.width=x+'px';
 	c.style.height=y+'px';
-	scal=document.width / document.documentElement.clientWidth;
-	if(isNaN(scal)||!scal)scal=(outerWidth-scaleOffset)/innerWidth;
-	if(scal < 0.25 || scal > 5.0 || (scal > 1.0 && scal < 1.02)) scal = 1.0;
+	//scal=document.width / document.documentElement.clientWidth;
+	var psc=[0.25,0.33,0.50,0.67,0.75,0.90,1.0,1.10,1.25,1.50,1.75,2.00,2.50,3.00,4.00,5.00];
+	scal=outerWidth/innerWidth;
+	if(scal < 0.25 || scal > 5.1 || (scal > 1.0 && scal < 1.02)) scal = 1.0;
+	if(scal != 1.0){
+		var newscal=0;
+		for(var s=0,l=psc.length;s<l;s++){
+			if( scal > psc[s] )newscal=psc[s];
+			else break;
+		}
+		var errorMargin = scal - newscal;
+		//console.log(errorMargin, newscal)
+		if(errorMargin < 0.02 || (newscal > 1.0 && errorMargin < 0.06))
+			scal = newscal;
+	}
 	//scal=document.width / document.body.clientWidth;
 	x*=scal,y*=scal;
 	setTimeout(function(){
