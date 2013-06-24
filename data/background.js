@@ -39,6 +39,12 @@ function fromPrefs(){
 	localStorage.removeItem("cpScaleOffset");
 	localStorage.removeItem("flashScalePix");
 	localStorage.removeItem("postAutoOptin");
+	for(i in localStorage){
+		if(i.substr(0,3) == '0.0'){
+			localStorage.removeItem(i);
+		}
+	}
+	localStorage.removeItem("clrAccuracyOverPrecision");
 
 	//future additions -
 	//storage.remove(['','',''], function(){})
@@ -257,11 +263,7 @@ function(request, sender, sendResponse) {
 //					});'
 			if(!imageDataIsReady){//cleans up the image src
 				if(pim.complete){
-					//ctx.putImageData(getImageDataFromImage(pim).data, 0, 0);
-					if(clrAccuracyOverPrecision)
-						ctx.drawImage(pim,0,0);
-					else
-						ctx.drawImage(pim,0,0,wid,hei);
+					ctx.drawImage(pim,0,0);
 					pim.src='';
 					imageDataIsReady=true;
 				}else{
@@ -280,16 +282,11 @@ function getNewColorData(){
 	ctx = mcan.getContext("2d");
 	if(!imageDataIsReady){
 		if(pim.complete){
-			if(clrAccuracyOverPrecision)
-				ctx.drawImage(pim,0,0);
-			else
-				ctx.drawImage(pim,0,0,wid,hei);
-			pim.src='';
+			ctx.drawImage(pim,0,0);
 			if(showActualPickTarget){
-				setTimeout(function(){
-					chrome.tabs.sendMessage(tabid, {setPickerImage:true,pickerImage:mcan.toDataURL()}, function(response) {});
-				},10);
+				chrome.tabs.sendMessage(tabid, {setPickerImage:true,pickerImage:pim.src}, function(response) {});
 			}
+			pim.src='';
 			imageDataIsReady=true;
 		}else{
 			return false;//image not ready to render...

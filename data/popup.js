@@ -217,13 +217,13 @@ function wk(ev){
 	}
 }
 function mwheel(ev){
-	var oldFisheye=localStorage["fishEye"];
+	var newFishEye=(typeof(localStorage["fishEye"])!='undefined'?(localStorage["fishEye"]-0):pOptions["fishEye"].def)
 	if(ev.wheelDelta > 0){
-		localStorage['fishEye']++;
+		newFishEye++;
 	}else{
-		localStorage['fishEye']--;
+		newFishEye--;
 	}
-	if(typeof(pOptions["fishEye"].select[localStorage['fishEye']])=='undefined')localStorage['fishEye']=oldFisheye;
+	if(typeof(pOptions["fishEye"].select[newFishEye])!='undefined')localStorage['fishEye']=newFishEye;
 	sendReloadPrefs();
 	return preventEventDefault(ev);
 }
