@@ -166,7 +166,7 @@ function toglPick(ev){
 	    return toglAutoPick(ev);
 	}else{
 		chrome.tabs.sendMessage(tabid,{doPick:true},function(r){
-			setButtonState(r.isPicking);
+			if(r && r.isPicking)setButtonState(r.isPicking);
 		});//perform pick
 	}
 }
@@ -356,8 +356,10 @@ function finishSetup(){
 
 	//in future cases we will send a testAlive earlier... state will be set already...
 	chrome.tabs.sendMessage(tabid,{testAlive:true},function(r){
-		if(!r.isPicking && pickEveryTime)toglPick();
-		else setButtonState(r.isPicking);
+		if(r){
+			if(!r.isPicking && pickEveryTime)toglPick();
+			else setButtonState(r.isPicking);
+		}
 	});
 	
 	if(localStorage.feedbackOptOut=='true' && localStorage["reg_chk"]!='true'){
