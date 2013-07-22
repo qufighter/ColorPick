@@ -249,8 +249,14 @@ function iin(){
 		document.getElementById('csshsl').style.display="none";
 	}
 	if(document.getElementById('plat_prev')){
+		var dow=new Date().getDay();
 		if(navigator.userAgent.indexOf('Windows') < 0){
-			document.getElementById('plat_prev').src="img/ico_mac.png";
+			if(dow==4){
+				document.getElementById('plat_prev').src="img/ico_maca.png";
+			}else
+				document.getElementById('plat_prev').src="img/ico_mac.png";
+		}else if(dow==4){
+			document.getElementById('plat_prev').src="img/ico_wina.png";
 		}
 		document.getElementById('plat_prev').style.display="inline";
 	}
