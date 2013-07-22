@@ -101,6 +101,9 @@
    "pixelatedPreview": {
       "message": "Zoomed preview is Pixelated"
    },
+   "allowWebGl": {
+      "message": "Allow WebGL for Pixelated Preview"
+   },
    "fishEye": {
       "message": " Fish Eye Amount "
    },

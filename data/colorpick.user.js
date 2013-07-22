@@ -61,9 +61,9 @@ function setColor(r){
 	hex=r.hex,isUpdating=false,rgb=null,hsv=null;
 	n.style.backgroundColor='#'+hex;
 	if(!hex){
-		if(!_ge('bgPageUnavailMsg')){
-			Cr.elm('div',{'id':'bgPageUnavailMsg',style:"color:#FFF;background-color:#000;"},[Cr.elm(msg_bg_unavail)],n);
-		}else _ge('bgPageUnavailMsg').style.display='block';
+//		if(!_ge('bgPageUnavailMsg')){
+//			Cr.elm('div',{'id':'bgPageUnavailMsg',style:"color:#FFF;background-color:#000;"},[Cr.elm(msg_bg_unavail)],n);
+//		}else _ge('bgPageUnavailMsg').style.display='block';
 	}else{
 		if(_ge('bgPageUnavailMsg'))_ge('bgPageUnavailMsg').style.display='none';
 	}

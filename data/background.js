@@ -185,8 +185,8 @@ function(request, sender, sendResponse) {
 			x=request._x;
 			y=request._y;
 			getNewColorData();
-			sendResponse(getCurrentClrData());
 			setTimeout(handleRendering,10);
+			sendResponse(getCurrentClrData());
 		}else if (request.setColor){
 			if(showPreviousClr){lastLastHex=lastHex;lastHex=curentHex;}
 			else lastHex='none';
@@ -203,11 +203,11 @@ function(request, sender, sendResponse) {
 			chrome.runtime.sendMessage({historypush: true}, function(response) {
 					//console.log('disabled!');
 			});
-			sendResponse({});
 			if(autocopyhex){
 				var n=document.createElement('input');document.body.appendChild(n);
 				n.value=curentHex;n.select();document.execCommand('copy');n.parentNode.removeChild(n);
 			}
+			sendResponse({});
 		}else if(request.reportingIn){
 			isCurrentEnableReady=true;
 			 
@@ -310,26 +310,27 @@ function getNewColorData(){
 	clhsv=rgb2hsl(data[0],data[1],data[2]);
 	clrgb.r=data[0],clrgb.g=data[1],clrgb.b=data[2];
 }
+var startSecond=0,frameCount=0;
 function handleRendering(){
-	ctx = mcan.getContext("2d");
-	if(!imageDataIsReady) return false;
+//	frameCount++;
+//	curSecond = new Date().getSeconds();
+//	if( curSecond > startSecond){
+//		console.log('fps: '+frameCount);
+//		startSecond = curSecond,frameCount=0;
+//	}
 
 // under some circumstances we do not need to render anything....
-	if(!iconIsBitmap && !showPreviewInContentS && popupsShowing < 1){
+	if(!imageDataIsReady || (!iconIsBitmap && !showPreviewInContentS && popupsShowing < 1)){
 		return;
 	}
 
-	var icvs = document.createElement('canvas');//icon canvas
-	var totalWidth = 150;//750
-	icvs.width=totalWidth
-	icvs.height=totalWidth
-	var ictx = icvs.getContext("2d");
 	var startPoint=Math.floor(totalWidth*0.5);
 	var ox=Math.round(x),oy=Math.round(y);
 
 	if(!pixelatedPreview){
+		var ictx = getMain2dContext();
 		ictx.scale(2,2);
-		ictx.drawImage(mcan,-ox+(startPoint/2),-oy+(startPoint/2));//application of scale
+		ictx.drawImage(mcan,-ox+(startPoint*0.5),-oy+(startPoint*0.5));
 		ictx.scale(0.5,0.5);
 		
 		ictx.fillStyle = "rgba(0,0,0,0.3)";//croshair
@@ -339,38 +340,24 @@ function handleRendering(){
 		ictx.fillRect(0,startPoint, totalWidth, 1);
 		
 	}else{
-		ictx.drawImage(mcan,-ox+(startPoint),-oy+(startPoint));
-		var smi,spi,mp=fishEye-0;
-		//xx,yy
-		for(var i=0;i<startPoint;i+=2){
-			smi=startPoint-i;
-			spi=startPoint+i;
-			////drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight) //CANVAS
-			ictx.drawImage(icvs,spi,0,smi,totalWidth,//total width really??
-													spi+1,0,smi,totalWidth);
-
-			ictx.drawImage(icvs,0,0,smi+1,totalWidth,
-													-1,0,smi+1,totalWidth);
-
-			ictx.drawImage(icvs,0,spi,totalWidth,smi,
-													0,spi+1,totalWidth,smi);
-
-			ictx.drawImage(icvs,0,0,totalWidth,smi+1,
-													0,-1,totalWidth,smi+1);
-
-			if(i==0){
-				var dat = ictx.getImageData(startPoint, startPoint, 1, 1).data;//notarget
-//				ictx.fillStyle = "rgba("+(255-data[0])+","+(255-data[1])+","+(255-data[2])+",0.9)";
-				var d=dat[0]+dat[1]+dat[2];
-				if(d > 192) ictx.fillStyle = "rgba(30,30,30,0.8)";
-				else ictx.fillStyle = "rgba(225,225,225,0.8)";
-			}else ictx.fillStyle = "rgba(255,255,255,0.4)";
-				
-			for(var c=0;c<mp;c++){
-				if(++i>=startPoint)break;
+		if(allowWebGl && webGlAvail){
+			getMain3dContext();
+			texturectx.drawImage(mcan,-ox+(64),-oy+(64));
+			//gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, texture);
+			gl.texSubImage2D(gl.TEXTURE_2D, 0, 0,0, gl.RGBA, gl.UNSIGNED_BYTE, texture);
+			gl.uniform1i(textureSampPosition, 0);
+			gl.uniform1f(fishEyeScalePosition, fishEye)
+			gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+		}else{
+			var ictx = getMain2dContext();
+			ictx.drawImage(mcan,-ox+(startPoint),-oy+(startPoint));
+			var smi,spi,mp=fishEye-0;
+			//xx,yy
+			for(var i=0;i<startPoint;i+=2){
 				smi=startPoint-i;
 				spi=startPoint+i;
-				ictx.drawImage(icvs,spi,0,smi,totalWidth,
+				//drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight) //CANVAS
+				ictx.drawImage(icvs,spi,0,smi,totalWidth,//total width really??
 														spi+1,0,smi,totalWidth);
 
 				ictx.drawImage(icvs,0,0,smi+1,totalWidth,
@@ -381,13 +368,38 @@ function handleRendering(){
 
 				ictx.drawImage(icvs,0,0,totalWidth,smi+1,
 														0,-1,totalWidth,smi+1);
+
+				if(i==0){
+					var dat = ictx.getImageData(startPoint, startPoint, 1, 1).data;//notarget
+//					ictx.fillStyle = "rgba("+(255-data[0])+","+(255-data[1])+","+(255-data[2])+",0.9)";
+					var d=dat[0]+dat[1]+dat[2];
+					if(d > 192) ictx.fillStyle = "rgba(30,30,30,0.8)";
+					else ictx.fillStyle = "rgba(225,225,225,0.8)";
+				}else ictx.fillStyle = "rgba(255,255,255,0.4)";
+
+				for(var c=0;c<mp;c++){
+					if(++i>=startPoint)break;
+					smi=startPoint-i;
+					spi=startPoint+i;
+					ictx.drawImage(icvs,spi,0,smi,totalWidth,
+															spi+1,0,smi,totalWidth);
+
+					ictx.drawImage(icvs,0,0,smi+1,totalWidth,
+															-1,0,smi+1,totalWidth);
+
+					ictx.drawImage(icvs,0,spi,totalWidth,smi,
+															0,spi+1,totalWidth,smi);
+
+					ictx.drawImage(icvs,0,0,totalWidth,smi+1,
+															0,-1,totalWidth,smi+1);
+				}
+				mp--;
+				if(mp<1)mp=1;
+				ictx.fillRect(spi+1, 0, 1, totalWidth);
+				ictx.fillRect(smi-1, 0, 1, totalWidth);
+				ictx.fillRect(0, spi+1, totalWidth, 1);
+				ictx.fillRect(0,smi-1,totalWidth,1);
 			}
-			mp--;
-			if(mp<1)mp=1;
-			ictx.fillRect(spi+1, 0, 1, totalWidth);
-			ictx.fillRect(smi-1, 0, 1, totalWidth);
-			ictx.fillRect(0, spi+1, totalWidth, 1);
-			ictx.fillRect(0,smi-1,totalWidth,1);
 		}
 	}
 	
@@ -412,7 +424,6 @@ function handleRendering(){
 	if(popupsShowing > 0){
 		chrome.runtime.sendMessage({setPreview:true,tabi:tabid,previewURI:lastPreviewURI,hex:curentHex,lhex:lastHex,cr:clrgb.r,cg:clrgb.g,cb:clrgb.b}, function(response) {});
 	}
-	ictx=null,icvs=null;
 }
 
 var pim = document.createElement('img');
@@ -434,6 +445,168 @@ function DOMloaded(){
 	//difficult to say when best time to do this is.... chrome running at 2 locations with different settings may produce odd results!
 	loadSettingsFromChromeSyncStorage(function(){
 		fromPrefs();
+		initializeCanvas();
 	});
 }
+
+var webGlAvail=false,icvs=0,totalWidth=150;//750
+function testWebGlAvail(){
+	var testc=document.createElement("canvas");
+	var testctx = testc.getContext('webgl');
+	if (testctx && typeof(testctx.getParameter)== "function") webGlAvail=true;
+	else webGlAvail=false;
+}
+testWebGlAvail();
+
 document.addEventListener('DOMContentLoaded', DOMloaded);
+
+var gl=0,texture=0,texturectx=0,snapTexture=0,shaderProgram=0,textureSampPosition=0,fishEyeScalePosition=0;
+
+function getMain2dContext(){
+	var context=icvs.getContext("2d");
+	if(context) return context;
+	else{
+		initializeCanvas();
+		return icvs.getContext("2d");
+	}
+}
+
+function getMain3dContext(){
+	if(gl) return gl;
+	else{
+		initializeCanvas();
+		return gl;
+	}
+}
+
+function initializeCanvas(){
+	gl=0;
+	icvs = document.createElement('canvas');//icon canvas
+	icvs.width=totalWidth,
+	icvs.height=totalWidth;
+	if(webGlAvail && pixelatedPreview && allowWebGl){
+		gl = icvs.getContext("webgl");
+
+		var squareVerticesBuffer = gl.createBuffer();
+		gl.bindBuffer(gl.ARRAY_BUFFER, squareVerticesBuffer);
+		var vertices = [
+			 1.0,  1.0,  0.0,//top right
+			-1.0,  1.0,  0.0,
+			 1.0, -1.0,  0.0,
+			-1.0, -1.0,  0.0
+		];
+		gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
+
+		var textureCoordBuffer = gl.createBuffer();
+		gl.bindBuffer(gl.ARRAY_BUFFER, textureCoordBuffer);
+		var textureCoordinates = [
+			// Front
+			1.0, 1.0,
+			0.0, 1.0,
+			1.0, 0.0,
+			0.0, 0.0
+		];
+		gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(textureCoordinates),gl.STATIC_DRAW);
+
+		var fragShader = ""+
+		"precision mediump float;"+"\n"+
+		"varying highp vec2 vTextureCoord;"+"\n"+
+		"uniform float fishEyeScale;"+"\n"+
+		"uniform sampler2D uSampler;"+"\n"+
+		"void main(void) {"+"\n"+
+		" float texSizeFracOnePix=1.0 / 128.0;"+"\n"+
+		" float halfTexSizeFracOnePix=texSizeFracOnePix * 0.5;"+"\n"+
+		" vec2 ctr=vec2(0.5,0.5) + vec2(halfTexSizeFracOnePix,-halfTexSizeFracOnePix);"+"\n"+
+		" vec2 agl=(vTextureCoord.xy - ctr.xy);"+"\n"+
+		" float dis=distance(ctr,vTextureCoord) / fishEyeScale;"+"\n"+
+		" vec2 get=ctr + (agl * dis);"+"\n"+
+		" vec4 bcolor=texture2D(uSampler, get);"+"\n"+
+		" vec2 res=get * 128.0;"+"\n"+
+		" ivec2 geb=ivec2(res);"+"\n"+
+		" vec4 pcolor = texture2D(uSampler, ctr);//picked color"+"\n"+
+		" vec4 ccolor = vec4(0.0,0.0,0.0,1.0);//crosshair color"+"\n"+
+		" if(pcolor.r + pcolor.g + pcolor.b < 1.5){"+"\n"+
+		"  ccolor = vec4(1.0,1.0,1.0,1.0);"+"\n"+
+		" }"+"\n"+
+		" if( geb.x == 64 && geb.y == 63 ){"+"\n"+
+		"  if( res.x < 64.1 || res.x > 64.9  || res.y > 63.9 || res.y < 63.1 	){"+"\n"+
+		"   bcolor = mix(bcolor,ccolor,0.8);"+"\n"+
+		"  }"+"\n"+
+		" }"+"\n"+
+//		" if( vTextureCoord.x < 0.3 && vTextureCoord.y < 0.3 	){"+"\n"+
+//		"  bcolor = pcolor;"+"\n"+
+//		" }"+"\n"+
+		" gl_FragColor = bcolor;"+"\n"+
+		"}";
+
+		var vertShader = ""+
+		"attribute vec3 aVertexPosition;"+"\n"+
+		"attribute vec2 aTextureCoord;"+"\n"+
+		"varying highp vec2 vTextureCoord;"+"\n"+
+		"void main(void) {"+"\n"+
+		" gl_Position = vec4(aVertexPosition, 1.0);"+"\n"+
+		" vTextureCoord = aTextureCoord;"+"\n"+
+		"}";
+
+		var fshader = gl.createShader(gl.FRAGMENT_SHADER);
+		var vshader = gl.createShader(gl.VERTEX_SHADER);
+
+		gl.shaderSource(fshader, fragShader);
+		gl.shaderSource(vshader, vertShader);
+
+		gl.compileShader(fshader);
+		if (!gl.getShaderParameter(fshader, gl.COMPILE_STATUS)) {
+			webGlAvail=false;
+			console.log("An error occurred compiling the frag shaders: " + gl.getShaderInfoLog(fshader));
+		}
+
+		gl.compileShader(vshader);
+		if (!gl.getShaderParameter(vshader, gl.COMPILE_STATUS)) {
+			webGlAvail=false;
+			console.log("An error occurred compiling the vertex shaders: " + gl.getShaderInfoLog(vshader));
+		}
+
+		shaderProgram = gl.createProgram();
+		gl.attachShader(shaderProgram, vshader);
+		gl.attachShader(shaderProgram, fshader);
+		gl.linkProgram(shaderProgram);
+
+		if (!gl.getProgramParameter(shaderProgram, gl.LINK_STATUS)) {
+			webGlAvail=false;
+			console.log("Unable to initialize the shader program.");
+			console.log(gl.getProgramInfoLog(shaderProgram));
+		}
+
+		gl.useProgram(shaderProgram);
+
+		var vertexPositionAttribute = gl.getAttribLocation(shaderProgram, "aVertexPosition");
+		gl.enableVertexAttribArray(vertexPositionAttribute);
+
+		var textureCoordAttribute = gl.getAttribLocation(shaderProgram, "aTextureCoord");
+		gl.enableVertexAttribArray(textureCoordAttribute);
+
+		textureSampPosition = gl.getUniformLocation(shaderProgram, "uSampler");
+		fishEyeScalePosition = gl.getUniformLocation(shaderProgram, "fishEyeScale");
+
+		texture = document.createElement('canvas');//icon canvas
+		texture.width=128,
+		texture.height=128;
+		texturectx = texture.getContext("2d");
+
+		gl.activeTexture(gl.TEXTURE0);
+		snapTexture = gl.createTexture();
+		gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+		gl.bindTexture(gl.TEXTURE_2D, snapTexture);
+		gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, texture);
+		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+		gl.generateMipmap(gl.TEXTURE_2D);
+		gl.uniform1i(textureSampPosition, 0);
+
+		gl.bindBuffer(gl.ARRAY_BUFFER, textureCoordBuffer);
+		gl.vertexAttribPointer(textureCoordAttribute, 2, gl.FLOAT, false, 0, 0);
+
+		gl.bindBuffer(gl.ARRAY_BUFFER, squareVerticesBuffer);
+		gl.vertexAttribPointer(vertexPositionAttribute, 3, gl.FLOAT, false, 0, 0);
+	}
+}
