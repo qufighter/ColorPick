@@ -167,7 +167,7 @@ function(request, sender, sendResponse) {
 				ctx = mcan.getContext("2d");
 				ctx.clearRect(0,0,wid,hei);
 			}
-			
+			if(winid < 1)winid=null;
 			if(usePNG)chrome.tabs.captureVisibleTab(winid, {format:'png'}, cbf);
 			else chrome.tabs.captureVisibleTab(winid, {format:'jpeg',quality:100}, cbf);
 			sendResponse({});

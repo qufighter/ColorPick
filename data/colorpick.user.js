@@ -40,7 +40,7 @@ function setPixelPreview(pix,zoom,hex,lhex){
 	if(!_ge('cpimprev') || (rgb && !_ge('cprgbvl'))){
 		emptyNode(n);
 		Cr.elm('div',{},[
-			Cr.elm('img',{id:'cpimprev',height:wid,width:wid,src:pix,style:'margin-left:32px;padding-right:'+padr+'px;'}),
+			Cr.elm('img',{id:'cpimprev',height:wid,width:wid,src:pix,style:'margin:0px;padding:0px;margin:0px;'}),
 			Cr.elm('br'),
 			Cr.txt('#'),
 			Cr.elm('input',{type:'text',size:7,style:'max-width:75px;font-size:10pt;border:'+borders,id:'cphexvl',value:hex,event:['mouseover',selectTargElm]}),
@@ -183,6 +183,13 @@ function enableColorPicker(){
 	return true;
 }
 function keepOnScreen(){
+//	if(true && n.firstChild && n.firstChild.firstChild){
+//		var img=n.firstChild.firstChild;
+//		var amt=Math.floor(img.offsetLeft + (img.clientWidth*0.5));
+//		n.style.top=(ly-amt)+"px";
+//		n.style.left=(lx-amt)+"px";
+//		return;
+//	}
 	n.style.top=(ly+8)+"px";
 	n.style.left=(lx+8)+"px";
 	if( n.clientWidth + n.offsetLeft +24 > window.innerWidth ){
