@@ -190,6 +190,7 @@ function keepOnScreen(){
 //		n.style.left=(lx-amt)+"px";
 //		return;
 //	}
+  if(!n)return;
 	n.style.top=(ly+8)+"px";
 	n.style.left=(lx+8)+"px";
 	if( n.clientWidth + n.offsetLeft +24 > window.innerWidth ){
