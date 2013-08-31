@@ -82,7 +82,7 @@ function fromPrefs(){
 function defaultIcon(){
 	var iconPath='img/';
 	if(appleIcon)iconPath+='apple/';
-	if(resetIcon)chrome.browserAction.setIcon({path:chrome.extension.getURL(iconPath+(window.devicePixelRatio>1?'icon38.png':'icon19.png'))});//update icon (to be configurable)
+	if(resetIcon)chrome.browserAction.setIcon({path:chrome.extension.getURL(iconPath+(devicePixelRatio>1?'icon38.png':'icon19.png'))});//update icon (to be configurable)
 }
 
 var d=new Date();
@@ -157,8 +157,8 @@ function(request, sender, sendResponse) {
 			 sendResponse({});//not handled by this listener
 		}else if (request.newImage){
 			lsnaptabid=tabid;
-			wid=request._x;
-			hei=request._y;
+			wid=request._x*devicePixelRatio;
+			hei=request._y*devicePixelRatio;
 			var cbf=function(dataUrl){
 				imageDataIsReady=false;
 				pim.src=dataUrl;
@@ -172,8 +172,8 @@ function(request, sender, sendResponse) {
 			else chrome.tabs.captureVisibleTab(winid, {format:'jpeg',quality:100}, cbf);
 			sendResponse({});
 		}else if (request.movePixel){
-			x+=(request._x);//or otherwise use the current scale
-			y+=(request._y);
+			x+=(request._x*devicePixelRatio);//or otherwise use the current scale
+			y+=(request._y*devicePixelRatio);
 			getNewColorData();
 			handleRendering();
 			dobj=getCurrentClrData();
@@ -182,8 +182,8 @@ function(request, sender, sendResponse) {
 			chrome.tabs.sendMessage(tabid,dobj,function(r){});
 			sendResponse({});
 		}else if (request.getPixel){
-			x=request._x;
-			y=request._y;
+			x=request._x*devicePixelRatio;
+			y=request._y*devicePixelRatio;
 			getNewColorData();
 			setTimeout(handleRendering,10);
 			sendResponse(getCurrentClrData());
@@ -406,7 +406,7 @@ function handleRendering(){
 	lastPreviewURI = icvs.toDataURL();//the last one, large size, is cached for revisiting the menu
 
 	if(iconIsBitmap){
-		var browseIconWidth=(window.devicePixelRatio>1?38:19);
+		var browseIconWidth=(devicePixelRatio>1?38:19);
 		var browseIconHalfWidth = Math.floor(browseIconWidth*0.5);
 		//chrome.browserAction.setIcon({imageData:ictx.getImageData(startPoint-browseIconHalfWidth, startPoint-browseIconHalfWidth, browseIconWidth, browseIconWidth)});
 
