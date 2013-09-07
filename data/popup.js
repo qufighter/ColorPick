@@ -262,9 +262,13 @@ function iin(){
 	}
 
 	//if( !globalPopout ){
-  	if( window.name.indexOf('colorPickPopup')>-1 ){
-  		tabid=window.name.replace('colorPickPopup_','')-0;
-  		//document.getElementById('popout').style.display='none';
+		if( window.location.href.indexOf('isPopup=')>-1 ){
+			var wlh=window.location.href;
+			var st = wlh.indexOf('isPopup=') + 8;
+			var en = wlh.indexOf('&',st);
+			if( en < 0 ) en = wlh.length;
+			tabid=wlh.substr(st,en-st)-0;
+			document.getElementById('popout').style.display='none';
 			if(window.innerWidth > 200)init_color_chooser();
   		setupInjectScripts()
   	}else{
@@ -406,22 +410,27 @@ function finalizedrag(){
 var win2 = 0;
 function popupimage(mylink, windowname)
 {
-	if (! window.focus)return true;
-	mylink = new String( mylink.href );
-	if( win2 == 0 || typeof(win2) != 'object' || typeof(win2.location) != 'string'  ){
-		//var scal=getPageZoomFactor();
-		//var w=Math.ceil(window.innerWidth*scal)+1,h=Math.ceil(window.innerHeight*scal)+1;
-		var w=Math.round(window.outerWidth*1.114),h=Math.round(window.outerHeight*1.15);
-		win2 = window.open(mylink, windowname, 'fullscreen=no,toolbar=no,status=no,menubar=no,scrollbars=no,resizable=yes,directories=no,location=no,width='+w+',height='+h);
-	}else{
-		win2.location = mylink;
-	}
-	win2.blur();
-	win2.focus();
+	var w=Math.round(window.outerWidth*1.114),h=Math.round(window.outerHeight*1.15);
+	chrome.windows.create({url:mylink.href,width:w,height:h,focused:false,type:"panel"},function(win){});
 	return false;
+	
+//	if (! window.focus)return true;
+//	mylink = new String( mylink.href );
+//	if( win2 == 0 || typeof(win2) != 'object' || typeof(win2.location) != 'string'  ){
+//		//var scal=getPageZoomFactor();
+//		//var w=Math.ceil(window.innerWidth*scal)+1,h=Math.ceil(window.innerHeight*scal)+1;
+//		
+//		win2 = window.open(mylink, windowname, 'fullscreen=no,toolbar=no,status=no,menubar=no,scrollbars=no,resizable=yes,directories=no,location=no,width='+w+',height='+h);
+//	}else{
+//		win2.location = mylink;
+//	}
+//	win2.blur();
+//	win2.focus();
+//	win2.blur();
+//	return false;
 }
 function popOut(){
- popupimage({href:chrome.extension.getURL('popup.html?isPopup')},'colorPickPopup_'+tabid);
+ popupimage({href:chrome.extension.getURL('popup.html')+'?isPopup='+tabid},"ColorPick");
 }
 
 function close_stop_picking(){
