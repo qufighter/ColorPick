@@ -1,7 +1,7 @@
 var elmid1='color_pick_click_box',elmid2='ChromeExtension:Color-Pick.com';
 if(typeof(exitAndDetach)=='function')exitAndDetach();
 function _ge(n){return document.getElementById(n);}
-var n=false,c=false,hex=0,rgb=null;hsv=null;scal=1,ex=0,ey=0,isEnabled=false,isLocked=false,borders='1px solid black',blankgif='',msg_bg_unavail=chrome.i18n.getMessage('bgPageUnavailable');
+var n=false,c=false,hex='F00BAF',rgb=null;hsv=null;scal=1,ex=0,ey=0,isEnabled=false,isLocked=false,borders='1px solid black',blankgif='',msg_bg_unavail=chrome.i18n.getMessage('bgPageUnavailable');
 function emptyNode(node){
 	while(node.lastChild)node.removeChild(node.lastChild);
 }
@@ -61,7 +61,7 @@ function setPixelPreview(pix,zoom,hex,lhex){
 }
 function setColor(r){
 	if(!n)return;
-	hex=r.hex?r.hex:0,isUpdating=false,rgb=null,hsv=null;
+	hex=r.hex?r.hex:hex,isUpdating=false,rgb=null,hsv=null;
 	if(!r.hex){
 //		if(!_ge('bgPageUnavailMsg')){
 //			Cr.elm('div',{'id':'bgPageUnavailMsg',style:"color:#FFF;background-color:#000;"},[Cr.elm(msg_bg_unavail)],n);
