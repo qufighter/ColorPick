@@ -387,7 +387,7 @@ function mmove(ev){
 		xm=Math.round((x1-x)/(localStorage['fishEye']-0)),
 		ym=Math.round((y1-y)/(localStorage['fishEye']-0));
 		if(xm!=0||ym!=0){
-			chrome.runtime.sendMessage({movePixel:true,_x:xm,_y:ym,tabi:tabid}, function(response) {});
+			chrome.runtime.sendMessage({movePixel:true,_x:xm*devicePixelRatio,_y:ym*devicePixelRatio,tabi:tabid}, function(response) {});
 			if(xm!=0)x1=x;
 			if(ym!=0)y1=y;
 		}

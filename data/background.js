@@ -172,8 +172,8 @@ function(request, sender, sendResponse) {
 			else chrome.tabs.captureVisibleTab(winid, {format:'jpeg',quality:100}, cbf);
 			sendResponse({});
 		}else if (request.movePixel){
-			x+=(request._x*devicePixelRatio);//or otherwise use the current scale
-			y+=(request._y*devicePixelRatio);
+			x+=(request._x);//or otherwise use the current scale
+			y+=(request._y);
 			getNewColorData();
 			handleRendering();
 			dobj=getCurrentClrData();
@@ -182,8 +182,8 @@ function(request, sender, sendResponse) {
 			chrome.tabs.sendMessage(tabid,dobj,function(r){});
 			sendResponse({});
 		}else if (request.getPixel){
-			x=request._x*devicePixelRatio;
-			y=request._y*devicePixelRatio;
+			x=request._x;
+			y=request._y;
 			getNewColorData();
 			setTimeout(handleRendering,10);
 			sendResponse(getCurrentClrData());
