@@ -157,8 +157,8 @@ function(request, sender, sendResponse) {
 			 sendResponse({});//not handled by this listener
 		}else if (request.newImage){
 			lsnaptabid=tabid;
-			wid=request._x*devicePixelRatio;
-			hei=request._y*devicePixelRatio;
+			wid=request._x;
+			hei=request._y;
 			var cbf=function(dataUrl){
 				imageDataIsReady=false;
 				pim.src=dataUrl;
