@@ -21,7 +21,7 @@
    } ],
    "background": {
       "scripts": ["options_prefs.js", "background.js"],
-      "persistent": true
+      "persistent": false
    },
    "options_page": "options.html",
    "icons": {
