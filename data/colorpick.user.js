@@ -270,7 +270,7 @@ function newImage(){
 	//scal=document.width / document.body.clientWidth;
 	x*=scal,y*=scal;
 	setTimeout(function(){
-		chrome.runtime.sendMessage({newImage:true,_x:x*devicePixelRatio,_y:y*devicePixelRatio}, function(response){
+		chrome.runtime.sendMessage({newImage:true,_x:x*devicePixelRatio,_y:y*devicePixelRatio,dpr:devicePixelRatio}, function(response){
 			isMakingNew=false;//perhaps we wait unitl it's really 'new'
 			//window.setTimeout(function(){
 				c.style.display="block";n.style.display="block";document.body.style.cursor='url('+chrome.extension.getURL('img/crosshair.png')+') 16 16,crosshair';updateColorPreview();

@@ -83,12 +83,13 @@ function defaultIcon(force){
 	if( iconIsBitmap || appleIcon || force ){
 		var iconPath='img/';
 		if(appleIcon)iconPath+='apple/';
-		if(resetIcon)chrome.browserAction.setIcon({path:chrome.extension.getURL(iconPath+(devicePixelRatio>1?'icon38.png':'icon19.png'))});//update icon (to be configurable)
+		if(resetIcon)chrome.browserAction.setIcon({path:chrome.extension.getURL(iconPath+(dpr>1?'icon38.png':'icon19.png'))});//update icon (to be configurable)
 		return true;
 	}
 	return false;
 }
 
+var dpr=1.0;//devicePixelRatio
 var d=new Date();
 
 function getWeek(d){
@@ -163,6 +164,7 @@ function(request, sender, sendResponse) {
 			lsnaptabid=tabid;
 			wid=request._x;
 			hei=request._y;
+			dpr=request.dpr;
 			var cbf=function(dataUrl){
 				imageDataIsReady=false;
 				pim.src=dataUrl;
@@ -410,7 +412,7 @@ function handleRendering(){
 	lastPreviewURI = icvs.toDataURL();//the last one, large size, is cached for revisiting the menu
 
 	if(iconIsBitmap){
-		var browseIconWidth=(devicePixelRatio>1?38:19);
+		var browseIconWidth=(dpr>1?38:19);
 		var browseIconHalfWidth = Math.floor(browseIconWidth*0.5);
 		//chrome.browserAction.setIcon({imageData:ictx.getImageData(startPoint-browseIconHalfWidth, startPoint-browseIconHalfWidth, browseIconWidth, browseIconWidth)});
 
