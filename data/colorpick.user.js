@@ -34,9 +34,10 @@ function reqLis(request, sender, sendResponse) {
   sendResponse(resp);
 }
 chrome.runtime.onMessage.addListener(reqLis);
-function setPixelPreview(pix,zoom,hex,lhex){
+function setPixelPreview(pix,zoom,hxe,lhex){
 	if(isLocked)return;
 	var wid=75,padr=32;if(zoom)wid=150;
+	hex=hxe?hxe:hex;
 	if(!_ge('cpimprev') || (rgb && !_ge('cprgbvl'))){
 		emptyNode(n);
 		Cr.elm('div',{},[
@@ -55,6 +56,7 @@ function setPixelPreview(pix,zoom,hex,lhex){
 		_ge('cpimprev').width=wid,
 		_ge('cpimprev').height=wid;
 		_ge('cphexvl').value=hex;
+		n.style.backgroundColor='#'+hex;
 		if(rgb)_ge('cprgbvl').value='rgb('+rgb.r+','+rgb.g+','+rgb.b+')';
 		if(hsv)_ge('cphslvl').value='hsl('+hsv.h+','+hsv.s+'%,'+hsv.v+'%)';
 	}
