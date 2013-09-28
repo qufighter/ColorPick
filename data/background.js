@@ -72,7 +72,7 @@ function defaultIcon(force){
 	if( iconIsBitmap || appleIcon || force ){
 		var iconPath='img/';
 		if(appleIcon)iconPath+='apple/';
-		if(resetIcon)chrome.browserAction.setIcon({path:chrome.extension.getURL(iconPath+(dpr>1?'icon38.png':'icon19.png'))});//update icon (to be configurable)
+		if(resetIcon)chrome.browserAction.setIcon({path:{19:chrome.extension.getURL(iconPath+'icon19.png'),38:chrome.extension.getURL(iconPath+'icon38.png')}});
 		return true;
 	}
 	return false;
@@ -409,7 +409,9 @@ function handleRendering(){
 		tmpCvs.width=browseIconWidth,tmpCvs.height=browseIconWidth;
 		var tctx=tmpCvs.getContext("2d");
 		tctx.drawImage(icvs,startPoint-browseIconHalfWidth, startPoint-browseIconHalfWidth, browseIconWidth, browseIconWidth,0,0,browseIconWidth,browseIconWidth);
-		chrome.browserAction.setIcon({path:tmpCvs.toDataURL()});//update icon (to be configurable)
+		var pathData = {};
+		pathData[browseIconWidth]=tmpCvs.toDataURL();
+		chrome.browserAction.setIcon({path:pathData});//update icon (to be configurable)
 	}
 
 	if(showPreviewInContentS){
