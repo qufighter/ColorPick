@@ -47,7 +47,7 @@ function fromPrefs(){
 	//future additions -
 	//storage.remove(['','',''], function(){})
 
-	var iconWasCustom = iconIsBitmap || appleIcon;//defaultIcon();
+	var iconWasCustom = window.iconIsBitmap || window.appleIcon;
 
 	for(var i in pOptions){
 		if(typeof(pOptions[i].def)=='boolean')
