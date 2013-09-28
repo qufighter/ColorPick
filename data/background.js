@@ -31,18 +31,7 @@ function rgb2hsl(r, g, b){//http://mjijackson.com/2008/02/rgb-to-hsl-and-rgb-to-
 
 function fromPrefs(){
 	//remove defunct options
-	localStorage.removeItem("autoRedirectPickable");
-	localStorage.removeItem("redirectSameWindow");
-	localStorage.removeItem("customCalibration");
-	localStorage.removeItem("cpScaleOffset");
-	localStorage.removeItem("flashScalePix");
-	localStorage.removeItem("postAutoOptin");
-	for(i in localStorage){
-		if(i.substr(0,3) == '0.0'){
-			localStorage.removeItem(i);
-		}
-	}
-	localStorage.removeItem("clrAccuracyOverPrecision");
+	//localStorage.removeItem("autoRedirectPickable");
 
 	//future additions -
 	//storage.remove(['','',''], function(){})
