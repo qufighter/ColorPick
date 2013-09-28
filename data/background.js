@@ -217,7 +217,7 @@ function(request, sender, sendResponse) {
 			chrome.tabs.getSelected(null, function(tab) {
 				var tabId=tab.id;
 				if(request.tabi>0 && request.tabi!=tabId){
-					return true;//in the case of a popup, the currently selected "tab" is not the one we need to initialize
+					return false;//in the case of a popup, the currently selected "tab" is not the one we need to initialize
 				}
 				
 				isCurrentEnableReady=false;
