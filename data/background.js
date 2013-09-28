@@ -29,8 +29,6 @@ function rgb2hsl(r, g, b){//http://mjijackson.com/2008/02/rgb-to-hsl-and-rgb-to-
     };
 }
 
-var iconPath = '';
-
 function fromPrefs(){
 	//remove defunct options
 	localStorage.removeItem("autoRedirectPickable");
@@ -48,6 +46,8 @@ function fromPrefs(){
 
 	//future additions -
 	//storage.remove(['','',''], function(){})
+
+	var iconWasCustom = iconIsBitmap || appleIcon;//defaultIcon();
 
 	for(var i in pOptions){
 		if(typeof(pOptions[i].def)=='boolean')
@@ -75,14 +75,18 @@ function fromPrefs(){
 		localStorage.feedbackOptOut = "true";
 	}
 	
-	defaultIcon();
+	defaultIcon(iconWasCustom);
 	feedbackParticipationOversight();
 }
 
-function defaultIcon(){
-	var iconPath='img/';
-	if(appleIcon)iconPath+='apple/';
-	if(resetIcon)chrome.browserAction.setIcon({path:chrome.extension.getURL(iconPath+(devicePixelRatio>1?'icon38.png':'icon19.png'))});//update icon (to be configurable)
+function defaultIcon(force){
+	if( iconIsBitmap || appleIcon || force ){
+		var iconPath='img/';
+		if(appleIcon)iconPath+='apple/';
+		if(resetIcon)chrome.browserAction.setIcon({path:chrome.extension.getURL(iconPath+(devicePixelRatio>1?'icon38.png':'icon19.png'))});//update icon (to be configurable)
+		return true;
+	}
+	return false;
 }
 
 var d=new Date();
