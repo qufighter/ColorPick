@@ -132,7 +132,7 @@
       "message": "See Terms of Use"
    },
    "disableRewriting": {
-      "message": "Disable URL rewriting of affiliate links"
+      "message": "Disable affiliatizing of non-affiliate links"
    },
    "usageStatistics": {
       "message": "Gather Usage Statistics (See Terms of Use)"
