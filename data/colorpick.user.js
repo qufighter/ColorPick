@@ -213,7 +213,7 @@ function updateColorPreview(ev){
 		lastTimeout=window.setTimeout(function(){updateColorPreview()},500),timeoutCount++;
 		if(timeoutCount > 50){
 			if(!_ge('bgPageUnavailMsg')){
-				Cr.elm('div',{'id':'bgPageUnavailMsg',style:"color:#FFF;background-color:#000;"},[Cr.elm(msg_bg_unavail)],n);
+				Cr.elm('div',{'id':'bgPageUnavailMsg',style:"color:#FFF;background-color:#000;"},[Cr.txt(msg_bg_unavail)],n);
 			}else _ge('bgPageUnavailMsg').style.display='block';
 		}
 		return;
