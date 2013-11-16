@@ -28,7 +28,7 @@ function reqLis(request, sender, sendResponse) {
   }else if (request.doPick){
   	picked()
   }else if (request.movedPixel){
-  	setColor(request);
+		setCurColor(request);
   }else if (request.disableColorPicker)disableColorPicker()
   resp.isPicking=!isLocked;
   sendResponse(resp);
@@ -61,7 +61,7 @@ function setPixelPreview(pix,zoom,hxe,lhex){
 		if(hsv)_ge('cphslvl').value='hsl('+hsv.h+','+hsv.s+'%,'+hsv.v+'%)';
 	}
 }
-function setColor(r){
+function setCurColor(r){
 	if(!n)return;
 	hex=r.hex?r.hex:hex,isUpdating=false,rgb=null,hsv=null;
 	if(!r.hex){
@@ -226,7 +226,7 @@ function updateColorPreview(ev){
 	}
 //	try{
 		chrome.runtime.sendMessage({getPixel:true,_x:x*devicePixelRatio,_y:y*devicePixelRatio}, function(response){
-			setColor(response);
+			//setCurColor(response);
 		});
 //	}catch(e){
 //		exitAndDetach();

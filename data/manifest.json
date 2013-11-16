@@ -40,5 +40,5 @@
    ],
    "content_security_policy": "script-src 'self' https://ssl.google-analytics.com https://apis.google.com https://www.google.com https://checkout.google.com https://wallet.google.com; object-src 'self'",
    "default_locale": "en",
-   "version": "0.0.1.75"
+   "version": "0.0.1.77"
 }

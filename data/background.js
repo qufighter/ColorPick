@@ -171,7 +171,7 @@ function(request, sender, sendResponse) {
 			y+=(request._y);
 			getNewColorData();
 			handleRendering();
-			dobj=getCurrentClrData();
+			var dobj=getCurrentClrData();
 			dobj.movedPixel=true;
 			dobj.msg=chrome.i18n.getMessage('pressEnterToPick');
 			chrome.tabs.sendMessage(tabid,dobj,function(r){});
@@ -181,7 +181,10 @@ function(request, sender, sendResponse) {
 			y=request._y;
 			getNewColorData();
 			setTimeout(handleRendering,10);
-			sendResponse(getCurrentClrData());
+			var dobj=getCurrentClrData();
+			dobj.movedPixel=true;
+			chrome.tabs.sendMessage(tabid,dobj,function(r){});
+			sendResponse({});
 		}else if (request.setColor){
 			if(showPreviousClr){lastLastHex=lastHex;lastHex=curentHex;}
 			else lastHex='none';
