@@ -219,7 +219,7 @@ function createOptions(piOptions, elemAppend){
 			cb.setAttribute('id',i);
 			if(piOptions[i].ind>0)l.appendChild(document.createTextNode('\u00a0\u00a0\u00a0\u00a0'));
 			if(piOptions[i].ind>1)l.appendChild(document.createTextNode('\u00a0\u00a0\u00a0\u00a0'));
-			l.appendChild(document.createTextNode(piOptions[i].name));
+			l.appendChild(document.createTextNode(" "+piOptions[i].name+" "));
 			l.appendChild(cb);
 			
 			

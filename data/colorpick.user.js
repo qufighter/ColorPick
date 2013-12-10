@@ -66,7 +66,7 @@ function setCurColor(r){
 	hex=r.hex?r.hex:hex,isUpdating=false,rgb=null,hsv=null;
 	if(!r.hex){
 //		if(!_ge('bgPageUnavailMsg')){
-//			Cr.elm('div',{'id':'bgPageUnavailMsg',style:"color:#FFF;background-color:#000;"},[Cr.elm(msg_bg_unavail)],n);
+//			Cr.elm('div',{'id':'bgPageUnavailMsg',style:"color:#FFF;background-color:#000;"},[Cr.txt(msg_bg_unavail)],n);
 //		}else _ge('bgPageUnavailMsg').style.display='block';
 	}else{
 		n.style.backgroundColor='#'+hex;
