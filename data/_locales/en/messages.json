@@ -3,7 +3,7 @@
       "message": "ColorPick Eyedropper"
    },
    "extDescription": {
-      "message": "A simple eye-dropper & color-picker tool allowing you to select color values from webpages."
+      "message": "An eye-dropper & color-picker tool that allows you to select color values from webpages."
    },
    "closeAndExit": {
       "message": "Close and Exit Color Pick Mode [esc]"
@@ -15,7 +15,7 @@
       "message": "Click to Buy & Register a ColorPick License or Opt-in."
    },
    "registerBanner": {
-      "message": "register"
+      "message": "Register"
    },
    "showColorChooser": {
       "message": "Show Color Chooser"
@@ -33,13 +33,13 @@
       "message": "ColorPick Standalone Application"
    },
    "popOutWindow": {
-      "message": "Pop-Out (seperate window)"
+      "message": "Pop-Out (separate window)"
    },
    "pressEnterToPick": {
       "message": "Press Enter to Pick Color"
    },
    "bgPageUnavailable": {
-      "message": "Background Snapshot Not Responding - Please refresh the page and try again."
+      "message": "Background Snapshot Not Responding - Please Refresh the Page and Try Again."
    },
    "registered": {
       "message": "Registered"
@@ -57,28 +57,28 @@
       "message": "Modify License"
    },
    "licenseExceeded": {
-      "message": "License may be in use on the maximum number of hosts.  Upgrading your license may resolve the issue... Launch upgrade webpage now?"
+      "message": "License may be in use on the maximum number of hosts.  License upgrade may resolve the issue... Launch upgrade webpage?"
    },
    "licenseComError": {
       "message": "Problem communicating with license server.  Make sure your firewall is open on port 80 or contact your system administrator.  Please try again soon!"
    },
    "inappComError": {
-      "message": "Temporary problem with this payment method (Check your Internet connectivity), please try again later, try the buy license key method, or contact the developer sam@vidsbee.com"
+      "message": "Temporary problem with this payment method (Check your Internet connectivity), please try again later, try the buy license key method or contact the developer sam@vidsbee.com"
    },
    "inappPurchaseError": {
-      "message": "Unknown failure!  Internet connectivity?"
+      "message": "Unknown failure!  Check your Internet connectivity."
    },
    "error": {
       "message": "Error"
    },
    "showndefaults": {
-      "message": "You still need to press save, defaults are showing now."
+      "message": "Please press save, now showing defaults."
    },
    "savedoptions": {
       "message": "Options Saved."
    },
    "loadsyncOptions": {
-      "message": "Sync Storage options have been loaded and Saved."
+      "message": "Sync Storage options have been loaded and saved."
    },
    "on": {
       "message": "On"
@@ -87,7 +87,7 @@
       "message": "Off"
    },
    "default": {
-      "message": "default"
+      "message": "Default"
    },
    "full": {
       "message": "Full"
@@ -96,16 +96,16 @@
       "message": "Max Zoomed"
    },
    "pickEveryTime": {
-      "message": "Start picking each time colorpick button is clicked"
+      "message": "Start picking each time button is clicked"
    },
    "pixelatedPreview": {
-      "message": "Zoomed preview is Pixelated"
+      "message": "Zoomed Preview is Pixelated"
    },
    "allowWebGl": {
       "message": "Allow WebGL for Pixelated Preview"
    },
    "fishEye": {
-      "message": " Fish Eye Amount "
+      "message": "Fish Eye Amount"
    },
    "EnableRGB": {
       "message": "Show RGB"
@@ -117,22 +117,22 @@
       "message": "Show image preview near cursor while picking"
    },
    "ShowRGBHSL": {
-      "message": "Show RGB and HSL on page too"
+      "message": "Show RGB and HSL on page"
    },
    "contSprevZoomd": {
       "message": "Large size on page preview"
    },
    "autocopyhex": {
-      "message": "Attempt auto copy hex value to clipboard"
+      "message": "Attempt to auto copy hex value to clipboard"
    },
    "hasAgreedToLicense": {
-      "message": "Has agreed to license Terms of Use"
+      "message": "Has agreed to Terms of Use"
    },
    "seeTerms": {
       "message": "See Terms of Use"
    },
    "disableRewriting": {
-      "message": "Disable affiliatizing of non-affiliate links"
+      "message": "Disable affiliation of non-affiliate links"
    },
    "usageStatistics": {
       "message": "Gather Usage Statistics (See Terms of Use)"
@@ -153,19 +153,19 @@
       "message": "Use Apple Digital Color Meter logo"
    },
    "iconIsBitmap": {
-      "message": "Icon is zoomed colorpick pixel preview"
+      "message": "Icon is zoomed pixel preview"
    },
    "resetIcon": {
-      "message": "Back to normal icon when done"
+      "message": "Revert to normal icon"
    },
    "bbackgroundColor": {
       "message": "Popup Background Color"
    },
    "usePrevColorBG": {
-      "message": "Use Previous Color for Background Instead"
+      "message": "Use Previous Color for Background"
    },
    "showPreviousClr": {
-      "message": "Show Split color Preview with Previous Color"
+      "message": "Show Split Color Preview with Previous Color"
    },
    "borderValue": {
       "message": "Borders to use (css value)"
@@ -198,7 +198,7 @@
       "message": "History"
    },
    "clear": {
-      "message": "clear"
+      "message": "Clear"
    },
    "copycolorval": {
       "message": "Copy the color value"
