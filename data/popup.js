@@ -2,7 +2,8 @@ var tabid=0;
 var isScriptAlive=false,scriptAliveTimeout=0;
 var cpw=165,cph=303;
 var borderValue='1px solid grey',EnableRGB=true,EnableHSL=true,useCSSValues=true;
-var cpScaleOffset=(navigator.platform=='win32'?16:0)
+var isWindows=navigator.platform.substr(0,3).toLowerCase()=='win';
+var cpScaleOffset=(isWindows?16:0);
 var pickEveryTime=true,isPicking=false,keyInputMode=false;
 function getEventTargetA(ev){
 	var targ=getEventTarget(ev)
@@ -127,7 +128,7 @@ function getPixel(){}
 
 chrome.runtime.onMessage.addListener(
   function(request, sender, sendResponse) {
-    if(request.setPreview && (request.tabi==tabid || tabid==0)){
+    if(request.setPreview && (  sender.tab.id == tabid || request.tabi==tabid || tabid==0)){
       //var hex=request.hex;//RGBtoHex(request.c_r+0,request.c_g+0,request.c_b+0);
       keyInputMode=false;
       setPreviewSRC(request.previewURI);
@@ -311,20 +312,26 @@ function setupInjectScripts(){
 function scriptsInjectedResult(){
 	clearTimeout(scriptAliveTimeout);
 	if(!isScriptAlive){
-		chrome.tabs.executeScript(tabid, {file: "Cr_min.js"});
-		chrome.tabs.executeScript(tabid, {file: "colorpick.user.js"});
-		isScriptAlive=true;
-	}
-	finishSetup();
+		chrome.tabs.executeScript(tabid, {file: "Cr_min.js"}, function(){
+			chrome.tabs.executeScript(tabid, {file: "colorpick.user.js"}, function(){
+				isScriptAlive=true;
+				finishSetup();
+			});
+		});
+	}else
+		finishSetup();
 }
 function finishSetup(){
+	//var port = chrome.runtime.connect({name:"popupshown"});
+	var port = chrome.tabs.connect(tabid, {name:"popupshown"})
+	
 	chrome.runtime.sendMessage({enableColorPicker:true,tabi:tabid}, function(response) {
 		
 		//hex=response.hex;
 		updateCurrentColor(response.cr,response.cg,response.cb);
 		
 		document.getElementById('ohexpre').style.backgroundColor='#'+response.lhex;
-		if(response.previewURI.length > 0 )setPreviewSRC(response.previewURI);
+		//if(response.previewURI.length > 0 )setPreviewSRC(response.previewURI);
 
 		usePrevColorBG=false;
 		if(typeof(localStorage["usePrevColorBG"])!='undefined')usePrevColorBG = ((localStorage["usePrevColorBG"]=='true')?true:false);
@@ -357,7 +364,13 @@ function finishSetup(){
 		
 		var hasVScroll = document.body.scrollHeight > document.body.clientHeight;
 		if(hasVScroll){
+			
 			document.body.style.width=(document.body.clientWidth+16)+'px';
+		}
+		if(!isWindows){
+			setTimeout(function(){
+				just_close_preview();
+			},1000);
 		}
 	});
 	
@@ -677,7 +690,6 @@ Cr.elm("div",{},[
 	document.addEventListener('mousemove',mmove);
 	document.body.addEventListener('click', popupClicked,false);
 
-	var port = chrome.runtime.connect({name:"popupshown"});
 
 //log to bg page
 //var background = chrome.extension.getBackgroundPage();
