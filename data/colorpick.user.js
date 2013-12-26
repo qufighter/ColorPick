@@ -2,7 +2,7 @@ var elmid1='color_pick_click_box',elmid2='ChromeExtension:Color-Pick.com';
 if(typeof(exitAndDetach)=='function')exitAndDetach();
 function _ge(n){return document.getElementById(n);}
 var n=false,c=false,hex='F00BAF',lasthex='',rgb=null;hsv=null;scal=1,ex=0,ey=0,isEnabled=false,isLocked=false,borderValue='1px solid black',blankgif='',msg_bg_unavail=chrome.i18n.getMessage('bgPageUnavailable');
-var cvs = document.createElement('canvas');
+var cvs = document.createElement('canvas'),rwid=0,rhei=0;
 var ctx = cvs.getContext('2d');
 document.addEventListener('DOMContentLoaded',function(){
 	//document.body.appendChild(cvs);
@@ -46,11 +46,11 @@ function snapshotLoaded(){
 		if(c.naturalWidth/c.naturalHeight > window.innerWidth/window.innerHeight){
 			c.style.width=(window.innerWidth+1)+'px';
 		}
-		//c.style.width='auto';
-
-		cvs.width=c.naturalWidth;
-		cvs.height=c.naturalHeight;
-		ctx.drawImage(c,0,0);
+		//c.style.width='auto';g
+		//console.log(c.naturalWidth, rwid, c.naturalHeight, rhei);
+		cvs.width=rwid;
+		cvs.height=rhei;
+		ctx.drawImage(c,0,0,rwid,rhei);
 		
 		setTimeout(function(){
 			isMakingNew=false;
@@ -310,11 +310,10 @@ function updateColorPreview(ev){
 	if(_ge('bgPageUnavailMsg'))_ge('bgPageUnavailMsg').style.display='none';
 	timeoutCount=0,isUpdating=true;
 	if(scal!=1){
-		x*=scal;
-		y*=scal;
+		x*=scal,y*=scal;
 	}
 
-	
+	x*=devicePixelRatio,y*=devicePixelRatio;
 	var data = ctx.getImageData(x, y, 1, 1).data;
 	hsv=rgb2hsl(data[0],data[1],data[2]);
 	rgb={r:data[0],g:data[1],b:data[2]};
@@ -367,7 +366,9 @@ function newImage(){
 	}
 	//scal=document.width / document.body.clientWidth;
 	x*=scal,y*=scal;
-	
+	x*=devicePixelRatio,y*=devicePixelRatio;
+	rwid=x,rhei=y;
+
 	setTimeout(function(){
 		chrome.runtime.sendMessage({newImage:true,_x:x*devicePixelRatio,_y:y*devicePixelRatio,dpr:devicePixelRatio}, function(response){
 			//WE WILL wait until we really get the image back....
