@@ -243,7 +243,7 @@ function createOptions(piOptions, elemAppend){
 			l.appendChild(document.createTextNode(piOptions[i].name));
 			if(piOptions[i].img){
 				var t=piOptions[i].img;
-				i=document.createElement('image');
+				i=document.createElement('img');
 				i.setAttribute('src',t);
 				i.setAttribute('align','top');
 				i.setAttribute('width',16);

@@ -220,6 +220,7 @@ function ssf(ev){
 	},250);
 }
 function loadPrefs(cbf){
+	if(typeof(storage)=='undefined') alert('Sorry - you will have to refresh the page first.');
 	storage.get(null, function(obj) {
 		for(var i in pOptions){
 			if(typeof(pOptions[i].def)=='boolean')
@@ -378,7 +379,6 @@ function newImage(){
 	},255);
 }
 
-var fishEye = 8;	//this will come in from preferences
 var lastPreviewURI;
 var gl=0,texture=0,texturectx=0,snapTexture=0,shaderProgram=0,textureSampPosition=0,fishEyeScalePosition=0;
 

@@ -313,9 +313,11 @@ function scriptsInjectedResult(){
 	clearTimeout(scriptAliveTimeout);
 	if(!isScriptAlive){
 		chrome.tabs.executeScript(tabid, {file: "Cr_min.js"}, function(){
-			chrome.tabs.executeScript(tabid, {file: "colorpick.user.js"}, function(){
-				isScriptAlive=true;
-				finishSetup();
+			chrome.tabs.executeScript(tabid, {file: "options_prefs.js"}, function(){
+				chrome.tabs.executeScript(tabid, {file: "colorpick.user.js"}, function(){
+					isScriptAlive=true;
+					finishSetup();
+				});
 			});
 		});
 	}else
