@@ -178,6 +178,9 @@ function(request, sender, sendResponse) {
 			});
 			//sendResponse({hex:curentHex,lhex:lastLastHex,previewURI:lastPreviewURI,cr:clrgb.r,cg:clrgb.g,cb:clrgb.b});
 			sendResponse({});
+		}else if (request.browserIconMsg){
+			chrome.browserAction.setIcon({path:(request.path)});
+			sendResponse({});
 		}else if (request.disableColorPicker){
 			isRunning=false;
 			defaultIcon();

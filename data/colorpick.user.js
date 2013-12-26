@@ -483,9 +483,9 @@ function handleRendering(x,y){
 	}
 	
 	lastPreviewURI = icvs.toDataURL();//the last one, large size, is cached for revisiting the menu
-/*
+
 	if(iconIsBitmap){
-		var browseIconWidth=(dpr>1?38:19);
+		var browseIconWidth=(devicePixelRatio>1?38:19);
 		var browseIconHalfWidth = Math.floor(browseIconWidth*0.5);
 		//chrome.browserAction.setIcon({imageData:ictx.getImageData(startPoint-browseIconHalfWidth, startPoint-browseIconHalfWidth, browseIconWidth, browseIconWidth)});
 
@@ -495,9 +495,10 @@ function handleRendering(x,y){
 		tctx.drawImage(icvs,startPoint-browseIconHalfWidth, startPoint-browseIconHalfWidth, browseIconWidth, browseIconWidth,0,0,browseIconWidth,browseIconWidth);
 		var pathData = {};
 		pathData[browseIconWidth]=tmpCvs.toDataURL();
-		chrome.browserAction.setIcon({path:pathData});//update icon (to be configurable)
+		chrome.runtime.sendMessage({browserIconMsg:true,path:(pathData)},function(){});
+		//chrome.browserAction.setIcon({path:pathData});//update icon (to be configurable)
 	}
-*/
+
 	if(showPreviewInContentS){
 		setPixelPreview(lastPreviewURI,contSprevZoomd,hex,lasthex);
 	}
