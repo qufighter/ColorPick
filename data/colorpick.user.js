@@ -220,6 +220,7 @@ function ssf(ev){
 	},250);
 }
 function loadPrefs(cbf){
+	//storage.clear(function(){});
 	if(typeof(storage)=='undefined') alert('Sorry - you will have to refresh the page first.');
 	storage.get(null, function(obj) {
 		for(var i in pOptions){
@@ -230,7 +231,7 @@ function loadPrefs(cbf){
 		}
 		for(var i in pAdvOptions){
 			if(typeof(pAdvOptions[i].def)=='boolean')
-				window[i] = ((obj[i]=='true')?true:((obj[i]=='false')?false:obj[i].def));
+				window[i] = ((obj[i]=='true')?true:((obj[i]=='false')?false:pAdvOptions[i].def));
 			else
 				window[i] = ((obj[i])?obj[i]:pAdvOptions[i].def);
 		}
