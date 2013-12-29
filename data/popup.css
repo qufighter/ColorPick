@@ -2,11 +2,13 @@ body{position:relative;width:150px;font-family:arial,sans-serif;font-size:12px;p
 a{text-decoration:none;position:relative;margin:2px;padding:3px;}
 a:hover{color:#338;background-color:#AAF;}
 #eclose img{position:relative;top:3px;}
+#preview{position:relative;width:152px;height:152px;}
 #pre{cursor:move;min-width:150px;border:1px solid grey;}
-#arr_u{position:absolute;top:0px;left:45%;margin:auto;}
-#arr_d{position:absolute;bottom:0px;left:45%;margin:auto;}
-#arr_l{position:absolute;left:0px;top:45%}
-#arr_r{position:absolute;right:0px;top:45%}
+a.mvarrow{position:absolute;color:black;text-shadow:0px 0px 5px white;display:none}
+#arr_u{top:0px;left:45%;}
+#arr_d{bottom:0px;left:45%;}
+#arr_l{left:0px;top:45%}
+#arr_r{right:0px;top:45%}
 .lbrow{position:relative;padding-left:30px;margin-left:5px;}
 .lb{position:absolute;top:5px;left:0px;}
 #cssmode{display:none;width:150px;}

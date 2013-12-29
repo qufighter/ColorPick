@@ -2,6 +2,7 @@ var elmid1='color_pick_click_box',elmid2='ChromeExtension:Color-Pick.com';
 if(typeof(exitAndDetach)=='function')exitAndDetach();
 function _ge(n){return document.getElementById(n);}
 var n=false,c=false,hex='F00BAF',lasthex='',rgb=null;hsv=null;scal=1,ex=0,ey=0,isEnabled=false,isLocked=false,borderValue='1px solid black',blankgif='',msg_bg_unavail=chrome.i18n.getMessage('bgPageUnavailable');
+var isUpdating=false,lastTimeout=0,timeoutCount=0,lx=0,ly=0;
 var cvs = document.createElement('canvas');
 var ctx = cvs.getContext('2d'),x_cvs_scale=1,y_cvs_scale=1;
 document.addEventListener('DOMContentLoaded',function(){
@@ -43,9 +44,10 @@ function emptyNode(node){
 }
 function snapshotLoaded(){
 		c.style.height='auto';
-		if(c.naturalWidth/c.naturalHeight > window.innerWidth/window.innerHeight){
-			c.style.width=(window.innerWidth+1)+'px';
-		}
+		c.style.width=window.innerWidth+'px';
+//		if(c.naturalWidth/c.naturalHeight > window.innerWidth/window.innerHeight){
+//			c.style.width=(window.innerWidth+1)+'px';
+//		}
 		//c.style.width='auto';g
 		x_cvs_scale=window.innerWidth / c.naturalWidth;
 		y_cvs_scale=window.innerHeight / c.naturalHeight;
@@ -90,7 +92,6 @@ function reqLis(request, sender, sendResponse) {
 		setCurColor(request);
 	}else if (request.reloadPrefs){
 		loadPrefs();
-		setCurColor(request);	
   }else if (request.disableColorPicker)disableColorPicker()
   resp.isPicking=!isLocked;
   sendResponse(resp);
@@ -231,7 +232,6 @@ function ssf(ev){
 	},250);
 }
 function loadPrefs(cbf){
-	if(typeof(storage)=='undefined') alert('Sorry - you will have to refresh the page first.');
 	storage.get(null, function(obj) {
 		for(var i in pOptions){
 			if(typeof(pOptions[i].def)=='boolean')
@@ -298,10 +298,9 @@ function keepOnScreen(){
 		n.style.top=(ly-8-n.clientHeight)+"px";
 	}
 }
-var isUpdating=false,lastTimeout=0,timeoutCount=0,lx=0,ly=0;
 function updateColorPreview(ev){
 	if(!isEnabled)return;
-	lx=ex * x_cvs_scale,ly=ey * y_cvs_scale;
+	lx=Math.round(ex * x_cvs_scale),ly=Math.round(ey * y_cvs_scale);
 	keepOnScreen();
 	if(isUpdating){
 		window.clearTimeout(lastTimeout);

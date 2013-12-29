@@ -123,8 +123,10 @@ function(request, sender, sendResponse) {
 			//chrome.browserAction.setBadgeText({text:''});
 			chrome.tabs.sendMessage(tabid, {disableColorPicker:true}, function(response) {});
 			sendResponse({});
-    }else if(request.reloadprefs){
-			chrome.tabs.sendMessage(tabId, {reloadPrefs:true}, function(r) {});
+		}else if(request.reloadprefs){
+			setTimeout(function(){
+				chrome.tabs.sendMessage(lsnaptabid, {reloadPrefs:true}, function(r) {});
+			},255);
 			fromPrefs();
 			sendResponse({});
     }else
