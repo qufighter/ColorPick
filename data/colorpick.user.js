@@ -179,6 +179,7 @@ function picked(){
 		isLocked=true;
 		setDisplay();
 	}
+	chrome.runtime.sendMessage({setPickState:true,isPicking:!isLocked}, function(r){});
 }
 function exitAndDetach(){
 	chrome.runtime.onMessage.removeListener(reqLis);

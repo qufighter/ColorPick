@@ -67,24 +67,10 @@ function(request, sender, sendResponse) {
 		if(request.tabi){
 			tabid=request.tabi;
 		}
-		if(request.setPreview){
-			 sendResponse({});//not handled by this listener
-		}else if (request.newImage){
+		if (request.newImage){
 			lsnaptabid=tabid;
-//			wid=request._x;
-//			hei=request._y;
-//			dpr=request.dpr;
 			var cbf=function(dataUrl){
-				//if(showActualPickTarget){
-				chrome.tabs.sendMessage(tabid, {setPickerImage:true,pickerImage:dataUrl}, function(response) {});
-				//}
-//				imageDataIsReady=false;
-//				pim.src=dataUrl;
-//				mcan.width = wid;
-//				mcan.height = hei;
-//				ctx = mcan.getContext("2d");
-//				ctx.clearRect(0,0,wid,hei);
-//				getNewColorData();
+				chrome.tabs.sendMessage(lsnaptabid, {setPickerImage:true,pickerImage:dataUrl}, function(response) {});
 			}
 			if(winid < 1)winid=null;
 			if(usePNG)chrome.tabs.captureVisibleTab(winid, {format:'png'}, cbf);

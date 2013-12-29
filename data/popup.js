@@ -139,8 +139,9 @@ function movePixel(){}
 function getPixel(){}
 
 chrome.runtime.onMessage.addListener(
-  function(request, sender, sendResponse) {
-    if(request.setPreview && (  sender.tab.id == tabid || request.tabi==tabid || tabid==0)){
+	function(request, sender, sendResponse) {
+		var validTab = (sender.tab.id == tabid || request.tabi==tabid || tabid==0);
+		if(request.setPreview && validTab){
       //var hex=request.hex;//RGBtoHex(request.c_r+0,request.c_g+0,request.c_b+0);
       keyInputMode=false;
       gotAnUpdate=true;
@@ -148,6 +149,10 @@ chrome.runtime.onMessage.addListener(
       document.getElementById('ohexpre').style.backgroundColor='#'+request.lhex;
       updateCurrentColor(request.cr,request.cg,request.cb);
       sendResponse({});
+		}else if(request.setPickState && validTab){
+			setButtonState(request && request.isPicking);
+		}else if(request.disableColorPicker && validTab){
+			close_stop_picking();
 		}else if(request.reportingIn){
 			isCurrentEnableReady=true;
     }else if(request.setFullsizeImage){
@@ -178,7 +183,7 @@ function toglPick(ev){
 	    return toglAutoPick(ev);
 	}else{
 		chrome.tabs.sendMessage(tabid,{doPick:true},function(r){
-			if(r && r.isPicking)setButtonState(r.isPicking);
+			//setButtonState(r && r.isPicking);
 		});//perform pick
 	}
 }
@@ -366,7 +371,10 @@ function finishSetup(){
 		updateCurrentColor(response.cr,response.cg,response.cb);
 		
 		document.getElementById('ohexpre').style.backgroundColor='#'+response.lhex;
-		if(response.previewURI && response.previewURI.length > 0 )setPreviewSRC(response.previewURI,false);
+		if(response.previewURI && response.previewURI.length > 0 ){
+			gotAnUpdate=true;
+			setPreviewSRC(response.previewURI,false);
+		}
 
 		usePrevColorBG=false;
 		if(typeof(localStorage["usePrevColorBG"])!='undefined')usePrevColorBG = ((localStorage["usePrevColorBG"]=='true')?true:false);
@@ -403,7 +411,7 @@ function finishSetup(){
 		}
 
 		if(!response.isPicking && pickEveryTime)toglPick();
-		else setButtonState(response.isPicking);
+		setButtonState(response && response.isPicking);
 
 		if(!response.wasAlreadyEnabled && !isWindows){
 			setTimeout(function(){
@@ -417,7 +425,7 @@ function finishSetup(){
 	}
 }
 function oout(){
-	chrome.runtime.sendMessage({disableColorPicker:true},function(r){});
+	chrome.runtime.sendMessage({disableColorPicker:true,tabi:tabid},function(r){});
 }
 var x=0,y=0,x1=0,y1=0,isDrag=false,xm,ym;
 function mmove(ev){
@@ -694,6 +702,7 @@ Cr.elm("div",{},[
 
   document.getElementById('eclose').addEventListener('click', close_stop_picking);
   document.getElementById('hidemin').addEventListener('click', just_close_preview);
+  document.getElementById('pre').addEventListener('dblclick', toglPick);
   document.getElementById('pre').addEventListener('mousedown', initdrag);
   document.getElementById('pre').addEventListener('mouseout', finalizedrag);
   document.getElementById('pre').addEventListener('mouseup', finalizedrag);
