@@ -349,6 +349,9 @@ Cr.elm("div",{id:"mainbox"},[
 	Cr.elm("div",{id:"adv_options"},[
 		Cr.elm("button",{id:"bload"},[
 			Cr.txt(chrome.i18n.getMessage('fetchSync'))
+		]),
+		Cr.elm("button",{id:"cload"},[
+			Cr.txt(chrome.i18n.getMessage('clearSync'))
 		])
 	]),
 	Cr.elm("button",{id:"bsave"},[
@@ -397,6 +400,9 @@ Cr.elm("div",{id:"mainbox"},[
 	document.getElementById('shoadvanc').addEventListener('click', toggle_next_sibling_display);
 
 	document.getElementById('bload').addEventListener('click', load_syncd_options);
+	document.getElementById('cload').addEventListener('click', function(){
+		storage.clear(function(){});
+	});
 }
 
 document.addEventListener('DOMContentLoaded', function () {

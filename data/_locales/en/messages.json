@@ -176,6 +176,9 @@
    "fetchSync": {
       "message": "Fetch settings from Google Account Sync Storage"
    },
+   "clearSync": {
+      "message": "Clear Sync Storage"
+   },
    "saveOptions": {
       "message": "Save Options"
    },
