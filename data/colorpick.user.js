@@ -91,7 +91,7 @@ function reqLis(request, sender, sendResponse) {
   }else if (request.movedPixel){
 		setCurColor(request);
 	}else if (request.reloadPrefs){
-		loadPrefs();
+		loadPrefs(function(){updateColorPreview();});
   }else if (request.disableColorPicker)disableColorPicker()
   resp.isPicking=!isLocked;
   sendResponse(resp);

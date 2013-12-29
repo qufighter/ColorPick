@@ -1,9 +1,10 @@
 var tabid=0;
 var isScriptAlive=false,scriptAliveTimeout=0;
 var cpw=165,cph=303;
-var borderValue='1px solid grey',EnableRGB=true,EnableHSL=true,useCSSValues=true;
+//pref variables should be created dynamicaly
+var borderValue='1px solid grey',EnableRGB=true,EnableHSL=true,useCSSValues=true,usePrevColorBG=false,showPreviousClr=true,pickEveryTime=(isWindows?true:false),bbackgroundColor='white';
 var cpScaleOffset=(isWindows?16:0);
-var pickEveryTime=(isWindows?true:false),isPicking=false,keyInputMode=false;
+var isPicking=false,keyInputMode=false;
 var gotAnUpdate = false;
 function getEventTargetA(ev){
 	var targ=getEventTarget(ev)
@@ -241,6 +242,7 @@ function moveArrowBtn(ev){
 	wk({keyCode:t.name });
 }
 function mwheel(ev){
+	console.log(ev);
 	var newFishEye=(typeof(localStorage["fishEye"])!='undefined'?(localStorage["fishEye"]-0):pOptions["fishEye"].def)
 	if(ev.wheelDelta > 0){
 		newFishEye++;
@@ -248,6 +250,7 @@ function mwheel(ev){
 		newFishEye--;
 	}
 	if(typeof(pOptions["fishEye"].select[newFishEye])!='undefined')localStorage['fishEye']=newFishEye;
+	saveToChromeSyncStorage();
 	sendReloadPrefs();
 	return preventEventDefault(ev);
 }
@@ -257,9 +260,13 @@ function iin(){
 	if(typeof(localStorage["EnableRGB"])!='undefined')EnableRGB = ((localStorage["EnableRGB"]=='true')?true:false);
 	if(typeof(localStorage["EnableHSL"])!='undefined')EnableHSL = ((localStorage["EnableHSL"]=='true')?true:false);
 	if(typeof(localStorage["cpScaleOffset"])!='undefined')cpScaleOffset = localStorage["cpScaleOffset"]-0;
+	if(typeof(localStorage["pickEveryTime"])!='undefined')pickEveryTime = ((localStorage["pickEveryTime"]=='true')?true:false);
+	if(typeof(localStorage["usePrevColorBG"])!='undefined')usePrevColorBG = ((localStorage["usePrevColorBG"]=='true')?true:false);
+	if(typeof(localStorage["bbackgroundColor"])!='undefined')bbackgroundColor = (localStorage["bbackgroundColor"]);
+	if(typeof(localStorage["showPreviousClr"])!='undefined')showPreviousClr = ((localStorage["showPreviousClr"]=='true')?true:false);
 
 	setPreviewSRC(chrome.extension.getURL('img/default.png'),true);
-	
+
 	if(useCSSValues){
 		document.getElementById('cssmode').style.display="block";
 		document.getElementById('defaultmode').style.display="none";
@@ -359,13 +366,11 @@ function scriptsInjectedResult(){
 		finishSetup();
 }
 function finishSetup(){
-	if(typeof(localStorage["pickEveryTime"])!='undefined')pickEveryTime = ((localStorage["pickEveryTime"]=='true')?true:false);
-
 	var port = chrome.tabs.connect(tabid, {name:"popupshown"})
 	
 	chrome.tabs.sendMessage(tabid,{enableColorPicker:true},function(response){
-		//hex=response.hex;
-		updateCurrentColor(response.cr,response.cg,response.cb);
+		if(response.hex)
+			updateCurrentColor(response.cr,response.cg,response.cb);
 		
 		document.getElementById('ohexpre').style.backgroundColor='#'+response.lhex;
 		if(response.previewURI && response.previewURI.length > 0 ){
@@ -373,18 +378,12 @@ function finishSetup(){
 			setPreviewSRC(response.previewURI,false);
 		}
 
-		usePrevColorBG=false;
-		if(typeof(localStorage["usePrevColorBG"])!='undefined')usePrevColorBG = ((localStorage["usePrevColorBG"]=='true')?true:false);
 		if(usePrevColorBG){
 			if(response.hex>0)document.body.style.backgroundColor='#'+response.hex;
 		}else{
-			bbackgroundColor='white';
-			if(typeof(localStorage["bbackgroundColor"])!='undefined')bbackgroundColor = (localStorage["bbackgroundColor"]);
 			document.body.style.backgroundColor=bbackgroundColor;
 		}
 
-		showPreviousClr=true;
-		if(typeof(localStorage["showPreviousClr"])!='undefined')showPreviousClr = ((localStorage["showPreviousClr"]=='true')?true:false);
 		if(!showPreviousClr){
 			document.getElementById('ohexpre').style.display='none';
 			document.getElementById('hexpre').style.width='150px';
