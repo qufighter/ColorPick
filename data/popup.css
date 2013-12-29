@@ -1,6 +1,6 @@
 body{position:relative;width:150px;font-family:arial,sans-serif;font-size:12px;padding:0px 4px 0px 4px;margin:0px;overflow-y:auto;overflow-x:hidden;}
 a{text-decoration:none;position:relative;margin:2px;padding:3px;}
-a:hover{color:#338;background-color:#AAF;}
+a.hilight:hover{color:#338;background-color:#AAF;}
 #eclose img{position:relative;top:3px;}
 #preview{position:relative;width:152px;height:152px;}
 #pre{cursor:move;min-width:150px;border:1px solid grey;}
@@ -20,7 +20,7 @@ a.mvarrow{position:absolute;color:black;text-shadow:0px 0px 5px white;display:no
 #ctrls a{margin-right:2px;}
 #unreg_msg{display:none;position:absolute;background-color:rgba(255,255,255,0.5);bottom:0px;width:150;text-align:center;color:black;font-weight:bold;text-shadow:white 1px 1px 1px;padding:5px 0px 5px 0px;}
 .btnActive{border:1px solid #FFB923;}
-.autocast{background: -webkit-linear-gradient(-45deg, #fefcea 45%,#ffdc8c 49%,#fefcea 95%);}
+.autocast{background:#FFE2A0 -webkit-linear-gradient(-45deg, #fefcea 45%,#ffdc8c 49%,#fefcea 95%);}
 .btnInactive{border:1px solid #F66;background-image:url(img/lock.png);background-position:center center;background-repeat:no-repeat;}
 #chooser{position:absolute;left:163px;top:11px;display:none;}
 #slider_hue{display:block;position:absolute;top:0px;left:270px;width:35px;}

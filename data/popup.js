@@ -177,6 +177,8 @@ function setButtonState(picking){
 	}else{
 		document.getElementById('epick').className='btnInactive'+(pickEveryTime?' autocast':'');
 	}
+	console.log((isPicking?chrome.i18n.getMessage('pickAgainUnlocked'):chrome.i18n.getMessage('pickAgainLocked')))
+	document.getElementById('epick').title = (isPicking?chrome.i18n.getMessage('pickAgainUnlocked'):chrome.i18n.getMessage('pickAgainLocked')) + "\n( [" + chrome.i18n.getMessage('rightClick') + "] "+ (pickEveryTime?chrome.i18n.getMessage('disablePickEveryTime'):chrome.i18n.getMessage('pickEveryTime')) + " )";
 }
 function toglPick(ev){
 	if (ev && (ev.which === 2 || ev.which === 3)){
@@ -201,11 +203,8 @@ function toglAutoPick(ev){
 	pickEveryTime = !pickEveryTime;
 	localStorage["pickEveryTime"]=pickEveryTime;
 	saveToChromeSyncStorage();
-  sendReloadPrefs();
-	document.getElementById('epick').className=document.getElementById('epick').className.replace('autocast','').replace(' ','');
-	if(pickEveryTime){
-		document.getElementById('epick').className+=' autocast';
-	}
+	sendReloadPrefs();
+	setButtonState(isPicking);
 	return preventEventDefault(ev)
 }
 function popupClicked(ev){
@@ -635,11 +634,11 @@ Cr.elm("div",{},[
 			Cr.elm("img",{id:"hue_grad",src:"img/cp_rb.png"})
 		])
 	]),
-	Cr.elm("a",{href:"#",title:chrome.i18n.getMessage('closeAndExit'),id:"eclose"},[
+	Cr.elm("a",{href:"#",title:chrome.i18n.getMessage('closeAndExit')+' [esc 2x]',id:"eclose"},[
 		Cr.elm("img",{align:'top',src:chrome.extension.getURL('img/close.png')})
 	]),
 	Cr.txt("#"),Cr.elm("input",{type:"text",spellcheck:"false",id:"hex",size:"6"}),
-	Cr.elm("a",{id:"hidemin",href:"#",title:chrome.i18n.getMessage('hideMinimize')},[Cr.txt("_-")]),
+	Cr.elm("a",{id:"hidemin",href:"#",class:'hilight',title:chrome.i18n.getMessage('hideMinimize')},[Cr.txt("_-")]),
 	Cr.elm("br",{}),
 	Cr.elm("div",{id:"defaultmode"},[
 		Cr.elm("div",{class:"lbrow",id:"defrgb"},[
@@ -671,10 +670,10 @@ Cr.elm("div",{},[
 	]),
 	Cr.elm("div",{id:"preview"},[
 		//Cr.elm("a",{id:"unreg_msg",target:"_blank",href:"register.html",title:chrome.i18n.getMessage('buyRegisterTip')},[Cr.txt(chrome.i18n.getMessage('registerBanner'))]),
-		Cr.elm("a",{href:'#',id:'arr_u',class:'mvarrow',name:38,event:['click',moveArrowBtn]},[Cr.txt(String.fromCharCode(9650))]),
-		Cr.elm("a",{href:'#',id:'arr_d',class:'mvarrow',name:40,event:['click',moveArrowBtn]},[Cr.txt(String.fromCharCode(9660))]),
-		Cr.elm("a",{href:'#',id:'arr_l',class:'mvarrow',name:37,event:['click',moveArrowBtn]},[Cr.txt(String.fromCharCode(9664))]),
-		Cr.elm("a",{href:'#',id:'arr_r',class:'mvarrow',name:39,event:['click',moveArrowBtn]},[Cr.txt(String.fromCharCode(9654))]),
+		Cr.elm("a",{href:'#',id:'arr_u',class:'hilight mvarrow',name:38,event:['click',moveArrowBtn]},[Cr.txt(String.fromCharCode(9650))]),
+		Cr.elm("a",{href:'#',id:'arr_d',class:'hilight mvarrow',name:40,event:['click',moveArrowBtn]},[Cr.txt(String.fromCharCode(9660))]),
+		Cr.elm("a",{href:'#',id:'arr_l',class:'hilight mvarrow',name:37,event:['click',moveArrowBtn]},[Cr.txt(String.fromCharCode(9664))]),
+		Cr.elm("a",{href:'#',id:'arr_r',class:'hilight mvarrow',name:39,event:['click',moveArrowBtn]},[Cr.txt(String.fromCharCode(9654))]),
 		Cr.elm("canvas",{id:"pre",width:"150",height:"150",style:"margin-bottom:3px;"})
 	]),
 	Cr.elm("div",{id:"pres"},[
@@ -682,19 +681,19 @@ Cr.elm("div",{},[
 		Cr.elm("div",{id:"hexpre",title:chrome.i18n.getMessage('showColorChooser')})
 	]),
 	Cr.elm("div",{id:"ctrls"},[
-		Cr.elm("a",{href:"#",title:chrome.i18n.getMessage('pickAgain'),id:"epick"},[
+		Cr.elm("a",{href:"#",title:chrome.i18n.getMessage('pickAgainLocked'),id:"epick"},[
 			Cr.elm("img",{border:"0",align:"top",style:"position:relative;top:-1px;",src:"img/crosshair.png",width:"19"})
 		]),
-		Cr.elm("a",{href:"#",title:chrome.i18n.getMessage('reSnapPage'),id:"resnap"},[
+		Cr.elm("a",{href:"#",class:'hilight',title:chrome.i18n.getMessage('reSnapPage'),id:"resnap"},[
 			Cr.elm("img",{align:"top",src:"img/refresh.png"})
 		]),
-		Cr.elm("a",{target:"_blank",href:"options.html",title:chrome.i18n.getMessage('configurationHelp'),id:"optsb"},[
+		Cr.elm("a",{target:"_blank",class:'hilight',href:"options.html",title:chrome.i18n.getMessage('configurationHelp'),id:"optsb"},[
 			Cr.elm("img",{align:"top",src:"img/settings.png"})
 		]),
-		Cr.elm("a",{target:"_blank",href:"desktop_app.html",title:chrome.i18n.getMessage('getStandaloneApp')},[
+		Cr.elm("a",{target:"_blank",class:'hilight',href:"desktop_app.html",title:chrome.i18n.getMessage('getStandaloneApp')},[
 			Cr.elm("img",{align:"top",id:"plat_prev",src:"img/ico_win.png",style:"display:none;"})
 		]),
-		Cr.elm("a",{title:chrome.i18n.getMessage('popOutWindow'),href:"#",id:"popout"},[
+		Cr.elm("a",{title:chrome.i18n.getMessage('popOutWindow'),href:"#",class:'hilight',id:"popout"},[
 			Cr.elm("img",{align:"top",src:"img/popout.gif"})
 		])
 	])

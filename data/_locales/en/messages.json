@@ -6,10 +6,10 @@
       "message": "An eye-dropper & color-picker tool that allows you to select color values from webpages."
    },
    "closeAndExit": {
-      "message": "Close and Exit Color Pick Mode [esc]"
+      "message": "Close and Exit Color Pick Mode"
    },
    "hideMinimize": {
-      "message": "Hide/Minimize"
+      "message": "Hide/Minimize [esc]"
    },
    "buyRegisterTip": {
       "message": "Click to Buy & Register a ColorPick License or Opt-in."
@@ -20,8 +20,17 @@
    "showColorChooser": {
       "message": "Show Color Chooser"
    },
-   "pickAgain": {
-      "message": "Pick Again (Lock/Unlock Mouse Picking) [enter key] (rMouse:toggle autocast)"
+   "rightClick": {
+      "message": "Right click"
+   },
+   "pickAgainLocked": {
+      "message": "Pick Another Color [Click / Enter]"
+   },
+   "pickAgainUnlocked": {
+      "message": "Select Current Color [Click / Enter]"
+   },
+   "disablePickEveryTime": {
+      "message": "Do not start picking each time popup is clicked"
    },
    "reSnapPage": {
       "message": "Refresh Picture of Page [r]"
@@ -96,7 +105,7 @@
       "message": "Max Zoomed"
    },
    "pickEveryTime": {
-      "message": "Start picking each time button is clicked"
+      "message": "Start picking each time popup is clicked"
    },
    "pixelatedPreview": {
       "message": "Zoomed Preview is Pixelated"
