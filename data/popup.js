@@ -2,9 +2,8 @@ var tabid=0;
 var isScriptAlive=false,scriptAliveTimeout=0;
 var cpw=165,cph=303;
 var borderValue='1px solid grey',EnableRGB=true,EnableHSL=true,useCSSValues=true;
-var isWindows=navigator.platform.substr(0,3).toLowerCase()=='win';
 var cpScaleOffset=(isWindows?16:0);
-var pickEveryTime=true,isPicking=false,keyInputMode=false;
+var pickEveryTime=(isWindows?true:false),isPicking=false,keyInputMode=false;
 var gotAnUpdate = false;
 function getEventTargetA(ev){
 	var targ=getEventTarget(ev)
@@ -360,7 +359,6 @@ function scriptsInjectedResult(){
 		finishSetup();
 }
 function finishSetup(){
-	pickEveryTime=true;
 	if(typeof(localStorage["pickEveryTime"])!='undefined')pickEveryTime = ((localStorage["pickEveryTime"]=='true')?true:false);
 
 	var port = chrome.tabs.connect(tabid, {name:"popupshown"})
