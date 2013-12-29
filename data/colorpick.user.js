@@ -109,7 +109,7 @@ function setPixelPreview(pix,zoom,hxe,lhex){
 			Cr.txt('#'),
 			Cr.elm('input',{type:'text',size:7,style:'max-width:75px;font-size:10pt;border:'+borderValue,id:'cphexvl',value:hex,event:['mouseover',selectTargElm]}),
 			//Cr.elm('input',{type:'image',src:chrome.extension.getURL('img/close.png'),alt:'Close',title:chrome.i18n.getMessage('closeAndExit'),id:'exitbtn',event:['click',dissableColorPickerFromHere,true]}),
-			(lhex!='none'?Cr.elm('input',{type:'text',size:1,style:'max-width:50px;font-size:10pt;background-color:#'+lhex+';border:'+borderValue+';border-left:none;',value:''}):0),
+			(showPreviousClr&&lhex!='none'?Cr.elm('input',{type:'text',size:1,style:'max-width:50px;font-size:10pt;background-color:#'+lhex+';border:'+borderValue+';border-left:none;',value:''}):0),
 			(ShowRGBHSL&&EnableRGB&&rgb?Cr.elm('input',{type:'text',style:'max-width:150px;display:block;',value:'rgb('+rgb.r+','+rgb.g+','+rgb.b+')',id:'cprgbvl',event:['mouseover',selectTargElm]}):0),
 			(ShowRGBHSL&&EnableHSL&&hsv?Cr.elm('input',{type:'text',style:'max-width:150px;display:block;',value:'hsl('+hsv.h+','+hsv.s+'%,'+hsv.v+'%)',id:'cphslvl',event:['mouseover',selectTargElm]}):0)
 		],n)

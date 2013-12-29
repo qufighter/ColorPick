@@ -11,7 +11,6 @@ function getEventTargetA(ev){
 function preventEventDefault(ev){
 	ev = ev || event;
 	if(ev.preventDefault)ev.preventDefault();
-	ev.returnValue=false;
 	return false;
 }
 function toggle_next_sibling_display(ev){
