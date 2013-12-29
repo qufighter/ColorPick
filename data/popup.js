@@ -140,7 +140,7 @@ function getPixel(){}
 
 chrome.runtime.onMessage.addListener(
 	function(request, sender, sendResponse) {
-		var validTab = (sender.tab.id == tabid || request.tabi==tabid || tabid==0);
+		var validTab = ((sender.tab && sender.tab.id == tabid) || request.tabi==tabid || tabid==0);
 		if(request.setPreview && validTab){
       //var hex=request.hex;//RGBtoHex(request.c_r+0,request.c_g+0,request.c_b+0);
       keyInputMode=false;
