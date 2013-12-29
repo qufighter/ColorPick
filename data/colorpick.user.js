@@ -103,6 +103,7 @@ chrome.runtime.onConnect.addListener(function(port){
 	if(port.name == "popupshown"){
 		popupsShowing++;
 		port.onDisconnect.addListener(function(msg) {
+			console.log('disconnected!');
 			popupsShowing--;
 			if(popupsShowing < 0)popupsShowing=0;
 		});

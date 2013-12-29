@@ -134,10 +134,6 @@ function getPageZoomFactor(){
 	return scal;
 }
 
-//these should never be called, future use
-function movePixel(){}
-function getPixel(){}
-
 chrome.runtime.onMessage.addListener(
 	function(request, sender, sendResponse) {
 		var validTab = ((sender.tab && sender.tab.id == tabid) || request.tabi==tabid || tabid==0);
@@ -182,11 +178,9 @@ function setButtonState(picking){
 }
 function toglPick(ev){
 	if (ev && (ev.which === 2 || ev.which === 3)){
-	    return toglAutoPick(ev);
+		toglAutoPick(ev);
 	}else{
-		chrome.tabs.sendMessage(tabid,{doPick:true},function(r){
-			//setButtonState(r && r.isPicking);
-		});//perform pick
+		chrome.tabs.sendMessage(tabid,{doPick:true},function(r){});
 	}
 }
 function stopPick(){
@@ -367,8 +361,8 @@ function scriptsInjectedResult(){
 }
 function finishSetup(){
 	var port = chrome.tabs.connect(tabid, {name:"popupshown"})
-	
 	chrome.tabs.sendMessage(tabid,{enableColorPicker:true},function(response){
+
 		if(response.hex)
 			updateCurrentColor(response.cr,response.cg,response.cb);
 		
