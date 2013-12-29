@@ -184,6 +184,8 @@ function preventEventDefault(ev){
 function toglAutoPick(ev){
 	pickEveryTime = !pickEveryTime;
 	localStorage["pickEveryTime"]=pickEveryTime;
+	saveToChromeSyncStorage();
+  sendReloadPrefs();
 	document.getElementById('epick').className=document.getElementById('epick').className.replace('autocast','').replace(' ','');
 	if(pickEveryTime){
 		document.getElementById('epick').className+=' autocast';
@@ -202,13 +204,13 @@ function wk(ev){
 	}else if(ev.keyCode==82||ev.keyCode==74){//r or j refresh
 		resnap();
 	}else if(!keyInputMode && ev.keyCode==38){//u
-		chrome.runtime.sendMessage({movePixel:true,_x:0,_y:-1,tabi:tabid},function(r){});
+		movePixel(0,-1);
 	}else if(!keyInputMode && ev.keyCode==40){//d
-		chrome.runtime.sendMessage({movePixel:true,_x:0,_y:1,tabi:tabid},function(r){});
+		movePixel(0,1);
 	}else if(!keyInputMode && ev.keyCode==37){//l
-		chrome.runtime.sendMessage({movePixel:true,_x:-1,_y:0,tabi:tabid},function(r){});
+		movePixel(-1,0);
 	}else if(!keyInputMode && ev.keyCode==39){//r
-		chrome.runtime.sendMessage({movePixel:true,_x:1,_y:0,tabi:tabid},function(r){});
+		movePixel(1,0);
 	}else if(!keyInputMode && (ev.keyCode==13 || ev.keyCode==86)){//enter, v
 		toglPick();
 	}else if(t.id=='hex'){
@@ -216,6 +218,13 @@ function wk(ev){
 	}else if(t.id=='crgb'){
 		keyInputMode=true;stopPick();var comp=t.value.match(/\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)/);if(comp)updateCurrentColor(comp[1]-0,comp[2]-0,comp[3]-0,false,t.id);
 	}
+}
+function movePixel(mx,my){
+	chrome.runtime.sendMessage({movePixel:true,_x:mx,_y:my,tabi:tabid},function(r){});
+}
+function moveArrowBtn(ev){
+	var t=getEventTarget(ev);
+	wk({keyCode:t.name });
 }
 function mwheel(ev){
 	var newFishEye=(typeof(localStorage["fishEye"])!='undefined'?(localStorage["fishEye"]-0):pOptions["fishEye"].def)
@@ -637,7 +646,11 @@ Cr.elm("div",{},[
 		])
 	]),
 	Cr.elm("div",{style:"position:relative;width:152px;height:152px;"},[
-		Cr.elm("a",{id:"unreg_msg",target:"_blank",href:"register.html",title:chrome.i18n.getMessage('buyRegisterTip')},[Cr.txt(chrome.i18n.getMessage('registerBanner'))]),
+		//Cr.elm("a",{id:"unreg_msg",target:"_blank",href:"register.html",title:chrome.i18n.getMessage('buyRegisterTip')},[Cr.txt(chrome.i18n.getMessage('registerBanner'))]),
+		Cr.elm("a",{href:'#',id:'arr_u',name:38,event:['click',moveArrowBtn]},[Cr.ent('&uarr;')]),
+		Cr.elm("a",{href:'#',id:'arr_d',name:40,event:['click',moveArrowBtn]},[Cr.ent('&darr;')]),
+		Cr.elm("a",{href:'#',id:'arr_l',name:37,event:['click',moveArrowBtn]},[Cr.ent('&larr;')]),
+		Cr.elm("a",{href:'#',id:'arr_r',name:39,event:['click',moveArrowBtn]},[Cr.ent('&rarr;')]),
 		Cr.elm("canvas",{id:"pre",width:"150",height:"150",style:"margin-bottom:3px;"})
 	]),
 	Cr.elm("div",{id:"pres"},[

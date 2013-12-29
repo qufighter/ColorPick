@@ -2,8 +2,8 @@ var elmid1='color_pick_click_box',elmid2='ChromeExtension:Color-Pick.com';
 if(typeof(exitAndDetach)=='function')exitAndDetach();
 function _ge(n){return document.getElementById(n);}
 var n=false,c=false,hex='F00BAF',lasthex='',rgb=null;hsv=null;scal=1,ex=0,ey=0,isEnabled=false,isLocked=false,borderValue='1px solid black',blankgif='',msg_bg_unavail=chrome.i18n.getMessage('bgPageUnavailable');
-var cvs = document.createElement('canvas'),rwid=0,rhei=0;
-var ctx = cvs.getContext('2d');
+var cvs = document.createElement('canvas');
+var ctx = cvs.getContext('2d'),x_cvs_scale=1,y_cvs_scale=1;
 document.addEventListener('DOMContentLoaded',function(){
 	//document.body.appendChild(cvs);
 	//console.log('appended');
@@ -47,10 +47,11 @@ function snapshotLoaded(){
 			c.style.width=(window.innerWidth+1)+'px';
 		}
 		//c.style.width='auto';g
-		//console.log(c.naturalWidth, rwid, c.naturalHeight, rhei);
-		cvs.width=rwid;
-		cvs.height=rhei;
-		ctx.drawImage(c,0,0,rwid,rhei);
+		x_cvs_scale=window.innerWidth / c.naturalWidth;
+		y_cvs_scale=window.innerHeight / c.naturalHeight;
+		cvs.width=c.naturalWidth;
+		cvs.height=c.naturalHeight;
+		ctx.drawImage(c,0,0);
 		
 		setTimeout(function(){
 			isMakingNew=false;
@@ -205,8 +206,8 @@ function wk(ev){
 function mmf(ev){
 	if(!isEnabled)return;
 	if(!isLocked){
-		ex=ev.pageX;
-		ey=ev.pageY;
+		ex = Math.round(((ev.pageX-window.pageXOffset) / window.innerWidth) * c.naturalWidth),
+		ey = Math.round(((ev.pageY-window.pageYOffset) / window.innerHeight) * c.naturalHeight);
 		updateColorPreview();
 	}
 }
@@ -294,8 +295,7 @@ function keepOnScreen(){
 var isUpdating=false,lastTimeout=0,timeoutCount=0,lx=0,ly=0;
 function updateColorPreview(ev){
 	if(!isEnabled)return;
-	var x=ex-window.pageXOffset,y=ey-window.pageYOffset;
-	lx=x,ly=y;
+	lx=ex * x_cvs_scale,ly=ey * y_cvs_scale;
 	keepOnScreen();
 	if(isUpdating){
 		window.clearTimeout(lastTimeout);
@@ -309,17 +309,13 @@ function updateColorPreview(ev){
 	}
 	if(_ge('bgPageUnavailMsg'))_ge('bgPageUnavailMsg').style.display='none';
 	timeoutCount=0,isUpdating=true;
-	if(scal!=1){
-		x*=scal,y*=scal;
-	}
 
-	x*=devicePixelRatio,y*=devicePixelRatio;
-	var data = ctx.getImageData(x, y, 1, 1).data;
+	var data = ctx.getImageData(ex, ey, 1, 1).data;
 	hsv=rgb2hsl(data[0],data[1],data[2]);
 	rgb={r:data[0],g:data[1],b:data[2]};
 
 	setCurColor({hex:RGBtoHex(data[0],data[1],data[2])});
-	handleRendering(x,y);
+	handleRendering(ex,ey);
 //	try{
 //		chrome.runtime.sendMessage({getPixel:true,_x:x*devicePixelRatio,_y:y*devicePixelRatio}, function(response){
 			//setCurColor(response);
@@ -332,51 +328,21 @@ var isMakingNew=false,lastNewTimeout=0;
 function newImage(){
 	if(!isEnabled)return;
 	if(isMakingNew){
-//		window.clearTimeout(lastNewTimeout);
-//		lastNewTimeout=window.setTimeout(function(){newImage()},250);
+		window.clearTimeout(lastNewTimeout);
+		lastNewTimeout=window.setTimeout(function(){newImage()},255);
 		return;
 	}
 	document.body.style.cursor='wait';
 	isMakingNew=true;
 	n.style.visibility="hidden";
 	c.style.visibility="hidden";
-	//c.style.margin="0px";
-	//c.style.padding="0px"
 	c.src=blankgif;
-	var x,y;//wid hei
-	x=window.innerWidth;
-	y=window.innerHeight;
+	var x=window.innerWidth,y=window.innerHeight;
 	c.style.width=x+'px';
 	c.style.height=y+'px';
-	
-	//scal=document.width / document.documentElement.clientWidth;
-	var psc=[0.25,0.33,0.50,0.67,0.75,0.90,1.0,1.10,1.25,1.50,1.75,2.00,2.50,3.00,4.00,5.00];
-	scal=outerWidth/innerWidth;
-	if(scal < 0.25 || scal > 5.1 || (scal > 1.0 && scal < 1.02)) scal = 1.0;
-	if(scal != 1.0){
-		var newscal=0;
-		for(var s=0,l=psc.length;s<l;s++){
-			if( scal > psc[s] )newscal=psc[s];
-			else break;
-		}
-		var errorMargin = scal - newscal;
-		//console.log(errorMargin, newscal)
-		if(errorMargin < 0.02 || (newscal > 1.0 && errorMargin < 0.06))
-			scal = newscal;
-	}
-	//scal=document.width / document.body.clientWidth;
-	x*=scal,y*=scal;
-	x*=devicePixelRatio,y*=devicePixelRatio;
-	rwid=x,rhei=y;
 
 	setTimeout(function(){
-		chrome.runtime.sendMessage({newImage:true,_x:x*devicePixelRatio,_y:y*devicePixelRatio,dpr:devicePixelRatio}, function(response){
-			//WE WILL wait until we really get the image back....
-			//isMakingNew=false;//perhaps we wait unitl it's really 'new'
-			//window.setTimeout(function(){
-			//	c.style.display="block";n.style.display="block";document.body.style.cursor='url('+chrome.extension.getURL('img/crosshair.png')+') 16 16,crosshair';updateColorPreview();
-			//},500)
-		});
+		chrome.runtime.sendMessage({newImage:true}, function(response){});
 	},255);
 }
 

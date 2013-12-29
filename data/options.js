@@ -90,8 +90,8 @@ function save_options() {
     status.innerHTML = "";
   }, 750);
   
-  sendReloadPrefs();
   saveToChromeSyncStorage();
+  sendReloadPrefs();
 }
 
 function reset_options() {
