@@ -63,9 +63,19 @@ function reqLis(request, sender, sendResponse) {
 	if (request.testAlive){
 		//disableColorPicker();
 	}else	if (request.setPixelPreview){
+		//no longer used
   	setPixelPreview(request.previewURI,request.zoomed,request.hex,request.lhex)
   }else if (request.enableColorPicker){
 		resp.wasAlreadyEnabled=enableColorPicker()
+		if(request.workerHasChanged) lsnaptabid=-1;
+		if(resp.wasAlreadyEnabled){
+				resp.hex=hex;
+				resp.lhex=lasthex;
+				resp.previewURI = lastPreviewURI;
+				resp.cr=rgb.r;
+				resp.cg=rgb.g;
+				resp.cb=rgb.b;
+		}
   }else if (request.setPickerImage){
 		c.src=request.pickerImage;
   }else if (request.newImage){
@@ -252,9 +262,6 @@ function initialInit(){
 	});
 }
 function enableColorPicker(){
-	chrome.runtime.sendMessage({reportingIn:true}, function(response) {
-		//allows us to detect if the script is running from the bg
-	});
 	if(!n){
 		initialInit();
 		return false;
@@ -271,7 +278,6 @@ function remainingInit(){
 		window.setTimeout(newImage,1);
 		return false;
 	}
-	sendDataToPopup();
 	return true;
 }
 function keepOnScreen(){
@@ -313,16 +319,8 @@ function updateColorPreview(ev){
 	var data = ctx.getImageData(ex, ey, 1, 1).data;
 	hsv=rgb2hsl(data[0],data[1],data[2]);
 	rgb={r:data[0],g:data[1],b:data[2]};
-
 	setCurColor({hex:RGBtoHex(data[0],data[1],data[2])});
 	handleRendering(ex,ey);
-//	try{
-//		chrome.runtime.sendMessage({getPixel:true,_x:x*devicePixelRatio,_y:y*devicePixelRatio}, function(response){
-			//setCurColor(response);
-//		});
-//	}catch(e){
-//		exitAndDetach();
-//	}
 }
 var isMakingNew=false,lastNewTimeout=0;
 function newImage(){
@@ -366,9 +364,9 @@ function handleRendering(x,y){
 //	}
 
 // under some circumstances we do not need to render anything....
-//	if(!imageDataIsReady || (!iconIsBitmap && !showPreviewInContentS && popupsShowing < 1)){
-//		return;
-//	}
+	if(isMakingNew || (!iconIsBitmap && !showPreviewInContentS && popupsShowing < 1)){
+		return;
+	}
 
 	var startPoint=Math.floor(totalWidth*0.5);
 	var ox=Math.round(x),oy=Math.round(y);

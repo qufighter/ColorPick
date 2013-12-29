@@ -135,17 +135,15 @@ chrome.runtime.onMessage.addListener(
       document.getElementById('ohexpre').style.backgroundColor='#'+request.lhex;
       updateCurrentColor(request.cr,request.cg,request.cb);
       sendResponse({});
+		}else if(request.reportingIn){
+			isCurrentEnableReady=true;
     }else if(request.setFullsizeImage){
+    	//unused??
       setFullsizeImage(request);
 //    }else if (request.movePixel){
 //      movePixel(request);
 //    }else if (request.getPixel){
 //      movePixel(getPixel);
-    }else if(request.greeting == "re_init_picker"){
-      iin()
-    }else if(request.greeting == "error_picker"){
-     setPreviewSRC(chrome.extension.getURL('img/error'+request.errno+'.png'));
-     if(request.errno==0)init_color_chooser();
     }else{
      sendResponse({});
     }
@@ -280,15 +278,23 @@ function iin(){
 			tabid=wlh.substr(st,en-st)-0;
 			document.getElementById('popout').style.display='none';
 			if(window.innerWidth > 200)init_color_chooser();
-  		setupInjectScripts()
-  	}else{
-	  	chrome.windows.getCurrent(function(window){
-	  		chrome.tabs.getSelected(window.id, function(tab){
-	  			tabid=tab.id;
-					if(tab.url.indexOf('chrome')==0){
-						finishSetup();
-					}else
-						setupInjectScripts();
+			setupInjectScripts()
+		}else{
+			chrome.windows.getCurrent(function(window){
+				chrome.tabs.getSelected(window.id, function(tab){
+					tabid=tab.id;
+					var tabURL=tab.url;
+					if(tabURL.indexOf('https://chrome.google.com')==0 ||tabURL.indexOf('chrome')==0 ||tabURL.indexOf('about')==0 ){
+							setPreviewSRC(chrome.extension.getURL('img/error'+0+'.png'));
+							init_color_chooser();
+					}else if(tabURL.indexOf('http://vidzbigger.com/anypage.php')!=0){
+							if(tabURL.indexOf('file://')==0){
+								setPreviewSRC(chrome.extension.getURL('img/error'+2+'.png'));
+							}else{
+								setPreviewSRC(chrome.extension.getURL('img/error'+1+'.png'));
+							}
+				  }
+					setupInjectScripts();
 	  		})
 	  	})
 	  }
@@ -333,16 +339,17 @@ function scriptsInjectedResult(){
 		finishSetup();
 }
 function finishSetup(){
-	//var port = chrome.runtime.connect({name:"popupshown"});
+	pickEveryTime=true;
+	if(typeof(localStorage["pickEveryTime"])!='undefined')pickEveryTime = ((localStorage["pickEveryTime"]=='true')?true:false);
+
 	var port = chrome.tabs.connect(tabid, {name:"popupshown"})
 	
-	chrome.runtime.sendMessage({enableColorPicker:true,tabi:tabid}, function(response) {
-		
+	chrome.tabs.sendMessage(tabid,{enableColorPicker:true},function(response){
 		//hex=response.hex;
 		updateCurrentColor(response.cr,response.cg,response.cb);
 		
 		document.getElementById('ohexpre').style.backgroundColor='#'+response.lhex;
-		//if(response.previewURI.length > 0 )setPreviewSRC(response.previewURI);
+		if(response.previewURI && response.previewURI.length > 0 )setPreviewSRC(response.previewURI);
 
 		usePrevColorBG=false;
 		if(typeof(localStorage["usePrevColorBG"])!='undefined')usePrevColorBG = ((localStorage["usePrevColorBG"]=='true')?true:false);
@@ -353,7 +360,7 @@ function finishSetup(){
 			if(typeof(localStorage["bbackgroundColor"])!='undefined')bbackgroundColor = (localStorage["bbackgroundColor"]);
 			document.body.style.backgroundColor=bbackgroundColor;
 		}
-		
+
 		showPreviousClr=true;
 		if(typeof(localStorage["showPreviousClr"])!='undefined')showPreviousClr = ((localStorage["showPreviousClr"]=='true')?true:false);
 		if(!showPreviousClr){
@@ -361,10 +368,10 @@ function finishSetup(){
 			document.getElementById('hexpre').style.width='150px';
 			document.getElementById('hexpre').style.borderRight=borderValue;
 		}
-		
+
 		if(borderValue!='1px solid grey'){
 			document.getElementById('pres').style.border=borderValue;
-			
+
 //					document.getElementById('hexpre').style.border=borderValue;
 //	  			document.getElementById('ohexpre').style.border=borderValue;
 //	  			if(showPreviousClr){
@@ -372,30 +379,22 @@ function finishSetup(){
 //		  			document.getElementById('ohexpre').style.borderLeft='none';
 //		  		}
 		}
-		
+
 		var hasVScroll = document.body.scrollHeight > document.body.clientHeight;
 		if(hasVScroll){
-			
 			document.body.style.width=(document.body.clientWidth+16)+'px';
 		}
-		if(!isWindows){
+
+		if(!response.isPicking && pickEveryTime)toglPick();
+		else setButtonState(response.isPicking);
+
+		if(!response.wasAlreadyEnabled && !isWindows){
 			setTimeout(function(){
 				just_close_preview();
 			},1000);
 		}
 	});
-	
-	pickEveryTime=true;
-	if(typeof(localStorage["pickEveryTime"])!='undefined')pickEveryTime = ((localStorage["pickEveryTime"]=='true')?true:false);
 
-	//in future cases we will send a testAlive earlier... state will be set already...
-	chrome.tabs.sendMessage(tabid,{testAlive:true},function(r){
-		if(r){
-			if(!r.isPicking && pickEveryTime)toglPick();
-			else setButtonState(r.isPicking);
-		}
-	});
-	
 	if(localStorage.feedbackOptOut=='true' && localStorage["reg_chk"]!='true'){
 		setTimeout(checkForLicense,500);
 	}

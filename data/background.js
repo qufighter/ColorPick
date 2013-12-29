@@ -92,24 +92,6 @@ function(request, sender, sendResponse) {
 			sendResponse({});
 		}else if (request.movePixel){
 			chrome.tabs.sendMessage(tabid,request,function(r){});
-//			x+=(request._x);//or otherwise use the current scale
-//			y+=(request._y);
-//			getNewColorData();
-//			//handleRendering();
-//			var dobj=getCurrentClrData();
-//			dobj.movedPixel=true;
-//			dobj.msg=chrome.i18n.getMessage('pressEnterToPick');
-//			chrome.tabs.sendMessage(tabid,dobj,function(r){});
-//			sendResponse({});
-//		}else if (request.getPixel){
-//			x=request._x;
-//			y=request._y;
-//			getNewColorData();
-//			//setTimeout(handleRendering,10);
-//			var dobj=getCurrentClrData();
-//			dobj.movedPixel=true;
-//			chrome.tabs.sendMessage(tabid,dobj,function(r){});
-//			sendResponse({});
 		}else if (request.setColor){
 			if(request.hex) curentHex=request.hex;
 			if(showPreviousClr){lastLastHex=lastHex;lastHex=curentHex;}
@@ -132,59 +114,13 @@ function(request, sender, sendResponse) {
 				n.value=curentHex;n.select();document.execCommand('copy');n.parentNode.removeChild(n);
 			}
 			sendResponse({});
-		}else if(request.reportingIn){
-			isCurrentEnableReady=true;
-			 
-		}else if (request.enableColorPicker){
-			//popupsShowing=true;
-			//handleRendering();
-			chrome.tabs.getSelected(null, function(tab) {
-				tabId=tab.id;
-				if(request.tabi>0 && request.tabi!=tabId){
-					return false;//in the case of a popup, the currently selected "tab" is not the one we need to initialize
-				}
-				
-				isCurrentEnableReady=false;
-				var tabURL=tab.url;
-				
-				if(request.workerHasChanged) lsnaptabid=-1;
-
-				chrome.tabs.sendMessage(tabId, {enableColorPicker:true}, function(r) {
-					if(r){
-						isRunning=true;
-						if(r.wasAlreadyEnabled && lsnaptabid != tabId){
-							//we were already running on this tab, yet our snapshot is of a different tab
-							chrome.tabs.sendMessage(tabId, {newImage:true}, function(r) {});
-						}
-					}
-				});
-
-				if(tabURL.indexOf('https://chrome.google.com')==0 ||tabURL.indexOf('chrome')==0 ||tabURL.indexOf('about')==0 ){
-						//console.log( 'Unsupported page type :/');
-						chrome.runtime.sendMessage({greeting: "error_picker",errno:0}, function(response) {
-								//console.log('disabled!');
-						});
-				}else if(tabURL.indexOf('http://vidzbigger.com/anypage.php')!=0){
-  				window.setTimeout(function(){
-  					if(!isCurrentEnableReady){
-							if(tabURL.indexOf('file://')==0){
-								chrome.runtime.sendMessage({greeting: "error_picker",errno:2}, function(response) {});
-							}else{
-								chrome.runtime.sendMessage({greeting: "error_picker",errno:1}, function(response) {});
-							}
-  					}
-  				},560);//we expect to hear back from the content script by this time or something is wrong... and we need to use an iframe
-			  }
-			});
-			//sendResponse({hex:curentHex,lhex:lastLastHex,previewURI:lastPreviewURI,cr:clrgb.r,cg:clrgb.g,cb:clrgb.b});
-			sendResponse({});
 		}else if (request.browserIconMsg){
 			chrome.browserAction.setIcon({path:(request.path)});
 			sendResponse({});
 		}else if (request.disableColorPicker){
 			isRunning=false;
 			defaultIcon();
-			chrome.browserAction.setBadgeText({text:''});
+			//chrome.browserAction.setBadgeText({text:''});
 			chrome.tabs.sendMessage(tabid, {disableColorPicker:true}, function(response) {});
 			sendResponse({});
     }else if(request.reloadprefs){
