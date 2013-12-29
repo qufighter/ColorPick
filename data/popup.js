@@ -177,8 +177,8 @@ function setButtonState(picking){
 	}else{
 		document.getElementById('epick').className='btnInactive'+(pickEveryTime?' autocast':'');
 	}
-	console.log((isPicking?chrome.i18n.getMessage('pickAgainUnlocked'):chrome.i18n.getMessage('pickAgainLocked')))
 	document.getElementById('epick').title = (isPicking?chrome.i18n.getMessage('pickAgainUnlocked'):chrome.i18n.getMessage('pickAgainLocked')) + "\n( [" + chrome.i18n.getMessage('rightClick') + "] "+ (pickEveryTime?chrome.i18n.getMessage('disablePickEveryTime'):chrome.i18n.getMessage('pickEveryTime')) + " )";
+	document.getElementById('pre').title = (isPicking?chrome.i18n.getMessage('pickAgainUnlocked'):chrome.i18n.getMessage('pickAgainLocked')) + " [" + chrome.i18n.getMessage('dblClick') + "]";
 }
 function toglPick(ev){
 	if (ev && (ev.which === 2 || ev.which === 3)){

@@ -4,11 +4,11 @@ a.hilight:hover{color:#338;background-color:#AAF;}
 #eclose img{position:relative;top:3px;}
 #preview{position:relative;width:152px;height:152px;}
 #pre{cursor:move;min-width:150px;border:1px solid grey;}
-a.mvarrow{position:absolute;color:black;text-shadow:0px 0px 5px white;display:none}
-#arr_u{top:0px;left:45%;}
-#arr_d{bottom:0px;left:45%;}
-#arr_l{left:0px;top:45%}
-#arr_r{right:0px;top:45%}
+a.mvarrow{position:absolute;color:black;text-shadow:0px 0px 5px white;display:none;font-size:13px;}
+#arr_u{left:43%;top:-1px;}
+#arr_d{left:43%;bottom:-1px;}
+#arr_l{top:41%;left:-1px;}
+#arr_r{top:41%;right:-1px;}
 .lbrow{position:relative;padding-left:30px;margin-left:5px;}
 .lb{position:absolute;top:5px;left:0px;}
 #cssmode{display:none;width:150px;}

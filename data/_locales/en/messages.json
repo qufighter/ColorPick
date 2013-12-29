@@ -23,11 +23,14 @@
    "rightClick": {
       "message": "Right click"
    },
+   "dblClick": {
+      "message": "Double click"
+   },
    "pickAgainLocked": {
-      "message": "Pick Another Color [Click / Enter]"
+      "message": "Pick Another Color [Enter]"
    },
    "pickAgainUnlocked": {
-      "message": "Select Current Color [Click / Enter]"
+      "message": "Select Current Color [Enter]"
    },
    "disablePickEveryTime": {
       "message": "Do not start picking each time popup is clicked"
