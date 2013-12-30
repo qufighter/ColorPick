@@ -567,8 +567,8 @@ function cancelDrag(){
 }
 function cp_set_from_hsv(h,s,v){
 	document.getElementById('hue_pos').style.top=(255-Math.round((h/360)*255)-4)+'px';
-	cp_x=Math.round((v/100)*255);
-	cp_y=Math.round(((100-s)/100)*255);
+	cp_x=Math.round(((s)/100)*255);
+	cp_y=Math.round(((100-v)/100)*255);
 	if(cp_chooser_booted)cp_grad_render(true)
 }
 function cp_grad_render(from_current){
