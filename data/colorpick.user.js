@@ -167,12 +167,12 @@ function setDisplay(){//Cr.elm
 }
 function picked(){
 	if(isLocked){
+		lasthex = hex;
 		isLocked=false;
 		emptyNode(n);
 	}else{
 		try{
 			chrome.runtime.sendMessage({setColor:true,hex:hex}, function(response){});
-			lasthex = hex;
 		}catch(e){
 			exitAndDetach();
 		}
