@@ -103,7 +103,6 @@ chrome.runtime.onConnect.addListener(function(port){
 	if(port.name == "popupshown"){
 		popupsShowing++;
 		port.onDisconnect.addListener(function(msg) {
-			console.log('disconnected!');
 			popupsShowing--;
 			if(popupsShowing < 0)popupsShowing=0;
 		});
@@ -183,8 +182,8 @@ function picked(){
 	chrome.runtime.sendMessage({setPickState:true,isPicking:!isLocked}, function(r){});
 }
 function exitAndDetach(){
-	chrome.runtime.onMessage.removeListener(reqLis);
 	disableColorPicker();
+	chrome.runtime.onMessage.removeListener(reqLis);
 }
 function dissableColorPickerFromHere(){
 	var disableTimeout=setTimeout(disableColorPicker,500)
@@ -341,7 +340,11 @@ function newImage(){
 	c.style.height=y+'px';
 
 	setTimeout(function(){
-		chrome.runtime.sendMessage({newImage:true}, function(response){});
+		try{
+			chrome.runtime.sendMessage({newImage:true}, function(response){});
+		}catch(e){
+			exitAndDetach();
+		}
 	},255);
 }
 
