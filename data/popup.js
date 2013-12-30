@@ -583,7 +583,7 @@ function cp_grad_render(from_current){
 	ctx.drawImage(i3,cp_x-5,cp_y-5);
 }
 function cp_chooser_test_ready(){
-	++cp_loads;if(cp_loads>=cp_totalLoads){cp_chooser_booted=true;cp_grad_render()};
+	++cp_loads;if(cp_loads>=cp_totalLoads){cp_chooser_booted=true;cp_grad_render((cp_x!=0 || cp_y != 0))};
 	return cp_chooser_booted;
 }
 function init_color_chooser(){
