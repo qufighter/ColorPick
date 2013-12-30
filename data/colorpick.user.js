@@ -222,6 +222,7 @@ function ssf(ev){
 }
 function loadPrefs(cbf){
 	storage.get(null, function(obj) {
+		if(typeof(obj)=='undefined'||!obj)obj={};
 		for(var i in pOptions){
 			if(typeof(pOptions[i].def)=='boolean')
 				window[i] = ((obj[i]=='true')?true:((obj[i]=='false')?false:pOptions[i].def));
