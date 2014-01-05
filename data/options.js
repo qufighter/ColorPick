@@ -388,8 +388,11 @@ Cr.elm("div",{id:"mainbox"},[
 	Cr.ent(chrome.i18n.getMessage('extName')+" &copy;"),
 	Cr.elm("a",{target:"_blank",href:"http://vidsbee.com/ColorPick/"},[
 		Cr.txt("Vidsbee.com")
-	])
+	]),
+	Cr.elm('div',{'id':'rate_position'})
 ],document.body)
+
+	createAndAttachRatings(document.getElementById('rate_position'));
 
 	init()
 	document.getElementById('bsave').addEventListener('click', save_options);
