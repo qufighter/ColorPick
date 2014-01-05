@@ -61,10 +61,10 @@ function getPageScale(){
 }
 function snapshotLoaded(){
 		c.style.height='auto';
-		//c.naturalWidth / window.innerWidth ~= getPageScale()
+		//c.naturalWidth / innerWidth ~= getPageScale()
 		c.style.width=(c.naturalWidth / getPageScale())+'px';
-		x_cvs_scale=c.naturalWidth / window.innerWidth;
-		y_cvs_scale=c.naturalHeight / window.innerHeight;
+		x_cvs_scale=c.naturalWidth / innerWidth;
+		y_cvs_scale=c.naturalHeight / innerHeight;
 		cvs.width=c.naturalWidth;
 		cvs.height=c.naturalHeight;
 		ctx.drawImage(c,0,0);
@@ -195,9 +195,9 @@ function dissableColorPickerFromHere(){
 function disableColorPicker(){
 	isEnabled=false,isLocked=false;
 	document.removeEventListener('mousemove',mmf);
-	window.removeEventListener('scroll',ssf);
-	window.removeEventListener('resize',ssf);
-	window.removeEventListener('keyup',wk);
+	removeEventListener('scroll',ssf);
+	removeEventListener('resize',ssf);
+	removeEventListener('keyup',wk);
 	c=_ge(elmid1),n=_ge(elmid2);
 	if(document.body){
 		if(c)document.body.removeChild(c);
@@ -205,7 +205,7 @@ function disableColorPicker(){
 		c=false,n=false;
 		document.body.style.cursor='default';
 	}
-	window.clearTimeout(lastNewTimeout);
+	clearTimeout(lastNewTimeout);
 }
 function wk(ev){
 	if(!isEnabled)return;
@@ -220,7 +220,7 @@ function wk(ev){
 function mmf(ev){
 	if(!isEnabled)return;
 	if(!isLocked){
-		lx=(ev.pageX-window.pageXOffset),ly=(ev.pageY-window.pageYOffset);
+		lx=(ev.pageX-pageXOffset),ly=(ev.pageY-pageYOffset);
 		ex = Math.round(lx * x_cvs_scale),
 		ey = Math.round(ly * y_cvs_scale);
 		updateColorPreview();
@@ -230,8 +230,8 @@ function mmf(ev){
 function ssf(ev){
 	if(!isEnabled)return;
 	n.style.visibility="hidden";c.style.visibility="hidden";//redundent?
-	window.clearTimeout(lastNewTimeout);
-	lastNewTimeout=window.setTimeout(function(){
+	clearTimeout(lastNewTimeout);
+	lastNewTimeout=setTimeout(function(){
 		newImage()//some delay required OR it won't update
 	},250);
 }
@@ -259,9 +259,9 @@ function initialInit(){
 		c=Cr.elm('img',{id:elmid1,src:blankgif,style:'position:fixed;max-width:none!important;max-height:none!important;top:0px;left:0px;margin:0px;padding:0px;overflow:hidden;z-index:2147483646;',events:[['click',picked,true],['load',snapshotLoaded]]},[],document.body);
 		n=Cr.elm('div',{id:elmid2,style:'position:fixed;min-width:30px;max-width:300px;min-height:30px;box-shadow:2px 2px 2px #666;border:'+borderValue+';z-index:2147483646;cursor:default;padding:4px;'},[Cr.txt(' ')],document.body);
 		document.addEventListener('mousemove',mmf);
-		window.addEventListener('keyup',wk);
-		window.addEventListener('scroll',ssf);
-		window.addEventListener('resize',ssf);
+		addEventListener('keyup',wk);
+		addEventListener('scroll',ssf);
+		addEventListener('resize',ssf);
 		testWebGlAvail();
 		initializeCanvas();
 		remainingInit();
@@ -281,7 +281,7 @@ function remainingInit(){
 		if(isLocked)picked();//unlocks for next pick
 		document.body.style.cursor='url('+chrome.extension.getURL('img/crosshair.png')+') 16 16,crosshair';
 		isEnabled=true;
-		window.setTimeout(newImage,1);
+		setTimeout(newImage,1);
 		return false;
 	}
 	return true;
@@ -297,10 +297,10 @@ function keepOnScreen(){
   if(!n)return;
 	n.style.top=(ly+8)+"px";
 	n.style.left=(lx+8)+"px";
-	if( n.clientWidth + n.offsetLeft +24 > window.innerWidth ){
+	if( n.clientWidth + n.offsetLeft +24 > innerWidth ){
 		n.style.left=(lx-8-n.clientWidth)+"px";
 	}
-	if( n.clientHeight + n.offsetTop +24 > window.innerHeight ){
+	if( n.clientHeight + n.offsetTop +24 > innerHeight ){
 		n.style.top=(ly-8-n.clientHeight)+"px";
 	}
 }
@@ -319,8 +319,8 @@ var isMakingNew=false,lastNewTimeout=0;
 function newImage(){
 	if(!isEnabled)return;
 	if(isMakingNew){
-		window.clearTimeout(lastNewTimeout);
-		lastNewTimeout=window.setTimeout(function(){newImage()},255);
+		clearTimeout(lastNewTimeout);
+		lastNewTimeout=setTimeout(function(){newImage()},255);
 		return;
 	}
 	document.body.style.cursor='wait';
@@ -328,7 +328,7 @@ function newImage(){
 	n.style.visibility="hidden";
 	c.style.visibility="hidden";
 	c.src=blankgif;
-	var x=window.innerWidth,y=window.innerHeight;
+	var x=innerWidth,y=innerHeight;
 	c.style.width=x+'px';
 	c.style.height=y+'px';
 
@@ -354,12 +354,12 @@ function testWebGlAvail(){
 
 function handleRenderingThrottle(){
 	if(isUpdating){
-		window.clearTimeout(lastTimeout);
-		lastTimeout=window.setTimeout(handleRenderingThrottle,33);
+		clearTimeout(lastTimeout);
+		lastTimeout=setTimeout(handleRenderingThrottle,33);
 		return;
 	}
 	isUpdating=true;
-	window.setTimeout(handleRendering,33);
+	setTimeout(handleRendering,33);
 }
 
 function handleRendering(quick){
