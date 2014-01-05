@@ -205,6 +205,7 @@ function disableColorPicker(){
 		c=false,n=false;
 		document.body.style.cursor='default';
 	}
+	window.clearTimeout(lastNewTimeout);
 }
 function wk(ev){
 	if(!isEnabled)return;
