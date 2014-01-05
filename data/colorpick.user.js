@@ -42,13 +42,27 @@ function rgb2hsl(r, g, b){//http://mjijackson.com/2008/02/rgb-to-hsl-and-rgb-to-
 function emptyNode(node){
 	while(node.lastChild)node.removeChild(node.lastChild);
 }
+function getPageScale(){
+	var psc=[0.25,0.333082,0.50,0.6659969,0.75,0.90,1.0,1.10,1.25,1.50,1.75,2.00,2.50,3.00,4.00,5.00];
+	scal=outerWidth/innerWidth;
+	if(scal < 0.25 || scal > 5.1 || (scal > 1.0 && scal < 1.02)) scal = 1.0;
+	if(scal != 1.0){
+		var newscal=0;
+		for(var s=0,l=psc.length;s<l;s++){
+			if( scal > psc[s] )newscal=psc[s];
+			else break;
+		}
+		var errorMargin = scal - newscal;
+		//console.log('error margin ' + errorMargin);
+		if(errorMargin < 0.02 || (newscal > 1.0 && errorMargin < 0.071))
+			scal = newscal;
+	}
+	return scal;
+}
 function snapshotLoaded(){
 		c.style.height='auto';
-		c.style.width=window.innerWidth+'px';
-//		if(c.naturalWidth/c.naturalHeight > window.innerWidth/window.innerHeight){
-//			c.style.width=(window.innerWidth+1)+'px';
-//		}
-		//c.style.width='auto';g
+		//c.naturalWidth / window.innerWidth ~= getPageScale()
+		c.style.width=(c.naturalWidth / getPageScale())+'px';
 		x_cvs_scale=c.naturalWidth / window.innerWidth;
 		y_cvs_scale=c.naturalHeight / window.innerHeight;
 		cvs.width=c.naturalWidth;
