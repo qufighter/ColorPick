@@ -1,7 +1,10 @@
-COMN_DBUG=false;
-DESC_INCL='';
-BLOOP_MAX=75;
-DATA_URLP='';
+var COMN_DBUG=false;
+var DESC_INCL='';
+var BLOOP_MAX=75;
+var DATA_URLP='';
+var RSC_READY=-2;
+var MAX_RESPONSE_COUNT = 900;
+var MAX_RESPONSE_WAIT  = 5000;
 
 function bloop(a){
 	otext='';
@@ -11,15 +14,13 @@ function bloop(a){
 	return otext;
 }
 
-
-RSC_READY=-2;
 self.port.on('dataUrlIs',function(dUrl){
 	DATA_URLP=dUrl;
 	RSC_READY++;
 });
 self.port.emit('getDataUrl');
 
-localizedStrings={};
+var localizedStrings={};
 self.port.on('localizedStrings',function(messages){
 	var ls=JSON.parse(messages);
 	for( var i in ls ){
@@ -29,14 +30,10 @@ self.port.on('localizedStrings',function(messages){
 });
 self.port.emit('getLocalization');
 
-MAX_RESPONSE_COUNT = 900;
-MAX_RESPONSE_WAIT  = 5000;
-
 var firefoxChromeApi={
 	responseIdentifer : 0,
 	responseFunctions : [],
 	responseCounter : 0,
-	responseCounter : 900,
 	lastResponseTimestamp : 0,
 	
 	setResponseIDbase : function(i){
@@ -68,11 +65,16 @@ var chrome={
 	storage : {
 		local : {
 			set : function(tosave, callbackfn){
-				
-				callbackfn();
+				self.port.on('storage-set-resp',function(resp){
+					callbackfn(resp);
+				});
+				self.port.emit('storage-set-req',tosave);
 			},
 			get : function(toget, callbackfn){
-				//callbackfn(obj);
+				self.port.on('storage-get-resp',function(resp){
+					callbackfn(resp);
+				});
+				self.port.emit('storage-get-req',toget);
 			}
 		},
 		sync : {
@@ -103,6 +105,10 @@ var chrome={
 				cbf(resp);
 			});
 			self.port.emit('captureVisibleTab_Req');
+		},
+		connect : function(tabid, opts){
+			if(COMN_DBUG)console.log(DESC_INCL+'chrome.tabs.connect: '+bloop(opts));
+			self.port.emit('connect',opts)
 		}
 	},
 	alarms : {
@@ -128,11 +134,26 @@ var chrome={
 			}
 		},
 		connect : function(opts){
-			//opts.name //{name:"popupshown"}
+			if(COMN_DBUG)console.log(DESC_INCL+'chrome.runtime.connect: '+bloop(opts));
+			self.port.emit('connect',opts)
 		},
 		onConnect : {
 			addListener : function(fn){
-
+				if(COMN_DBUG)console.log(DESC_INCL+'chrome.runtime.onConnect.addListener');
+				self.port.on('connect',function(connectReq){
+					connectReq.onDisconnect = chrome.runtime.onDisconnect;
+					if(COMN_DBUG)console.log(DESC_INCL+'chrome.runtime.onConnect Listner Fired');
+					fn(connectReq);
+				});
+			}
+		},
+		onDisconnect : {
+			addListener : function(fn){
+				if(COMN_DBUG)console.log(DESC_INCL+'chrome.runtime.onDisconnect.addListener');
+				self.port.on('disconnect',function(connectReq){
+					if(COMN_DBUG)console.log(DESC_INCL+'chrome.runtime.onDisconnect Listner Fired');
+					fn(connectReq);
+				});
 			}
 		},
 		onUpdateAvailable : {
