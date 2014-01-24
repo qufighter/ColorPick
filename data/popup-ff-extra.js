@@ -4,7 +4,9 @@ firefoxChromeApi.setResponseIDbase(2000);
 function setupInjectScripts(){
 	//override as empty function, since this will lead to auto-enabling the extension when the popup is created.
 }
-
+//self.port.on('hide',function(){
+//	self.port.emit('disconnect');
+//});
 self.port.on('shown',function(){
 	//we culd just as well create the dom here if we have not already....
 	//else

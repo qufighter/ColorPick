@@ -11,7 +11,6 @@ function getEventTargetA(ev){
 function preventEventDefault(ev){
 	ev = ev || event;
 	if(ev.preventDefault)ev.preventDefault();
-	ev.returnValue=false;
 	return false;
 }
 function toggle_next_sibling_display(ev){
@@ -91,8 +90,8 @@ function save_options() {
     status.innerHTML = "";
   }, 750);
   
-  sendReloadPrefs();
   saveToChromeSyncStorage();
+  sendReloadPrefs();
 }
 
 function reset_options() {
@@ -243,7 +242,7 @@ function createOptions(piOptions, elemAppend){
 			l.appendChild(document.createTextNode(piOptions[i].name));
 			if(piOptions[i].img){
 				var t=piOptions[i].img;
-				i=document.createElement('image');
+				i=document.createElement('img');
 				i.setAttribute('src',t);
 				i.setAttribute('align','top');
 				i.setAttribute('width',16);
@@ -349,6 +348,9 @@ Cr.elm("div",{id:"mainbox"},[
 	Cr.elm("div",{id:"adv_options"},[
 		Cr.elm("button",{id:"bload"},[
 			Cr.txt(chrome.i18n.getMessage('fetchSync'))
+		]),
+		Cr.elm("button",{id:"cload"},[
+			Cr.txt(chrome.i18n.getMessage('clearSync'))
 		])
 	]),
 	Cr.elm("button",{id:"bsave"},[
@@ -386,8 +388,11 @@ Cr.elm("div",{id:"mainbox"},[
 	Cr.ent(chrome.i18n.getMessage('extName')+" &copy;"),
 	Cr.elm("a",{target:"_blank",href:"http://vidsbee.com/ColorPick/"},[
 		Cr.txt("Vidsbee.com")
-	])
+	]),
+	Cr.elm('div',{'id':'rate_position'})
 ],document.body)
+
+	createAndAttachRatings(document.getElementById('rate_position'));
 
 	init()
 	document.getElementById('bsave').addEventListener('click', save_options);
@@ -397,6 +402,9 @@ Cr.elm("div",{id:"mainbox"},[
 	document.getElementById('shoadvanc').addEventListener('click', toggle_next_sibling_display);
 
 	document.getElementById('bload').addEventListener('click', load_syncd_options);
+	document.getElementById('cload').addEventListener('click', function(){
+		storage.clear(function(){});
+	});
 }
 
 document.addEventListener('DOMContentLoaded', function () {

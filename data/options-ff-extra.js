@@ -37,27 +37,6 @@ function checkResourcesReady(){
 	}
 }
 
-function sendReloadPrefs(cb){
-	var cbf=cb;
-	if(typeof(cbf)!='function')cbf=function(){};
-	var m_prefs={};
-	for(var i in localStorage){
-		m_prefs[i]=localStorage[i];
-	}
-	chrome.extension.sendRequest({reloadprefs: true,prefs:m_prefs}, function(response) {cbf()});
-}
+var gotMainPrefs=true;
 
-var gotMainPrefs=false;
-function fetchMainPrefs(){
-	chrome.extension.sendRequest({getprefs: true}, function(response) {
-		gotMainPrefs=true;
-		for(i in response.prefs){
-			localStorage[i]=response.prefs[i];
-		}
-		load_history();
-		//console.log('got resp'+response.prefs.colorPickHistory)
-	});
-}
-
-fetchMainPrefs();
 checkResourcesReady();
