@@ -50,7 +50,7 @@ function sendReloadPrefs(cb){
 function chromeStorageSaveALocalStor(tosave){
 	storage.set(tosave, function() {
 		if(chrome.runtime.lastError && chrome.runtime.lastError.message.indexOf('MAX_WRITE_OPERATIONS_PER_HOUR') > 0){
-			console.log(chrome.runtime.lastError);
+			//console.log(chrome.runtime.lastError);
 		}
 	});
 }
