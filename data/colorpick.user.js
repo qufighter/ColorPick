@@ -61,8 +61,7 @@ function getPageScale(){
 }
 function snapshotLoaded(){
 		c.style.height='auto';
-		//c.naturalWidth / innerWidth ~= getPageScale()
-		c.style.width=(c.naturalWidth / getPageScale())+'px';
+		c.style.width=(innerWidth)+'px';
 		x_cvs_scale=c.naturalWidth / innerWidth;
 		y_cvs_scale=c.naturalHeight / innerHeight;
 		cvs.width=c.naturalWidth;
