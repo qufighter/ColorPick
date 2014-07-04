@@ -44,9 +44,12 @@ echo $vers
 cd build
 
 echo "Creating zip"
-#gzip -qr9X "../$PROG.$vers.zip" *
-"c:\Program Files\WinRAR\WinRAR.exe" a -afzip -r "../$PROG.$vers.zip" *
-
+which zip
+if [ $? -eq 0 ]; then
+	zip -r "../$PROG.$vers.zip" *
+else
+	"c:\Program Files\WinRAR\WinRAR.exe" a -afzip -r "../$PROG.$vers.zip" *
+fi
 echo "Cleaning up temporary files ..."
 cd ..
 rm -rf build
