@@ -197,14 +197,17 @@ function disableColorPicker(){
 	removeEventListener('scroll',ssf);
 	removeEventListener('resize',ssf);
 	removeEventListener('keyup',wk);
-	c=_ge(elmid1),n=_ge(elmid2);
+	removeExistingNodes();
+	clearTimeout(lastNewTimeout);
+}
+function removeExistingNodes(){
 	if(document.body){
+		c=_ge(elmid1),n=_ge(elmid2);
 		if(c)document.body.removeChild(c);
 		if(n)document.body.removeChild(n);
 		c=false,n=false;
 		document.body.style.cursor='default';
 	}
-	clearTimeout(lastNewTimeout);
 }
 function wk(ev){
 	if(!isEnabled)return;
@@ -255,6 +258,7 @@ function loadPrefs(cbf){
 }
 function initialInit(){
 	loadPrefs(function(){
+		removeExistingNodes();
 		c=Cr.elm('img',{id:elmid1,src:blankgif,style:'position:fixed;max-width:none!important;max-height:none!important;top:0px;left:0px;margin:0px;padding:0px;overflow:hidden;z-index:2147483646;',events:[['click',picked,true],['load',snapshotLoaded]]},[],document.body);
 		n=Cr.elm('div',{id:elmid2,style:'position:fixed;min-width:30px;max-width:300px;min-height:30px;box-shadow:2px 2px 2px #666;border:'+borderValue+';z-index:2147483646;cursor:default;padding:4px;'},[Cr.txt(' ')],document.body);
 		document.addEventListener('mousemove',mmf);

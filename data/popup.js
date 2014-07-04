@@ -1,5 +1,5 @@
 var tabid=0;
-var isScriptAlive=false,scriptAliveTimeout=0;
+var isScriptAlive=false,scriptAliveTimeout=1,reExecutedNeedlessly=false;
 var cpw=165,cph=303;
 //pref variables should be created dynamicaly
 var borderValue='1px solid grey',EnableRGB=true,EnableHSL=true,useCSSValues=true,usePrevColorBG=false,showPreviousClr=true,pickEveryTime=(isWindows?true:false),bbackgroundColor='white';
@@ -333,26 +333,34 @@ function setupInjectScripts(){
 //eventually re-enable this block (removing above) - since after first install it gets us running - however
 //gotta make sure that any pre-installed version responds to testAlive first!
 	isScriptAlive=false;
+	scriptAliveTimeout=1;
+	reExecutedNeedlessly=false;
 	try{
 		chrome.tabs.sendMessage(tabid, {testAlive:true}, function(response) {
 			if(response&&response.result){
-				isScriptAlive=true;
+				if(scriptAliveTimeout==0){
+					setPreviewSRC(chrome.extension.getURL('img/error'+1+'.png'),true);
+					reExecutedNeedlessly=true;
+				}else{
+					isScriptAlive=true;
+					scriptsInjectedResult();
+				}
 			}
-			scriptsInjectedResult();
 		});
-		scriptAliveTimeout=setTimeout(scriptsInjectedResult,3000);
+		scriptAliveTimeout=setTimeout(scriptsInjectedResult,4000);
 	}catch(e){
 		scriptsInjectedResult();//I don't think we ever get here
 	}
 }
 function scriptsInjectedResult(){
 	clearTimeout(scriptAliveTimeout);
+	scriptAliveTimeout = 0;
 	if(!isScriptAlive){
 		chrome.tabs.executeScript(tabid, {file: "Cr_min.js"}, function(){
 			chrome.tabs.executeScript(tabid, {file: "options_prefs.js"}, function(){
 				chrome.tabs.executeScript(tabid, {file: "colorpick.user.js"}, function(){
 					isScriptAlive=true;
-					finishSetup();
+					setTimeout(finishSetup, 250);
 				});
 			});
 		});
