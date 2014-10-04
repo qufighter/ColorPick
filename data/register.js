@@ -195,9 +195,7 @@ Cr.elm("div",{id:"mainbox"},[
 	Cr.elm("a",{style:"float:left;margin-right:20px;top:-10px;",class:"rounded",target:"_blank",href:"http://vidsbee.com/ColorPick/"},[
 		Cr.txt("Purchase License Key"),
 		Cr.elm("br"),
-		Cr.elm("img",{width:"130",height:"41",src:"img/paypal.png"}),
-		Cr.elm("br"),
-		Cr.elm("img",{width:"130",height:"35",src:"https://checkout.google.com/buttons/checkout.gif?merchant_id=157920074963920&w=160&h=43&style=trans&variant=text&loc=en_US"})
+		Cr.elm("img",{width:"130",height:"41",src:"img/paypal.png"})
 	]),
 	Cr.elm("span",{style:"float:left;margin-right:12px;"},[
 		Cr.elm("a",{target:"_blank",href:"http://vidsbee.com/ColorPick/"},[
@@ -226,22 +224,6 @@ Cr.elm("div",{id:"mainbox"},[
 		Cr.elm("br"),
 		Cr.txt("A button to automatically install the license will appear after purchase.")
 	]),
-	Cr.elm("div",{id:"inapp-unlock",style:"clear:both;position:relative;top:12px;"},[
-		Cr.elm("h3",{},[
-			Cr.txt("Unlock Extension Only")
-		]),
-		Cr.elm("div",{id:"unlockExtOnly"},[
-			Cr.elm("a",{href:"#",id:"unlocker"},[
-				Cr.elm("img",{id:"donateButtonGoogleCheckoutImage",style:"margin-top:2px;padding-top:6px;padding-bottom:0",align:"top",src:"https://checkout.google.com/buttons/checkout.gif?merchant_id=157920074963920&w=160&h=43&style=trans&variant=text&loc=en_US"})
-			]),
-			Cr.elm("a",{href:"javascript:;",id:"expandExtinfo"},[
-				Cr.elm("img",{src:"img/expand.png",align:"middle"})
-			]),
-			Cr.elm("small",{style:"display:none;"},[
-				Cr.txt("Unlock the Color Picker Google Chrome Extension without buying a license key.")
-			])
-		]),
-	]),
 	Cr.elm("h3",{style:"margin-bottom:7px;clear:both;"},[
 		Cr.txt("Alternative")
 	]),
@@ -255,11 +237,9 @@ Cr.elm("div",{id:"mainbox"},[
 ],document.body)
 	init()
 	gel('license_go').addEventListener('click', license_go);
-	gel('unlocker').addEventListener('click', unlockInApp);
 	
 	gel('expandReginfo').addEventListener('click', toggle_next_sibling_display);
 	gel('expandBuyinfo').addEventListener('click', toggle_next_sibling_display);
-	gel('expandExtinfo').addEventListener('click', toggle_next_sibling_display);
 }
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -270,58 +250,3 @@ document.addEventListener('DOMContentLoaded', function () {
 //		gel('unlockExtOnly').innerHTML="Comings Soon";
 //	}
 });
-
-function performPayment(token){
-	google.payments.inapp.buy({
-		'jwt'     : token,
-		'success' : function(result) {
-			localStorage['reg_chk']=true;
-			localStorage['reg_inapp']=true;
-			saveSyncItemsToChromeSyncStorage();
-		},
-		'failure' : function(result) {
-			if (result && result.response) {
-				if (result.response.errorType == "PURCHASE_CANCELED") {
-					//alert('Canceled!');
-				} else {
-					/*
-						MERCHANT_ERROR - purchase request contains errors such as a badly formatted JWT
-						PURCHASE_CANCELED - buyer canceled purchase or declined payment
-						POSTBACK_ERROR - failure to acknowledge postback notification
-						INTERNAL_SERVER_ERROR - internal Google error
-					*/
-					alert(chrome.i18n.getMessage('error')+': '+result.response.errorType);
-				}
-			} else {
-				alert(chrome.i18n.getMessage('inappPurchaseError'));
-			}
-			console.log("failure", result);
-		}
-	});
-}
-
-function unlockInApp(ev){
-	var attempt=0;
-	var params=	'?name=Color+Picker+Chrome+Extension'+
-							'&description=Color+Picker+for+Google+Chrome+Sign in/Sync+-+Single+User+License'+
-							'&itemID=ColorPickChromeExt'+
-							'&price=4.99';
-	var xhr = getXMLhttpObject();
-	xhr.onreadystatechange=function(){if(xhr.readyState == 4){
-		if(xhr.status==200){
-			performPayment(xhr.responseText);
-		}else if(xhr.status==403 && attempt < 1){
-			attempt++;
-			xhr.open('GET', "http://vidsbee.com/generateJWTJSON.php"+params, true);
-			xhr.send();
-		}else{
-			alert(chrome.i18n.getMessage('inappComError'));
-		}
-	}};
-	xhr.open('GET', "https://vidsbee.appspot.com/"+params, true);
-	xhr.send();
-
-	//app engine will return a 403 Forbidden when over quotta... 
-
-	return preventEventDefault(ev);
-}
