@@ -1,7 +1,7 @@
 var elmid1='color_pick_click_box',elmid2='ChromeExtension:Color-Pick.com';
 if(typeof(exitAndDetach)=='function')exitAndDetach();
 function _ge(n){return document.getElementById(n);}
-var n=false,c=false,hex='F00BAF',lasthex='',rgb=null;hsv=null;scal=1,ex=0,ey=0,isEnabled=false,isLocked=false,borderValue='1px solid black',blankgif='',msg_bg_unavail=chrome.i18n.getMessage('bgPageUnavailable');
+var n=false,c=false,hex='F00BAF',lasthex='',rgb=null;hsv=null;scal=1,ex=0,ey=0,isEnabled=false,isLocked=false,hexIsLowerCase=false,borderValue='1px solid black',blankgif='',msg_bg_unavail=chrome.i18n.getMessage('bgPageUnavailable');
 var isUpdating=false,lastTimeout=0,lx=0,ly=0;
 var cvs = document.createElement('canvas');
 var ctx = cvs.getContext('2d'),x_cvs_scale=1,y_cvs_scale=1;
@@ -9,7 +9,8 @@ document.addEventListener('DOMContentLoaded',function(){
 	//document.body.appendChild(cvs);
 	//console.log('appended');
 })
-function RGBtoHex(R,G,B) {return toHex(R)+toHex(G)+toHex(B)}
+function RGBtoHex(R,G,B) {return applyHexCase(toHex(R)+toHex(G)+toHex(B))}
+function applyHexCase(hex){return hexIsLowerCase ? hex.toLowerCase() : hex;}
 function toHex(N) {//http://www.javascripter.net/faq/rgbtohex.htm
  if (N==null) return "00";
  N=parseInt(N); if (N==0 || isNaN(N)) return "00";

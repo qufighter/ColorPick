@@ -16,9 +16,11 @@ pOptions["contSprevZoomd"]={def:true,ind:1};
 pOptions["ShowRGBHSL"]={def:false,ind:1};
 pOptions["autocopyhex"]={def:false,ind:0};
 
+
 //pAdvOptions["customCalibration"]={def:false,ind:0,name:'Enable the defunct calibration link above.'};
 pAdvOptions["usePNG"]={def:true,ind:0};
 pAdvOptions["useCSSValues"]={def:true,ind:0};
+pAdvOptions["hexIsLowerCase"]={def:false,ind:0};
 //pAdvOptions["iconIsPreview"]={def:false,ind:0,img:'img/opt_badge.png'};
 pAdvOptions["appleIcon"]={def:false,ind:0,img:'img/apple/icon16.png'};
 pAdvOptions["iconIsBitmap"]={def:false,ind:0,img:'img/icon_pixel.png'};

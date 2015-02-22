@@ -137,6 +137,9 @@
    "autocopyhex": {
       "message": "Attempt to auto copy hex value to clipboard"
    },
+   "hexIsLowerCase": {
+      "message": "Lower case hex values"
+   },
    "hasAgreedToLicense": {
       "message": "Has agreed to Terms of Use"
    },
