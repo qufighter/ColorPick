@@ -207,6 +207,7 @@ function mmv(ev){
 	}
 }
 
+var fourSpaces='\u00a0\u00a0\u00a0\u00a0';
 function createOptions(piOptions, elemAppend){
 	//needs some compression 
 	for( i in piOptions){
@@ -216,8 +217,8 @@ function createOptions(piOptions, elemAppend){
 			var cb=document.createElement('select');
 			cb.setAttribute('type','select');
 			cb.setAttribute('id',i);
-			if(piOptions[i].ind>0)l.appendChild(document.createTextNode('\u00a0\u00a0\u00a0\u00a0'));
-			if(piOptions[i].ind>1)l.appendChild(document.createTextNode('\u00a0\u00a0\u00a0\u00a0'));
+			if(piOptions[i].ind>0)l.appendChild(document.createTextNode(fourSpaces));
+			if(piOptions[i].ind>1)l.appendChild(document.createTextNode(fourSpaces));
 			l.appendChild(document.createTextNode(" "+piOptions[i].name+" "));
 			l.appendChild(cb);
 			
@@ -236,8 +237,8 @@ function createOptions(piOptions, elemAppend){
 			var cb=document.createElement('input');
 			cb.setAttribute('type','checkbox');
 			cb.setAttribute('id',i);
-			if(piOptions[i].ind>0)l.appendChild(document.createTextNode('\u00a0\u00a0\u00a0\u00a0'));
-			if(piOptions[i].ind>1)l.appendChild(document.createTextNode('\u00a0\u00a0\u00a0\u00a0'));
+			if(piOptions[i].ind>0)l.appendChild(document.createTextNode(fourSpaces));
+			if(piOptions[i].ind>1)l.appendChild(document.createTextNode(fourSpaces));
 			l.appendChild(cb);
 			l.appendChild(document.createTextNode(piOptions[i].name));
 			if(piOptions[i].img){
@@ -260,7 +261,7 @@ function createOptions(piOptions, elemAppend){
 			var cb=document.createElement('input');
 			cb.setAttribute('type','text');
 			cb.setAttribute('id',i);cb.setAttribute('size',(piOptions[i].def + '').length);
-			if(piOptions[i].ind>0)l.appendChild(document.createTextNode('\u00a0\u00a0\u00a0\u00a0'));
+			if(piOptions[i].ind>0)l.appendChild(document.createTextNode(fourSpaces));
 			l.appendChild(cb);
 			l.appendChild(document.createTextNode(piOptions[i].name));
 			
