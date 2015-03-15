@@ -345,14 +345,10 @@ function load_history(){
 	cb.setAttribute('id','hist_drag_sizer');
 	div_history.appendChild(cb);
 	cb.addEventListener('mousedown',dragHist);
-
 }
 
 var histReSize=false;
-var hist_sx=0,hist_sy=0;
 function dragHist(ev){
-	hist_sx=ev.pageX;
-	hist_sy=ev.pageY;
 	histReSize=true;
 }
 function stopdragHist(){
@@ -360,16 +356,8 @@ function stopdragHist(){
 }
 function mmv(ev){
 	if(histReSize){
-		var ch=ev.pageX-hist_sx;
-		
 		var his=document.getElementById('history');
-		var hds=document.getElementById('hist_drag_sizer');
-		
-		//hds.style.right = hds.style.right.replace('px','')-0 - ch;
-		his.style.width = his.style.width.replace('px','')-0 + ch;
-
-		hist_sx=ev.pageX;
-		hist_sy=ev.pageY;
+		his.style.width = ev.pageX - 30;
 	}
 }
 
