@@ -2,7 +2,7 @@ label{display:block;}
 body{font-family:sans-serif;margin:20px;}
 #logo{float:left;margin-right:10px;}
 h3{margin:4px;}
-a{text-decoration:none;color:blue;}
+a{text-decoration:none;color:blue;cursor:pointer;}
 a:hover{text-decoration:underline;}
 label{padding:5px 5px 5px 5px;}
 label:hover{background-color:#DDD;}
@@ -10,7 +10,7 @@ label:hover{background-color:#DDD;}
 .toggleOpts:hover{background-color:#DDD;}
 #swatch-holder{position:absolute;width:400px;left:480px;}
 .swatch{padding:10px;}
-.swatch .hex{background-color:transparent;border:none;text-shadow:1px 1px 6px white;width: 60px;padding-left:10px;}
+.swatch .hex{background-color:transparent;border:none;text-shadow:1px 1px 6px white;width: 64px;padding-left:10px;}
 .swatch .close{float:right;cursor:pointer;}
 #req_win, #req_mac{display:none;}
 .rounded{
