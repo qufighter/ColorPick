@@ -275,7 +275,7 @@ function currentSwatches(){
 			hsv: rgb2hsv(rgb.r,rgb.g,rgb.b)
 		});
 	}
-	if(colors.length<1)alert('Click colors in color history to add them to a palette for saving and printing.');
+	if(colors.length<1)alert(chrome.i18n.getMessage('noSwatches'));
 	return colors;
 }
 
@@ -507,9 +507,9 @@ Cr.elm("div",{id:"mainbox"},[
 	]),
 	Cr.elm("br",{}),
 	Cr.elm("div",{id:"swatch-holder"},[
-		Cr.elm("a",{class:"swatchCtrl",event:['click',dedupeSwatches],style:'text-align:center;position:absolute;display:block;width:50%;margin-left:25%;'},[Cr.txt('dedupe')]),
-		Cr.elm("a",{class:"swatchCtrl",event:['click',sortSwatches],style:''},[Cr.txt('sort')]),
-		Cr.elm("a",{class:"swatchCtrl",event:['click',printSwatches],style:'float:right;',target:'_blank'},[Cr.txt('print/save as...')]),
+		Cr.elm("a",{class:"swatchCtrl",event:['click',dedupeSwatches],style:'text-align:center;position:absolute;display:block;width:50%;margin-left:25%;'},[Cr.txt(chrome.i18n.getMessage('dedupe'))]),
+		Cr.elm("a",{class:"swatchCtrl",event:['click',sortSwatches],style:''},[Cr.txt(chrome.i18n.getMessage('sort'))]),
+		Cr.elm("a",{class:"swatchCtrl",event:['click',printSwatches],style:'float:right;',target:'_blank'},[Cr.txt(chrome.i18n.getMessage('printSave'))]),
 		Cr.elm("div",{id:"swatches"})
 	]),
 	Cr.elm("a",{href:"#",id:"showopt",class:"toggleOpts"},[
@@ -554,7 +554,7 @@ Cr.elm("div",{id:"mainbox"},[
 		Cr.txt(chrome.i18n.getMessage('help'))
 	]),
 	Cr.elm("h4",{},[
-		Cr.txt(chrome.i18n.getMessage('history')),
+		Cr.txt(chrome.i18n.getMessage('history')+' '),
 		Cr.elm("a",{href:"#",id:"clhist",style:"font-size:10px;"},[
 			Cr.txt(chrome.i18n.getMessage('clear'))
 		])

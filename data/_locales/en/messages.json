@@ -218,6 +218,18 @@
    "history": {
       "message": "History"
    },
+   "noSwatches":{
+      "message": "Click colors in color history to add them to a palette for saving and printing."
+   },
+   "sort":{
+      "message": "sort"
+   },
+   "dedupe":{
+      "message": "dedupe"
+   },
+   "printSave":{
+      "message": "print / save..."
+   },
    "clear": {
       "message": "Clear"
    },
