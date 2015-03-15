@@ -239,6 +239,9 @@ function printSwatches(e){
 		params+='||'+JSON.stringify({hex: colors[c].hex,rgb: colors[c].rgb, hsl: colors[c].hsl, hsv: colors[c].hsv})
 	}
 	e.target.href='saveSwatches.html?swatches='+params;
+	if(colors.length < 1){
+		e.preventDefault();
+	}
 }
 
 function moveUp(e){
@@ -503,15 +506,18 @@ Cr.elm("div",{id:"mainbox"},[
 		Cr.elm("br",{})
 	]),
 	Cr.elm("br",{}),
-	Cr.elm("div",{id:"options"},[
-		Cr.elm("div",{id:"swatch-holder"},[
-			Cr.elm("a",{class:"swatchCtrl",event:['click',dedupeSwatches],style:'text-align:center;position:absolute;display:block;width:50%;margin-left:25%;'},[Cr.txt('dedupe')]),
-			Cr.elm("a",{class:"swatchCtrl",event:['click',sortSwatches],style:''},[Cr.txt('sort')]),
-			Cr.elm("a",{class:"swatchCtrl",event:['click',printSwatches],style:'float:right;',target:'_blank'},[Cr.txt('print/save as...')]),
-			Cr.elm("div",{id:"swatches"})
-		])
+	Cr.elm("div",{id:"swatch-holder"},[
+		Cr.elm("a",{class:"swatchCtrl",event:['click',dedupeSwatches],style:'text-align:center;position:absolute;display:block;width:50%;margin-left:25%;'},[Cr.txt('dedupe')]),
+		Cr.elm("a",{class:"swatchCtrl",event:['click',sortSwatches],style:''},[Cr.txt('sort')]),
+		Cr.elm("a",{class:"swatchCtrl",event:['click',printSwatches],style:'float:right;',target:'_blank'},[Cr.txt('print/save as...')]),
+		Cr.elm("div",{id:"swatches"})
 	]),
-	Cr.elm("a",{href:"#",id:"shoadvanc"},[
+	Cr.elm("a",{href:"#",id:"showopt",class:"toggleOpts"},[
+		Cr.elm("img",{src:"img/expand.png"}),
+		Cr.txt(chrome.i18n.getMessage('options'))
+	]),
+	Cr.elm("div",{id:"options"},[]),
+	Cr.elm("a",{href:"#",id:"shoadvanc",class:"toggleOpts"},[
 		Cr.elm("img",{src:"img/expand.png"}),
 		Cr.txt(chrome.i18n.getMessage('advancedOptions'))
 	]),
@@ -570,6 +576,9 @@ Cr.elm("div",{id:"mainbox"},[
 	document.getElementById('clhist').addEventListener('click', clear_history);
 	
 	document.getElementById('shoadvanc').addEventListener('click', toggle_next_sibling_display);
+	document.getElementById('showopt').addEventListener('click', toggle_next_sibling_display);
+
+	toggle_next_sibling_display({target:document.getElementById('showopt')})
 
 	document.getElementById('bload').addEventListener('click', load_syncd_options);
 	document.getElementById('cload').addEventListener('click', function(){

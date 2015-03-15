@@ -185,6 +185,9 @@
    "borderValue": {
       "message": "Borders to use (css value)"
    },
+   "options": {
+      "message": "Options"
+   },
    "advancedOptions": {
       "message": "Advanced Options"
    },

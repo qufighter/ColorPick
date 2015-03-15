@@ -6,8 +6,8 @@ a{text-decoration:none;color:blue;}
 a:hover{text-decoration:underline;}
 label{padding:5px 5px 5px 5px;}
 label:hover{background-color:#DDD;}
-#shoadvanc{padding:5px 5px 5px 5px;display:block;width:400px;}
-#shoadvanc:hover{background-color:#DDD;}
+.toggleOpts{padding:5px 5px 5px 5px;display:block;width:400px;}
+.toggleOpts:hover{background-color:#DDD;}
 #swatch-holder{position:absolute;width:400px;left:480px;}
 .swatch{padding:10px;}
 .swatch .hex{background-color:transparent;border:none;text-shadow:1px 1px 6px white;width: 60px;padding-left:10px;}
@@ -34,6 +34,7 @@ label:hover{background-color:#DDD;}
 #cotd{display:none;}
 #options{width:400px;}
 #adv_options{
+	width:400px;
 	border:1px solid #888;
 	padding:15px;
 	display:none;
