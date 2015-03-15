@@ -146,12 +146,173 @@ function restore_options() {
 //  }
 }
 
+
+//color functions used for history sorting
+function cleanHex(H){
+	if( H.length > 6 && H.substr(0,1) == '#' ) return H.substr(1);
+	return H;
+}
+function fromHexClr(H){
+	if(H.length == 6){
+		return {r:fromHex(H.substr(0,2)),g:fromHex(H.substr(2,2)),b:fromHex(H.substr(4,2))}
+	}
+	return false;
+}
+function fromHex(h){return parseInt(h,16);}
+function toHex(d){return ("00" + (d-0).toString(16).toUpperCase()).slice(-2);}
+function RGBtoHex(R,G,B) {return applyHexCase(toHex(R)+toHex(G)+toHex(B))}
+function applyHexCase(hex){return hexIsLowerCase ? hex.toLowerCase() : hex;}
+function rgb2hsl(r, g, b){//http://mjijackson.com/2008/02/rgb-to-hsl-and-rgb-to-hsv-color-model-conversion-algorithms-in-javascript
+    r /= 255, g /= 255, b /= 255;
+    var max = Math.max(r, g, b), min = Math.min(r, g, b);
+    var h, s, l = (max + min) / 2;
+    if(max == min){
+        h = s = 0; // achromatic
+    }else{
+        var d = max - min;
+        s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+        switch(max){
+            case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+            case g: h = (b - r) / d + 2; break;
+            case b: h = (r - g) / d + 4; break;
+        }
+        h /= 6;
+    }
+    return {
+      h: Math.round(h * 360),
+      s: Math.round(s * 100),
+      v: Math.round(l * 100)
+    };
+}
+
+function rgb2hsv () {
+    var rr, gg, bb,
+        r = arguments[0] / 255,
+        g = arguments[1] / 255,
+        b = arguments[2] / 255,
+        h, s,
+        v = Math.max(r, g, b),
+        diff = v - Math.min(r, g, b),
+        diffc = function(c){
+            return (v - c) / 6 / diff + 1 / 2;
+        };
+    if (diff == 0) {
+        h = s = 0;
+    } else {
+        s = diff / v;
+        rr = diffc(r);
+        gg = diffc(g);
+        bb = diffc(b);
+        if (r === v) {
+            h = bb - gg;
+        }else if (g === v) {
+            h = (1 / 3) + rr - bb;
+        }else if (b === v) {
+            h = (2 / 3) + gg - rr;
+        }
+        if (h < 0) {
+            h += 1;
+        }else if (h > 1) {
+            h -= 1;
+        }
+    }
+    return {
+        h: Math.round(h * 360),
+        s: Math.round(s * 100),
+        v: Math.round(v * 100)
+    };
+}
+
+
 function clear_history(ev){
 	if(confirm("are you sure?")){
 		localStorage['colorPickHistory']='';
 		load_history();
 		sendReloadPrefs();
 	}
+}
+
+function printSwatches(e){
+	var colors = currentSwatches();
+	var params = '';
+	for( var c=0,l=colors.length; c<l; c++ ){
+		params+='||'+JSON.stringify({hex: colors[c].hex,rgb: colors[c].rgb, hsl: colors[c].hsl, hsv: colors[c].hsv})
+	}
+	e.target.href='saveSwatches.html?swatches='+params;
+}
+
+function moveUp(e){
+	e.target.parentNode.parentNode.insertBefore(e.target.parentNode, e.target.parentNode.previousSibling)
+}
+
+function moveDn(e){
+	var b4 = e.target.parentNode.parentNode.firstChild;
+	if( e.target.parentNode.nextSibling )b4 = e.target.parentNode.nextSibling.nextSibling
+	e.target.parentNode.parentNode.insertBefore(e.target.parentNode, b4)
+}
+
+function removeSwatch(e){
+	e.target.parentNode.parentNode.removeChild(e.target.parentNode);
+}
+
+function currentSwatches(){
+	//read node state
+	var colors=[];
+	var swHld = document.getElementById('swatches');
+	var hexInp = swHld.getElementsByClassName('hex');
+	var hex,rgb;
+	for( var s=0,l=hexInp.length; s<l; s++){
+		hex = cleanHex(hexInp[s].value);
+		rgb = fromHexClr(hex);
+		colors.push({
+			node: hexInp[s].parentNode,
+			hex: hex,
+			rgb: rgb,
+			hsl: rgb2hsl(rgb.r,rgb.g,rgb.b),
+			hsv: rgb2hsv(rgb.r,rgb.g,rgb.b)
+		});
+	}
+	if(colors.length<1)alert('Click colors in color history to add them to a palette for saving and printing.');
+	return colors;
+}
+
+function sortSwatches(){
+	var swHld = document.getElementById('swatches');
+	var colors = currentSwatches();
+	//sort
+	colors.sort(function(a,b){
+		return a.hsl.h - b.hsv.h || a.hsl.s - b.hsv.s  || a.hsv.v - b.hsv.v;
+	})
+	//append new order
+	for( var c=0,cl=colors.length; c<cl; c++){
+		swHld.appendChild(colors[c].node);
+	}
+}
+
+function dedupeSwatches(){
+	var swHld = document.getElementById('swatches');
+	var colors = currentSwatches();
+	var found={};
+	for( var c=0,l=colors.length; c<l; c++ ){
+		//params+='||'+JSON.stringify({hex: colors[c].hex,rgb: colors[c].rgb, hsl: colors[c].hsl, hsv: colors[c].hsv})
+		if( found[colors[c].hex] ){
+			swHld.removeChild(colors[c].node);
+			//e.target.parentNode.parentNode.removeChild(e.target.parentNode);
+		}
+		found[colors[c].hex] = true;
+	}
+}
+
+function addSwatchEntry(hex){
+	var swHld = document.getElementById('swatches');
+	Cr.elm('div',{class:'swatch',style:'background-color:'+hex+';'},[
+		//Cr.elm('span',{style:'position:absolute;left:-40px;'},[ // for some reason breaks the events
+			Cr.elm("a",{events:['click',moveUp]},[Cr.txt('\u25B3')]),
+			Cr.elm("a",{events:['click',moveDn]},[Cr.txt('\u25BD')]),
+		//]),
+		Cr.elm('input',{type:'text',value:hex,class:'hex'}),
+		Cr.elm("img",{class:'close',align:'top',src:chrome.extension.getURL('img/close.png'),events:['click',removeSwatch]})
+	],swHld);
 }
 
 function load_history(){
@@ -170,7 +331,10 @@ function load_history(){
 	}
 	div_history.addEventListener('click',function(ev){
 		var tc=ev.srcElement.title;
-		if(tc)prompt(chrome.i18n.getMessage('copycolorval')+':',tc,tc);
+		if(tc){
+			addSwatchEntry(tc)
+			//prompt(chrome.i18n.getMessage('copycolorval')+':',tc,tc);
+		}
 	},false);
 	
 	var cb=document.createElement('div');
@@ -178,8 +342,7 @@ function load_history(){
 	cb.setAttribute('id','hist_drag_sizer');
 	div_history.appendChild(cb);
 	cb.addEventListener('mousedown',dragHist);
-	document.body.addEventListener('mouseup',stopdragHist);
-	document.body.addEventListener('mousemove',mmv);
+
 }
 
 var histReSize=false;
@@ -287,7 +450,8 @@ function init(){
 	restore_options();
 	
 	load_history();
-	
+	document.body.addEventListener('mouseup',stopdragHist); //one time history related events
+	document.body.addEventListener('mousemove',mmv);
 	
 
 	
@@ -340,7 +504,12 @@ Cr.elm("div",{id:"mainbox"},[
 	]),
 	Cr.elm("br",{}),
 	Cr.elm("div",{id:"options"},[
-
+		Cr.elm("div",{id:"swatch-holder"},[
+			Cr.elm("a",{class:"swatchCtrl",event:['click',dedupeSwatches],style:'text-align:center;position:absolute;display:block;width:50%;margin-left:25%;'},[Cr.txt('dedupe')]),
+			Cr.elm("a",{class:"swatchCtrl",event:['click',sortSwatches],style:''},[Cr.txt('sort')]),
+			Cr.elm("a",{class:"swatchCtrl",event:['click',printSwatches],style:'float:right;',target:'_blank'},[Cr.txt('print/save as...')]),
+			Cr.elm("div",{id:"swatches"})
+		])
 	]),
 	Cr.elm("a",{href:"#",id:"shoadvanc"},[
 		Cr.elm("img",{src:"img/expand.png"}),

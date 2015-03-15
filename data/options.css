@@ -8,6 +8,10 @@ label{padding:5px 5px 5px 5px;}
 label:hover{background-color:#DDD;}
 #shoadvanc{padding:5px 5px 5px 5px;display:block;width:400px;}
 #shoadvanc:hover{background-color:#DDD;}
+#swatch-holder{position:absolute;width:400px;left:480px;}
+.swatch{padding:10px;}
+.swatch .hex{background-color:transparent;border:none;text-shadow:1px 1px 6px white;width: 60px;padding-left:10px;}
+.swatch .close{float:right;cursor:pointer;}
 #req_win, #req_mac{display:none;}
 .rounded{
 	border:2px solid #AAA;
