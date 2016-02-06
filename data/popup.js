@@ -325,15 +325,7 @@ function iin(){
 }
 
 function setupInjectScripts(){
-//	finishSetup();return;
-
-//	   "content_scripts": [ {
-//      "js": [ "colorpick.user.js" ],
-//      "run_at": "document_start",
-//      "matches": [ "*://*/*" ]
-//   } ],
-//eventually re-enable this block (removing above) - since after first install it gets us running - however
-//gotta make sure that any pre-installed version responds to testAlive first!
+	//finishSetup();return;
 	isScriptAlive=false;
 	scriptAliveTimeout=1;
 	reExecutedNeedlessly=false;
@@ -358,6 +350,8 @@ function scriptsInjectedResult(){
 	clearTimeout(scriptAliveTimeout);
 	scriptAliveTimeout = 0;
 	if(!isScriptAlive){
+		chrome.extension.getURL('img/error'+1+'.png');
+		// if they wait anyway, it could work....
 		chrome.tabs.executeScript(tabid, {file: "Cr_min.js"}, function(){
 			chrome.tabs.executeScript(tabid, {file: "options_prefs.js"}, function(){
 				chrome.tabs.executeScript(tabid, {file: "colorpick.user.js"}, function(){

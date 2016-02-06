@@ -353,7 +353,6 @@ function testWebGlAvail(){
 	var testc=document.createElement("canvas");
 	var testctx = testc.getContext('webgl');
 	if (testctx && typeof(testctx.getParameter)== "function") webGlAvail=true;
-	else webGlAvail=false;
 }
 
 function handleRenderingThrottle(){
