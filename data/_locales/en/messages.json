@@ -120,7 +120,7 @@
       "message": "Zoomed Preview is Pixelated"
    },
    "allowWebGl": {
-      "message": "Allow WebGL for Pixelated Preview"
+      "message": "Allow WebGL for Pixelated Preview (sorry this feature is disabled but may return in Chrome 50)"
    },
    "fishEye": {
       "message": "Fish Eye Zoom Amount"
