@@ -327,8 +327,13 @@ function load_history(){
 	if(typeof(localStorage["colorPickHistory"])=='undefined')localStorage['colorPickHistory']="";
 	var hist=localStorage['colorPickHistory'].split("#");
 	var div_history=document.getElementById('history');
+	var exiHisInner=document.getElementById('historyInner');
+	var heightToUse = exiHisInner ? exiHisInner.style.height : 'auto';
+	var scrollToUse = exiHisInner ? exiHisInner.scrollTop : 0;
+	var widthToUse = div_history.style.width || '399px';
 	div_history.innerHTML = '';
-	var historyInner = Cr.elm('div',{id:'historyInner'});
+	div_history.style.width = widthToUse;
+	var historyInner = Cr.elm('div',{id:'historyInner',style:'height:'+heightToUse});
 	for(i in hist){
 		if(!hist[i])continue;
 		Cr.elm('div', {
@@ -343,6 +348,7 @@ function load_history(){
 		Cr.txt(chrome.i18n.getMessage('clear'))
 	], historyInner);
 	div_history.appendChild(historyInner);
+	historyInner.scrollTop = scrollToUse;
 	historyInner.addEventListener('click',function(ev){
 		var tc=ev.srcElement.getAttribute('name');
 		if(tc){
