@@ -360,21 +360,18 @@ function load_history(){
 	Cr.elm('div', {
 		style: 'right:-11px;top:0px;cursor:ew-resize;width:7px;height:100%;',
 		class: 'hist_drag_sizer',
-		id: 'hist_drag_sizer',
 		event: ['mousedown', dragHist]
 	}, [], div_history)
 
 	Cr.elm('div', {
 		style: 'bottom:-11px;left:0px;cursor:ns-resize;width:100%;height:7px;',
 		class: 'hist_drag_sizer',
-		id: 'hist_drag_sizer',
 		event: ['mousedown', dragHistVrt]
 	}, [], div_history)
 
 	Cr.elm('div', {
 		style: 'bottom:-11px;right:-11px;cursor:nwse-resize;width:7px;height:7px;',
 		class: 'hist_drag_sizer',
-		id: 'hist_drag_sizer',
 		event: ['mousedown', dragHistBth]
 	}, [], div_history)
 }
