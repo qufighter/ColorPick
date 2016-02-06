@@ -370,17 +370,26 @@ function load_history(){
 		id: 'hist_drag_sizer',
 		event: ['mousedown', dragHistVrt]
 	}, [], div_history)
+
+	Cr.elm('div', {
+		style: 'bottom:-11px;right:-11px;cursor:nwse-resize;width:7px;height:7px;',
+		class: 'hist_drag_sizer',
+		id: 'hist_drag_sizer',
+		event: ['mousedown', dragHistBth]
+	}, [], div_history)
 }
 
 var histReSize=false;histReSizeVrt=false;
 function dragHist(ev){ histReSize=true; }
 function dragHistVrt(ev){ histReSizeVrt=true; }
+function dragHistBth(ev){ histReSize=histReSizeVrt=true; }
 function stopdragHist(){ histReSize=histReSizeVrt=false }
 function mmv(ev){
 	if(histReSize){
 		var his=document.getElementById('history');
 		his.style.width = ev.pageX - 30;
-	}else if(histReSizeVrt){
+	}
+	if(histReSizeVrt){
 		var his=document.getElementById('history');
 		var hisInner=document.getElementById('historyInner');
 		hisInner.style.height = ev.pageY - his.offsetTop;
