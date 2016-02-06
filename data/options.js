@@ -306,6 +306,10 @@ function dedupeSwatches(){
 	}
 }
 
+function swatchChanged(ev){
+	ev.target.parentNode.style.backgroundColor=ev.target.value;
+}
+
 function addSwatchEntry(hex){
 	var swHld = document.getElementById('swatches');
 	Cr.elm('div',{class:'swatch',style:'background-color:'+hex+';'},[
@@ -313,7 +317,7 @@ function addSwatchEntry(hex){
 			Cr.elm("a",{events:['click',moveUp]},[Cr.txt('\u25B3')]),
 			Cr.elm("a",{events:['click',moveDn]},[Cr.txt('\u25BD')]),
 		//]),
-		Cr.elm('input',{type:'text',value:hex,class:'hex'}),
+		Cr.elm('input',{type:'text',value:hex,class:'hex',event:['change', swatchChanged]}),
 		Cr.elm("img",{class:'close',align:'top',src:chrome.extension.getURL('img/close.png'),events:['click',removeSwatch]})
 	],swHld);
 }
@@ -324,40 +328,56 @@ function load_history(){
 	var hist=localStorage['colorPickHistory'].split("#");
 	var div_history=document.getElementById('history');
 	div_history.innerHTML = '';
+	var historyInner = Cr.elm('div',{id:'historyInner'});
 	for(i in hist){
 		if(!hist[i])continue;
-		var cb=document.createElement('div');
-		cb.setAttribute('style','display:inline-block;background-color:#'+hist[i]+';width:22px;height:22px;');
-		cb.setAttribute('title','#'+hist[i]);
-		div_history.appendChild(cb);
+		Cr.elm('div', {
+			class: 'clickSwatch',
+			style: 'background-color:#'+hist[i]+';',
+			name: '#'+hist[i],
+			title: '#'+hist[i]+' '+chrome.i18n.getMessage('addToPalette')
+		}, [], historyInner);
 		var tc=hist[i];
 	}
-	div_history.addEventListener('click',function(ev){
-		var tc=ev.srcElement.title;
+	Cr.elm("a",{href:"#",style:"display:block;font-size:10px;text-align:right;",event:['click', clear_history]},[
+		Cr.txt(chrome.i18n.getMessage('clear'))
+	], historyInner);
+	div_history.appendChild(historyInner);
+	historyInner.addEventListener('click',function(ev){
+		var tc=ev.srcElement.getAttribute('name');
 		if(tc){
 			addSwatchEntry(tc)
 			//prompt(chrome.i18n.getMessage('copycolorval')+':',tc,tc);
 		}
 	},false);
 	
-	var cb=document.createElement('div');
-	cb.setAttribute('style','display:block;background-color:#CCC;opacity:0.5;width:7px;height:100%;position:absolute;right:-11px;top:0px;cursor:e-resize;');
-	cb.setAttribute('id','hist_drag_sizer');
-	div_history.appendChild(cb);
-	cb.addEventListener('mousedown',dragHist);
+	Cr.elm('div', {
+		style: 'right:-11px;top:0px;cursor:ew-resize;width:7px;height:100%;',
+		class: 'hist_drag_sizer',
+		id: 'hist_drag_sizer',
+		event: ['mousedown', dragHist]
+	}, [], div_history)
+
+	Cr.elm('div', {
+		style: 'bottom:-11px;left:0px;cursor:ns-resize;width:100%;height:7px;',
+		class: 'hist_drag_sizer',
+		id: 'hist_drag_sizer',
+		event: ['mousedown', dragHistVrt]
+	}, [], div_history)
 }
 
-var histReSize=false;
-function dragHist(ev){
-	histReSize=true;
-}
-function stopdragHist(){
-	histReSize=false;
-}
+var histReSize=false;histReSizeVrt=false;
+function dragHist(ev){ histReSize=true; }
+function dragHistVrt(ev){ histReSizeVrt=true; }
+function stopdragHist(){ histReSize=histReSizeVrt=false }
 function mmv(ev){
 	if(histReSize){
 		var his=document.getElementById('history');
 		his.style.width = ev.pageX - 30;
+	}else if(histReSizeVrt){
+		var his=document.getElementById('history');
+		var hisInner=document.getElementById('historyInner');
+		hisInner.style.height = ev.pageY - his.offsetTop;
 	}
 }
 
@@ -500,6 +520,11 @@ Cr.elm("div",{id:"mainbox"},[
 		Cr.elm("a",{class:"swatchCtrl",event:['click',printSwatches],style:'float:right;',target:'_blank'},[Cr.txt(chrome.i18n.getMessage('printSave'))]),
 		Cr.elm("div",{id:"swatches"})
 	]),
+	Cr.elm("a",{href:"#",id:"showhist",class:"toggleOpts"},[
+		Cr.elm("img",{src:"img/expand.png"}),
+		Cr.txt(chrome.i18n.getMessage('history'))
+	]),
+	Cr.elm("div",{id:"history"},[]),
 	Cr.elm("a",{href:"#",id:"showopt",class:"toggleOpts"},[
 		Cr.elm("img",{src:"img/expand.png"}),
 		Cr.txt(chrome.i18n.getMessage('options'))
@@ -541,13 +566,6 @@ Cr.elm("div",{id:"mainbox"},[
 	Cr.elm("a",{target:"_blank",href:"help.html"},[
 		Cr.txt(chrome.i18n.getMessage('help'))
 	]),
-	Cr.elm("h4",{},[
-		Cr.txt(chrome.i18n.getMessage('history')+' '),
-		Cr.elm("a",{href:"#",id:"clhist",style:"font-size:10px;"},[
-			Cr.txt(chrome.i18n.getMessage('clear'))
-		])
-	]),
-	Cr.elm("div",{id:"history"}),
 	Cr.elm("br",{}),
 	Cr.ent(chrome.i18n.getMessage('extName')+" &copy;"),
 	Cr.elm("a",{target:"_blank",href:"http://vidsbee.com/ColorPick/"},[
@@ -561,10 +579,10 @@ Cr.elm("div",{id:"mainbox"},[
 	init()
 	document.getElementById('bsave').addEventListener('click', save_options);
 	document.getElementById('defa').addEventListener('click', reset_options);
-	document.getElementById('clhist').addEventListener('click', clear_history);
-	
+
 	document.getElementById('shoadvanc').addEventListener('click', toggle_next_sibling_display);
 	document.getElementById('showopt').addEventListener('click', toggle_next_sibling_display);
+	document.getElementById('showhist').addEventListener('click', toggle_next_sibling_display);
 
 	toggle_next_sibling_display({target:document.getElementById('showopt')})
 

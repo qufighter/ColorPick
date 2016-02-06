@@ -227,6 +227,9 @@
    "noSwatches":{
       "message": "Click colors in color history to add them to a palette for saving and printing."
    },
+   "addToPalette":{
+      "message": "Add to color palette"
+   },
    "sort":{
       "message": "sort"
    },
