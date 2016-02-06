@@ -61,6 +61,7 @@ function getPageScale(){
 	return scal;
 }
 function snapshotLoaded(){
+		clearTimeout(snapshotLoadedTimeout);
 		c.style.height='auto';
 		c.style.width=(innerWidth)+'px';
 		x_cvs_scale=c.naturalWidth / innerWidth;
@@ -319,7 +320,7 @@ function updateColorPreview(ev){
 	handleRendering();
 }
 
-var isMakingNew=false,lastNewTimeout=0;
+var isMakingNew=false,lastNewTimeout=0,snapshotLoadedTimeout;
 function newImage(){
 	if(!isEnabled)return;
 	if(isMakingNew){
@@ -335,6 +336,12 @@ function newImage(){
 	var x=innerWidth,y=innerHeight;
 	c.style.width=x+'px';
 	c.style.height=y+'px';
+
+	clearTimeout(snapshotLoadedTimeout);
+	snapshotLoadedTimeout = setTimeout(function(){
+		disableColorPicker();
+		console.warn("Sorry - Color Pick experienced issues while waiting for the snapshot - Reload the page in order to pick colors here.")
+	}, 3000); // max 3 second wait for image, attempt to prevent endless spin
 
 	setTimeout(function(){
 		try{
