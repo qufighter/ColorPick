@@ -88,6 +88,7 @@ var chrome={
 	},
 	tabs : {
 		getSelected : function(windowId,sendResponse){sendResponse({id:0,url:'http://'})},
+		query : function(searchOpt,sendResponse){sendResponse([{id:0,url:'http://'}])},
 		executeScript : function(){},
 		create : function(){},
 		update : function(){},

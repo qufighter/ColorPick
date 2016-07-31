@@ -300,7 +300,8 @@ function iin(){
 			setupInjectScripts()
 		}else{
 			chrome.windows.getCurrent(function(window){
-				chrome.tabs.getSelected(window.id, function(tab){
+				chrome.tabs.query({windowId: window.id, active: true}, function(tabs){
+					var tab = tabs[0];
 					tabid=tab.id;
 					var tabURL=tab.url;
 					if(tabURL.indexOf('https://chrome.google.com')==0 ||tabURL.indexOf('chrome')==0 ||tabURL.indexOf('about')==0 ){
@@ -316,11 +317,11 @@ function iin(){
 									}
 								},2000);
 							}
-				  }
+					}
 					setupInjectScripts();
-	  		})
-	  	})
-	  }
+			})
+		})
+	}
 	//}
 }
 
