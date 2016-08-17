@@ -1,5 +1,5 @@
 label{display:block;}
-body{font-family:sans-serif;margin:20px;}
+body{font-family:sans-serif;margin:20px;opacity:0;transition:linear 0.2s;}
 #logo{float:left;margin-right:10px;}
 h3{margin:4px;}
 a{text-decoration:none;color:blue;cursor:pointer;}

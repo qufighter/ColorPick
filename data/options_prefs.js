@@ -1,4 +1,4 @@
-var storage = chrome.storage.sync;
+var storage = chrome.storage.sync || chrome.storage.local;
 var isWindows=navigator.platform.substr(0,3).toLowerCase()=='win';
 var pOptions=[];
 var pAdvOptions=[];

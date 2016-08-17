@@ -602,6 +602,8 @@ Cr.elm("div",{id:"mainbox"},[
 	document.getElementById('cload').addEventListener('click', function(){
 		storage.clear(function(){});
 	});
+
+	document.body.style.opacity="1";
 }
 
 document.addEventListener('DOMContentLoaded', function () {
