@@ -176,6 +176,7 @@ function picked(){
 		try{
 			chrome.runtime.sendMessage({setColor:true,hex:hex}, function(response){});
 		}catch(e){
+			console.log("Sorry - Color Pick experienced a problem during setColor and has been disabled - Reload the page in order to pick colors here.", e);
 			exitAndDetach();
 		}
 		isLocked=true;
@@ -340,13 +341,14 @@ function newImage(){
 	clearTimeout(snapshotLoadedTimeout);
 	snapshotLoadedTimeout = setTimeout(function(){
 		disableColorPicker();
-		console.warn("Sorry - Color Pick experienced issues while waiting for the snapshot - Reload the page in order to pick colors here.")
+		console.warn("Sorry - Color Pick experienced issues while waiting for the snapshot - Reload the page in order to pick colors here.");
 	}, 3000); // max 3 second wait for image, attempt to prevent endless spin
 
 	setTimeout(function(){
 		try{
 			chrome.runtime.sendMessage({newImage:true}, function(response){});
 		}catch(e){
+			console.log("Sorry - Color Pick experienced a problem in newImage and has been disabled - Reload the page in order to pick colors here.", e);
 			exitAndDetach();
 		}
 	},255);
