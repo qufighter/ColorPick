@@ -10,10 +10,10 @@ function createDOM(){
 			swatches[s] = JSON.parse(unescape(swatches[s]));
 			swatchElm.push(Cr.txt(nl));
 			swatchElm.push(Cr.elm('div',{style:'background-color:#'+swatches[s].hex+';border:15px solid #'+swatches[s].hex+';padding:15px;', id:'color-'+(s+1)},[
-				Cr.txt(nl+tab),Cr.elm('input',{value:'#'+swatches[s].hex, class:'hex'}),
-				Cr.txt(nl+tab),swatches[s].rgb ? Cr.elm('input',{value:('rgb('+swatches[s].rgb.r+','+swatches[s].rgb.g+','+swatches[s].rgb.b+')'), class:'rgb'}) : Cr.txt(''),
-				Cr.txt(nl+tab),swatches[s].hsl ? Cr.elm('input',{value:('hsl('+swatches[s].hsl.h+','+swatches[s].hsl.s+','+swatches[s].hsl.v+')'), class:'hsl'}) : Cr.txt(''),
-				Cr.txt(nl+tab),swatches[s].hsv ? Cr.elm('input',{value:('hsv('+swatches[s].hsv.h+','+swatches[s].hsv.s+','+swatches[s].hsv.v+')'), class:'hsv'}) : Cr.txt(''),
+				Cr.txt(nl+tab),Cr.elm('input',{value:'#'+swatches[s].hex, readonly:"readonly", class:'hex'}),
+				Cr.txt(nl+tab),swatches[s].rgb ? Cr.elm('input',{value:('rgb('+swatches[s].rgb.r+','+swatches[s].rgb.g+','+swatches[s].rgb.b+')'), readonly:"readonly", class:'rgb'}) : Cr.txt(''),
+				Cr.txt(nl+tab),swatches[s].hsl ? Cr.elm('input',{value:('hsl('+swatches[s].hsl.h+','+swatches[s].hsl.s+','+swatches[s].hsl.v+')'), readonly:"readonly", class:'hsl'}) : Cr.txt(''),
+				Cr.txt(nl+tab),swatches[s].hsv ? Cr.elm('input',{value:('hsv('+swatches[s].hsv.h+','+swatches[s].hsv.s+','+swatches[s].hsv.v+')'), readonly:"readonly", class:'hsv'}) : Cr.txt(''),
 				Cr.txt(nl)
 			]));
 		}
