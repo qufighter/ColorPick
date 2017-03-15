@@ -8,11 +8,11 @@ label{padding:5px 5px 5px 5px;}
 label:hover{background-color:#DDD;}
 .toggleOpts{padding:5px 5px 5px 5px;display:block;width:400px;}
 .toggleOpts:hover{background-color:#DDD;}
-#history{position:relative;margin-bottom:15px;display:none;}
+#history{position:relative;margin-bottom:15px;display:none;background-color:white;}
 #historyInner{overflow-y:auto;overflow-x:hidden;}
 .clickSwatch{width:22px;height:22px;display:inline-block;cursor:copy;}
 .hist_drag_sizer{display:block;background-color:#CCC;opacity:0.5;position:absolute;}
-#swatch-holder{position:absolute;width:400px;left:480px;}
+#swatch-holder{position:absolute;width:400px;left:480px;transition:margin-top ease-out 0.1s;}
 .swatch{padding:10px;}
 .swatch .hex{background-color:transparent;border:none;text-shadow:1px 1px 6px white;width: 72px;padding-left:10px;}
 .swatch .close{float:right;cursor:pointer;}

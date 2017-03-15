@@ -376,20 +376,28 @@ function load_history(){
 	}, [], div_history)
 }
 
+function disableSelection(){document.body.style.userSelect='none';}
+function enableSelection(){document.body.style.userSelect='';}
 var histReSize=false;histReSizeVrt=false;
-function dragHist(ev){ histReSize=true; }
-function dragHistVrt(ev){ histReSizeVrt=true; }
-function dragHistBth(ev){ histReSize=histReSizeVrt=true; }
-function stopdragHist(){ histReSize=histReSizeVrt=false }
+function dragHist(ev){ histReSize=true;disableSelection(); }
+function dragHistVrt(ev){ histReSizeVrt=true;disableSelection(); }
+function dragHistBth(ev){ histReSize=histReSizeVrt=true;disableSelection(); }
+function stopdragHist(){ histReSize=histReSizeVrt=false;enableSelection(); }
 function mmv(ev){
+	var his=document.getElementById('history');
+	var hisInner=document.getElementById('historyInner');
 	if(histReSize){
-		var his=document.getElementById('history');
 		his.style.width = ev.pageX - 30;
 	}
 	if(histReSizeVrt){
-		var his=document.getElementById('history');
-		var hisInner=document.getElementById('historyInner');
 		hisInner.style.height = ev.pageY - his.offsetTop;
+	}
+	if( histReSizeVrt || histReSize ){
+		if( his.clientWidth > 400 ){
+			document.getElementById('swatch-holder').style.marginTop = his.clientHeight + 50;
+		}else{
+			document.getElementById('swatch-holder').style.marginTop = 0;
+		}
 	}
 }
 
