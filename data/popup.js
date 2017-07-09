@@ -378,7 +378,7 @@ function finishSetup(){
 		}
 
 		if(usePrevColorBG){
-			if(response.hex>0)document.body.style.backgroundColor='#'+response.hex;
+			if(response.hex && response.hex.length == 6)document.body.style.backgroundColor='#'+response.hex;
 		}else{
 			document.body.style.backgroundColor=bbackgroundColor;
 		}
