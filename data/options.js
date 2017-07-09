@@ -387,10 +387,10 @@ function mmv(ev){
 	var his=document.getElementById('history');
 	var hisInner=document.getElementById('historyInner');
 	if(histReSize){
-		his.style.width = ev.pageX - 30;
+		his.style.width = ev.pageX - 28;
 	}
 	if(histReSizeVrt){
-		hisInner.style.height = ev.pageY - his.offsetTop;
+		hisInner.style.height = ev.pageY - his.offsetTop - 7;
 	}
 	if( histReSizeVrt || histReSize ){
 		if( his.clientWidth > 400 ){
