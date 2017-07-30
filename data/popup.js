@@ -473,7 +473,7 @@ function popupimage(mylink, windowname)
 //	return false;
 }
 function popOut(){
- popupimage({href:chrome.extension.getURL('popup.html')+'?isPopup='+tabid},"ColorPick");
+ popupimage({href:chrome.extension.getURL('popup.html')+'?isPopup='+tabid}, chrome.i18n.getMessage('extName') + " : Chrome Extension");
 }
 
 function close_stop_picking(){
