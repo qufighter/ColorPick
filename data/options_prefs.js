@@ -9,17 +9,19 @@ pOptions["pickEveryTime"]={def:isWindows?true:false,ind:0,img:'img/icon16.png'};
 pOptions["pixelatedPreview"]={def:true,ind:0};
 pOptions["allowWebGl"]={def:false,ind:1};
 pOptions["fishEye"]={def:5,ind:1,select:{1:'1 '+chrome.i18n.getMessage('minimum')+'/'+chrome.i18n.getMessage('off'),2:2,3:3,4:4,5:'5 '+chrome.i18n.getMessage('default'),6:6,7:7,8:8,9:'9 '+chrome.i18n.getMessage('full'),10:10,11:11,12:12,13:13,14:14,15:'15 '+chrome.i18n.getMessage('maxZoom')}};
-pOptions["EnableRGB"]={def:true,ind:0,css:'display:inline-block;'};
+pOptions["EnableHex"]={def:true,ind:0,css:'display:inline-block;'};
+pOptions["EnableRGB"]={def:true,ind:0,css:'display:inline-block;margin-left:38px;'};
 pOptions["EnableHSL"]={def:false,ind:0,css:'display:inline-block;margin-left:38px;'};
 pOptions["showPreviewInContentS"]={def:isWindows?false:true,ind:0};
 pOptions["contSprevZoomd"]={def:true,ind:1};
 pOptions["ShowRGBHSL"]={def:false,ind:1};
-pOptions["autocopyhex"]={def:false,ind:0};
+pOptions["autocopyhex"]={def:'false',ind:0,select:{'false':chrome.i18n.getMessage('off'),'true':'hexadecimal','rgb':'rgb','hsl':'hsl'}};
 
 
 //pAdvOptions["customCalibration"]={def:false,ind:0,name:'Enable the defunct calibration link above.'};
 pAdvOptions["usePNG"]={def:true,ind:0};
 pAdvOptions["useCSSValues"]={def:true,ind:0};
+pAdvOptions["CSS3ColorFormat"]={def:'(#1,#2,#3)',ind:1};
 pAdvOptions["hexIsLowerCase"]={def:false,ind:0};
 //pAdvOptions["iconIsPreview"]={def:false,ind:0,img:'img/opt_badge.png'};
 pAdvOptions["appleIcon"]={def:false,ind:0,img:'img/apple/icon16.png'};
@@ -87,3 +89,8 @@ function loadSettingsFromChromeSyncStorage(cbf){
 		if(typeof(cbf)=='function')cbf();
 	});
 }
+
+function formatColorValues(a,b,c,pcta,pctb,pctc){
+	return CSS3ColorFormat.replace('#1',a/*+(pcta?'%':'')*/).replace('#2',b+(pctb?'%':'')).replace('#3',c+(pctc?'%':''));
+}
+

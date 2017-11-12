@@ -3,6 +3,7 @@ if(typeof(exitAndDetach)=='function')exitAndDetach();
 function _ge(n){return document.getElementById(n);}
 var n=false,c=false,hex='F00BAF',lasthex='',rgb=null;hsv=null;scal=1,ex=0,ey=0,isEnabled=false,isLocked=false,hexIsLowerCase=false,borderValue='1px solid black',blankgif='',msg_bg_unavail=chrome.i18n.getMessage('bgPageUnavailable');
 var isUpdating=false,lastTimeout=0,lx=0,ly=0;
+var CSS3ColorFormat='(#1,#2,#3)';
 var cvs = document.createElement('canvas');
 var ctx = cvs.getContext('2d'),x_cvs_scale=1,y_cvs_scale=1;
 document.addEventListener('DOMContentLoaded',function(){
@@ -111,13 +112,14 @@ function setPixelPreview(pix,zoom,hxe,lhex){
 		Cr.elm('div',{},[
 			Cr.elm('img',{id:'cpimprev',height:wid,width:wid,src:pix,style:'margin:0px;padding:0px;margin:0px;'}),
 			Cr.elm('br'),
-			Cr.txt('#'),
+			EnableHex?Cr.txt('#'):0,
 			Cr.elm('input',{type:'text',size:7,style:'max-width:75px;font-size:10pt;border:'+borderValue,id:'cphexvl',value:hex,event:['mouseover',selectTargElm]}),
 			//Cr.elm('input',{type:'image',src:chrome.extension.getURL('img/close.png'),alt:'Close',title:chrome.i18n.getMessage('closeAndExit'),id:'exitbtn',event:['click',dissableColorPickerFromHere,true]}),
 			(showPreviousClr&&lhex!='none'?Cr.elm('input',{type:'text',size:1,style:'max-width:50px;font-size:10pt;background-color:#'+lhex+';border:'+borderValue+';border-left:none;',value:''}):0),
-			(ShowRGBHSL&&EnableRGB&&rgb?Cr.elm('input',{type:'text',style:'max-width:150px;display:block;',value:'rgb('+rgb.r+','+rgb.g+','+rgb.b+')',id:'cprgbvl',event:['mouseover',selectTargElm]}):0),
-			(ShowRGBHSL&&EnableHSL&&hsv?Cr.elm('input',{type:'text',style:'max-width:150px;display:block;',value:'hsl('+hsv.h+','+hsv.s+'%,'+hsv.v+'%)',id:'cphslvl',event:['mouseover',selectTargElm]}):0)
-		],n)
+			(ShowRGBHSL&&EnableRGB&&rgb?Cr.elm('input',{type:'text',style:'max-width:150px;display:block;',value:'rgb'+formatColorValues(rgb.r,rgb.g,rgb.b),id:'cprgbvl',event:['mouseover',selectTargElm]}):0),
+			(ShowRGBHSL&&EnableHSL&&hsv?Cr.elm('input',{type:'text',style:'max-width:150px;display:block;',value:'hsl'+formatColorValues(hsv.h,hsv.s,hsv.v,0,1,1),id:'cphslvl',event:['mouseover',selectTargElm]}):0)
+		],n);
+		if(!EnableHex) _ge('cphexvl').style.display="none";
 		keepOnScreen();
 	}else{
 		_ge('cpimprev').src=pix,
@@ -125,8 +127,8 @@ function setPixelPreview(pix,zoom,hxe,lhex){
 		_ge('cpimprev').height=wid;
 		_ge('cphexvl').value=hex;
 		n.style.backgroundColor='#'+hex;
-		if(ShowRGBHSL&&EnableRGB&&rgb)_ge('cprgbvl').value='rgb('+rgb.r+','+rgb.g+','+rgb.b+')';
-		if(ShowRGBHSL&&EnableHSL&&hsv)_ge('cphslvl').value='hsl('+hsv.h+','+hsv.s+'%,'+hsv.v+'%)';
+		if(ShowRGBHSL&&EnableRGB&&rgb)_ge('cprgbvl').value='rgb'+formatColorValues(rgb.r,rgb.g,rgb.b);
+		if(ShowRGBHSL&&EnableHSL&&hsv)_ge('cphslvl').value='hsl'+formatColorValues(hsv.h,hsv.s,hsv.v,0,1,1);
 	}
 }
 function setCurColor(r){
@@ -141,12 +143,13 @@ function selectTargElm(ev){
 function setDisplay(){//Cr.elm
 	emptyNode(n);
 	Cr.elm('div',{},[
-		Cr.txt('#'),
+		EnableHex?Cr.txt('#'):0,
 		Cr.elm('input',{type:'text',size:7,style:'max-width:75px;font-size:10pt;border:'+borderValue,id:'cphexvl',value:hex,event:['mouseover',selectTargElm]}),
 		Cr.elm('input',{type:'image',style:'width:20px;height:20px;min-width:20px;min-height:20px;',src:chrome.extension.getURL('img/close.png'),alt:'Close',title:chrome.i18n.getMessage('closeAndExit')+' [esc]',id:'exitbtn',event:['click',dissableColorPickerFromHere,true]}),
-		(ShowRGBHSL&&EnableRGB&&rgb?Cr.elm('input',{type:'text',style:'max-width:150px;display:block;',value:'rgb('+rgb.r+','+rgb.g+','+rgb.b+')',id:'cprgbvl',event:['mouseover',selectTargElm]}):0),
-		(ShowRGBHSL&&EnableHSL&&hsv?Cr.elm('input',{type:'text',style:'max-width:150px;display:block;',value:'hsl('+hsv.h+','+hsv.s+'%,'+hsv.v+'%)',id:'cphslvl',event:['mouseover',selectTargElm]}):0)
-	],n)
+		(ShowRGBHSL&&EnableRGB&&rgb?Cr.elm('input',{type:'text',style:'max-width:150px;display:block;',value:'rgb'+formatColorValues(rgb.r,rgb.g,rgb.b),id:'cprgbvl',event:['mouseover',selectTargElm]}):0),
+		(ShowRGBHSL&&EnableHSL&&hsv?Cr.elm('input',{type:'text',style:'max-width:150px;display:block;',value:'hsl'+formatColorValues(hsv.h,hsv.s,hsv.v,0,1,1),id:'cphslvl',event:['mouseover',selectTargElm]}):0)
+	],n);
+	if(!EnableHex) _ge('cphexvl').style.display="none";
 	if(_ge('cphexvl'))_ge('cphexvl').select();
 	keepOnScreen();
 }
@@ -157,7 +160,7 @@ function picked(){
 		emptyNode(n);
 	}else{
 		try{
-			chrome.runtime.sendMessage({setColor:true,hex:hex}, function(response){});
+			chrome.runtime.sendMessage({setColor:true,hex:hex,rgb:rgb,hsv:hsv}, function(response){});
 		}catch(e){
 			console.log("Sorry - Color Pick experienced a problem during setColor and has been disabled - Reload the page in order to pick colors here.", e);
 			exitAndDetach();

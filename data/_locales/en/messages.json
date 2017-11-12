@@ -125,6 +125,9 @@
    "fishEye": {
       "message": "Fish Eye Zoom Amount"
    },
+   "EnableHex": {
+      "message": "Show hexadecimal"
+   },
    "EnableRGB": {
       "message": "Show RGB"
    },
@@ -141,10 +144,13 @@
       "message": "Large size on page preview"
    },
    "autocopyhex": {
-      "message": "Attempt to auto copy hex value to clipboard"
+      "message": "Attempt to auto copy value to clipboard"
    },
    "hexIsLowerCase": {
-      "message": "Lower case hex values"
+      "message": "Lower case hexadecimal values"
+   },
+   "hexIsHidden": {
+      "message": "Lower case hexadecimal values"
    },
    "hasAgreedToLicense": {
       "message": "Has agreed to Terms of Use"
@@ -166,6 +172,9 @@
    },
    "useCSSValues": {
       "message": "Use CSS values for RGB/HSL"
+   },
+   "CSS3ColorFormat": {
+      "message": "CSS value format eg: (#1,#2,#3)"
    },
    "iconIsPreview": {
       "message": "Use icon badge square color preview"
