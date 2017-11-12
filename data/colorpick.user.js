@@ -254,7 +254,7 @@ function initialInit(){
 		addEventListener('keyup',wk);
 		addEventListener('scroll',ssf);
 		addEventListener('resize',ssf);
-		// testWebGlAvail(); // sorry to disable webGL feature, must avoid tab crash for now, chrome Version 48.0.2564.97 - Known Fixed in 50.0.2641.0 canary
+		testWebGlAvail();
 		initializeCanvas();
 		remainingInit();
 	});
