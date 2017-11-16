@@ -256,8 +256,8 @@
    },
    "emptyDesc": {
       "message": ""
-   }
-   "helpPage" {
+   },
+   "helpPage": {
       "message": "todo"
    }
 }
