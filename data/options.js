@@ -1,3 +1,8 @@
+/*
+ * This file is a part of the Show Pixel Color project.
+ *
+ */
+
 function getEventTargetA(ev){
 	ev = ev || event;
 	var targ=(typeof(ev.target)!='undefined') ? ev.target : ev.srcElement;
@@ -40,9 +45,6 @@ function load_syncd_options() {
 
 // Saves options to localStorage.
 function save_options() {
-//  var select = document.getElementById("color");
-//  var color = select.children[select.selectedIndex].value;
-//  localStorage["favorite_color"] = color;
   	
   	for(var i in pOptions){
   		if(typeof(pOptions[i].def)=='boolean')
@@ -52,15 +54,12 @@ function save_options() {
   	}
 	
 	
-		for(var i in pAdvOptions){
-  		if(typeof(pAdvOptions[i].def)=='boolean')
-  			localStorage[i] = document.getElementById(i).checked;
-  		else
-  			localStorage[i] = document.getElementById(i).value;
+	for(var i in pAdvOptions){
+		if(typeof(pAdvOptions[i].def)=='boolean')
+			localStorage[i] = document.getElementById(i).checked;
+		else
+			localStorage[i] = document.getElementById(i).value;
   	}
-	//localStorage["hqthumbs"] = document.getElementById("hqthumbs").checked;
-	//localStorage["showCurrentTab"] = document.getElementById("showCurrentTab").checked;
-	//localStorage["maxhistory"] = document.getElementById("maxhistory").value;
 	
 	var iconbitmap=false;
 	var appleIcon=false;
@@ -80,8 +79,6 @@ function save_options() {
 	}else{
 		localStorage.feedbackOptOut = "true";
 	}
-
-	showRegistrationStatus();
 	
   // Update status to let user know options were saved.
   var status = document.getElementById("status");
@@ -132,20 +129,7 @@ function restore_options() {
 			document.getElementById(i).value = ((localStorage[i])?localStorage[i]:pAdvOptions[i].def);
 	}
 
-//  var favorite = localStorage["favorite_color"];
-//  if (!favorite) {
-//    return;
-//  }
-//  var select = document.getElementById("color");
-//  for (var i = 0; i < select.children.length; i++) {
-//    var child = select.children[i];
-//    if (child.value == favorite) {
-//      child.selected = "true";
-//      break;
-//    }
-//  }
 }
-
 
 //color functions used for history sorting
 function cleanHex(H){
@@ -162,7 +146,7 @@ function fromHex(h){return parseInt(h,16);}
 function toHex(d){return ("00" + (d-0).toString(16).toUpperCase()).slice(-2);}
 function RGBtoHex(R,G,B) {return applyHexCase(toHex(R)+toHex(G)+toHex(B))}
 function applyHexCase(hex){return hexIsLowerCase ? hex.toLowerCase() : hex;}
-function rgb2hsl(r, g, b){//http://mjijackson.com/2008/02/rgb-to-hsl-and-rgb-to-hsv-color-model-conversion-algorithms-in-javascript
+function rgb2hsl(r, g, b){
     r /= 255, g /= 255, b /= 255;
     var max = Math.max(r, g, b), min = Math.min(r, g, b);
     var h, s, l = (max + min) / 2;
@@ -238,7 +222,7 @@ function printSwatches(e){
 	for( var c=0,l=colors.length; c<l; c++ ){
 		params+='||'+JSON.stringify({hex: colors[c].hex,rgb: colors[c].rgb, hsl: colors[c].hsl, hsv: colors[c].hsv})
 	}
-	e.target.href='saveSwatches.html?fmt='+escape(localStorage['CSS3ColorFormat'])+'&swatches='+params;
+	e.target.href='saveSwatches.html?swatches='+params;
 	if(colors.length < 1){
 		e.preventDefault();
 	}
@@ -297,10 +281,10 @@ function dedupeSwatches(){
 	var colors = currentSwatches();
 	var found={};
 	for( var c=0,l=colors.length; c<l; c++ ){
-		//params+='||'+JSON.stringify({hex: colors[c].hex,rgb: colors[c].rgb, hsl: colors[c].hsl, hsv: colors[c].hsv})
+
 		if( found[colors[c].hex] ){
 			swHld.removeChild(colors[c].node);
-			//e.target.parentNode.parentNode.removeChild(e.target.parentNode);
+
 		}
 		found[colors[c].hex] = true;
 	}
@@ -313,10 +297,10 @@ function swatchChanged(ev){
 function addSwatchEntry(hex){
 	var swHld = document.getElementById('swatches');
 	Cr.elm('div',{class:'swatch',style:'background-color:'+hex+';'},[
-		//Cr.elm('span',{style:'position:absolute;left:-40px;'},[ // for some reason breaks the events
-			Cr.elm("a",{events:['click',moveUp]},[Cr.txt('\u25B3')]),
-			Cr.elm("a",{events:['click',moveDn]},[Cr.txt('\u25BD')]),
-		//]),
+
+		Cr.elm("a",{events:['click',moveUp]},[Cr.txt('\u25B3')]),
+		Cr.elm("a",{events:['click',moveDn]},[Cr.txt('\u25BD')]),
+
 		Cr.elm('input',{type:'text',value:hex,class:'hex',event:['change', swatchChanged]}),
 		Cr.elm("img",{class:'close',align:'top',src:chrome.extension.getURL('img/close.png'),events:['click',removeSwatch]})
 	],swHld);
@@ -353,7 +337,7 @@ function load_history(){
 		var tc=ev.srcElement.getAttribute('name');
 		if(tc){
 			addSwatchEntry(tc)
-			//prompt(chrome.i18n.getMessage('copycolorval')+':',tc,tc);
+
 		}
 	},false);
 	
@@ -376,28 +360,20 @@ function load_history(){
 	}, [], div_history)
 }
 
-function disableSelection(){document.body.style.userSelect='none';}
-function enableSelection(){document.body.style.userSelect='';}
 var histReSize=false;histReSizeVrt=false;
-function dragHist(ev){ histReSize=true;disableSelection(); }
-function dragHistVrt(ev){ histReSizeVrt=true;disableSelection(); }
-function dragHistBth(ev){ histReSize=histReSizeVrt=true;disableSelection(); }
-function stopdragHist(){ histReSize=histReSizeVrt=false;enableSelection(); }
+function dragHist(ev){ histReSize=true; }
+function dragHistVrt(ev){ histReSizeVrt=true; }
+function dragHistBth(ev){ histReSize=histReSizeVrt=true; }
+function stopdragHist(){ histReSize=histReSizeVrt=false }
 function mmv(ev){
-	var his=document.getElementById('history');
-	var hisInner=document.getElementById('historyInner');
 	if(histReSize){
-		his.style.width = ev.pageX - 28;
+		var his=document.getElementById('history');
+		his.style.width = ev.pageX - 30;
 	}
 	if(histReSizeVrt){
-		hisInner.style.height = ev.pageY - his.offsetTop - 7;
-	}
-	if( histReSizeVrt || histReSize ){
-		if( his.clientWidth > 400 ){
-			document.getElementById('swatch-holder').style.marginTop = his.clientHeight + 50;
-		}else{
-			document.getElementById('swatch-holder').style.marginTop = 0;
-		}
+		var his=document.getElementById('history');
+		var hisInner=document.getElementById('historyInner');
+		hisInner.style.height = ev.pageY - his.offsetTop;
 	}
 }
 
@@ -425,7 +401,7 @@ function createOptions(piOptions, elemAppend){
 			}
 			
 			elemAppend.appendChild(l);
-			//document.getElementById('bsave').parentNode.insertBefore(l,document.getElementById('bsave'));
+
 		}else if(typeof(piOptions[i].def)=='boolean'){
 			var l=document.createElement('label');
 			var cb=document.createElement('input');
@@ -448,8 +424,7 @@ function createOptions(piOptions, elemAppend){
 				l.setAttribute('style',piOptions[i].css);
 			}
 			elemAppend.appendChild(l);
-			//document.getElementById('bsave').parentNode.insertBefore(l,document.getElementById('bsave'));
-			//.getElementById(i).checked = ((localStorage[i]=='true')?true:piOptions[i].def);
+
 		}else{
 			var l=document.createElement('label');
 			var cb=document.createElement('input');
@@ -460,21 +435,12 @@ function createOptions(piOptions, elemAppend){
 			l.appendChild(document.createTextNode(piOptions[i].name));
 			
 			elemAppend.appendChild(l);
-			//document.getElementById('bsave').parentNode.insertBefore(l,document.getElementById('bsave'));
-			//document.getElementById(i).value = ((localStorage[i])?localStorage[i]:piOptions[i].def);
+
 		}
 	}
 }
 
 function init(){
-
-//	var a=document.getElementById('dupli');
-//	var b=a.cloneNode(true);
-//	b.id='nota';
-//	b.style.color='black';
-//	b.style.position='absolute';
-//	b.style.top='1px';b.style.left='1px';
-//	a.appendChild(b);
 	
 	createOptions(pOptions, document.getElementById('options'));
 	createOptions(pAdvOptions, document.getElementById('adv_options'))
@@ -483,10 +449,7 @@ function init(){
 	load_history();
 	document.body.addEventListener('mouseup',stopdragHist); //one time history related events
 	document.body.addEventListener('mousemove',mmv);
-	
 
-	
-	showRegistrationStatus();
 }
 
 chrome.runtime.onMessage.addListener(
@@ -500,36 +463,11 @@ chrome.runtime.onMessage.addListener(
     	sendResponse({});
     }
   });
-  
-function showRegistrationStatus(){
-	if(localStorage['reg_chk']=='true' || localStorage['usageStatistics']=='true'){
-		document.getElementById('reg_status').innerHTML=chrome.i18n.getMessage('registered');
-		document.getElementById('reg_status').className='registered';
-		if(localStorage['reg_chk']!='true') document.getElementById('reg_status').innerHTML=chrome.i18n.getMessage('approved');
-	}else{
-		document.getElementById('reg_status').innerHTML=chrome.i18n.getMessage('unregistered');
-		document.getElementById('reg_status').className='unregistered';
-	}
-
-	if(localStorage['shareClors']=='true'){
-		document.getElementById('cotd').style.display="block";
-		document.getElementById('ifcotd').src='http://vidzbigger.com/vcolors_ofday.php';
-	}else{
-		document.getElementById('cotd').style.display="none";
-	}
-}
 
 function createDOM(){
 Cr.elm("div",{id:"mainbox"},[
 	Cr.elm("h3",{},[
 		Cr.elm("img",{src:"img/icon48.png",id:"logo"}),
-		Cr.elm("a",{href:"https://chrome.google.com/webstore/detail/color-picker/ohcpnigalekghcmgcdcenkpelffpdolg",target:"_blank"},[
-			Cr.txt(chrome.i18n.getMessage('extName'))
-		]),
-		Cr.elm("br",{}),
-		Cr.elm("a",{id:'register_link',href:"register.html"},[
-			Cr.elm("span",{id:"reg_status"})
-		]),
 		Cr.elm("br",{}),
 		Cr.elm("br",{})
 	]),
@@ -555,12 +493,6 @@ Cr.elm("div",{id:"mainbox"},[
 		Cr.txt(chrome.i18n.getMessage('advancedOptions'))
 	]),
 	Cr.elm("div",{id:"adv_options"},[
-		Cr.elm("button",{id:"bload"},[
-			Cr.txt(chrome.i18n.getMessage('fetchSync'))
-		]),
-		Cr.elm("button",{id:"cload"},[
-			Cr.txt(chrome.i18n.getMessage('clearSync'))
-		])
 	]),
 	Cr.elm("button",{id:"bsave"},[
 		Cr.txt(chrome.i18n.getMessage('saveOptions'))
@@ -575,26 +507,8 @@ Cr.elm("div",{id:"mainbox"},[
 		Cr.elm("br",{}),
 		Cr.elm("iframe",{id:"ifcotd",src:"about:blank",scrolling:"no"})
 	]),
-	Cr.elm("a",{id:"license_link",href:"license.html?wide=1"},[
-		Cr.txt(chrome.i18n.getMessage('terms'))
-	]),
-	Cr.txt(" | "),
-	Cr.elm("a",{target:"_blank",href:"desktop_app.html"},[
-		Cr.txt(chrome.i18n.getMessage('desktopapp'))
-	]),
-	Cr.txt(" | "),
-	Cr.elm("a",{target:"_blank",href:"help.html"},[
-		Cr.txt(chrome.i18n.getMessage('help'))
-	]),
-	Cr.elm("br",{}),
-	Cr.ent(chrome.i18n.getMessage('extName')+" &copy;"),
-	Cr.elm("a",{target:"_blank",href:"http://vidsbee.com/ColorPick/"},[
-		Cr.txt("Vidsbee.com")
-	]),
-	Cr.elm('div',{'id':'rate_position'})
+	
 ],document.body)
-
-	createAndAttachRatings(document.getElementById('rate_position'));
 
 	init()
 	document.getElementById('bsave').addEventListener('click', save_options);
@@ -606,12 +520,6 @@ Cr.elm("div",{id:"mainbox"},[
 
 	toggle_next_sibling_display({target:document.getElementById('showopt')})
 
-	document.getElementById('bload').addEventListener('click', load_syncd_options);
-	document.getElementById('cload').addEventListener('click', function(){
-		storage.clear(function(){});
-	});
-
-	document.body.style.opacity="1";
 }
 
 document.addEventListener('DOMContentLoaded', function () {

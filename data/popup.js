@@ -1,3 +1,8 @@
+/*
+ * This file is a part of the Show Pixel Color project.
+ *
+ */
+
 var tabid=0;
 var isScriptAlive=false,scriptAliveTimeout=1,reExecutedNeedlessly=false;
 var cpw=165,cph=303;
@@ -5,9 +10,7 @@ var cpw=165,cph=303;
 var borderValue='1px solid grey',EnableRGB=true,EnableHSL=true,useCSSValues=true,usePrevColorBG=false,showPreviousClr=true,pickEveryTime=(isWindows?true:false),bbackgroundColor='white',hexIsLowerCase=false;
 var cpScaleOffset=(isWindows?16:0);
 var isPicking=false,keyInputMode=false;
-var CSS3ColorFormat=(localStorage['CSS3ColorFormat']||pAdvOptions["CSS3ColorFormat"].def);
-var gotAnUpdate = false;EnableHex=true;
-var fishEye = (localStorage['fishEye']||pOptions["fishEye"].def)-0;
+var gotAnUpdate = false;
 function getEventTargetA(ev){
 	var targ=getEventTarget(ev)
 	if(targ.nodeName != 'A')return targ.parentNode;
@@ -53,7 +56,7 @@ function fromHex(h){return parseInt(h,16);}
 function toHex(d){return ("00" + (d-0).toString(16).toUpperCase()).slice(-2);}
 function RGBtoHex(R,G,B) {return applyHexCase(toHex(R)+toHex(G)+toHex(B))}
 function applyHexCase(hex){return hexIsLowerCase ? hex.toLowerCase() : hex;}
-function rgb2hsl(r, g, b){//http://mjijackson.com/2008/02/rgb-to-hsl-and-rgb-to-hsv-color-model-conversion-algorithms-in-javascript
+function rgb2hsl(r, g, b){
     r /= 255, g /= 255, b /= 255;
     var max = Math.max(r, g, b), min = Math.min(r, g, b);
     var h, s, l = (max + min) / 2;
@@ -114,7 +117,6 @@ function rgb2hsv () {
     };
 }
 
-
 function updateCurrentColor(r,g,b,justFields,omitId){
 	var hex=RGBtoHex(r,g,b);
 	document.getElementById('hexpre').style.backgroundColor='#'+hex;
@@ -126,12 +128,8 @@ function updateCurrentColor(r,g,b,justFields,omitId){
 	document.getElementById('ch').value=hsl.h;
 	document.getElementById('cs').value=hsl.s;
 	document.getElementById('cv').value=hsl.v;
-	if(omitId!='crgb'){
-		document.getElementById('crgb').value='rgb'+formatColorValues(r,g,b);
-	}
-	if(omitId!='chsl'){
-		document.getElementById('chsl').value='hsl'+formatColorValues(hsl.h,hsl.s,hsl.v,0,1,1);
-	}
+	if(omitId!='crgb')document.getElementById('crgb').value='rgb('+document.getElementById('cr').value+','+document.getElementById('cg').value+','+document.getElementById('cb').value+')';
+	if(omitId!='chsl')document.getElementById('chsl').value='hsl('+document.getElementById('ch').value+','+document.getElementById('cs').value+'%,'+document.getElementById('cv').value+'%)';
 	if(!justFields){var hsv=rgb2hsv(r,g,b);cp_set_from_hsv(hsv.h,hsv.s,hsv.v);}
 }
 
@@ -146,7 +144,7 @@ chrome.runtime.onMessage.addListener(
 	function(request, sender, sendResponse) {
 		var validTab = ((sender.tab && sender.tab.id == tabid) || request.tabi==tabid || tabid==0);
 		if(request.setPreview && validTab){
-      //var hex=request.hex;//RGBtoHex(request.c_r+0,request.c_g+0,request.c_b+0);
+
       keyInputMode=false;
       gotAnUpdate=true;
       setPreviewSRC(request.previewURI,false);
@@ -162,10 +160,6 @@ chrome.runtime.onMessage.addListener(
     }else if(request.setFullsizeImage){
     	//unused??
       setFullsizeImage(request);
-//    }else if (request.movePixel){
-//      movePixel(request);
-//    }else if (request.getPixel){
-//      movePixel(getPixel);
     }else{
      sendResponse({});
     }
@@ -217,7 +211,6 @@ function popupClicked(ev){
 function wk(ev){
 	var t=getEventTarget(ev);
 	if(ev.keyCode==27){
-		//dissableColorPickerFromHere();// :D
 	}else if(ev.keyCode==82||ev.keyCode==74){//r or j refresh
 		resnap();
 	}else if(!keyInputMode && ev.keyCode==38){//u
@@ -259,7 +252,6 @@ function mwheel(ev){
 function iin(){
 	if(typeof(localStorage["borderValue"])!='undefined')borderValue = localStorage["borderValue"];
 	if(typeof(localStorage["useCSSValues"])!='undefined')useCSSValues = ((localStorage["useCSSValues"]=='true')?true:false);
-	if(typeof(localStorage["EnableHex"])!='undefined')EnableHex = ((localStorage["EnableHex"]=='true')?true:false);
 	if(typeof(localStorage["EnableRGB"])!='undefined')EnableRGB = ((localStorage["EnableRGB"]=='true')?true:false);
 	if(typeof(localStorage["EnableHSL"])!='undefined')EnableHSL = ((localStorage["EnableHSL"]=='true')?true:false);
 	if(typeof(localStorage["cpScaleOffset"])!='undefined')cpScaleOffset = localStorage["cpScaleOffset"]-0;
@@ -275,8 +267,6 @@ function iin(){
 		document.getElementById('cssmode').style.display="block";
 		document.getElementById('defaultmode').style.display="none";
 	}
-	if(!EnableHex&&(EnableRGB || EnableHSL)) document.getElementById('hexrow').style.display="none";
-
 	if(!EnableRGB){
 		document.getElementById('defrgb').style.display="none";
 		document.getElementById('cssrgb').style.display="none";
@@ -298,45 +288,29 @@ function iin(){
 		document.getElementById('plat_prev').style.display="inline";
 	}
 
-	//if( !globalPopout ){
-		if( window.location.href.indexOf('isPopup=')>-1 ){
-			var wlh=window.location.href;
-			var st = wlh.indexOf('isPopup=') + 8;
-			var en = wlh.indexOf('&',st);
-			if( en < 0 ) en = wlh.length;
-			tabid=wlh.substr(st,en-st)-0;
-			document.getElementById('popout').style.display='none';
-			if(window.innerWidth > 200)init_color_chooser();
-			setupInjectScripts()
-		}else{
-			chrome.windows.getCurrent(function(window){
-				chrome.tabs.query({windowId: window.id, active: true}, function(tabs){
-					var tab = tabs[0];
-					tabid=tab.id;
-					var tabURL=tab.url;
-					if(tabURL.indexOf('https://chrome.google.com')==0 ||tabURL.indexOf('chrome')==0 ||tabURL.indexOf('about')==0 ){
-							setPreviewSRC(chrome.extension.getURL('img/error'+0+'.png'),true);
-							init_color_chooser();
-					}else if(tabURL.indexOf('http://vidzbigger.com/anypage.php')!=0){
-							if(tabURL.indexOf('file://')==0){
-								setPreviewSRC(chrome.extension.getURL('img/error'+2+'.png'),true);
-							}else{
-								setTimeout(function(){
-									if(!gotAnUpdate){
-										setPreviewSRC(chrome.extension.getURL('img/error'+1+'.png'),true);
-									}
-								},2000);
-							}
-					}
-					setupInjectScripts();
-			})
+	if( window.location.href.indexOf('isPopup=')>-1 ){
+		var wlh=window.location.href;
+		var st = wlh.indexOf('isPopup=') + 8;
+		var en = wlh.indexOf('&',st);
+		if( en < 0 ) en = wlh.length;
+		tabid=wlh.substr(st,en-st)-0;
+		document.getElementById('popout').style.display='none';
+		if(window.innerWidth > 200)init_color_chooser();
+		setupInjectScripts()
+	}else{
+		chrome.windows.getCurrent(function(window){
+			chrome.tabs.getSelected(window.id, function(tab){
+				tabid=tab.id;
+				var tabURL=tab.url;
+				setupInjectScripts();
 		})
-	}
-	//}
+	})
+  }
+  
 }
 
 function setupInjectScripts(){
-	//finishSetup();return;
+
 	isScriptAlive=false;
 	scriptAliveTimeout=1;
 	reExecutedNeedlessly=false;
@@ -352,9 +326,9 @@ function setupInjectScripts(){
 				}
 			}
 		});
-		scriptAliveTimeout=setTimeout(scriptsInjectedResult,4000);
+		scriptAliveTimeout=setTimeout(scriptsInjectedResult,1000);
 	}catch(e){
-		scriptsInjectedResult();//I don't think we ever get here
+		scriptsInjectedResult();
 	}
 }
 function scriptsInjectedResult(){
@@ -363,9 +337,9 @@ function scriptsInjectedResult(){
 	if(!isScriptAlive){
 		chrome.extension.getURL('img/error'+1+'.png');
 		// if they wait anyway, it could work....
-		chrome.tabs.executeScript(tabid, {file: "Cr_min.js"}, function(){
-			chrome.tabs.executeScript(tabid, {file: "options_prefs.js"}, function(){
-				chrome.tabs.executeScript(tabid, {file: "colorpick.user.js"}, function(){
+		chrome.tabs.executeScript(tabid, {file: "scripts/Cr_min.js"}, function(){
+		chrome.tabs.executeScript(tabid, {file: "scripts/options_prefs.js"}, function(){
+				chrome.tabs.executeScript(tabid, {file: "scripts/colorpick.user.js"}, function(){
 					isScriptAlive=true;
 					setTimeout(finishSetup, 250);
 				});
@@ -388,7 +362,7 @@ function finishSetup(){
 		}
 
 		if(usePrevColorBG){
-			if(response.hex && response.hex.length == 6)document.body.style.backgroundColor='#'+response.hex;
+			if(response.hex>0)document.body.style.backgroundColor='#'+response.hex;
 		}else{
 			document.body.style.backgroundColor=bbackgroundColor;
 		}
@@ -401,13 +375,6 @@ function finishSetup(){
 
 		if(borderValue!='1px solid grey'){
 			document.getElementById('pres').style.border=borderValue;
-
-//					document.getElementById('hexpre').style.border=borderValue;
-//	  			document.getElementById('ohexpre').style.border=borderValue;
-//	  			if(showPreviousClr){
-//		  			document.getElementById('hexpre').style.borderRight='none';
-//		  			document.getElementById('ohexpre').style.borderLeft='none';
-//		  		}
 		}
 
 		var hasVScroll = document.body.scrollHeight > document.body.clientHeight;
@@ -425,9 +392,6 @@ function finishSetup(){
 		}
 	});
 
-	if(localStorage.feedbackOptOut=='true' && localStorage["reg_chk"]!='true'){
-		setTimeout(checkForLicense,500);
-	}
 }
 function oout(){
 	chrome.runtime.sendMessage({disableColorPicker:true,tabi:tabid},function(r){});
@@ -435,11 +399,10 @@ function oout(){
 var x=0,y=0,x1=0,y1=0,isDrag=false,xm,ym;
 function mmove(ev){
 	if(isDrag){
-		fishEye = (localStorage['fishEye']||pOptions["fishEye"].def);
 		x=ev.pageX-window.pageXOffset,
 		y=ev.pageY-window.pageYOffset;
-		xm=Math.round((x1-x)/fishEye),
-		ym=Math.round((y1-y)/fishEye);
+		xm=Math.round((x1-x)/(localStorage['fishEye']-0)),
+		ym=Math.round((y1-y)/(localStorage['fishEye']-0));
 		if(xm!=0||ym!=0){
 			chrome.runtime.sendMessage({movePixel:true,_x:xm,_y:ym,tabi:tabid}, function(response) {});
 			if(xm!=0)x1=x;
@@ -455,7 +418,6 @@ function initdrag(ev){
 	
 	ev.preventDefault();
 	return false;
-	//document.getElementById('dbg').innerHTML=(x1)+' ' +(y1);
 }
 function finalizedrag(){
 	isDrag=false;
@@ -467,24 +429,9 @@ function popupimage(mylink, windowname)
 	var w=Math.round(window.outerWidth*1.114),h=Math.round(window.outerHeight*1.15);
 	chrome.windows.create({url:mylink.href,width:w,height:h,focused:false,type:"panel"},function(win){});
 	return false;
-	
-//	if (! window.focus)return true;
-//	mylink = new String( mylink.href );
-//	if( win2 == 0 || typeof(win2) != 'object' || typeof(win2.location) != 'string'  ){
-//		//var scal=getPageZoomFactor();
-//		//var w=Math.ceil(window.innerWidth*scal)+1,h=Math.ceil(window.innerHeight*scal)+1;
-//		
-//		win2 = window.open(mylink, windowname, 'fullscreen=no,toolbar=no,status=no,menubar=no,scrollbars=no,resizable=yes,directories=no,location=no,width='+w+',height='+h);
-//	}else{
-//		win2.location = mylink;
-//	}
-//	win2.blur();
-//	win2.focus();
-//	win2.blur();
-//	return false;
 }
 function popOut(){
- popupimage({href:chrome.extension.getURL('popup.html')+'?isPopup='+tabid}, chrome.i18n.getMessage('extName') + " : Chrome Extension");
+ popupimage({href:chrome.extension.getURL('popup.html')+'?isPopup='+tabid},"Show Pixel Color");
 }
 
 function close_stop_picking(){
@@ -500,36 +447,7 @@ function selectSelfText(ev){
 }
 
 var licf=false,lhei=10;
-function checkForLicense(){
-	return;
-	//if(document.getElementById('pre').src.indexOf('error') < 0)//< pre no longer exists
-		document.getElementById('unreg_msg').style.display="block";
-	
-	if(localStorage["hasAgreedToLicense"]=='true')return;//they agreed then opted-out
-	
-	if(typeof(localStorage["trialPeriod"])=='undefined')localStorage["trialPeriod"]=0;
-	if(localStorage["trialPeriod"]-0 < 5 ){
-		localStorage["trialPeriod"] = localStorage["trialPeriod"]-0+1;
-		return;
-	}
-	
-	return;//do not be super annoying...
-	
-	lhei=10;
-	var f=document.createElement('iframe');
-	f.setAttribute('id','license_frame');
-	f.setAttribute('src','license.html');
-	f.setAttribute('width','146');
-	f.setAttribute('height',lhei);
-	f.setAttribute('frameborder','yes');
-	f.setAttribute('scrolling','no');
-	f.setAttribute('style','position:absolute;top:40px;left:3px;z-index:999;box-shadow: 0px 0px 6px #000;opacity:0.9;');
-	
-	if(document.body.firstChild.id=='license_frame')document.body.removeChild(document.body.firstChild);
-	document.body.insertBefore(f,document.body.firstChild);
-	licf=f;
-	animIn();
-}
+
 function animIn(){
 	lhei+=5;
 	licf.style.height=lhei+'px';
@@ -538,7 +456,7 @@ function animIn(){
 function sizeWindow(x,y){
 	window.resizeTo(x,y);
 }
-//COLOR CHOOSER FUNCTIONS *******************************
+// === COLOR CHOOSER FUNCTIONS ===
 var i1,i2,i3,ctx,cp_x=0,cp_y=0;
 var cp_loads=0,cp_totalLoads=3,cp_chooser_booted=false;
 var huedrag=false,clrdrag=false;
@@ -629,7 +547,7 @@ function init_color_chooser(){
 	i2.src='img/cp_rb.png';
 	i3.src='img/cp_cr.gif';
 }
-//END COLOR CHOOSER FUNCTIONS ***************************
+// ===END COLOR CHOOSER FUNCTIONS ===
 function createDOM() {
 Cr.elm("div",{},[
 	Cr.elm("div",{id:"chooser"},[
@@ -644,9 +562,7 @@ Cr.elm("div",{},[
 	Cr.elm("a",{href:"#",title:chrome.i18n.getMessage('closeAndExit')+' [esc 2x]',id:"eclose"},[
 		Cr.elm("img",{align:'top',src:chrome.extension.getURL('img/close.png')})
 	]),
-	Cr.elm("span",{id:'hexrow'},[
-		Cr.txt("#"), Cr.elm("input",{type:"text",spellcheck:"false",id:"hex",size:"6"})
-	]),
+	Cr.txt("#"),Cr.elm("input",{type:"text",spellcheck:"false",id:"hex",size:"6"}),
 	Cr.elm("a",{id:"hidemin",href:"#",class:'hilight',title:chrome.i18n.getMessage('hideMinimize')},[Cr.txt("_-")]),
 	Cr.elm("br",{}),
 	Cr.elm("div",{id:"defaultmode"},[
@@ -678,7 +594,7 @@ Cr.elm("div",{},[
 		])
 	]),
 	Cr.elm("div",{id:"preview"},[
-		//Cr.elm("a",{id:"unreg_msg",target:"_blank",href:"register.html",title:chrome.i18n.getMessage('buyRegisterTip')},[Cr.txt(chrome.i18n.getMessage('registerBanner'))]),
+
 		Cr.elm("a",{href:'#',id:'arr_u',class:'hilight mvarrow',name:38,event:['click',moveArrowBtn]},[Cr.txt(String.fromCharCode(9650))]),
 		Cr.elm("a",{href:'#',id:'arr_d',class:'hilight mvarrow',name:40,event:['click',moveArrowBtn]},[Cr.txt(String.fromCharCode(9660))]),
 		Cr.elm("a",{href:'#',id:'arr_l',class:'hilight mvarrow',name:37,event:['click',moveArrowBtn]},[Cr.txt(String.fromCharCode(9664))]),
@@ -699,9 +615,7 @@ Cr.elm("div",{},[
 		Cr.elm("a",{target:"_blank",class:'hilight',href:"options.html",title:chrome.i18n.getMessage('configurationHelp'),id:"optsb"},[
 			Cr.elm("img",{align:"top",src:"img/settings.png"})
 		]),
-		Cr.elm("a",{target:"_blank",class:'hilight',href:"desktop_app.html",title:chrome.i18n.getMessage('getStandaloneApp')},[
-			Cr.elm("img",{align:"top",id:"plat_prev",src:"img/ico_win.png",style:"display:none;"})
-		]),
+
 		Cr.elm("a",{title:chrome.i18n.getMessage('popOutWindow'),href:"#",class:'hilight',id:"popout"},[
 			Cr.elm("img",{align:"top",src:"img/popout.gif"})
 		])
@@ -729,7 +643,7 @@ Cr.elm("div",{},[
 	document.getElementById('epick').addEventListener('contextmenu', preventEventDefault);
 	document.getElementById('resnap').addEventListener('click', resnap);
 	document.getElementById('popout').addEventListener('click', popOut);
-	
+
 	document.getElementById('hexpre').addEventListener('click', init_color_chooser);
 	document.getElementById('ohexpre').addEventListener('click', init_color_chooser);
 
@@ -737,11 +651,6 @@ Cr.elm("div",{},[
 	window.addEventListener('keyup',wk);
 	document.addEventListener('mousemove',mmove);
 	document.body.addEventListener('click', popupClicked,false);
-
-
-//log to bg page
-//var background = chrome.extension.getBackgroundPage();
-//background.console.log('hello bg');
 
 	iin();
 }

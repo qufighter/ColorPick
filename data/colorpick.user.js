@@ -1,25 +1,27 @@
+/*
+ * This file is a part of the Show Pixel Color project.
+ *
+ */
+
 var elmid1='color_pick_click_box',elmid2='ChromeExtension:Color-Pick.com';
 if(typeof(exitAndDetach)=='function')exitAndDetach();
 function _ge(n){return document.getElementById(n);}
 var n=false,c=false,hex='F00BAF',lasthex='',rgb=null;hsv=null;scal=1,ex=0,ey=0,isEnabled=false,isLocked=false,hexIsLowerCase=false,borderValue='1px solid black',blankgif='',msg_bg_unavail=chrome.i18n.getMessage('bgPageUnavailable');
 var isUpdating=false,lastTimeout=0,lx=0,ly=0;
-var CSS3ColorFormat='(#1,#2,#3)';
 var cvs = document.createElement('canvas');
 var ctx = cvs.getContext('2d'),x_cvs_scale=1,y_cvs_scale=1;
 document.addEventListener('DOMContentLoaded',function(){
-	//document.body.appendChild(cvs);
-	//console.log('appended');
 })
 function RGBtoHex(R,G,B) {return applyHexCase(toHex(R)+toHex(G)+toHex(B))}
 function applyHexCase(hex){return hexIsLowerCase ? hex.toLowerCase() : hex;}
-function toHex(N) {//http://www.javascripter.net/faq/rgbtohex.htm
+function toHex(N) {
  if (N==null) return "00";
  N=parseInt(N); if (N==0 || isNaN(N)) return "00";
  N=Math.max(0,N); N=Math.min(N,255); N=Math.round(N);
  return "0123456789ABCDEF".charAt((N-N%16)/16)
       + "0123456789ABCDEF".charAt(N%16);
 }
-function rgb2hsl(r, g, b){//http://mjijackson.com/2008/02/rgb-to-hsl-and-rgb-to-hsv-color-model-conversion-algorithms-in-javascript
+function rgb2hsl(r, g, b){
     r /= 255, g /= 255, b /= 255;
     var max = Math.max(r, g, b), min = Math.min(r, g, b);
     var h, s, l = (max + min) / 2;
@@ -44,6 +46,22 @@ function rgb2hsl(r, g, b){//http://mjijackson.com/2008/02/rgb-to-hsl-and-rgb-to-
 function emptyNode(node){
 	while(node.lastChild)node.removeChild(node.lastChild);
 }
+function getPageScale(){
+	var psc=[0.25,0.333082,0.50,0.6659969,0.75,0.90,1.0,1.10,1.25,1.50,1.75,2.00,2.50,3.00,4.00,5.00];
+	scal=outerWidth/innerWidth;
+	if(scal < 0.25 || scal > 5.1 || (scal > 1.0 && scal < 1.02)) scal = 1.0;
+	if(scal != 1.0){
+		var newscal=0;
+		for(var s=0,l=psc.length;s<l;s++){
+			if( scal > psc[s] )newscal=psc[s];
+			else break;
+		}
+		var errorMargin = scal - newscal;
+		if(errorMargin < 0.02 || (newscal > 1.0 && errorMargin < 0.071))
+			scal = newscal;
+	}
+	return scal;
+}
 function snapshotLoaded(){
 		clearTimeout(snapshotLoadedTimeout);
 		c.style.height='auto';
@@ -62,7 +80,6 @@ function snapshotLoaded(){
 function reqLis(request, sender, sendResponse) {
 	var resp={result:true};
 	if (request.testAlive){
-		//disableColorPicker();
   }else if (request.enableColorPicker){
 		resp.wasAlreadyEnabled=enableColorPicker()
 		if(request.workerHasChanged) lsnaptabid=-1;
@@ -112,14 +129,12 @@ function setPixelPreview(pix,zoom,hxe,lhex){
 		Cr.elm('div',{},[
 			Cr.elm('img',{id:'cpimprev',height:wid,width:wid,src:pix,style:'margin:0px;padding:0px;margin:0px;'}),
 			Cr.elm('br'),
-			EnableHex?Cr.txt('#'):0,
+			Cr.txt('#'),
 			Cr.elm('input',{type:'text',size:7,style:'max-width:75px;font-size:10pt;border:'+borderValue,id:'cphexvl',value:hex,event:['mouseover',selectTargElm]}),
-			//Cr.elm('input',{type:'image',src:chrome.extension.getURL('img/close.png'),alt:'Close',title:chrome.i18n.getMessage('closeAndExit'),id:'exitbtn',event:['click',dissableColorPickerFromHere,true]}),
 			(showPreviousClr&&lhex!='none'?Cr.elm('input',{type:'text',size:1,style:'max-width:50px;font-size:10pt;background-color:#'+lhex+';border:'+borderValue+';border-left:none;',value:''}):0),
-			(ShowRGBHSL&&EnableRGB&&rgb?Cr.elm('input',{type:'text',style:'max-width:150px;display:block;',value:'rgb'+formatColorValues(rgb.r,rgb.g,rgb.b),id:'cprgbvl',event:['mouseover',selectTargElm]}):0),
-			(ShowRGBHSL&&EnableHSL&&hsv?Cr.elm('input',{type:'text',style:'max-width:150px;display:block;',value:'hsl'+formatColorValues(hsv.h,hsv.s,hsv.v,0,1,1),id:'cphslvl',event:['mouseover',selectTargElm]}):0)
-		],n);
-		if(!EnableHex) _ge('cphexvl').style.display="none";
+			(ShowRGBHSL&&EnableRGB&&rgb?Cr.elm('input',{type:'text',style:'max-width:150px;display:block;',value:'rgb('+rgb.r+','+rgb.g+','+rgb.b+')',id:'cprgbvl',event:['mouseover',selectTargElm]}):0),
+			(ShowRGBHSL&&EnableHSL&&hsv?Cr.elm('input',{type:'text',style:'max-width:150px;display:block;',value:'hsl('+hsv.h+','+hsv.s+'%,'+hsv.v+'%)',id:'cphslvl',event:['mouseover',selectTargElm]}):0)
+		],n)
 		keepOnScreen();
 	}else{
 		_ge('cpimprev').src=pix,
@@ -127,8 +142,8 @@ function setPixelPreview(pix,zoom,hxe,lhex){
 		_ge('cpimprev').height=wid;
 		_ge('cphexvl').value=hex;
 		n.style.backgroundColor='#'+hex;
-		if(ShowRGBHSL&&EnableRGB&&rgb)_ge('cprgbvl').value='rgb'+formatColorValues(rgb.r,rgb.g,rgb.b);
-		if(ShowRGBHSL&&EnableHSL&&hsv)_ge('cphslvl').value='hsl'+formatColorValues(hsv.h,hsv.s,hsv.v,0,1,1);
+		if(ShowRGBHSL&&EnableRGB&&rgb)_ge('cprgbvl').value='rgb('+rgb.r+','+rgb.g+','+rgb.b+')';
+		if(ShowRGBHSL&&EnableHSL&&hsv)_ge('cphslvl').value='hsl('+hsv.h+','+hsv.s+'%,'+hsv.v+'%)';
 	}
 }
 function setCurColor(r){
@@ -143,13 +158,12 @@ function selectTargElm(ev){
 function setDisplay(){//Cr.elm
 	emptyNode(n);
 	Cr.elm('div',{},[
-		EnableHex?Cr.txt('#'):0,
+		Cr.txt('#'),
 		Cr.elm('input',{type:'text',size:7,style:'max-width:75px;font-size:10pt;border:'+borderValue,id:'cphexvl',value:hex,event:['mouseover',selectTargElm]}),
 		Cr.elm('input',{type:'image',style:'width:20px;height:20px;min-width:20px;min-height:20px;',src:chrome.extension.getURL('img/close.png'),alt:'Close',title:chrome.i18n.getMessage('closeAndExit')+' [esc]',id:'exitbtn',event:['click',dissableColorPickerFromHere,true]}),
-		(ShowRGBHSL&&EnableRGB&&rgb?Cr.elm('input',{type:'text',style:'max-width:150px;display:block;',value:'rgb'+formatColorValues(rgb.r,rgb.g,rgb.b),id:'cprgbvl',event:['mouseover',selectTargElm]}):0),
-		(ShowRGBHSL&&EnableHSL&&hsv?Cr.elm('input',{type:'text',style:'max-width:150px;display:block;',value:'hsl'+formatColorValues(hsv.h,hsv.s,hsv.v,0,1,1),id:'cphslvl',event:['mouseover',selectTargElm]}):0)
-	],n);
-	if(!EnableHex) _ge('cphexvl').style.display="none";
+		(ShowRGBHSL&&EnableRGB&&rgb?Cr.elm('input',{type:'text',style:'max-width:150px;display:block;',value:'rgb('+rgb.r+','+rgb.g+','+rgb.b+')',id:'cprgbvl',event:['mouseover',selectTargElm]}):0),
+		(ShowRGBHSL&&EnableHSL&&hsv?Cr.elm('input',{type:'text',style:'max-width:150px;display:block;',value:'hsl('+hsv.h+','+hsv.s+'%,'+hsv.v+'%)',id:'cphslvl',event:['mouseover',selectTargElm]}):0)
+	],n)
 	if(_ge('cphexvl'))_ge('cphexvl').select();
 	keepOnScreen();
 }
@@ -160,9 +174,8 @@ function picked(){
 		emptyNode(n);
 	}else{
 		try{
-			chrome.runtime.sendMessage({setColor:true,hex:hex,rgb:rgb,hsv:hsv}, function(response){});
+			chrome.runtime.sendMessage({setColor:true,hex:hex}, function(response){});
 		}catch(e){
-			console.log("Sorry - Color Pick experienced a problem during setColor and has been disabled - Reload the page in order to pick colors here.", e);
 			exitAndDetach();
 		}
 		isLocked=true;
@@ -254,7 +267,6 @@ function initialInit(){
 		addEventListener('keyup',wk);
 		addEventListener('scroll',ssf);
 		addEventListener('resize',ssf);
-		testWebGlAvail();
 		initializeCanvas();
 		remainingInit();
 	});
@@ -279,13 +291,6 @@ function remainingInit(){
 	return true;
 }
 function keepOnScreen(){
-//	if(true && n.firstChild && n.firstChild.firstChild){
-//		var img=n.firstChild.firstChild;
-//		var amt=Math.floor(img.offsetLeft + (img.clientWidth*0.5));
-//		n.style.top=(ly-amt)+"px";
-//		n.style.left=(lx-amt)+"px";
-//		return;
-//	}
   if(!n)return;
 	n.style.top=(ly+8)+"px";
 	n.style.left=(lx+8)+"px";
@@ -303,7 +308,6 @@ function updateColorPreview(ev){
 	hsv=rgb2hsl(data[0],data[1],data[2]);
 	rgb={r:data[0],g:data[1],b:data[2]};
 	setCurColor({hex:RGBtoHex(data[0],data[1],data[2])});
-	//handleRenderingThrottle();
 	handleRendering();
 }
 
@@ -327,14 +331,13 @@ function newImage(){
 	clearTimeout(snapshotLoadedTimeout);
 	snapshotLoadedTimeout = setTimeout(function(){
 		disableColorPicker();
-		console.warn("Sorry - Color Pick experienced issues while waiting for the snapshot - Reload the page in order to pick colors here.");
+		console.warn("Sorry - Show Pixel Color experienced issues while waiting for the snapshot - Reload the page in order to pick colors here.")
 	}, 3000); // max 3 second wait for image, attempt to prevent endless spin
 
 	setTimeout(function(){
 		try{
 			chrome.runtime.sendMessage({newImage:true}, function(response){});
 		}catch(e){
-			console.log("Sorry - Color Pick experienced a problem in newImage and has been disabled - Reload the page in order to pick colors here.", e);
 			exitAndDetach();
 		}
 	},255);
@@ -362,12 +365,6 @@ function handleRenderingThrottle(){
 
 function handleRendering(quick){
 	var x=ex,y=ey;
-//	frameCount++;
-//	curSecond = new Date().getSeconds();
-//	if( curSecond > startSecond){
-//		console.log('fps: '+frameCount);
-//		startSecond = curSecond,frameCount=0;
-//	}
 
 // under some circumstances we do not need to render anything....
 	if(isMakingNew || (!iconIsBitmap && !showPreviewInContentS && popupsShowing < 1)){
@@ -385,7 +382,6 @@ function handleRendering(quick){
 		ictx.scale(0.5,0.5);
 		
 		ictx.fillStyle = "rgba(0,0,0,0.3)";//croshair
-		//ictx.globalAlpha = 1.0;
 		
 		ictx.fillRect(startPoint, 0, 1, totalWidth);
 		ictx.fillRect(0,startPoint, totalWidth, 1);
@@ -394,7 +390,6 @@ function handleRendering(quick){
 		if(allowWebGl && webGlAvail){
 			getMain3dContext();
 			texturectx.drawImage(cvs,-ox+(64),-oy+(64));
-			//gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, texture);
 			gl.texSubImage2D(gl.TEXTURE_2D, 0, 0,0, gl.RGBA, gl.UNSIGNED_BYTE, texture);
 			gl.uniform1i(textureSampPosition, 0);
 			gl.uniform1f(fishEyeScalePosition, fishEye)
@@ -407,7 +402,7 @@ function handleRendering(quick){
 			for(var i=0;i<startPoint;i+=2){
 				smi=startPoint-i;
 				spi=startPoint+i;
-				//drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight) //CANVAS
+				
 				ictx.drawImage(icvs,spi,0,smi,totalWidth,//total width really??
 														spi+1,0,smi,totalWidth);
 
@@ -422,7 +417,6 @@ function handleRendering(quick){
 
 				if(i==0){
 					var dat = ictx.getImageData(startPoint, startPoint, 1, 1).data;//notarget
-//					ictx.fillStyle = "rgba("+(255-data[0])+","+(255-data[1])+","+(255-data[2])+",0.9)";
 					var d=dat[0]+dat[1]+dat[2];
 					if(d > 192) ictx.fillStyle = "rgba(30,30,30,0.8)";
 					else ictx.fillStyle = "rgba(225,225,225,0.8)";
@@ -459,7 +453,6 @@ function handleRendering(quick){
 	if(iconIsBitmap){
 		var browseIconWidth=(devicePixelRatio>1?38:19);
 		var browseIconHalfWidth = Math.floor(browseIconWidth*0.5);
-		//chrome.browserAction.setIcon({imageData:ictx.getImageData(startPoint-browseIconHalfWidth, startPoint-browseIconHalfWidth, browseIconWidth, browseIconWidth)});
 
 		var tmpCvs=document.createElement('canvas');
 		tmpCvs.width=browseIconWidth,tmpCvs.height=browseIconWidth;
@@ -468,7 +461,6 @@ function handleRendering(quick){
 		var pathData = {};
 		pathData[browseIconWidth]=tmpCvs.toDataURL();
 		chrome.runtime.sendMessage({browserIconMsg:true,path:(pathData)},function(){});
-		//chrome.browserAction.setIcon({path:pathData});//update icon (to be configurable)
 	}
 
 	if(showPreviewInContentS){
@@ -556,9 +548,6 @@ function initializeCanvas(){
 		"   bcolor = mix(bcolor,ccolor,0.8);"+"\n"+
 		"  }"+"\n"+
 		" }"+"\n"+
-//		" if( vTextureCoord.x < 0.3 && vTextureCoord.y < 0.3 	){"+"\n"+
-//		"  bcolor = pcolor;"+"\n"+
-//		" }"+"\n"+
 		" gl_FragColor = bcolor;"+"\n"+
 		"}";
 
