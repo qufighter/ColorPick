@@ -110,7 +110,7 @@ function setPixelPreview(pix,zoom,hxe,lhex){
 	if(!_ge('cpimprev') || (rgb && !_ge('cprgbvl'))){
 		emptyNode(n);
 		Cr.elm('div',{},[
-			Cr.elm('img',{id:'cpimprev',height:wid,width:wid,src:pix,style:'margin:0px;padding:0px;margin:0px;'}),
+			Cr.elm('img',{id:'cpimprev',height:wid,width:wid,src:pix,style:'margin:0px;padding:0px;margin:0px;position:relative;'}),
 			Cr.elm('br'),
 			EnableHex?Cr.txt('#'):0,
 			Cr.elm('input',{type:'text',size:7,style:'max-width:75px;font-size:10pt;border:'+borderValue,id:'cphexvl',value:hex,event:['mouseover',selectTargElm]}),
@@ -122,6 +122,8 @@ function setPixelPreview(pix,zoom,hxe,lhex){
 		if(!EnableHex) _ge('cphexvl').style.display="none";
 		keepOnScreen();
 	}else{
+		_ge('cpimprev').style.minWidth=wid,
+		_ge('cpimprev').style.minHeight=wid;
 		_ge('cpimprev').src=pix,
 		_ge('cpimprev').width=wid,
 		_ge('cpimprev').height=wid;
