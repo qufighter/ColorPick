@@ -363,7 +363,7 @@ function scriptsInjectedResult(){
 	if(!isScriptAlive){
 		chrome.extension.getURL('img/error'+1+'.png');
 		// if they wait anyway, it could work....
-		chrome.tabs.executeScript(tabid, {file: "Cr_min.js"}, function(){
+		chrome.tabs.executeScript(tabid, {file: "Cr.js"}, function(){
 			chrome.tabs.executeScript(tabid, {file: "options_prefs.js"}, function(){
 				chrome.tabs.executeScript(tabid, {file: "colorpick.user.js"}, function(){
 					isScriptAlive=true;

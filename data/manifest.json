@@ -14,7 +14,7 @@
       "default_popup": "popup.html"
    },
    "content_scripts": [ {
-      "js": [ "Cr_min.js", "options_prefs.js", "colorpick.user.js" ],
+      "js": [ "Cr.js", "options_prefs.js", "colorpick.user.js" ],
       "run_at": "document_start",
       "matches": [ "<all_urls>" ]
    },{
