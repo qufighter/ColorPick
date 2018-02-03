@@ -12,7 +12,7 @@ self.port.on('setBadgeBackground', function(clr){
 	document.getElementById('widgetbadge').style.backgroundColor='rgb('+clr[0]+','+clr[1]+','+clr[2]+')';
 });
 self.port.on('setBadgeText', function(txt){
-	document.getElementById('widgetbadge').innerHTML=txt;
+	//document.getElementById('widgetbadge').innerHTML=txt;
 	if(txt.length > 0){
 		document.getElementById('widgetbadge').style.display='block';
 	}else{

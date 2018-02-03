@@ -455,7 +455,6 @@ function initdrag(ev){
 	
 	ev.preventDefault();
 	return false;
-	//document.getElementById('dbg').innerHTML=(x1)+' ' +(y1);
 }
 function finalizedrag(){
 	isDrag=false;

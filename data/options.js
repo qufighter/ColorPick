@@ -32,10 +32,11 @@ function load_syncd_options() {
 		restore_options();
 	});
 	var status = document.getElementById("status");
-  status.innerHTML = chrome.i18n.getMessage('loadsyncOptions');
-  setTimeout(function() {
-    status.innerHTML = "";
-  }, 1750);
+	Cr.empty(status).appendChild(Cr.txt(chrome.i18n.getMessage('loadsyncOptions')));
+
+	setTimeout(function() {
+		Cr.empty(status);
+	}, 1750);
 }
 
 // Saves options to localStorage.
@@ -43,8 +44,9 @@ function save_options() {
 //  var select = document.getElementById("color");
 //  var color = select.children[select.selectedIndex].value;
 //  localStorage["favorite_color"] = color;
-  	
-  	for(var i in pOptions){
+  	var i;
+
+  	for(i in pOptions){
   		if(typeof(pOptions[i].def)=='boolean')
   			localStorage[i] = document.getElementById(i).checked;
   		else
@@ -52,7 +54,7 @@ function save_options() {
   	}
 	
 	
-		for(var i in pAdvOptions){
+	for(i in pAdvOptions){
   		if(typeof(pAdvOptions[i].def)=='boolean')
   			localStorage[i] = document.getElementById(i).checked;
   		else
@@ -85,9 +87,10 @@ function save_options() {
 	
   // Update status to let user know options were saved.
   var status = document.getElementById("status");
-  status.innerHTML = chrome.i18n.getMessage('savedoptions');
+  Cr.empty(status).appendChild(Cr.txt(chrome.i18n.getMessage('savedoptions')));
+
   setTimeout(function() {
-    status.innerHTML = "";
+    Cr.empty(status);
   }, 750);
   
   saveToChromeSyncStorage();
@@ -95,14 +98,15 @@ function save_options() {
 }
 
 function reset_options() {
-	for(var i in pOptions){
+	var i;
+	for(i in pOptions){
 		if(typeof(pOptions[i].def)=='boolean')
 			document.getElementById(i).checked = pOptions[i].def;
 		else
 			document.getElementById(i).value = pOptions[i].def;
 	}
 	
-	for(var i in pAdvOptions){
+	for(i in pAdvOptions){
 		if(typeof(pAdvOptions[i].def)=='boolean')
 			document.getElementById(i).checked = pAdvOptions[i].def;
 		else
@@ -110,22 +114,23 @@ function reset_options() {
 	}
 	
 	var status = document.getElementById("status");
-  status.innerHTML = chrome.i18n.getMessage('showndefaults');
-  setTimeout(function() {
-    status.innerHTML = "";
-  }, 3000);
+	Cr.empty(status).appendChild(Cr.txt(chrome.i18n.getMessage('showndefaults')));
+	setTimeout(function() {
+		Cr.empty(status);
+	}, 3000);
 }
 
 // Restores select box state to saved value from localStorage.
 function restore_options() {
-	for(var i in pOptions){
+	var i;
+	for(i in pOptions){
 		if(typeof(pOptions[i].def)=='boolean')
 			document.getElementById(i).checked = ((localStorage[i]=='true')?true:((localStorage[i]=='false')?false:pOptions[i].def));
 		else
 			document.getElementById(i).value = ((localStorage[i])?localStorage[i]:pOptions[i].def);
 	}
 	
-	for(var i in pAdvOptions){
+	for(i in pAdvOptions){
 		if(typeof(pAdvOptions[i].def)=='boolean')
 			document.getElementById(i).checked = ((localStorage[i]=='true')?true:((localStorage[i]=='false')?false:pAdvOptions[i].def));
 		else
@@ -154,13 +159,13 @@ function cleanHex(H){
 }
 function fromHexClr(H){
 	if(H.length == 6){
-		return {r:fromHex(H.substr(0,2)),g:fromHex(H.substr(2,2)),b:fromHex(H.substr(4,2))}
+		return {r:fromHex(H.substr(0,2)),g:fromHex(H.substr(2,2)),b:fromHex(H.substr(4,2))};
 	}
 	return false;
 }
 function fromHex(h){return parseInt(h,16);}
 function toHex(d){return ("00" + (d-0).toString(16).toUpperCase()).slice(-2);}
-function RGBtoHex(R,G,B) {return applyHexCase(toHex(R)+toHex(G)+toHex(B))}
+function RGBtoHex(R,G,B) {return applyHexCase(toHex(R)+toHex(G)+toHex(B));}
 function applyHexCase(hex){return hexIsLowerCase ? hex.toLowerCase() : hex;}
 function rgb2hsl(r, g, b){//http://mjijackson.com/2008/02/rgb-to-hsl-and-rgb-to-hsv-color-model-conversion-algorithms-in-javascript
     r /= 255, g /= 255, b /= 255;
@@ -236,7 +241,7 @@ function printSwatches(e){
 	var colors = currentSwatches();
 	var params = '';
 	for( var c=0,l=colors.length; c<l; c++ ){
-		params+='||'+JSON.stringify({hex: colors[c].hex,rgb: colors[c].rgb, hsl: colors[c].hsl, hsv: colors[c].hsv})
+		params+='||'+JSON.stringify({hex: colors[c].hex,rgb: colors[c].rgb, hsl: colors[c].hsl, hsv: colors[c].hsv});
 	}
 	e.target.href='saveSwatches.html?fmt='+escape(localStorage['CSS3ColorFormat'])+'&swatches='+params;
 	if(colors.length < 1){
@@ -245,13 +250,13 @@ function printSwatches(e){
 }
 
 function moveUp(e){
-	e.target.parentNode.parentNode.insertBefore(e.target.parentNode, e.target.parentNode.previousSibling)
+	e.target.parentNode.parentNode.insertBefore(e.target.parentNode, e.target.parentNode.previousSibling);
 }
 
 function moveDn(e){
 	var b4 = e.target.parentNode.parentNode.firstChild;
-	if( e.target.parentNode.nextSibling )b4 = e.target.parentNode.nextSibling.nextSibling
-	e.target.parentNode.parentNode.insertBefore(e.target.parentNode, b4)
+	if( e.target.parentNode.nextSibling )b4 = e.target.parentNode.nextSibling.nextSibling;
+	e.target.parentNode.parentNode.insertBefore(e.target.parentNode, b4);
 }
 
 function removeSwatch(e){
@@ -285,7 +290,7 @@ function sortSwatches(){
 	//sort
 	colors.sort(function(a,b){
 		return a.hsl.h - b.hsv.h || a.hsl.s - b.hsv.s  || a.hsv.v - b.hsv.v;
-	})
+	});
 	//append new order
 	for( var c=0,cl=colors.length; c<cl; c++){
 		swHld.appendChild(colors[c].node);
@@ -331,9 +336,11 @@ function load_history(){
 	var heightToUse = exiHisInner ? exiHisInner.style.height : 'auto';
 	var scrollToUse = exiHisInner ? exiHisInner.scrollTop : 0;
 	var widthToUse = div_history.style.width || '399px';
-	div_history.innerHTML = '';
+	Cr.empty(div_history);
+
 	div_history.style.width = widthToUse;
 	var historyInner = Cr.elm('div',{id:'historyInner',style:'height:'+heightToUse});
+	var i;
 	for(i in hist){
 		if(!hist[i])continue;
 		Cr.elm('div', {
@@ -352,7 +359,7 @@ function load_history(){
 	historyInner.addEventListener('click',function(ev){
 		var tc=ev.srcElement.getAttribute('name');
 		if(tc){
-			addSwatchEntry(tc)
+			addSwatchEntry(tc);
 			//prompt(chrome.i18n.getMessage('copycolorval')+':',tc,tc);
 		}
 	},false);
@@ -361,19 +368,19 @@ function load_history(){
 		style: 'right:-11px;top:0px;cursor:ew-resize;width:7px;height:100%;',
 		class: 'hist_drag_sizer',
 		event: ['mousedown', dragHist]
-	}, [], div_history)
+	}, [], div_history);
 
 	Cr.elm('div', {
 		style: 'bottom:-11px;left:0px;cursor:ns-resize;width:100%;height:7px;',
 		class: 'hist_drag_sizer',
 		event: ['mousedown', dragHistVrt]
-	}, [], div_history)
+	}, [], div_history);
 
 	Cr.elm('div', {
 		style: 'bottom:-11px;right:-11px;cursor:nwse-resize;width:7px;height:7px;',
 		class: 'hist_drag_sizer',
 		event: ['mousedown', dragHistBth]
-	}, [], div_history)
+	}, [], div_history);
 }
 
 function disableSelection(){document.body.style.userSelect='none';}
@@ -404,19 +411,19 @@ function mmv(ev){
 var fourSpaces='\u00a0\u00a0\u00a0\u00a0';
 function createOptions(piOptions, elemAppend){
 	//needs some compression 
+	var i, z, l, cb;
 	for( i in piOptions){
 		if(!piOptions[i].name)piOptions[i].name=chrome.i18n.getMessage(i);
 		if(piOptions[i].select){
-			var l=document.createElement('label');
-			var cb=document.createElement('select');
+			l=document.createElement('label');
+			cb=document.createElement('select');
 			cb.setAttribute('type','select');
 			cb.setAttribute('id',i);
 			if(piOptions[i].ind>0)l.appendChild(document.createTextNode(fourSpaces));
 			if(piOptions[i].ind>1)l.appendChild(document.createTextNode(fourSpaces));
 			l.appendChild(document.createTextNode(" "+piOptions[i].name+" "));
 			l.appendChild(cb);
-			
-			
+
 			for(z in piOptions[i].select){
 				var opt=document.createElement('option');
 				opt.setAttribute('value',z);
@@ -427,8 +434,8 @@ function createOptions(piOptions, elemAppend){
 			elemAppend.appendChild(l);
 			//document.getElementById('bsave').parentNode.insertBefore(l,document.getElementById('bsave'));
 		}else if(typeof(piOptions[i].def)=='boolean'){
-			var l=document.createElement('label');
-			var cb=document.createElement('input');
+			l=document.createElement('label');
+			cb=document.createElement('input');
 			cb.setAttribute('type','checkbox');
 			cb.setAttribute('id',i);
 			if(piOptions[i].ind>0)l.appendChild(document.createTextNode(fourSpaces));
@@ -451,8 +458,8 @@ function createOptions(piOptions, elemAppend){
 			//document.getElementById('bsave').parentNode.insertBefore(l,document.getElementById('bsave'));
 			//.getElementById(i).checked = ((localStorage[i]=='true')?true:piOptions[i].def);
 		}else{
-			var l=document.createElement('label');
-			var cb=document.createElement('input');
+			l=document.createElement('label');
+			cb=document.createElement('input');
 			cb.setAttribute('type','text');
 			cb.setAttribute('id',i);cb.setAttribute('size',(piOptions[i].def + '').length);
 			if(piOptions[i].ind>0)l.appendChild(document.createTextNode(fourSpaces));
@@ -477,7 +484,7 @@ function init(){
 //	a.appendChild(b);
 	
 	createOptions(pOptions, document.getElementById('options'));
-	createOptions(pAdvOptions, document.getElementById('adv_options'))
+	createOptions(pAdvOptions, document.getElementById('adv_options'));
 	restore_options();
 	
 	load_history();
@@ -503,11 +510,13 @@ chrome.runtime.onMessage.addListener(
   
 function showRegistrationStatus(){
 	if(localStorage['reg_chk']=='true' || localStorage['usageStatistics']=='true'){
-		document.getElementById('reg_status').innerHTML=chrome.i18n.getMessage('registered');
+		Cr.empty(document.getElementById('reg_status')).appendChild(Cr.txt(chrome.i18n.getMessage('registered')));
 		document.getElementById('reg_status').className='registered';
-		if(localStorage['reg_chk']!='true') document.getElementById('reg_status').innerHTML=chrome.i18n.getMessage('approved');
+		if(localStorage['reg_chk']!='true'){
+			Cr.empty(document.getElementById('reg_status')).appendChild(Cr.txt(chrome.i18n.getMessage('approved')));
+		}
 	}else{
-		document.getElementById('reg_status').innerHTML=chrome.i18n.getMessage('unregistered');
+		Cr.empty(document.getElementById('reg_status')).appendChild(Cr.txt(chrome.i18n.getMessage('unregistered')));
 		document.getElementById('reg_status').className='unregistered';
 	}
 
@@ -592,11 +601,11 @@ Cr.elm("div",{id:"mainbox"},[
 		Cr.txt("Vidsbee.com")
 	]),
 	Cr.elm('div',{'id':'rate_position'})
-],document.body)
+],document.body);
 
 	createAndAttachRatings(document.getElementById('rate_position'));
 
-	init()
+	init();
 	document.getElementById('bsave').addEventListener('click', save_options);
 	document.getElementById('defa').addEventListener('click', reset_options);
 
@@ -604,7 +613,7 @@ Cr.elm("div",{id:"mainbox"},[
 	document.getElementById('showopt').addEventListener('click', toggle_next_sibling_display);
 	document.getElementById('showhist').addEventListener('click', toggle_next_sibling_display);
 
-	toggle_next_sibling_display({target:document.getElementById('showopt')})
+	toggle_next_sibling_display({target:document.getElementById('showopt')});
 
 	document.getElementById('bload').addEventListener('click', load_syncd_options);
 	document.getElementById('cload').addEventListener('click', function(){

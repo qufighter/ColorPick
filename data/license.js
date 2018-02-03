@@ -18,7 +18,6 @@ function preventEventDefault(ev){
 	return false;
 }
 function init(){
-	//gel('license').innerHTML = document.body.clientHeight;
 	if(window.location.href.indexOf('wide=1') > 0){
 		document.body.className="wide";
 		if(document.getElementById('termspop')){

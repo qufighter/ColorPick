@@ -49,7 +49,7 @@ function getXMLhttpObject(){
 	return new XMLHttpRequest();
 }
 function set_registered(){
-	gel('license_status').innerHTML=chrome.i18n.getMessage('registered');
+	Cr.empty(gel('license_status')).appendChild(Cr.txt(chrome.i18n.getMessage('registered')));
 	gel('license_status').className='registered';
 	gel('license_name').disabled=true;
 	gel('license_key').disabled=true;
@@ -60,7 +60,7 @@ function set_registered(){
 	gel('examine').href='http://vidsbee.com/ColorPick/Upgrade?khash='+localStorage['reg_hash'];
 }
 function set_unregistered(){
-	gel('license_status').innerHTML=chrome.i18n.getMessage('unregistered');
+	Cr.empty(gel('license_status')).appendChild(Cr.txt(chrome.i18n.getMessage('unregistered')));
 	gel('license_status').className='unregistered';
 	gel('license_name').disabled=false;
 	gel('license_key').disabled=false;
@@ -70,7 +70,7 @@ function set_unregistered(){
 }
 function init(){
 	if(localStorage['reg_chk']=='true'){
-		set_registered()
+		set_registered();
 		if(localStorage['reg_inapp']!='true'){
 			suppress_connection_errors=true;
 			VerifyHashToLicSrv(localStorage['reg_hash'],localStorage['reg_name']);
@@ -91,10 +91,10 @@ function checkKey(){
 	if(gel('license_key').value.length < 1)return keyResponse(false);
 	gel('loading').style.display="inline";
 	
-	var kname=gel('license_name').value
+	var kname=gel('license_name').value;
 	var khash = CryptoJS.SHA1(gel('license_key').value + "ColorPick" + kname).toString();
 
-	VerifyHashToLicSrv(khash,kname)
+	VerifyHashToLicSrv(khash,kname);
 }
 
 function VerifyHashToLicSrv(p_khash,p_kname){
@@ -234,8 +234,8 @@ Cr.elm("div",{id:"mainbox"},[
 		Cr.txt("license agreement")
 	]),
 	Cr.txt(".")
-],document.body)
-	init()
+],document.body);
+	init();
 	gel('license_go').addEventListener('click', license_go);
 	
 	gel('expandReginfo').addEventListener('click', toggle_next_sibling_display);
@@ -243,10 +243,7 @@ Cr.elm("div",{id:"mainbox"},[
 }
 
 document.addEventListener('DOMContentLoaded', function () {
-	createDOM()
+	createDOM();
 	
 	
-//	if(window.location.href.indexOf('showoneclick')==-1){
-//		gel('unlockExtOnly').innerHTML="Comings Soon";
-//	}
 });

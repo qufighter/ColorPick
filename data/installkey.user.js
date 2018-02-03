@@ -1,10 +1,10 @@
 var rkey='000-000-000-000-000';
 var rname='default_reg_name';
 if(document.getElementById('n.colorpick.com')){
-	rname=document.getElementById('n.colorpick.com').innerText || document.getElementById('n.colorpick.com').innerHTML;
+	rname=document.getElementById('n.colorpick.com').innerText;
 }
 if(document.getElementById('k.colorpick.com')){
-	rkey=document.getElementById('k.colorpick.com').innerText || document.getElementById('k.colorpick.com').innerHTML;
+	rkey=document.getElementById('k.colorpick.com').innerText;
 }
 function clickedInstallKey(){
 	installKey();
