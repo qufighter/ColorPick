@@ -6,11 +6,7 @@ var isUpdating=false,lastTimeout=0,lx=0,ly=0;
 var CSS3ColorFormat='(#1,#2,#3)';
 var cvs = document.createElement('canvas');
 var ctx = cvs.getContext('2d'),x_cvs_scale=1,y_cvs_scale=1;
-document.addEventListener('DOMContentLoaded',function(){
-	//document.body.appendChild(cvs);
-	//console.log('appended');
-})
-function RGBtoHex(R,G,B) {return applyHexCase(toHex(R)+toHex(G)+toHex(B))}
+function RGBtoHex(R,G,B) {return applyHexCase(toHex(R)+toHex(G)+toHex(B));}
 function applyHexCase(hex){return hexIsLowerCase ? hex.toLowerCase() : hex;}
 function toHex(N) {//http://www.javascripter.net/faq/rgbtohex.htm
  if (N==null) return "00";
@@ -64,7 +60,7 @@ function reqLis(request, sender, sendResponse) {
 	if (request.testAlive){
 		//disableColorPicker();
   }else if (request.enableColorPicker){
-		resp.wasAlreadyEnabled=enableColorPicker()
+		resp.wasAlreadyEnabled=enableColorPicker();
 		if(request.workerHasChanged) lsnaptabid=-1;
 		if(resp.wasAlreadyEnabled){
 				resp.hex=hex;
@@ -77,16 +73,16 @@ function reqLis(request, sender, sendResponse) {
   }else if (request.setPickerImage){
 		c.src=request.pickerImage;
   }else if (request.newImage){
-  	ssf()
+  	ssf();
   }else if (request.doPick){
-  	picked()
+  	picked();
   }else if (request.movePixel){
 		ex+=(request._x),ey+=(request._y);
 		lx=Math.round(ex / x_cvs_scale),ly=Math.round(ey / y_cvs_scale);
 		updateColorPreview();
 	}else if (request.reloadPrefs){
 		loadPrefs(function(){updateColorPreview();});
-  }else if (request.disableColorPicker)disableColorPicker()
+  }else if (request.disableColorPicker)disableColorPicker();
   resp.isPicking=!isLocked;
   sendResponse(resp);
 }
@@ -177,7 +173,7 @@ function exitAndDetach(){
 	chrome.runtime.onMessage.removeListener(reqLis);
 }
 function dissableColorPickerFromHere(){
-	var disableTimeout=setTimeout(disableColorPicker,500)
+	var disableTimeout=setTimeout(disableColorPicker,500);
 	chrome.runtime.sendMessage({disableColorPicker:true},function(r){
 		clearTimeout(disableTimeout);
 	});
@@ -225,20 +221,21 @@ function ssf(ev){
 	n.style.visibility="hidden";c.style.visibility="hidden";//redundent?
 	clearTimeout(lastNewTimeout);
 	lastNewTimeout=setTimeout(function(){
-		newImage()//some delay required OR it won't update
+		newImage();//some delay required OR it won't update
 	},250);
 }
 function loadPrefs(cbf){
 	storage.get(null, function(obj) {
 		if(chrome.runtime.lastError)console.log(chrome.runtime.lastError.message);
 		if(typeof(obj)=='undefined'||!obj)obj={};
-		for(var i in pOptions){
+		var i;
+		for(i in pOptions){
 			if(typeof(pOptions[i].def)=='boolean')
 				window[i] = ((obj[i]=='true')?true:((obj[i]=='false')?false:pOptions[i].def));
 			else
 				window[i] = ((obj[i])?obj[i]:pOptions[i].def);
 		}
-		for(var i in pAdvOptions){
+		for(i in pAdvOptions){
 			if(typeof(pAdvOptions[i].def)=='boolean')
 				window[i] = ((obj[i]=='true')?true:((obj[i]=='false')?false:pAdvOptions[i].def));
 			else
@@ -314,7 +311,7 @@ function newImage(){
 	if(!isEnabled)return;
 	if(isMakingNew){
 		clearTimeout(lastNewTimeout);
-		lastNewTimeout=setTimeout(function(){newImage()},255);
+		lastNewTimeout=setTimeout(function(){newImage();},255);
 		return;
 	}
 	document.body.style.cursor='wait';
@@ -379,9 +376,10 @@ function handleRendering(quick){
 
 	var startPoint=Math.floor(totalWidth*0.5);
 	var ox=Math.round(x),oy=Math.round(y);
+	var ictx;
 
 	if(!pixelatedPreview || quick){
-		var ictx = getMain2dContext();
+		ictx = getMain2dContext();
 		ictx.scale(2,2);
 		ictx.drawImage(cvs,-ox+(startPoint*0.5),-oy+(startPoint*0.5));
 		ictx.scale(0.5,0.5);
@@ -399,10 +397,10 @@ function handleRendering(quick){
 			//gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, texture);
 			gl.texSubImage2D(gl.TEXTURE_2D, 0, 0,0, gl.RGBA, gl.UNSIGNED_BYTE, texture);
 			gl.uniform1i(textureSampPosition, 0);
-			gl.uniform1f(fishEyeScalePosition, fishEye)
+			gl.uniform1f(fishEyeScalePosition, fishEye);
 			gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
 		}else{
-			var ictx = getMain2dContext();
+			ictx = getMain2dContext();
 			ictx.drawImage(cvs,-ox+(startPoint),-oy+(startPoint));
 			var smi,spi,mp=fishEye-0;
 			//xx,yy

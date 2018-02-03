@@ -1,3 +1,4 @@
+/*jshint sub:true*/
 var tabid=0;
 var isScriptAlive=false,scriptAliveTimeout=1,reExecutedNeedlessly=false;
 var cpw=165,cph=303;
@@ -9,7 +10,7 @@ var CSS3ColorFormat=(localStorage['CSS3ColorFormat']||pAdvOptions["CSS3ColorForm
 var gotAnUpdate = false;EnableHex=true;
 var fishEye = (localStorage['fishEye']||pOptions["fishEye"].def)-0;
 function getEventTargetA(ev){
-	var targ=getEventTarget(ev)
+	var targ=getEventTarget(ev);
 	if(targ.nodeName != 'A')return targ.parentNode;
 	return targ;
 }
@@ -29,7 +30,7 @@ function setPreviewSRC(duri, hidearrows){
 		var pcvs=document.getElementById('pre').getContext('2d');
 		pcvs.clearRect(0,0,150,150);
 		pcvs.drawImage(im,0,0);
-	}
+	};
 	im.src=duri;
 	if(hidearrows){
 		document.getElementById('arr_u').style.display='none',
@@ -45,13 +46,13 @@ function setPreviewSRC(duri, hidearrows){
 }
 function fromHexClr(H){
 	if(H.length == 6){
-		return {r:fromHex(H.substr(0,2)),g:fromHex(H.substr(2,2)),b:fromHex(H.substr(4,2))}
+		return {r:fromHex(H.substr(0,2)),g:fromHex(H.substr(2,2)),b:fromHex(H.substr(4,2))};
 	}
 	return false;
 }
 function fromHex(h){return parseInt(h,16);}
 function toHex(d){return ("00" + (d-0).toString(16).toUpperCase()).slice(-2);}
-function RGBtoHex(R,G,B) {return applyHexCase(toHex(R)+toHex(G)+toHex(B))}
+function RGBtoHex(R,G,B) {return applyHexCase(toHex(R)+toHex(G)+toHex(B));}
 function applyHexCase(hex){return hexIsLowerCase ? hex.toLowerCase() : hex;}
 function rgb2hsl(r, g, b){//http://mjijackson.com/2008/02/rgb-to-hsl-and-rgb-to-hsv-color-model-conversion-algorithms-in-javascript
     r /= 255, g /= 255, b /= 255;
@@ -207,7 +208,7 @@ function toglAutoPick(ev){
 	saveToChromeSyncStorage();
 	sendReloadPrefs();
 	setButtonState(isPicking);
-	return preventEventDefault(ev)
+	return preventEventDefault(ev);
 }
 function popupClicked(ev){
 	var t=getEventTarget(ev);
@@ -245,7 +246,7 @@ function moveArrowBtn(ev){
 }
 function mwheel(ev){
 	console.log(ev);
-	var newFishEye=(typeof(localStorage["fishEye"])!='undefined'?(localStorage["fishEye"]-0):pOptions["fishEye"].def)
+	var newFishEye=(typeof(localStorage["fishEye"])!='undefined'?(localStorage["fishEye"]-0):pOptions["fishEye"].def);
 	if(ev.wheelDelta > 0){
 		newFishEye++;
 	}else{
@@ -307,7 +308,7 @@ function iin(){
 			tabid=wlh.substr(st,en-st)-0;
 			document.getElementById('popout').style.display='none';
 			if(window.innerWidth > 200)init_color_chooser();
-			setupInjectScripts()
+			setupInjectScripts();
 		}else{
 			chrome.windows.getCurrent(function(window){
 				chrome.tabs.query({windowId: window.id, active: true}, function(tabs){
@@ -329,8 +330,8 @@ function iin(){
 							}
 					}
 					setupInjectScripts();
-			})
-		})
+			});
+		});
 	}
 	//}
 }
@@ -375,7 +376,7 @@ function scriptsInjectedResult(){
 		finishSetup();
 }
 function finishSetup(){
-	var port = chrome.tabs.connect(tabid, {name:"popupshown"})
+	var port = chrome.tabs.connect(tabid, {name:"popupshown"});
 	chrome.tabs.sendMessage(tabid,{enableColorPicker:true},function(response){
 
 		if(response.hex)
@@ -487,11 +488,11 @@ function popOut(){
 }
 
 function close_stop_picking(){
- oout();window.close()
+ oout();window.close();
 }
 
 function just_close_preview(){
- window.close()
+ window.close();
 }
 
 function selectSelfText(ev){
@@ -532,7 +533,7 @@ function checkForLicense(){
 function animIn(){
 	lhei+=5;
 	licf.style.height=lhei+'px';
-	if(lhei < 150)setTimeout(animIn,33)
+	if(lhei < 150)setTimeout(animIn,33);
 }
 function sizeWindow(x,y){
 	window.resizeTo(x,y);
@@ -552,10 +553,10 @@ function dragClr(ev){
 	preventEventDefault(ev);
 }
 function dragingClr(ev){
-	if(!ev.offsetY)ev.offsetY=ev.layerY,ev.offsetX=ev.layerX;
-	if(ev.which==0){huedrag=false,clrdrag=false;};
+	if(!ev.offsetY){ev.offsetY=ev.layerY;ev.offsetX=ev.layerX;}
+	if(ev.which==0){huedrag=false,clrdrag=false;}
 	if(huedrag){
-		var newPos=ev.offsetY
+		var newPos=ev.offsetY;
 		if(ev.target.id!='hue_grad'){
 			newPos=ev.pageY - document.getElementById('chooser').offsetTop;
 			if(newPos < 0)newPos=0;
@@ -584,7 +585,7 @@ function cp_set_from_hsv(h,s,v){
 	document.getElementById('hue_pos').style.top=(255-Math.round((h/360)*255)-4)+'px';
 	cp_x=Math.round(((s)/100)*255);
 	cp_y=Math.round(((100-v)/100)*255);
-	if(cp_chooser_booted)cp_grad_render(true)
+	if(cp_chooser_booted)cp_grad_render(true);
 }
 function cp_grad_render(from_current){
 	ctx.drawImage(i2,256,0);
@@ -598,7 +599,7 @@ function cp_grad_render(from_current){
 	ctx.drawImage(i3,cp_x-5,cp_y-5);
 }
 function cp_chooser_test_ready(){
-	++cp_loads;if(cp_loads>=cp_totalLoads){cp_chooser_booted=true;cp_grad_render((cp_x!=0 || cp_y != 0))};
+	++cp_loads;if(cp_loads>=cp_totalLoads){cp_chooser_booted=true;cp_grad_render((cp_x!=0 || cp_y != 0));}
 	return cp_chooser_booted;
 }
 function init_color_chooser(){
@@ -705,7 +706,7 @@ Cr.elm("div",{},[
 			Cr.elm("img",{align:"top",src:"img/popout.gif"})
 		])
 	])
-],document.body)
+],document.body);
 
   document.getElementById('eclose').addEventListener('click', close_stop_picking);
   document.getElementById('hidemin').addEventListener('click', just_close_preview);
