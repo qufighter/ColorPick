@@ -43,6 +43,8 @@ echo $vers
 
 cd build
 
+find . -name ".DS_Store" -delete
+
 echo "Creating zip"
 which zip
 if [ $? -eq 0 ]; then
