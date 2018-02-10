@@ -357,7 +357,7 @@ function load_history(){
 	div_history.appendChild(historyInner);
 	historyInner.scrollTop = scrollToUse;
 	historyInner.addEventListener('click',function(ev){
-		var tc=ev.srcElement.getAttribute('name');
+		var tc=ev.target.getAttribute('name');
 		if(tc){
 			addSwatchEntry(tc);
 			//prompt(chrome.i18n.getMessage('copycolorval')+':',tc,tc);
