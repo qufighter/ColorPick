@@ -1,3 +1,7 @@
+var _ext_homepage="https://chrome.google.com/webstore/detail/color-picker/ohcpnigalekghcmgcdcenkpelffpdolg";
+if( isFirefox ){
+	_ext_homepage="https://addons.mozilla.org/en-US/firefox/addon/colorpick-eyedropper/";
+}
 function getEventTargetA(ev){
 	ev = ev || event;
 	var targ=(typeof(ev.target)!='undefined') ? ev.target : ev.srcElement;
@@ -382,7 +386,6 @@ function load_history(){
 		event: ['mousedown', dragHistBth]
 	}, [], div_history);
 }
-
 function disableSelection(){document.body.style.userSelect='none';}
 function enableSelection(){document.body.style.userSelect='';}
 var histReSize=false;histReSizeVrt=false;
@@ -532,7 +535,7 @@ function createDOM(){
 Cr.elm("div",{id:"mainbox"},[
 	Cr.elm("h3",{},[
 		Cr.elm("img",{src:"img/icon48.png",id:"logo"}),
-		Cr.elm("a",{href:"https://chrome.google.com/webstore/detail/color-picker/ohcpnigalekghcmgcdcenkpelffpdolg",target:"_blank"},[
+		Cr.elm("a",{href:_ext_homepage,target:"_blank"},[
 			Cr.txt(chrome.i18n.getMessage('extName'))
 		]),
 		Cr.elm("br",{}),

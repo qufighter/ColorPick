@@ -1,5 +1,7 @@
 var storage = chrome.storage.sync || chrome.storage.local;
 var isWindows=navigator.platform.substr(0,3).toLowerCase()=='win';
+var isFirefox = window.navigator.userAgent.indexOf('Firefox') > -1;
+var isChrome = window.navigator.userAgent.indexOf('Chrome/') > -1;
 var pOptions=[];
 var pAdvOptions=[];
 var pSyncItems=[];

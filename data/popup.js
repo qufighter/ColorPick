@@ -419,7 +419,7 @@ function finishSetup(){
 		if(!response.isPicking && pickEveryTime)toglPick();
 		setButtonState(response && response.isPicking);
 
-		if(!response.wasAlreadyEnabled && !isWindows){
+		if(!response.wasAlreadyEnabled && !isWindows && isChrome){
 			setTimeout(function(){
 				just_close_preview();
 			},1000);
