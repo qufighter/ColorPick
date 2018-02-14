@@ -1,0 +1,14 @@
+1) The single instance of innerHTML is never called - Cr.ent is the only code that can possibly reach this and it is unused. https://github.com/qufighter/Cr
+
+2) The sha1.js file
+
+\data\sha1.js
+
+is taken from the crypto-js library on google code
+https://code.google.com/p/crypto-js/downloads/list
+
+CryptoJS v3.1.2/rollups/sha1.js
+That is the exact file embedded in this extension
+
+
+Thanks!
