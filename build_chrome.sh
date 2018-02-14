@@ -1,5 +1,5 @@
 #!/bin/sh
 
 echo "moving into directory ColorPick/data..."
-cd data
+cd src
 ./build.sh

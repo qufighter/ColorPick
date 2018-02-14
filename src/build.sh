@@ -56,7 +56,7 @@ echo "Cleaning up temporary files ..."
 cd ..
 rm -rf build
 
-echo "the built zip is now in the current directory (data)"
+echo "the built zip is now in the current directory (src)"
 mv "$PROG.$vers.zip" "../$PROG.$vers.zip"
 
 echo "The built zip should be up one level from your current location"
