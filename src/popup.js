@@ -24,7 +24,12 @@ function getEventTarget(ev){
 	return targ;
 }
 
+var realSrcRecieved = false;
 function setPreviewSRC(duri, hidearrows){
+	if( realSrcRecieved && hidearrows ){
+		return;
+	}
+	realSrcRecieved = realSrcRecieved || !hidearrows;
 	var im=new Image();
 	im.onload=function(){
 		var pcvs=document.getElementById('pre').getContext('2d');
@@ -386,6 +391,8 @@ function finishSetup(){
 		if(response.previewURI && response.previewURI.length > 0 ){
 			gotAnUpdate=true;
 			setPreviewSRC(response.previewURI,false);
+		}else if( response.wasAlreadyEnabled ){
+			movePixel(0,0); // should help update the preview...
 		}
 
 		if(usePrevColorBG){
@@ -465,7 +472,7 @@ var win2 = 0;
 function popupimage(mylink, windowname)
 {
 	var w=Math.round(window.outerWidth*1.114),h=Math.round(window.outerHeight*1.15);
-	chrome.windows.create({url:mylink.href,width:w,height:h,focused:false,type:"panel"},function(win){});
+	chrome.windows.create({url:mylink.href,width:w,height:h,type:"panel"},function(win){});
 	return false;
 	
 //	if (! window.focus)return true;

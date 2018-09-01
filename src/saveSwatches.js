@@ -6,15 +6,97 @@ var isFirefox = window.navigator.userAgent.indexOf('Firefox') > -1;
 if( isFirefox ){
 	_ext_homepage="https://addons.mozilla.org/en-US/firefox/addon/colorpick-eyedropper/";
 }
+var uncrawlable=false;
 
 function formatColorValues(a,b,c,pcta,pctb,pctc){
 	return CSS3ColorFormat.replace('#1',a/*+(pcta?'%':'')*/).replace('#2',b+(pctb?'%':'')).replace('#3',c+(pctc?'%':''));
 }
 
+function fromHexClr(H){
+	if(H.length == 6){
+		return {r:fromHex(H.substr(0,2)),g:fromHex(H.substr(2,2)),b:fromHex(H.substr(4,2))};
+	}
+	return false;
+}
+function fromHex(h){return parseInt(h,16);}
+function rgb2hsl(r, g, b){//http://mjijackson.com/2008/02/rgb-to-hsl-and-rgb-to-hsv-color-model-conversion-algorithms-in-javascript
+    r /= 255, g /= 255, b /= 255;
+    var max = Math.max(r, g, b), min = Math.min(r, g, b);
+    var h, s, l = (max + min) / 2;
+    if(max == min){
+        h = s = 0; // achromatic
+    }else{
+        var d = max - min;
+        s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+        switch(max){
+            case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+            case g: h = (b - r) / d + 2; break;
+            case b: h = (r - g) / d + 4; break;
+        }
+        h /= 6;
+    }
+    return {
+      h: Math.round(h * 360),
+      s: Math.round(s * 100),
+      v: Math.round(l * 100)
+    };
+}
+
+function rgb2hsv () {
+    var rr, gg, bb,
+        r = arguments[0] / 255,
+        g = arguments[1] / 255,
+        b = arguments[2] / 255,
+        h, s,
+        v = Math.max(r, g, b),
+        diff = v - Math.min(r, g, b),
+        diffc = function(c){
+            return (v - c) / 6 / diff + 1 / 2;
+        };
+    if (diff == 0) {
+        h = s = 0;
+    } else {
+        s = diff / v;
+        rr = diffc(r);
+        gg = diffc(g);
+        bb = diffc(b);
+        if (r === v) {
+            h = bb - gg;
+        }else if (g === v) {
+            h = (1 / 3) + rr - bb;
+        }else if (b === v) {
+            h = (2 / 3) + gg - rr;
+        }
+        if (h < 0) {
+            h += 1;
+        }else if (h > 1) {
+            h -= 1;
+        }
+    }
+    return {
+        h: Math.round(h * 360),
+        s: Math.round(s * 100),
+        v: Math.round(v * 100)
+    };
+}
+
+function rbg_row(rgb){
+	return rgb ? Cr.elm('input',{value:('rgb'+formatColorValues(rgb.r,rgb.g,rgb.b)), readonly:"readonly", class:'rgb'}) : Cr.txt('');
+}
+
+function hsl_row(hsl){
+	return hsl ? Cr.elm('input',{value:('hsl'+formatColorValues(hsl.h,hsl.s,hsl.v,0,1,1)), readonly:"readonly", class:'hsl'}) : Cr.txt('');
+}
+
+function hsv_row(hsv){
+	return hsv ? Cr.elm('input',{value:('hsv'+formatColorValues(hsv.h,hsv.s,hsv.v)), readonly:"readonly", class:'hsv'}) : Cr.txt('')
+}
+
+
 function createDOM(){
 	var swatchElm = [];
 	var st=window.location.search.indexOf('fmt=');
-	var en=window.location.search.indexOf('&');
+	var en=window.location.search.indexOf('&', st);
 	if( st > 0 && en > 0 ){
 		st+=4;
 		var fmt = unescape(window.location.search.substr(st, en-st));
@@ -31,14 +113,49 @@ function createDOM(){
 			swatchElm.push(Cr.txt(nl));
 			swatchElm.push(Cr.elm('div',{style:'background-color:#'+swatches[s].hex+';border:15px solid #'+swatches[s].hex+';padding:15px;', id:'color-'+(s+1)},[
 				Cr.txt(nl+tab),Cr.elm('input',{value:'#'+swatches[s].hex, readonly:"readonly", class:'hex'}),
-				Cr.txt(nl+tab),swatches[s].rgb ? Cr.elm('input',{value:('rgb'+formatColorValues(swatches[s].rgb.r,swatches[s].rgb.g,swatches[s].rgb.b)), readonly:"readonly", class:'rgb'}) : Cr.txt(''),
-				Cr.txt(nl+tab),swatches[s].rgb ? Cr.elm('input',{value:('hsl'+formatColorValues(swatches[s].hsl.h,swatches[s].hsl.s,swatches[s].hsl.v,0,1,1)), readonly:"readonly", class:'hsl'}) : Cr.txt(''),
-				Cr.txt(nl+tab),swatches[s].rgb ? Cr.elm('input',{value:('hsv'+formatColorValues(swatches[s].hsv.h,swatches[s].hsv.s,swatches[s].hsv.v)), readonly:"readonly", class:'hsv'}) : Cr.txt(''),
+				Cr.txt(nl+tab),rbg_row(swatches[s].rgb),
+				Cr.txt(nl+tab),hsl_row(swatches[s].hsl),
+				Cr.txt(nl+tab),hsv_row(swatches[s].hsv),
 				Cr.txt(nl)
 			]));
 		}
 	}else{
-		swatchElm.push(Cr.txt('No colors selected!'));
+
+		st=window.location.search.indexOf('hex=');
+		var hexArr
+		if( st > 0 ){
+			st+=4;
+			en=window.location.search.indexOf('&', st);
+			if( en < 0 ){
+				en = window.location.search.length;
+			}
+			hexArr = window.location.search.substr(st, en-st).toUpperCase().match(/[\dA-f]{6}/g);
+		}else{
+			hexArr = window.location.hash.toUpperCase().match(/[\dA-f]{3,6}/g);
+			uncrawlable=true;// todo: show share btn?
+		}
+
+		for(var s=0,sl=hexArr.length; s<sl; s++){
+
+
+			var rgb = fromHexClr(hexArr[s]);
+			var hsl = rgb ? rgb2hsl(rgb.r,rgb.g,rgb.b) : null;
+			var hsv = rgb ? rgb2hsv(rgb.r,rgb.g,rgb.b) : null;
+
+			swatchElm.push(Cr.txt(nl));
+			swatchElm.push(Cr.elm('div',{style:'background-color:#'+hexArr[s]+';border:15px solid #'+hexArr[s]+';padding:15px;', id:'color-'+(s+1)},[
+				Cr.txt(nl+tab),Cr.elm('input',{value:'#'+hexArr[s], readonly:"readonly", class:'hex'}),
+				Cr.txt(nl+tab),rbg_row(rgb),
+				Cr.txt(nl+tab),hsl_row(hsl),
+				Cr.txt(nl+tab),hsv_row(hsv),
+				Cr.txt(nl)
+			]));
+
+		}
+
+		if( hexArr.length < 1 ){
+			swatchElm.push(Cr.txt('No colors selected!'));
+		}
 	}
 
 	Cr.elm("div",{id:"mainbox"},[
@@ -52,6 +169,40 @@ function createDOM(){
 		Cr.elm("div",{style:'text-shadow:1px 1px 6px white;padding-top:10px;',id:'exported-colors'}, swatchElm),
 		Cr.txt(nl)
 	],document.body);
+
+
+	var path = 'http://www.vidsbee.com/ColorPick/Pallete?plain=1';
+	var queryConcat = '&';
+	var dest = document.getElementById('mainbox');
+	if( uncrawlable){
+		var h=window.location.hash.replace(/^#/,'');
+
+		dest.appendChild(Cr.elm('a',{
+			style:'margin:10px 0;display:block;',
+			href:path+queryConcat+'hex='+h,
+			title:'The url #fragment is keeping your color selections secure to your local machine. Use this link to transform the URL into something 3rd party sites can crawl.'
+		},[Cr.txt('Crawlable URL')]));
+	}
+
+	var allHex=Array.prototype.slice.call(document.getElementsByClassName('hex'));
+	for(var s=0,sl=allHex.length; s<sl; s++){
+		allHex[s] = allHex[s].value.match(/[\dA-f]{3,6}/);
+	}
+
+	if( !uncrawlable || path != '/ColorPick/Pallete/' ){
+		dest.appendChild(Cr.elm('a',{
+			style:'margin:10px 0;display:block;',
+			href:path+'#'+allHex.join(','),
+			title:'A fragment based URL is most secure type, although it may still be shared. Fragments are not normally sent to the server when visiting in web browser.'
+		},[Cr.txt('Fragment URL')]));
+	}
+
+	dest.appendChild(Cr.elm('a',{
+		style:'margin:10px 0;display:block;',
+		target:'_blank',
+		href:'data:text/html;plain,<a href="http://www.vidsbee.com/ColorPick/Pallete#'+allHex.join(',')+'">ColorPick Eyedropper Swatch Viewer</a>'+(document.getElementById('exported-colors').innerHTML.replace(/\n/g,' ')),
+		title:'Nifty.'
+	},[Cr.txt('Data URL')]));
 
 	var d=new Date();
 	document.title+=' '+d.toString();
