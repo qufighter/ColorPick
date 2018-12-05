@@ -706,9 +706,9 @@ Cr.elm("div",{},[
 		Cr.elm("a",{target:"_blank",class:'hilight',href:"options.html",title:chrome.i18n.getMessage('configurationHelp'),id:"optsb"},[
 			Cr.elm("img",{align:"top",src:"img/settings.png"})
 		]),
-		Cr.elm("a",{target:"_blank",class:'hilight',href:"desktop_app.html",title:chrome.i18n.getMessage('getStandaloneApp')},[
-			Cr.elm("img",{align:"top",id:"plat_prev",src:"img/ico_win.png",style:"display:none;"})
-		]),
+		// Cr.elm("a",{target:"_blank",class:'hilight',href:"desktop_app.html",title:chrome.i18n.getMessage('getStandaloneApp')},[
+		// 	Cr.elm("img",{align:"top",id:"plat_prev",src:"img/ico_win.png",style:"display:none;"})
+		// ]),
 		Cr.elm("a",{title:chrome.i18n.getMessage('popOutWindow'),href:"#",class:'hilight',id:"popout"},[
 			Cr.elm("img",{align:"top",src:"img/popout.gif"})
 		])

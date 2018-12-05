@@ -197,33 +197,33 @@ Cr.elm("div",{id:"mainbox"},[
 		Cr.elm("br"),
 		Cr.elm("img",{width:"130",height:"41",src:"img/paypal.png"})
 	]),
-	Cr.elm("span",{style:"float:left;margin-right:12px;"},[
-		Cr.elm("a",{target:"_blank",href:"http://vidsbee.com/ColorPick/"},[
-			Cr.elm("img",{height:"50",align:"middle",src:"img/chrome.png",style:"padding-right:10px;"}),
-			Cr.elm("img",{height:"50",align:"middle",src:"img/win32.png",style:"padding-right:10px;"}),
-			Cr.elm("img",{height:"57",align:"middle",src:"img/osx.png"})
-		])
-	]),
-	Cr.elm("a",{href:"javascript:;",id:"expandBuyinfo"},[
-		Cr.elm("img",{src:"img/expand.png"})
-	]),
-	Cr.elm("small",{style:"display:none;",class:"toInline"},[
-		Cr.txt("Your color-pick license not only works here;"),
-		Cr.elm("br"),
-		Cr.txt("The same license also registers the color-pick desktop applications"),
-		Cr.elm("br"),
-		Cr.txt("for both Windows and OSX. "),
-		Cr.elm("a",{target:"_blank",href:"http://vidsbee.com/ColorPick/"},[
-			Cr.txt("color-pick.com")
-		]),
-		Cr.txt(" or "),
-		Cr.elm("a",{target:"_blank",href:"http://vidsbee.com/ColorPick/"},[
-			Cr.txt("vidsbee.com/ColorPick")
-		]),
-		Cr.elm("br"),
-		Cr.elm("br"),
-		Cr.txt("A button to automatically install the license will appear after purchase.")
-	]),
+	// Cr.elm("span",{style:"float:left;margin-right:12px;"},[
+	// 	Cr.elm("a",{target:"_blank",href:"http://vidsbee.com/ColorPick/"},[
+	// 		Cr.elm("img",{height:"50",align:"middle",src:"img/chrome.png",style:"padding-right:10px;"}),
+	// 		Cr.elm("img",{height:"50",align:"middle",src:"img/win32.png",style:"padding-right:10px;"}),
+	// 		Cr.elm("img",{height:"57",align:"middle",src:"img/osx.png"})
+	// 	])
+	// ]),
+	// Cr.elm("a",{href:"javascript:;",id:"expandBuyinfo"},[
+	// 	Cr.elm("img",{src:"img/expand.png"})
+	// ]),
+	// Cr.elm("small",{style:"display:none;",class:"toInline"},[
+	// 	Cr.txt("Your color-pick license not only works here;"),
+	// 	Cr.elm("br"),
+	// 	Cr.txt("The same license also registers the color-pick desktop applications"),
+	// 	Cr.elm("br"),
+	// 	Cr.txt("for both Windows and OSX. "),
+	// 	Cr.elm("a",{target:"_blank",href:"http://vidsbee.com/ColorPick/"},[
+	// 		Cr.txt("color-pick.com")
+	// 	]),
+	// 	Cr.txt(" or "),
+	// 	Cr.elm("a",{target:"_blank",href:"http://vidsbee.com/ColorPick/"},[
+	// 		Cr.txt("vidsbee.com/ColorPick")
+	// 	]),
+	// 	Cr.elm("br"),
+	// 	Cr.elm("br"),
+	// 	Cr.txt("A button to automatically install the license will appear after purchase.")
+	// ]),
 	Cr.elm("h3",{style:"margin-bottom:7px;clear:both;"},[
 		Cr.txt("Alternative")
 	]),
