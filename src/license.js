@@ -142,7 +142,7 @@ Cr.elm("div",{id:"container"},[
 		Cr.txt("You acknowledge and agree that we may use data capture, syndication analysis and other similar tools to track, extract, compile, aggregate and analyze any data or information resulting from your use of the Plug-in, and that we may share or make available this information with our business partners. If you object to any of these uses, you may opt-out of certain aspects of such data tracking in accordance with the instructions herein."),
 		Cr.elm("br"),
 		Cr.elm("br"),
-		Cr.txt("To opt-out: first agree to this agreement; then open options and un-check the box that says \"Gather Statistics\".  If you opt out you will end up with unregistered status."),
+		Cr.txt("To opt-out: first agree to this agreement; then open options and un-check the box that says \"Gather Statistics\" and press Save.  If you opt out you will end up with unregistered status."),
 		Cr.elm("br"),
 		Cr.elm("br"),
 		Cr.txt("If the gather statistics box is not present then statistics are not being collected."),
