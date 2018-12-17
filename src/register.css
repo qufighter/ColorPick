@@ -34,3 +34,6 @@ body{font-family:sans-serif;}
 h2 .subh{font-size:12px;position:relative;}
 a{text-decoration:none;color:blue;}
 a:hover{text-decoration:underline;}
+.chrome-inapp{
+	min-height:16px;
+}

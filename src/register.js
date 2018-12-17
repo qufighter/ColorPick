@@ -1,4 +1,6 @@
 var suppress_connection_errors=false;
+var registerdModeSku = 'colorpick_eyedropper_registered_mode';
+var isChrome = window.navigator.userAgent.indexOf('Chrome/') > -1;
 function gel(n){
 	return document.getElementById(n);
 }
@@ -149,6 +151,81 @@ function license_go(){
 	
 }
 
+function chromeInapPurchaseSuccess(){
+	var inAppBtnArea = gel('chrome-inapp');
+	Cr.empty(inAppBtnArea);
+	inAppBtnArea.appendChild(Cr.elm('span', {
+		style: Cr.css({
+			color: "black",
+			'background-color': '#F7FFBF',
+			'border-radius': '10px',
+			border: '2px solid #FFE9B9',
+			padding: '8px'
+		}),
+		childNodes: [
+			Cr.txt('You have completed the in-app purchase to enable registered mode - thank you!  If the extension was not already in registered mode it will be placed into registered mode now.  Please refresh any other views to see the latest registration status.')
+		]
+	}));
+	localStorage['reg_chk']='true';
+	localStorage['reg_inapp']='true';
+}
+
+function chromeInappBuyBegin(){
+	google.payments.inapp.buy({
+		parameters: {'env': 'prod'},
+		sku: registerdModeSku,
+		success: chromeInapPurchaseSuccess,
+		failure: getChromeInAppStatus
+	});
+
+}
+
+function getChromeInAppStatus(){
+	//var inAppArea = gel('chrome-inapp-reg');
+	var inAppBtnArea = gel('chrome-inapp');
+
+	google.payments.inapp.getPurchases({
+		parameters: {'env': 'prod'},
+		success: function(resp){
+			console.log('inapp - check - resp', resp);
+			var found = false;
+			resp.response.details.forEach(function(purchase){
+				if( purchase.sku == registerdModeSku){
+					found = true;
+				}
+			});
+
+			if( found ){
+				chromeInapPurchaseSuccess();
+			}else{
+				Cr.empty(inAppBtnArea);
+				inAppBtnArea.appendChild(Cr.elm('span', {
+					style: Cr.css({
+						color: "white",
+						'font-weight': "bold",
+						'background-color': '#6799CC',
+						'border-radius': '10px',
+						padding: '8px'
+					}),
+					events: Cr.evt('click', chromeInappBuyBegin),
+					childNodes: [
+						Cr.txt('Buy License')
+					]
+				}));
+			}
+		},
+		failure: function(resp){
+			console.log('inapp - check - failed', resp);
+			Cr.empty(inAppBtnArea);
+			inAppBtnArea.appendChild(Cr.elm('span', {
+					childNodes: [
+						Cr.txt('Purchases check failed.  You must sign into chrome to enable this feature.')
+					]
+			}));
+		}
+	});
+}
+
 function createDOM(){
 Cr.elm("div",{id:"mainbox"},[
 	Cr.elm("h2",{},[
@@ -161,6 +238,14 @@ Cr.elm("div",{id:"mainbox"},[
 		])
 	]),
 	Cr.txt("Color Pick is an Amazing Eye Dropper that allows precise selection of color values through it's one-of-a-kind zoomed preview!"),
+	Cr.elm('div',{id:'chrome-inapp-reg', childNodes:[
+		Cr.elm("h3",{},[
+			Cr.txt("Register via In-App Purchase (Google Chrome only)")
+		]),
+		Cr.elm('div',{id:'chrome-inapp', childNodes:[
+			Cr.elm("img",{src:"img/loading.gif",id:"indicator"}),
+		]})
+	]}),
 	Cr.elm("h3",{},[
 		Cr.txt("Register Color Picker")
 	]),
@@ -239,7 +324,13 @@ Cr.elm("div",{id:"mainbox"},[
 	gel('license_go').addEventListener('click', license_go);
 	
 	gel('expandReginfo').addEventListener('click', toggle_next_sibling_display);
-	gel('expandBuyinfo').addEventListener('click', toggle_next_sibling_display);
+	//gel('expandBuyinfo').addEventListener('click', toggle_next_sibling_display);
+
+	if( isChrome && window.location.search.indexOf('enableChromePurchase') > -1 ){
+		getChromeInAppStatus();
+	}else{
+		gel('chrome-inapp-reg').style.display='none';
+	}
 }
 
 document.addEventListener('DOMContentLoaded', function () {
