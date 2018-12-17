@@ -29,6 +29,7 @@ function toggle_next_sibling_display(ev){
 		nss.display='block';
 		arr.src='img/expanded.png';
 	}
+	updateSwatchSelectionMargins(null);
 	return preventEventDefault(ev);
 }
 function load_syncd_options() {
@@ -403,13 +404,19 @@ function mmv(ev){
 		hisInner.style.height = ev.pageY - his.offsetTop - 7;
 	}
 	if( histReSizeVrt || histReSize ){
-		if( his.clientWidth > 400 ){
-			document.getElementById('swatch-holder').style.marginTop = his.clientHeight + 50;
-		}else{
-			document.getElementById('swatch-holder').style.marginTop = 0;
-		}
+		updateSwatchSelectionMargins(his);
 	}
 }
+
+function updateSwatchSelectionMargins(his){
+	his = his || document.getElementById('history');
+	if( his.clientWidth > 400 && his.style.display!='none' ){
+		document.getElementById('swatch-holder').style.marginTop = his.clientHeight + 50;
+	}else{
+		document.getElementById('swatch-holder').style.marginTop = 0;
+	}
+}
+
 
 var fourSpaces='\u00a0\u00a0\u00a0\u00a0';
 function createOptions(piOptions, elemAppend){
@@ -556,17 +563,17 @@ Cr.elm("div",{id:"mainbox"},[
 		Cr.elm("img",{src:"img/expand.png"}),
 		Cr.txt(chrome.i18n.getMessage('history'))
 	]),
-	Cr.elm("div",{id:"history"},[]),
+	Cr.elm("div",{id:"history", class:'indented-area'},[]),
 	Cr.elm("a",{href:"#",id:"showopt",class:"toggleOpts"},[
 		Cr.elm("img",{src:"img/expand.png"}),
 		Cr.txt(chrome.i18n.getMessage('options'))
 	]),
-	Cr.elm("div",{id:"options"},[]),
+	Cr.elm("div",{id:"options", class:'indented-area'},[]),
 	Cr.elm("a",{href:"#",id:"shoadvanc",class:"toggleOpts"},[
 		Cr.elm("img",{src:"img/expand.png"}),
 		Cr.txt(chrome.i18n.getMessage('advancedOptions'))
 	]),
-	Cr.elm("div",{id:"adv_options"},[
+	Cr.elm("div",{id:"adv_options", class:'indented-area'},[
 		Cr.elm("button",{id:"bload"},[
 			Cr.txt(chrome.i18n.getMessage('fetchSync'))
 		]),
@@ -574,11 +581,11 @@ Cr.elm("div",{id:"mainbox"},[
 			Cr.txt(chrome.i18n.getMessage('clearSync'))
 		])
 	]),
-	Cr.elm("button",{id:"bsave"},[
+	Cr.elm("button",{id:"bsave", class:"options-btn"},[
 		Cr.txt(chrome.i18n.getMessage('saveOptions'))
 	]),
 	Cr.txt(" "),
-	Cr.elm("button",{id:"defa"},[
+	Cr.elm("button",{id:"defa", class:"options-btn"},[
 		Cr.txt(chrome.i18n.getMessage('showDefaults'))
 	]),
 	Cr.elm("span",{id:"status"}),

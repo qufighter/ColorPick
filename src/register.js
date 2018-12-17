@@ -172,7 +172,7 @@ function chromeInapPurchaseSuccess(){
 
 function chromeInappBuyBegin(){
 	google.payments.inapp.buy({
-		parameters: {'env': 'prod'},
+		parameters: {env: 'prod'},
 		sku: registerdModeSku,
 		success: chromeInapPurchaseSuccess,
 		failure: getChromeInAppStatus
@@ -184,8 +184,18 @@ function getChromeInAppStatus(){
 	//var inAppArea = gel('chrome-inapp-reg');
 	var inAppBtnArea = gel('chrome-inapp');
 
+	google.payments.inapp.getSkuDetails({
+		'parameters': {'env': 'prod'},
+		success: function(resp){
+			console.log('getSkuDetails - resp', resp);
+		},
+		failure: function(resp){
+			console.log('getSkuDetails - failed', resp);
+		}
+	});
+
 	google.payments.inapp.getPurchases({
-		parameters: {'env': 'prod'},
+		parameters: {env: 'prod'},
 		success: function(resp){
 			console.log('inapp - check - resp', resp);
 			var found = false;

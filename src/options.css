@@ -44,3 +44,12 @@ label:hover{background-color:#DDD;}
 }
 #status{display:block;height:30px;padding:5px;}
 #ifcotd{width:100px;height:40px;border:none;overflow:hidden;}
+.indented-area{
+	margin-left:14px;
+}
+.options-btn{
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 4px;
+    padding: 7px;
+}
