@@ -1,6 +1,7 @@
 var suppress_connection_errors=false;
 var registerdModeSku = 'colorpick_eyedropper_registered_mode';
 var isChrome = window.navigator.userAgent.indexOf('Chrome/') > -1;
+var searchQuery = window.location.search;
 function gel(n){
 	return document.getElementById(n);
 }
@@ -172,7 +173,7 @@ function chromeInapPurchaseSuccess(){
 
 function chromeInappBuyBegin(){
 	google.payments.inapp.buy({
-		parameters: {env: 'prod'},
+		parameters: {env: (searchQuery.indexOf('useSandbox') > -1 ? 'TEST' : 'prod')},
 		sku: registerdModeSku,
 		success: chromeInapPurchaseSuccess,
 		failure: getChromeInAppStatus
@@ -185,7 +186,7 @@ function getChromeInAppStatus(){
 	var inAppBtnArea = gel('chrome-inapp');
 
 	google.payments.inapp.getSkuDetails({
-		'parameters': {'env': 'prod'},
+		'parameters': {env: (searchQuery.indexOf('useSandbox') > -1 ? 'TEST' : 'prod')},
 		success: function(resp){
 			console.log('getSkuDetails - resp', resp);
 		},
@@ -195,7 +196,7 @@ function getChromeInAppStatus(){
 	});
 
 	google.payments.inapp.getPurchases({
-		parameters: {env: 'prod'},
+		parameters: {env: (searchQuery.indexOf('useSandbox') > -1 ? 'TEST' : 'prod')},
 		success: function(resp){
 			console.log('inapp - check - resp', resp);
 			var found = false;
@@ -229,7 +230,7 @@ function getChromeInAppStatus(){
 			Cr.empty(inAppBtnArea);
 			inAppBtnArea.appendChild(Cr.elm('span', {
 					childNodes: [
-						Cr.txt('Purchases check failed.  You must sign into chrome to enable this feature.')
+						Cr.txt('Purchases check failed.  You must sign into chrome to enable this feature.  Sorry some regions are not supported.')
 					]
 			}));
 		}
@@ -336,7 +337,7 @@ Cr.elm("div",{id:"mainbox"},[
 	gel('expandReginfo').addEventListener('click', toggle_next_sibling_display);
 	//gel('expandBuyinfo').addEventListener('click', toggle_next_sibling_display);
 
-	if( isChrome && window.location.search.indexOf('enableChromePurchase') > -1 ){
+	if( isChrome && searchQuery.indexOf('enableChromePurchase') > -1 ){
 		getChromeInAppStatus();
 	}else{
 		gel('chrome-inapp-reg').style.display='none';
