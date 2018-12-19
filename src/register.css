@@ -47,3 +47,10 @@ a:hover{text-decoration:underline;}
 #chrome-inapp{
 	min-height:33px;
 }
+.note-bubble{
+	color: black;
+	background-color: #F7FFBF;
+	border-radius: 10px;
+	border: 2px solid #FFE9B9;
+	padding: 8px;
+}

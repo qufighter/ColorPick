@@ -9,6 +9,7 @@ var isPicking=false,keyInputMode=false;
 var CSS3ColorFormat=(localStorage['CSS3ColorFormat']||pAdvOptions["CSS3ColorFormat"].def);
 var gotAnUpdate = false;EnableHex=true;
 var fishEye = (localStorage['fishEye']||pOptions["fishEye"].def)-0;
+var startTime = (new Date()).getTime();
 function getEventTargetA(ev){
 	var targ=getEventTarget(ev);
 	if(targ.nodeName != 'A')return targ.parentNode;
@@ -28,6 +29,10 @@ var realSrcRecieved = false;
 function setPreviewSRC(duri, hidearrows){
 	if( realSrcRecieved && hidearrows ){
 		return;
+	}
+	if( !hidearrows && !realSrcRecieved ){
+		var timer = document.getElementById('timer_msg');
+		if( timer ) timer.remove();
 	}
 	realSrcRecieved = realSrcRecieved || !hidearrows;
 	var im=new Image();
@@ -330,6 +335,7 @@ function iin(){
 								setTimeout(function(){
 									if(!gotAnUpdate){
 										setPreviewSRC(chrome.extension.getURL('img/error'+1+'.png'),true);
+										showLoadingTimer();
 									}
 								},2000);
 							}
@@ -339,6 +345,17 @@ function iin(){
 		});
 	}
 	//}
+}
+
+function showLoadingTimer(){
+	var timer = document.getElementById('timer_msg');
+	if( timer ){
+		Cr.empty(timer);
+		var curTime = (new Date()).getTime();
+		var elapsedS = Math.floor((curTime - startTime) / 1000);
+		timer.appendChild(Cr.txt(':'+elapsedS));
+		setTimeout(showLoadingTimer, 250);
+	}
 }
 
 function setupInjectScripts(){
@@ -351,6 +368,7 @@ function setupInjectScripts(){
 			if(response&&response.result){
 				if(scriptAliveTimeout==0){
 					setPreviewSRC(chrome.extension.getURL('img/error'+1+'.png'),true);
+					showLoadingTimer();
 					reExecutedNeedlessly=true;
 				}else{
 					isScriptAlive=true;
@@ -508,7 +526,7 @@ function selectSelfText(ev){
 
 var licf=false,lhei=10;
 function checkForLicense(){
-	return;
+	//return;
 	//if(document.getElementById('pre').src.indexOf('error') < 0)//< pre no longer exists
 		document.getElementById('unreg_msg').style.display="block";
 	
@@ -685,7 +703,8 @@ Cr.elm("div",{},[
 		])
 	]),
 	Cr.elm("div",{id:"preview"},[
-		//Cr.elm("a",{id:"unreg_msg",target:"_blank",href:"register.html",title:chrome.i18n.getMessage('buyRegisterTip')},[Cr.txt(chrome.i18n.getMessage('registerBanner'))]),
+		Cr.elm("a",{id:"unreg_msg",target:"_blank",href:"register.html",title:chrome.i18n.getMessage('buyRegisterTip')},[Cr.txt(chrome.i18n.getMessage('registerBanner'))]),
+		Cr.elm("span",{id:"timer_msg"},[]),
 		Cr.elm("a",{href:'#',id:'arr_u',class:'hilight mvarrow',name:38,event:['click',moveArrowBtn]},[Cr.txt(String.fromCharCode(9650))]),
 		Cr.elm("a",{href:'#',id:'arr_d',class:'hilight mvarrow',name:40,event:['click',moveArrowBtn]},[Cr.txt(String.fromCharCode(9660))]),
 		Cr.elm("a",{href:'#',id:'arr_l',class:'hilight mvarrow',name:37,event:['click',moveArrowBtn]},[Cr.txt(String.fromCharCode(9664))]),

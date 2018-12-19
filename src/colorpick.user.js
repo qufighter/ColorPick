@@ -4,6 +4,7 @@ function _ge(n){return document.getElementById(n);}
 var n=false,c=false,hex='F00BAF',lasthex='',rgb=null;hsv=null;scal=1,ex=0,ey=0,isEnabled=false,isLocked=false,hexIsLowerCase=false,borderValue='1px solid black',blankgif='',msg_bg_unavail=chrome.i18n.getMessage('bgPageUnavailable');
 var isUpdating=false,lastTimeout=0,lx=0,ly=0;
 var CSS3ColorFormat='(#1,#2,#3)';
+var opts={};
 var cvs = document.createElement('canvas');
 var ctx = cvs.getContext('2d'),x_cvs_scale=1,y_cvs_scale=1;
 function RGBtoHex(R,G,B) {return applyHexCase(toHex(R)+toHex(G)+toHex(B));}
@@ -188,7 +189,7 @@ function removeExistingNodes(){
 		if(c)document.body.removeChild(c);
 		if(n)document.body.removeChild(n);
 		c=false,n=false;
-		document.body.style.cursor='default';
+		if( document.body.style ) document.body.style.cursor='default';
 	}
 }
 function wk(ev){
@@ -219,40 +220,45 @@ function ssf(ev){
 		newImage();//some delay required OR it won't update
 	},250);
 }
+
+function loadPref(i, obj, pOptions){
+	if(typeof(pOptions[i].def)=='boolean')
+		opts[i] = ((obj[i]=='true')?true:((obj[i]=='false')?false:pOptions[i].def));
+	else
+		opts[i] = ((obj[i])?obj[i]:pOptions[i].def);
+	window[i] = opts[i]; // options like showPreviewInContentS will be in scope... TODO: use opts.showPreviewInContentS instead?
+}
+
 function loadPrefs(cbf){
 	storage.get(null, function(obj) {
 		if(chrome.runtime.lastError)console.log(chrome.runtime.lastError.message);
-		if(typeof(obj)=='undefined'||!obj)obj={};
+		obj = obj || {};
 		var i;
-		for(i in pOptions){
-			if(typeof(pOptions[i].def)=='boolean')
-				window[i] = ((obj[i]=='true')?true:((obj[i]=='false')?false:pOptions[i].def));
-			else
-				window[i] = ((obj[i])?obj[i]:pOptions[i].def);
-		}
-		for(i in pAdvOptions){
-			if(typeof(pAdvOptions[i].def)=='boolean')
-				window[i] = ((obj[i]=='true')?true:((obj[i]=='false')?false:pAdvOptions[i].def));
-			else
-				window[i] = ((obj[i])?obj[i]:pAdvOptions[i].def);
-		}
+		for(i in pOptions){loadPref(i, obj, pOptions);}
+		for(i in pAdvOptions){loadPref(i, obj, pAdvOptions);}
+		for(i in pSyncItems){loadPref(i, obj, pSyncItems);}
 		if(typeof(cbf)=='function')cbf();
 	});
 }
 function initialInit(){
 	loadPrefs(function(){
-		removeExistingNodes();
-		c=Cr.elm('img',{id:elmid1,src:blankgif,style:'position:fixed;max-width:none!important;max-height:none!important;top:0px;left:0px;margin:0px;padding:0px;overflow:hidden;z-index:2147483646;',events:[['click',picked,true],['load',snapshotLoaded]]},[],document.body);
-		n=Cr.elm('div',{id:elmid2,style:'position:fixed;min-width:30px;max-width:300px;min-height:30px;box-shadow:2px 2px 2px #666;border:'+borderValue+';z-index:2147483646;cursor:default;padding:4px;'},[Cr.txt(' ')],document.body);
-		document.addEventListener('mousemove',mmf);
-		addEventListener('keyup',wk);
-		addEventListener('scroll',ssf);
-		addEventListener('resize',ssf);
-		testWebGlAvail();
-		initializeCanvas();
-		remainingInit();
+		prefsLoadedCompleteInit()
 	});
 }
+
+function prefsLoadedCompleteInit(){
+	removeExistingNodes();
+	c=Cr.elm('img',{id:elmid1,src:blankgif,style:'position:fixed;max-width:none!important;max-height:none!important;top:0px;left:0px;margin:0px;padding:0px;overflow:hidden;z-index:2147483646;',events:[['click',picked,true],['load',snapshotLoaded]]},[],document.body);
+	n=Cr.elm('div',{id:elmid2,style:'position:fixed;min-width:30px;max-width:300px;min-height:30px;box-shadow:2px 2px 2px #666;border:'+borderValue+';z-index:2147483646;cursor:default;padding:4px;'},[Cr.txt(' ')],document.body);
+	document.addEventListener('mousemove',mmf);
+	addEventListener('keyup',wk);
+	addEventListener('scroll',ssf);
+	addEventListener('resize',ssf);
+	testWebGlAvail();
+	initializeCanvas();
+	remainingInit();
+}
+
 function enableColorPicker(){
 	if(!n){
 		initialInit();
@@ -261,6 +267,10 @@ function enableColorPicker(){
 	return remainingInit();
 }
 function remainingInit(){
+	if( !document.body.style ){ // page isn't loaded enough yet... try again soon...
+		setTimeout(remainingInit, 50);
+		return false;
+	}
 	if(!isEnabled){
 		n.style.visibility="hidden";
 		c.style.visibility="hidden";
@@ -304,7 +314,7 @@ function updateColorPreview(ev){
 var isMakingNew=false,lastNewTimeout=0,snapshotLoadedTimeout;
 function newImage(){
 	if(!isEnabled)return;
-	if(isMakingNew){
+	if(isMakingNew || !document.body.style){
 		clearTimeout(lastNewTimeout);
 		lastNewTimeout=setTimeout(function(){newImage();},255);
 		return;

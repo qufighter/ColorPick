@@ -60,7 +60,7 @@ function set_registered(){
 	gel('license_key').value='************************';
 	gel('license_go').value=chrome.i18n.getMessage('modifyLicense');
 	localStorage['reg_chk']=true;
-	gel('examine').href='http://vidsbee.com/ColorPick/Upgrade?khash='+localStorage['reg_hash'];
+	gel('examine').href='http://vidsbee.com/ColorPick/Upgrade?khash='+(localStorage['reg_hash']||'');
 }
 function set_unregistered(){
 	Cr.empty(gel('license_status')).appendChild(Cr.txt(chrome.i18n.getMessage('unregistered')));
@@ -91,7 +91,7 @@ function init(){
 	}
 }
 function checkKey(){
-	if(gel('license_key').value.length < 1)return keyResponse(false);
+	if(gel('license_key').value.length < 1 || gel('license_key').value=='undefined')return keyResponse(false);
 	gel('loading').style.display="inline";
 	
 	var kname=gel('license_name').value;
@@ -149,26 +149,29 @@ function license_go(){
 	}
 	
 	checkKey();
-	
+}
+
+function resetPurchases(){
+	localStorage['reg_chk']='false';
+	localStorage['reg_inapp']='false';
+	localStorage.removeItem('reg_name');
+	saveSyncItemsToChromeSyncStorage();
+	set_unregistered();
 }
 
 function chromeInapPurchaseSuccess(){
 	var inAppBtnArea = gel('chrome-inapp');
 	Cr.empty(inAppBtnArea);
-	inAppBtnArea.appendChild(Cr.elm('span', {
-		style: Cr.css({
-			color: "black",
-			'background-color': '#F7FFBF',
-			'border-radius': '10px',
-			border: '2px solid #FFE9B9',
-			padding: '8px'
-		}),
+	inAppBtnArea.appendChild(Cr.elm('div', {
+		class: 'note-bubble',
 		childNodes: [
 			Cr.txt('You have completed the in-app purchase to enable registered mode - thank you!  If the extension was not already in registered mode it will be placed into registered mode now.  Please refresh any other views to see the latest registration status.')
 		]
 	}));
 	localStorage['reg_chk']='true';
 	localStorage['reg_inapp']='true';
+	localStorage['reg_name']='Chrome Exclusive';
+	set_registered();
 	saveSyncItemsToChromeSyncStorage();
 }
 
@@ -232,9 +235,9 @@ function getChromeInAppStatus(){
 		failure: function(resp){
 			console.log('inapp - check - failed', resp);
 			Cr.empty(inAppBtnArea);
-			inAppBtnArea.appendChild(Cr.elm('span', {
+			inAppBtnArea.appendChild(Cr.elm('div', {
 					childNodes: [
-						Cr.txt('Purchases check failed.  You must sign into chrome to enable this feature.  Sorry some regions are not supported.'),
+						Cr.txt('Purchase check failed.  You must sign into chrome to enable this feature.'),
 						Cr.elm('br'),
 						Cr.elm("a",{class:"pointer",events:Cr.evt('click', toggle_next_sibling_display)},[
 							Cr.elm("img",{src:"img/expand.png",class:'expand-triangle'}),
@@ -243,10 +246,11 @@ function getChromeInAppStatus(){
 						Cr.elm("ul",{style:"display:none;"},[
 							Cr.elm('li',{},[Cr.txt('Chrome does not support in-app purchases in all regions.')]),
 							Cr.elm('li',{},[
-								Cr.txt('Your firewall must allow chrome to connect to all Google owned domains on at least port 80 and 443 in order for Google Wallet to work.'),
+								Cr.txt('Your firewall must allow Chrome to connect to Google Wallet.'),
 								Cr.elm("ul",{style:""},[
 									Cr.elm('li',{},[Cr.txt('This includes any firewalls present between your device and the Internet.')]),
-									Cr.elm('li',{},[Cr.txt('As of 2018 this includes port 80 of gvt1.com')])
+									Cr.elm('li',{},[Cr.txt('Allow all Google owned domains on port 80 and 443 (not all of them are obvious).')])
+									//Cr.elm('li',{},[Cr.txt('As of 2018 this includes port 80 of gvt1.com')])
 								])
 							]),
 							Cr.elm('li',{},[Cr.txt('This license is tied to a single user signed into chrome - for a more portable license that can be used for different users and platforms consider the full license below.')]),
