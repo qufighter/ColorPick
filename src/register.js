@@ -188,20 +188,22 @@ function getChromeInAppStatus(){
 	//var inAppArea = gel('chrome-inapp-reg');
 	var inAppBtnArea = gel('chrome-inapp');
 
-	google.payments.inapp.getSkuDetails({
-		'parameters': {env: 'prod'},
-		success: function(resp){
-			console.log('getSkuDetails - resp', resp);
-		},
-		failure: function(resp){
-			console.log('getSkuDetails - failed', resp);
-		}
-	});
+	if( searchQuery.indexOf('debug') > -1 ){
+		google.payments.inapp.getSkuDetails({
+			'parameters': {env: 'prod'},
+			success: function(resp){
+				console.log('getSkuDetails - resp', resp);
+			},
+			failure: function(resp){
+				console.log('getSkuDetails - failed', resp);
+			}
+		});
+	}
 
 	google.payments.inapp.getPurchases({
 		parameters: {env: 'prod'},
 		success: function(resp){
-			console.log('inapp - check - resp', resp);
+			if( searchQuery.indexOf('debug') > -1 ) console.log('inapp - check - resp', resp);
 			var found = false;
 			resp.response.details.forEach(function(purchase){
 				if( purchase.sku == registerdModeSku){
@@ -232,7 +234,7 @@ function getChromeInAppStatus(){
 			}
 		},
 		failure: function(resp){
-			console.log('inapp - check - failed', resp);
+			if( searchQuery.indexOf('debug') > -1 ) console.log('inapp - check - failed', resp);
 			Cr.empty(inAppBtnArea);
 			inAppBtnArea.appendChild(Cr.elm('div', {
 					childNodes: [
