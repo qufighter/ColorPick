@@ -18,8 +18,8 @@ a.mvarrow{position:absolute;color:black;text-shadow:0px 0px 5px white;display:no
 #hexpre{z-index:9999;position:absolute;left:0px;top:0px;width:75px;min-height:36px;cursor:url(img/icon16.png) 8 8,hand;}
 #ctrls{margin-top:2px;z-index:-1}
 #ctrls a{margin-right:2px;}
-#unreg_msg{display:none;position:absolute;background-color:rgba(255,255,255,0.5);bottom:0px;width:150;text-align:left;color:blue;font-weight:bold;text-shadow:white 1px 1px 1px;padding:5px 3px;}
-#timer_msg{position:absolute;bottom:0;right:0;width:75;text-align:right;color:red;font-weight:bold;text-shadow:white 1px 1px 1px;padding:5px 3px;}
+#unreg_msg{display:none;position:absolute;bottom:0;left:0;width:75;text-align:left;color:blue;font-weight:bold;text-shadow:white 1px 1px 1px;padding:5px 3px;}
+#timer_msg{position:absolute;bottom:0;right:0;width:75;text-align:left;color:red;font-weight:bold;text-shadow:white 1px 1px 1px;padding:5px 3px;}
 .btnActive{border:1px solid #FFB923;}
 .autocast{background:#FFE2A0 -webkit-linear-gradient(-45deg, #fefcea 45%,#ffdc8c 49%,#fefcea 95%);}
 .btnInactive{border:1px solid #F66;background-image:url(img/lock.png);background-position:center center;background-repeat:no-repeat;}
