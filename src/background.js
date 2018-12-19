@@ -47,6 +47,27 @@ function defaultIcon(force){
 	return false;
 }
 
+function goToOrOpenTab(tab, completedCallback){
+  var optionsUrl = chrome.extension.getURL(tab); // typically "options.html"
+  completedCallback = completedCallback || function(){};
+  chrome.tabs.query({
+    url: optionsUrl,
+    currentWindow: true
+  }, function(tabs){
+    if( tabs.length > 0 ){
+      chrome.tabs.update(tabs[0].id,{active:true}, completedCallback)
+      //chrome.tabs.highlight({tabs:[tabs[0].index], windowId:tabs[0].windowId}, completedCallback);
+    }else{
+      chrome.tabs.create({
+        url: optionsUrl,
+        active: true
+      }, function(t){
+        chrome.tabs.update(t.id,{active:true}, completedCallback)
+        // chrome.tabs.highlight({tabs:[t.index]}, completedCallback)
+      });
+    }
+  });
+}
 
 //on change visible tab, is cp active on this tab, if so, resnapshot..?
 //888888888888888888888888888888888888888888888888888888888888888888888
@@ -111,6 +132,9 @@ function(request, sender, sendResponse) {
 			defaultIcon();
 			//chrome.browserAction.setBadgeText({text:''});
 			chrome.tabs.sendMessage(tabid, {disableColorPicker:true}, function(response) {});
+			sendResponse({});
+		}else if(request.goToOrVisitTab){
+			goToOrOpenTab(request.goToOrVisitTab);
 			sendResponse({});
 		}else if(request.reloadprefs){
 			setTimeout(function(){

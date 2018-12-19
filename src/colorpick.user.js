@@ -134,6 +134,8 @@ function setCurColor(r){
 function selectTargElm(ev){
 	ev.target.select();
 }
+var lastHex='';
+var goodHexCounter=0;
 function setDisplay(){//Cr.elm
 	emptyNode(n);
 	Cr.elm('div',{},[
@@ -145,6 +147,22 @@ function setDisplay(){//Cr.elm
 	],n);
 	if(!EnableHex) _ge('cphexvl').style.display="none";
 	if(_ge('cphexvl'))_ge('cphexvl').select();
+	if( opts.reg_chk!=true && hex && hex != lastHex && (!rgb || (rgb.r != rgb.g || rgb.r != rgb.b || rgb.g != rgb.b)) ){
+		goodHexCounter++;
+		if( goodHexCounter > 2 ){
+			Cr.elm('div', {style:'text-shadow:white 1px 1px 2px;font-weight:bold;'}, [
+				Cr.elm('a', {
+					style: 'cursor:pointer;',
+					events:['click', function(ev){
+						chrome.runtime.sendMessage({goToOrVisitTab:'register.html'}, function(r){});
+						ev.preventDefault();
+					}],
+					childNodes:[Cr.txt(chrome.i18n.getMessage('registerBannerLong'))]
+				})
+			], n);
+		}
+		lastHex=hex;
+	}
 	keepOnScreen();
 }
 function picked(){
@@ -268,7 +286,7 @@ function enableColorPicker(){
 }
 function remainingInit(){
 	if( !document.body.style ){ // page isn't loaded enough yet... try again soon...
-		setTimeout(remainingInit, 50);
+		setTimeout(remainingInit, 250);
 		return false;
 	}
 	if(!isEnabled){

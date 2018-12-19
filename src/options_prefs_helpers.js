@@ -20,6 +20,7 @@ function saveSyncItemsToChromeSyncStorage(){
 		tosave[i]=localStorage[i];
 	}
 	chromeStorageSaveALocalStor(tosave);
+	sendReloadPrefs();
 }
 function saveToChromeSyncStorage(){
 	var tosave={};

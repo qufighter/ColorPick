@@ -133,7 +133,6 @@ function keyResponse(isValid,validHash,validName){
 		localStorage['reg_hash']=validHash;
 		localStorage['reg_name']=validName;
 		set_registered();
-		sendReloadPrefs();
 	}else{
 		set_unregistered();
 	}
@@ -155,8 +154,8 @@ function resetPurchases(){
 	localStorage['reg_chk']='false';
 	localStorage['reg_inapp']='false';
 	localStorage.removeItem('reg_name');
-	saveSyncItemsToChromeSyncStorage();
 	set_unregistered();
+	saveSyncItemsToChromeSyncStorage();
 }
 
 function chromeInapPurchaseSuccess(){
@@ -177,7 +176,7 @@ function chromeInapPurchaseSuccess(){
 
 function chromeInappBuyBegin(){
 	google.payments.inapp.buy({
-		parameters: {env: (searchQuery.indexOf('useSandbox') > -1 ? 'TEST' : 'prod')},
+		parameters: {env: 'prod'},
 		sku: registerdModeSku,
 		success: chromeInapPurchaseSuccess,
 		failure: getChromeInAppStatus
@@ -190,7 +189,7 @@ function getChromeInAppStatus(){
 	var inAppBtnArea = gel('chrome-inapp');
 
 	google.payments.inapp.getSkuDetails({
-		'parameters': {env: (searchQuery.indexOf('useSandbox') > -1 ? 'TEST' : 'prod')},
+		'parameters': {env: 'prod'},
 		success: function(resp){
 			console.log('getSkuDetails - resp', resp);
 		},
@@ -200,7 +199,7 @@ function getChromeInAppStatus(){
 	});
 
 	google.payments.inapp.getPurchases({
-		parameters: {env: (searchQuery.indexOf('useSandbox') > -1 ? 'TEST' : 'prod')},
+		parameters: {env: 'prod'},
 		success: function(resp){
 			console.log('inapp - check - resp', resp);
 			var found = false;
@@ -365,7 +364,7 @@ Cr.elm("div",{id:"mainbox"},[
 	init();
 	gel('license_go').addEventListener('click', license_go);
 
-	if( isChrome && searchQuery.indexOf('enableChromePurchase') > -1 ){
+	if( isChrome ){
 		getChromeInAppStatus();
 	}else{
 		gel('chrome-inapp-reg').style.display='none';

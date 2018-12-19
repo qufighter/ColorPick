@@ -17,6 +17,9 @@
    "registerBanner": {
       "message": "Register"
    },
+   "registerBannerLong": {
+      "message": "Please Register ColorPick!"
+   },
    "showColorChooser": {
       "message": "Show Color Chooser"
    },
