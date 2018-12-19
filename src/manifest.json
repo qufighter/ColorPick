@@ -23,7 +23,7 @@
       "run_at": "document_idle"
    } ],
    "background": {
-      "scripts": ["options_prefs.js", "background.js"],
+      "scripts": ["options_prefs.js", "options_prefs_helpers.js", "background.js"],
       "persistent": false
    },
    "options_page": "options.html",
