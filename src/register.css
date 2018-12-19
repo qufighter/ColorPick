@@ -1,4 +1,4 @@
-body{font-family:sans-serif;}
+body{font-family:sans-serif;margin:20px;opacity:0;transition:linear 0.2s;font-size:14px;line-height:1.75em;}
 #regDiv{
 	width:500px;
 	text-align:right;
@@ -27,13 +27,23 @@ body{font-family:sans-serif;}
 	position:relative;
 }
 .rounded:hover{
-	text-shadow:#AAA 1px 1px 2px;
+	text-shadow:white 1px 1px 5px;
 	box-shadow:black 2px 2px 3px;
+	text-decoration: none;
 }
 .logod img{vertical-align:middle;}
 h2 .subh{font-size:12px;position:relative;}
+h3 {
+	font-size:18px;
+}
 a{text-decoration:none;color:blue;}
 a:hover{text-decoration:underline;}
-.chrome-inapp{
-	min-height:16px;
+.pointer{
+	cursor:pointer;
+}
+.expand-triangle{
+	width:16px;height:16px;
+}
+#chrome-inapp{
+	min-height:33px;
 }

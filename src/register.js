@@ -1,7 +1,7 @@
 var suppress_connection_errors=false;
 var registerdModeSku = 'colorpick_eyedropper_registered_mode';
-var isChrome = window.navigator.userAgent.indexOf('Chrome/') > -1;
 var searchQuery = window.location.search;
+var nbsp='\u00A0';
 function gel(n){
 	return document.getElementById(n);
 }
@@ -169,6 +169,7 @@ function chromeInapPurchaseSuccess(){
 	}));
 	localStorage['reg_chk']='true';
 	localStorage['reg_inapp']='true';
+	saveSyncItemsToChromeSyncStorage();
 }
 
 function chromeInappBuyBegin(){
@@ -213,10 +214,13 @@ function getChromeInAppStatus(){
 				inAppBtnArea.appendChild(Cr.elm('span', {
 					style: Cr.css({
 						color: "white",
-						'font-weight': "bold",
+					    'font-size': '16px',
 						'background-color': '#6799CC',
-						'border-radius': '10px',
-						padding: '8px'
+						'box-shadow': 'black 1px 1px 1px',
+						'border-radius': '4px',
+						border: '1px solid #1c6bbb',
+						padding: '8px',
+						cursor: 'pointer'
 					}),
 					events: Cr.evt('click', chromeInappBuyBegin),
 					childNodes: [
@@ -230,7 +234,24 @@ function getChromeInAppStatus(){
 			Cr.empty(inAppBtnArea);
 			inAppBtnArea.appendChild(Cr.elm('span', {
 					childNodes: [
-						Cr.txt('Purchases check failed.  You must sign into chrome to enable this feature.  Sorry some regions are not supported.')
+						Cr.txt('Purchases check failed.  You must sign into chrome to enable this feature.  Sorry some regions are not supported.'),
+						Cr.elm('br'),
+						Cr.elm("a",{class:"pointer",events:Cr.evt('click', toggle_next_sibling_display)},[
+							Cr.elm("img",{src:"img/expand.png",class:'expand-triangle'}),
+							Cr.txt(' More Info'+nbsp)
+						]),
+						Cr.elm("ul",{style:"display:none;"},[
+							Cr.elm('li',{},[Cr.txt('Chrome does not support in-app purchases in all regions.')]),
+							Cr.elm('li',{},[
+								Cr.txt('Your firewall must allow chrome to connect to all Google owned domains on at least port 80 and 443 in order for Google Wallet to work.'),
+								Cr.elm("ul",{style:""},[
+									Cr.elm('li',{},[Cr.txt('This includes any firewalls present between your device and the Internet.')]),
+									Cr.elm('li',{},[Cr.txt('As of 2018 this includes port 80 of gvt1.com')])
+								])
+							]),
+							Cr.elm('li',{},[Cr.txt('This license is tied to a single user signed into chrome - for a more portable license that can be used for different users and platforms consider the full license below.')]),
+							Cr.elm('li',{},[Cr.txt('If you sign into chrome on a new computer you may have to re-visit this screen to activate your license there.')]),
+						]),
 					]
 			}));
 		}
@@ -240,25 +261,25 @@ function getChromeInAppStatus(){
 function createDOM(){
 Cr.elm("div",{id:"mainbox"},[
 	Cr.elm("h2",{},[
-		Cr.elm("img",{src:"img/icon32.png",align:"bottom"}),
-		Cr.txt("Color Picker for Google Chrome"),
+		Cr.elm("img",{src:"img/icon32.png",style:'width:32px;height:32px;',align:"bottom"}),
+		Cr.txt("ColorPick for Google Chrome"),
 		Cr.elm("br"),
 		Cr.txt(" "),
 		Cr.elm("span",{class:"subh",style:"left:42px;"},[
 			Cr.ent("&copy; Vidsbee.com by Sam Larison")
 		])
 	]),
-	Cr.txt("Color Pick is an Amazing Eye Dropper that allows precise selection of color values through it's one-of-a-kind zoomed preview!"),
+	Cr.txt("ColorPick is an Amazing Eye Dropper that allows precise selection of color values through it's one-of-a-kind zoomed preview!"),
 	Cr.elm('div',{id:'chrome-inapp-reg', childNodes:[
 		Cr.elm("h3",{},[
-			Cr.txt("Register via In-App Purchase (Google Chrome only)")
+			Cr.txt("Register Chrome Extension only")
 		]),
 		Cr.elm('div',{id:'chrome-inapp', childNodes:[
 			Cr.elm("img",{src:"img/loading.gif",id:"indicator"}),
 		]})
 	]}),
 	Cr.elm("h3",{},[
-		Cr.txt("Register Color Picker")
+		Cr.txt("Enter your ColorPick License")
 	]),
 	Cr.elm("div",{id:"license_status"},[
 		Cr.txt("Enter License")
@@ -273,11 +294,11 @@ Cr.elm("div",{id:"mainbox"},[
 	Cr.elm("input",{type:"button",id:"license_go",value:"Register"}),
 	Cr.txt(" "),
 	Cr.elm("img",{src:"img/loading.gif",id:"loading"}),
-	Cr.elm("a",{href:"javascript:;",id:"expandReginfo"},[
-		Cr.elm("img",{src:"img/expand.png"})
+	Cr.elm("a",{href:"javascript:;",id:"expandReginfo",events:Cr.evt('click', toggle_next_sibling_display)},[
+		Cr.elm("img",{src:"img/expand.png",class:'expand-triangle'})
 	]),
 	Cr.elm("small",{style:"display:none;"},[
-		Cr.txt("License applies wherever else you sign into chrome."),
+		Cr.txt("License applies wherever else you sign into chrome or enter the same license."),
 		Cr.elm("br"),
 		Cr.txt("Upgrade your license; add & manage authorized hosts from the "),
 		Cr.elm("a",{target:"_blank",href:"http://vidsbee.com/ColorPick/Upgrade/",id:"examine"},[
@@ -291,35 +312,41 @@ Cr.elm("div",{id:"mainbox"},[
 	Cr.elm("a",{style:"float:left;margin-right:20px;top:-10px;",class:"rounded",target:"_blank",href:"http://vidsbee.com/ColorPick/"},[
 		Cr.txt("Purchase License Key"),
 		Cr.elm("br"),
-		Cr.elm("img",{width:"130",height:"41",src:"img/paypal.png"})
+		Cr.elm("img",{style:'width:130px;height:41px;padding-top:8px;',src:"img/paypal.png"})
 	]),
-	// Cr.elm("span",{style:"float:left;margin-right:12px;"},[
-	// 	Cr.elm("a",{target:"_blank",href:"http://vidsbee.com/ColorPick/"},[
-	// 		Cr.elm("img",{height:"50",align:"middle",src:"img/chrome.png",style:"padding-right:10px;"}),
-	// 		Cr.elm("img",{height:"50",align:"middle",src:"img/win32.png",style:"padding-right:10px;"}),
-	// 		Cr.elm("img",{height:"57",align:"middle",src:"img/osx.png"})
-	// 	])
-	// ]),
-	// Cr.elm("a",{href:"javascript:;",id:"expandBuyinfo"},[
-	// 	Cr.elm("img",{src:"img/expand.png"})
-	// ]),
-	// Cr.elm("small",{style:"display:none;",class:"toInline"},[
-	// 	Cr.txt("Your color-pick license not only works here;"),
-	// 	Cr.elm("br"),
-	// 	Cr.txt("The same license also registers the color-pick desktop applications"),
-	// 	Cr.elm("br"),
-	// 	Cr.txt("for both Windows and OSX. "),
-	// 	Cr.elm("a",{target:"_blank",href:"http://vidsbee.com/ColorPick/"},[
-	// 		Cr.txt("color-pick.com")
-	// 	]),
-	// 	Cr.txt(" or "),
-	// 	Cr.elm("a",{target:"_blank",href:"http://vidsbee.com/ColorPick/"},[
-	// 		Cr.txt("vidsbee.com/ColorPick")
-	// 	]),
-	// 	Cr.elm("br"),
-	// 	Cr.elm("br"),
-	// 	Cr.txt("A button to automatically install the license will appear after purchase.")
-	// ]),
+
+
+	Cr.elm("span",{style:"float:left;margin-right:12px;margin-bottom:24px;"},[
+		Cr.elm("a",{target:"_blank",href:"http://vidsbee.com/ColorPick/"},[
+			Cr.elm("img",{height:"50",align:"middle",src:"img/chrome.png",style:"padding-right:10px;"}),
+			Cr.elm("img",{height:"50",align:"middle",src:"img/win32.png",style:"padding-right:10px;"}),
+			Cr.elm("img",{height:"57",align:"middle",src:"img/osx.png"})
+		])
+	]),
+	Cr.elm("a",{href:"javascript:;",id:"expandBuyinfo",events:Cr.evt('click', toggle_next_sibling_display)},[
+		Cr.elm("img",{src:"img/expand.png",class:'expand-triangle'})
+	]),
+	Cr.elm("small",{style:"display:none;",class:"toInline"},[
+		Cr.txt("Your color-pick license not only works here;"),
+		Cr.elm("br"),
+		Cr.txt("The same license also registers the color-pick desktop applications"),
+		Cr.elm("br"),
+		Cr.txt("for both Windows and OSX. "),
+		Cr.elm("a",{target:"_blank",href:"http://vidsbee.com/ColorPick/"},[
+			Cr.txt("color-pick.com")
+		]),
+		Cr.txt(" or "),
+		Cr.elm("a",{target:"_blank",href:"http://vidsbee.com/ColorPick/"},[
+			Cr.txt("vidsbee.com/ColorPick")
+		]),
+		Cr.elm("br"),
+		Cr.elm("br"),
+		Cr.txt("A button to automatically install the license into this extension"),
+		Cr.elm("br"),
+		Cr.txt("will appear at the bottom of the page after purchase.")
+	]),
+
+
 	Cr.elm("h3",{style:"margin-bottom:7px;clear:both;"},[
 		Cr.txt("Alternative")
 	]),
@@ -333,19 +360,16 @@ Cr.elm("div",{id:"mainbox"},[
 ],document.body);
 	init();
 	gel('license_go').addEventListener('click', license_go);
-	
-	gel('expandReginfo').addEventListener('click', toggle_next_sibling_display);
-	//gel('expandBuyinfo').addEventListener('click', toggle_next_sibling_display);
 
 	if( isChrome && searchQuery.indexOf('enableChromePurchase') > -1 ){
 		getChromeInAppStatus();
 	}else{
 		gel('chrome-inapp-reg').style.display='none';
 	}
+
+	//setTimeout(function(){
+		document.body.style.opacity="1";
+	//},250);
 }
 
-document.addEventListener('DOMContentLoaded', function () {
-	createDOM();
-	
-	
-});
+window.addEventListener('load', createDOM);

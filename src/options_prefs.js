@@ -2,9 +2,9 @@ var storage = chrome.storage.sync || chrome.storage.local;
 var isWindows=navigator.platform.substr(0,3).toLowerCase()=='win';
 var isFirefox = window.navigator.userAgent.indexOf('Firefox') > -1;
 var isChrome = window.navigator.userAgent.indexOf('Chrome/') > -1;
-var pOptions=[];
-var pAdvOptions=[];
-var pSyncItems=[];
+var pOptions={};
+var pAdvOptions={};
+var pSyncItems={};
 
 //WARNIGN you have to set defaults two places for now...
 pOptions["pickEveryTime"]={def:isWindows?true:false,ind:0,img:'img/icon16.png'}; //default also set in popup.html

@@ -18,7 +18,7 @@ if(document.getElementById('autoinstall.colorpick.com') && rname != 'default_reg
 	var b=document.createElement('input');
 	b.setAttribute('type','button');
 	b.setAttribute('style','margin:20px 0px 20px 0px;');
-	b.setAttribute('value','Click here to Automatically Install this License into your Color Picker Chrome Extension');
+	b.setAttribute('value','Click here to Automatically Install this License into your Color Pick Chrome Extension');
 	destNode.appendChild(b);
 	b.addEventListener('click',clickedInstallKey);
 }
