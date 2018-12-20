@@ -75,13 +75,13 @@
       "message": "License may be in use on the maximum number of hosts.  License upgrade may resolve the issue... Launch upgrade webpage?"
    },
    "licenseComError": {
-      "message": "Problem communicating with license server.  Make sure your firewall is open on port 80 or contact your system administrator.  Please try again soon!"
+      "message": "Problem communicating with license server."
    },
-   "inappComError": {
-      "message": "Temporary problem with this payment method (Check your Internet connectivity), please try again later, try the buy license key method or contact the developer sam@vidsbee.com"
+   "licenseComFirewall": {
+      "message": "Make sure your firewall is open on port 80 or contact your system administrator."
    },
-   "inappPurchaseError": {
-      "message": "Unknown failure!  Check your Internet connectivity."
+   "pleaseTryAgainSoon": {
+      "message": "Please try again soon!"
    },
    "error": {
       "message": "Error"

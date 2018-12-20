@@ -103,7 +103,7 @@ function checkKey(){
 function VerifyHashToLicSrv(p_khash,p_kname){
 	var khash=p_khash;
 	var kname=p_kname;
-	
+	var suppress_err = suppress_connection_errors;
 	var xhr = getXMLhttpObject();
 	//console.log(request.url +' '+ params);
 	xhr.onreadystatechange=function(){if(xhr.readyState == 4){
@@ -114,10 +114,10 @@ function VerifyHashToLicSrv(p_khash,p_kname){
 					window.location = 'http://vidsbee.com/ColorPick/Upgrade?khash='+localStorage['reg_hash'];
 				}
 				gel('loading').style.display='none';
-			}else if(!suppress_connection_errors) keyResponse(false);
+			}else if(!suppress_err) keyResponse(false);
 		}else{
-			if(!suppress_connection_errors)
-				alert(chrome.i18n.getMessage('licenseComError'));
+			if(!suppress_err)
+				alert(chrome.i18n.getMessage('licenseComError') + ' ' + chrome.i18n.getMessage('licenseComFirewall') + ' ' + chrome.i18n.getMessage('pleaseTryAgainSoon'));
 			gel('loading').style.display='none';
 		}
 	}};
@@ -169,7 +169,7 @@ function chromeInapPurchaseSuccess(){
 	}));
 	localStorage['reg_chk']='true';
 	localStorage['reg_inapp']='true';
-	localStorage['reg_name']='Chrome Exclusive';
+	localStorage['reg_name']=localStorage['reg_name'] || 'Chrome Exclusive';
 	set_registered();
 	saveSyncItemsToChromeSyncStorage();
 }
@@ -185,20 +185,7 @@ function chromeInappBuyBegin(){
 }
 
 function getChromeInAppStatus(){
-	//var inAppArea = gel('chrome-inapp-reg');
 	var inAppBtnArea = gel('chrome-inapp');
-
-	if( searchQuery.indexOf('debug') > -1 ){
-		google.payments.inapp.getSkuDetails({
-			'parameters': {env: 'prod'},
-			success: function(resp){
-				console.log('getSkuDetails - resp', resp);
-			},
-			failure: function(resp){
-				console.log('getSkuDetails - failed', resp);
-			}
-		});
-	}
 
 	google.payments.inapp.getPurchases({
 		parameters: {env: 'prod'},
@@ -235,39 +222,45 @@ function getChromeInAppStatus(){
 		},
 		failure: function(resp){
 			if( searchQuery.indexOf('debug') > -1 ) console.log('inapp - check - failed', resp);
-			Cr.empty(inAppBtnArea);
-			inAppBtnArea.appendChild(Cr.elm('div', {
-					childNodes: [
-						Cr.txt('Purchase check failed.  You must sign into chrome to enable this feature.'),
-						Cr.elm('br'),
-						Cr.elm("a",{class:"pointer",events:Cr.evt('click', toggle_next_sibling_display)},[
-							Cr.elm("img",{src:"img/expand.png",class:'expand-triangle'}),
-							Cr.txt(' More Info'+nbsp)
-						]),
-						Cr.elm("ul",{style:"display:none;"},[
-							Cr.elm('li',{},[Cr.txt('Chrome does not support in-app purchases in all regions.')]),
-							Cr.elm('li',{},[
-								Cr.txt('Your firewall must allow Chrome to connect to Google Wallet.'),
-								Cr.elm("ul",{style:""},[
-									Cr.elm('li',{},[Cr.txt('This includes any firewalls present between your device and the Internet.')]),
-									Cr.elm('li',{},[Cr.txt('Allow all Google owned domains on port 80 and 443 (not all of them are obvious).')])
-									//Cr.elm('li',{},[Cr.txt('As of 2018 this includes port 80 of gvt1.com')])
-								])
-							]),
-							Cr.elm('li',{},[Cr.txt('This license is tied to a single user signed into chrome - for a more portable license that can be used for different users and platforms consider the full license below.')]),
-							Cr.elm('li',{},[Cr.txt('If you sign into chrome on a new computer you may have to re-visit this screen to activate your license there.')]),
-						]),
-					]
-			}));
+			showInappFailure();
 		}
 	});
+}
+
+function showInappFailure(){
+	var inAppBtnArea = gel('chrome-inapp');
+	Cr.empty(inAppBtnArea);
+	inAppBtnArea.appendChild(Cr.elm('div', {
+			childNodes: [
+				Cr.txt('Purchase check failed. You must sign into chrome to enable this feature.'),
+				Cr.elm('br'),
+				Cr.elm("a",{class:"pointer",events:Cr.evt('click', toggle_next_sibling_display)},[
+					Cr.elm("img",{src:"img/expand.png",class:'expand-triangle'}),
+					Cr.txt(' More Info'+nbsp)
+				]),
+				Cr.elm("ul",{style:"display:none;"},[
+					Cr.elm('li',{},[Cr.txt('After signing in then refresh this page.')]),
+					Cr.elm('li',{},[Cr.txt('Chrome does not support in-app purchases in all regions.')]),
+					Cr.elm('li',{},[
+						Cr.txt('Your firewall must allow Chrome to connect to Google Wallet.'),
+						Cr.elm("ul",{style:""},[
+							Cr.elm('li',{},[Cr.txt('This includes any firewalls present between your device and the Internet.')]),
+							Cr.elm('li',{},[Cr.txt('Allow all Google owned domains on port 80 and 443 (not all of them are obvious).')]),
+							Cr.elm('li',{},[Cr.txt(chrome.i18n.getMessage('licenseComFirewall'))])
+						])
+					]),
+					Cr.elm('li',{},[Cr.txt('This license is tied to a single user signed into chrome - for a more portable license that can be used for different users and platforms consider the full license below.')]),
+					Cr.elm('li',{},[Cr.txt('If you sign into chrome on a new computer you may have to re-visit this screen to activate your license there.')]),
+				]),
+			]
+	}));
 }
 
 function createDOM(){
 Cr.elm("div",{id:"mainbox"},[
 	Cr.elm("h2",{},[
-		Cr.elm("img",{src:"img/icon32.png",style:'width:32px;height:32px;',align:"bottom"}),
-		Cr.txt("ColorPick for Google Chrome"),
+		Cr.elm("img",{src:"img/icon32.png",style:'width:32px;height:32px;vertical-align:text-bottom;'}),
+		Cr.txt(" ColorPick for Google Chrome"),
 		Cr.elm("br"),
 		Cr.txt(" "),
 		Cr.elm("span",{class:"subh",style:"left:42px;"},[
@@ -280,11 +273,11 @@ Cr.elm("div",{id:"mainbox"},[
 			Cr.txt("Register Chrome Extension only")
 		]),
 		Cr.elm('div',{id:'chrome-inapp', childNodes:[
-			Cr.elm("img",{src:"img/loading.gif",id:"indicator"}),
+			Cr.elm("img",{src:"img/loading.gif",id:"indicator",title:"Checking in-app registration status.",event:['click', showInappFailure]}),
 		]})
 	]}),
 	Cr.elm("h3",{},[
-		Cr.txt("Enter your ColorPick License")
+		Cr.txt("Your ColorPick License")
 	]),
 	Cr.elm("div",{id:"license_status"},[
 		Cr.txt("Enter License")
@@ -296,18 +289,20 @@ Cr.elm("div",{id:"mainbox"},[
 		Cr.txt("License Key: "),
 		Cr.elm("input",{type:"text",id:"license_key"})
 	]),
-	Cr.elm("input",{type:"button",id:"license_go",value:"Register"}),
-	Cr.txt(" "),
-	Cr.elm("img",{src:"img/loading.gif",id:"loading"}),
-	Cr.elm("a",{href:"javascript:;",id:"expandReginfo",events:Cr.evt('click', toggle_next_sibling_display)},[
-		Cr.elm("img",{src:"img/expand.png",class:'expand-triangle'})
-	]),
-	Cr.elm("small",{style:"display:none;"},[
-		Cr.txt("License applies wherever else you sign into chrome or enter the same license."),
-		Cr.elm("br"),
-		Cr.txt("Upgrade your license; add & manage authorized hosts from the "),
-		Cr.elm("a",{target:"_blank",href:"http://vidsbee.com/ColorPick/Upgrade/",id:"examine"},[
-			Cr.txt("License Manager")
+	Cr.elm("div",{id:"regGo"},[
+		Cr.elm("img",{src:"img/loading.gif",id:"loading"}),
+		Cr.elm("input",{type:"button",id:"license_go",value:"Register"}),
+		Cr.txt(" "),
+		Cr.elm("a",{href:"javascript:;",id:"expandReginfo",events:Cr.evt('click', toggle_next_sibling_display)},[
+			Cr.elm("img",{src:"img/expand.png",class:'expand-triangle'})
+		]),
+		Cr.elm("small",{style:"display:none;"},[
+			Cr.txt("License applies wherever else you sign in or enter the same license."),
+			Cr.elm("br"),
+			Cr.txt("Upgrade your license; add & manage authorized hosts from the "),
+			Cr.elm("a",{target:"_blank",href:"http://vidsbee.com/ColorPick/Upgrade/",id:"examine"},[
+				Cr.txt("License Manager")
+			])
 		])
 	]),
 	Cr.elm("h3",{style:"margin-bottom:7px;"},[

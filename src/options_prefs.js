@@ -50,3 +50,16 @@ pSyncItems["reg_inapp"]={def:false};
 function formatColorValues(a,b,c,pcta,pctb,pctc){
 	return CSS3ColorFormat.replace('#1',a/*+(pcta?'%':'')*/).replace('#2',b+(pctb?'%':'')).replace('#3',c+(pctc?'%':''));
 }
+
+function navTo(ev, html){
+	chrome.runtime.sendMessage({goToOrVisitTab:html}, function(r){});
+	ev.preventDefault();
+}
+
+function navToReg(ev){
+	navTo(ev, 'register.html');
+}
+
+function navToOptions(ev){
+	navTo(ev, 'options.html');
+}

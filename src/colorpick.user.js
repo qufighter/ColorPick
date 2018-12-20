@@ -153,10 +153,7 @@ function setDisplay(){//Cr.elm
 			Cr.elm('div', {style:'text-shadow:white 1px 1px 2px;font-weight:bold;'}, [
 				Cr.elm('a', {
 					style: 'cursor:pointer;',
-					events:['click', function(ev){
-						chrome.runtime.sendMessage({goToOrVisitTab:'register.html'}, function(r){});
-						ev.preventDefault();
-					}],
+					events:['click', navToReg],
 					childNodes:[Cr.txt(chrome.i18n.getMessage('registerBannerLong'))]
 				})
 			], n);

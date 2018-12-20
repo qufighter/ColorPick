@@ -7,10 +7,10 @@ body{font-family:sans-serif;margin:20px;opacity:0;transition:linear 0.2s;font-si
 #regDiv input{
 	width:400px;
 }
-#license_go{
+#regGo{
 	position:relative;left:100px;
 }
-#loading{position:relative;left:100px;display:none;}
+#loading{position:absolute;left:-20px;top:5px;display:none;}
 .registered{color:#080;font-weight:bold;}
 .unregistered{color:#F00;font-weight:bold;}
 .rounded{

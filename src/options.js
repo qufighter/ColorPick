@@ -530,12 +530,23 @@ function showRegistrationStatus(){
 		document.getElementById('reg_status').className='unregistered';
 	}
 
+	var cotd = document.getElementById('cotd');
 	if(localStorage['shareClors']=='true'){
-		document.getElementById('cotd').style.display="block";
+		cotd.style.display="block";
+		createDailyColorViewer(cotd);
 		document.getElementById('ifcotd').src='http://vidzbigger.com/vcolors_ofday.php';
 	}else{
-		document.getElementById('cotd').style.display="none";
+		cotd.style.display="none";
 	}
+}
+
+function createDailyColorViewer(container){
+	if( container.childNodes.length ) return;
+	Cr.elm('div',{},[
+		Cr.txt(chrome.i18n.getMessage('colorOfDay')),
+		Cr.elm("br",{}),
+		Cr.elm("iframe",{id:"ifcotd",src:"about:blank",scrolling:"no"})
+	], container);
 }
 
 function createDOM(){
@@ -546,7 +557,7 @@ Cr.elm("div",{id:"mainbox"},[
 			Cr.txt(chrome.i18n.getMessage('extName'))
 		]),
 		Cr.elm("br",{}),
-		Cr.elm("a",{id:'register_link',href:"register.html"},[
+		Cr.elm("a",{id:'register_link',event:['click',navToReg],href:"register.html"},[
 			Cr.elm("span",{id:"reg_status"})
 		]),
 		Cr.elm("br",{}),
@@ -589,11 +600,7 @@ Cr.elm("div",{id:"mainbox"},[
 		Cr.txt(chrome.i18n.getMessage('showDefaults'))
 	]),
 	Cr.elm("span",{id:"status"}),
-	Cr.elm("div",{id:"cotd"},[
-		Cr.txt(chrome.i18n.getMessage('colorOfDay')),
-		Cr.elm("br",{}),
-		Cr.elm("iframe",{id:"ifcotd",src:"about:blank",scrolling:"no"})
-	]),
+	Cr.elm("div",{id:"cotd"},[]),
 	Cr.elm("a",{id:"license_link",href:"license.html?wide=1"},[
 		Cr.txt(chrome.i18n.getMessage('terms'))
 	]),

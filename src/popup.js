@@ -388,6 +388,10 @@ function scriptsInjectedResult(){
 		chrome.extension.getURL('img/error'+1+'.png');
 		// if they wait anyway, it could work....
 		chrome.tabs.executeScript(tabid, {file: "Cr.js"}, function(){
+			if(chrome.runtime.lastError){
+				console.log(chrome.runtime.lastError.message);
+				return;
+			}
 			chrome.tabs.executeScript(tabid, {file: "options_prefs.js"}, function(){
 				chrome.tabs.executeScript(tabid, {file: "colorpick.user.js"}, function(){
 					isScriptAlive=true;
@@ -703,7 +707,7 @@ Cr.elm("div",{},[
 		])
 	]),
 	Cr.elm("div",{id:"preview"},[
-		Cr.elm("a",{id:"unreg_msg",target:"_blank",href:"register.html",title:chrome.i18n.getMessage('buyRegisterTip')},[Cr.txt(chrome.i18n.getMessage('registerBanner'))]),
+		Cr.elm("a",{id:"unreg_msg",target:"_blank",href:"register.html",event:['click',navToReg],title:chrome.i18n.getMessage('buyRegisterTip')},[Cr.txt(chrome.i18n.getMessage('registerBanner'))]),
 		Cr.elm("span",{id:"timer_msg"},[]),
 		Cr.elm("a",{href:'#',id:'arr_u',class:'hilight mvarrow',name:38,event:['click',moveArrowBtn]},[Cr.txt(String.fromCharCode(9650))]),
 		Cr.elm("a",{href:'#',id:'arr_d',class:'hilight mvarrow',name:40,event:['click',moveArrowBtn]},[Cr.txt(String.fromCharCode(9660))]),
@@ -722,7 +726,7 @@ Cr.elm("div",{},[
 		Cr.elm("a",{href:"#",class:'hilight',title:chrome.i18n.getMessage('reSnapPage'),id:"resnap"},[
 			Cr.elm("img",{align:"top",src:"img/refresh.png"})
 		]),
-		Cr.elm("a",{target:"_blank",class:'hilight',href:"options.html",title:chrome.i18n.getMessage('configurationHelp'),id:"optsb"},[
+		Cr.elm("a",{target:"_blank",class:'hilight',href:"options.html",event:['click',navToOptions],title:chrome.i18n.getMessage('configurationHelp'),id:"optsb"},[
 			Cr.elm("img",{align:"top",src:"img/settings.png"})
 		]),
 		// Cr.elm("a",{target:"_blank",class:'hilight',href:"desktop_app.html",title:chrome.i18n.getMessage('getStandaloneApp')},[
