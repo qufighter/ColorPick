@@ -164,7 +164,7 @@ function chromeInapPurchaseSuccess(){
 	inAppBtnArea.appendChild(Cr.elm('div', {
 		class: 'note-bubble',
 		childNodes: [
-			Cr.txt('You have completed the in-app purchase to enable registered mode - thank you!  If the extension was not already in registered mode it will be placed into registered mode now.  Please refresh any other views to see the latest registration status.')
+			Cr.txt('You have completed the in-app purchase to enable registered mode - thank you!  If the extension was not already in registered mode it will be placed into registered mode now.  Please reload any other views to see the latest registration status.')
 		]
 	}));
 	localStorage['reg_chk']='true';
@@ -239,7 +239,7 @@ function showInappFailure(){
 					Cr.txt(' More Info'+nbsp)
 				]),
 				Cr.elm("ul",{style:"display:none;"},[
-					Cr.elm('li',{},[Cr.txt('After signing in then refresh this page.')]),
+					Cr.elm('li',{},[Cr.txt('After signing in then reload this page.')]),
 					Cr.elm('li',{},[Cr.txt('Chrome does not support in-app purchases in all regions.')]),
 					Cr.elm('li',{},[
 						Cr.txt('Your firewall must allow Chrome to connect to Google Wallet.'),
