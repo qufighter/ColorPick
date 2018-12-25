@@ -116,8 +116,21 @@ function VerifyHashToLicSrv(p_khash,p_kname){
 				gel('loading').style.display='none';
 			}else if(!suppress_err) keyResponse(false);
 		}else{
-			if(!suppress_err)
-				alert(chrome.i18n.getMessage('licenseComError') + ' ' + chrome.i18n.getMessage('licenseComFirewall') + ' ' + chrome.i18n.getMessage('pleaseTryAgainSoon'));
+			if(!suppress_err){
+				Cr.empty(gel('license_status')).appendChild(Cr.elm('div',{
+					class:'note-bubble',
+					childNodes:[
+						Cr.txt(chrome.i18n.getMessage('licenseComError') + ' ' + chrome.i18n.getMessage('licenseComFirewall') + ' ' + chrome.i18n.getMessage('pleaseTryAgainSoon')+' '),
+						Cr.elm('a', {
+							class: 'pointer',
+							event: Cr.evt('click', function(){window.location.reload();}),
+							childNodes:[
+								Cr.txt(chrome.i18n.getMessage('reLoad'))
+							]
+						})
+					]
+				}));
+			}
 			gel('loading').style.display='none';
 		}
 	}};

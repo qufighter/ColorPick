@@ -41,6 +41,9 @@
    "reSnapPage": {
       "message": "Refresh Picture of Page [r]"
    },
+   "reLoad": {
+      "message": "Reload"
+   },
    "configurationHelp": {
       "message": "Help & Options"
    },
@@ -81,7 +84,7 @@
       "message": "Make sure your firewall is open on port 80 or contact your system administrator."
    },
    "pleaseTryAgainSoon": {
-      "message": "Please try again soon!"
+      "message": "Please try again soon."
    },
    "error": {
       "message": "Error"

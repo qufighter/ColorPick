@@ -285,7 +285,16 @@ function currentSwatches(){
 			hsv: rgb2hsv(rgb.r,rgb.g,rgb.b)
 		});
 	}
-	if(colors.length<1)alert(chrome.i18n.getMessage('noSwatches'));
+	var exi=document.getElementById('pallete-help');
+	if(colors.length<1 && !exi){
+		swHld.appendChild(Cr.elm('div', {id: 'pallete-help',childNodes:[
+			Cr.txt(chrome.i18n.getMessage('noSwatches'))
+		]}));
+		var n=document.getElementById('showhist');
+		if(n.nextSibling.style.display!='block') toggle_next_sibling_display({target:n});
+	}else{
+		if(exi)exi.remove();
+	}
 	return colors;
 }
 
@@ -553,7 +562,7 @@ function createDOM(){
 Cr.elm("div",{id:"mainbox"},[
 	Cr.elm("h3",{},[
 		Cr.elm("img",{src:"img/icon48.png",id:"logo"}),
-		Cr.elm("a",{href:_ext_homepage,target:"_blank"},[
+		Cr.elm("a",{id:"exthometxt",href:_ext_homepage,target:"_blank"},[
 			Cr.txt(chrome.i18n.getMessage('extName'))
 		]),
 		Cr.elm("br",{}),
@@ -592,6 +601,7 @@ Cr.elm("div",{id:"mainbox"},[
 			Cr.txt(chrome.i18n.getMessage('clearSync'))
 		])
 	]),
+	Cr.elm('br'),
 	Cr.elm("button",{id:"bsave", class:"options-btn"},[
 		Cr.txt(chrome.i18n.getMessage('saveOptions'))
 	]),
