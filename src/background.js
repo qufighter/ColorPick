@@ -111,7 +111,7 @@ function(request, sender, sendResponse) {
 				xhr.send();
 			}
 			//store colors
-			localStorage['colorPickHistory']+="#"+curentHex;
+			localStorage['colorPickHistory']=(localStorage['colorPickHistory']||'')+"#"+curentHex;
 			//logs error when options is not showing... not sure of best way to prevent
 			chrome.runtime.sendMessage({historypush: true}, function(response) {
 					//console.log('disabled!');

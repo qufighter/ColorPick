@@ -341,10 +341,11 @@ function addSwatchEntry(hex){
 	],swHld);
 }
 
+var lastHistorySelection = null;
 function load_history(){
 	if(!document.getElementById('history'))return;
 	if(typeof(localStorage["colorPickHistory"])=='undefined')localStorage['colorPickHistory']="";
-	var hist=localStorage['colorPickHistory'].split("#");
+	var hist=localStorage['colorPickHistory'].replace(/^undefined/,'').split("#");
 	var div_history=document.getElementById('history');
 	var exiHisInner=document.getElementById('historyInner');
 	var heightToUse = exiHisInner ? exiHisInner.style.height : 'auto';
@@ -374,6 +375,9 @@ function load_history(){
 		var tc=ev.target.getAttribute('name');
 		if(tc){
 			addSwatchEntry(tc);
+			if( lastHistorySelection ) lastHistorySelection.classList.remove('last-selection');
+			lastHistorySelection = ev.target;
+			lastHistorySelection.classList.add('last-selection');
 			//prompt(chrome.i18n.getMessage('copycolorval')+':',tc,tc);
 		}
 	},false);

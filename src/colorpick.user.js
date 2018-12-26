@@ -477,17 +477,19 @@ function handleRendering(quick){
 
 	if(iconIsBitmap){
 		var browseIconWidth=(devicePixelRatio>1?38:19);
-		var browseIconHalfWidth = Math.floor(browseIconWidth*0.5);
-		//chrome.browserAction.setIcon({imageData:ictx.getImageData(startPoint-browseIconHalfWidth, startPoint-browseIconHalfWidth, browseIconWidth, browseIconWidth)});
-
+		var srcBrowseIconWidth=browseIconWidth;
+		if( webGlAvail && pixelatedPreview && allowWebGl ){
+			srcBrowseIconWidth*=2;
+		}
+		var browseIconHalfWidth = Math.floor(srcBrowseIconWidth*0.5);
 		var tmpCvs=document.createElement('canvas');
 		tmpCvs.width=browseIconWidth,tmpCvs.height=browseIconWidth;
 		var tctx=tmpCvs.getContext("2d");
-		tctx.drawImage(icvs,startPoint-browseIconHalfWidth, startPoint-browseIconHalfWidth, browseIconWidth, browseIconWidth,0,0,browseIconWidth,browseIconWidth);
+		
+		tctx.drawImage(icvs,startPoint-browseIconHalfWidth, startPoint-browseIconHalfWidth, srcBrowseIconWidth, srcBrowseIconWidth,0,0,browseIconWidth,browseIconWidth);
 		var pathData = {};
 		pathData[browseIconWidth]=tmpCvs.toDataURL();
 		chrome.runtime.sendMessage({browserIconMsg:true,path:(pathData)},function(){});
-		//chrome.browserAction.setIcon({path:pathData});//update icon (to be configurable)
 	}
 
 	if(showPreviewInContentS){
