@@ -259,7 +259,9 @@ function showInappFailure(){
 						Cr.elm("ul",{style:""},[
 							Cr.elm('li',{},[Cr.txt('This includes any firewalls present between your device and the Internet.')]),
 							Cr.elm('li',{},[Cr.txt('Allow all Google owned domains on port 80 and 443 (not all of them are obvious).')]),
-							Cr.elm('li',{},[Cr.txt(chrome.i18n.getMessage('licenseComFirewall'))])
+							Cr.elm('li',{},[Cr.txt(chrome.i18n.getMessage('licenseComFirewall'))]),
+							Cr.elm('li',{},[Cr.txt('You may need to restart chrome.')]),
+
 						])
 					]),
 					Cr.elm('li',{},[Cr.txt('This license is tied to a single user signed into chrome - for a more portable license that can be used for different users and platforms consider the full license below.')]),
@@ -361,15 +363,77 @@ Cr.elm("div",{id:"mainbox"},[
 
 
 	Cr.elm("h3",{style:"margin-bottom:7px;clear:both;"},[
-		Cr.txt("Alternative")
+		Cr.txt('*'),
+		Cr.elm('span', {style:'color:red'}, [Cr.txt(' NEW ')]),
+		Cr.txt('*'),
+		Cr.elm('span', {style:'color:green'}, [Cr.txt(' March ')]),
+		Cr.txt('*'),
+		Cr.elm('span', {style:'color:blue'}, [Cr.txt(' 2019 ')]),
+		Cr.txt('*'),
+		Cr.txt(" Mobile Platforms")
 	]),
-	Cr.txt("If you do not wish to purchase a license at this time,"),
-	Cr.elm("br"),
-	Cr.txt("you may still place ColorPick in registered mode by following the "),
-	Cr.elm("a",{id:"license_link",href:"license.html?wide=1"},[
-		Cr.txt("license agreement")
+	Cr.elm("small",{style:"",class:""},[
+		Cr.elm('div',{
+			id: 'phone-itself',
+			style:'border:5px solid black;border-radius:20px;max-width:510px;background-color:black;box-shadow:black 0px 0px 3px;padding: 0px 62px 0px 22px;position:relative;', 
+			childNodes:[
+				Cr.elm('div',{style:'position:absolute;top:50%;height:0;width:30px;right:15px;', childNodes:[
+					Cr.elm('div',{
+						style:'position:relative;border:2px solid white;border-radius:20px;height:29px;width:29px;top:-16px;',
+						event: ['click', function(){
+							var sh = gel('phone-itself');
+							sh.style.transition = '1s ease-out';
+							sh.style.transform = 'scale3d(0.8,0.8,1)';
+							setTimeout(function(){
+								sh.style.transform = 'scale3d(1.0,1.0,1)';
+
+							}, 1000);
+						}]
+					})
+				]}),
+				Cr.elm('div',{
+					id: 'screen-holder',
+					style:'background-color:#EEE;background:-webkit-linear-gradient(top, #FFF 0%,#EEE 50%,#EEE 100%);box-shadow:white 0px 0px 5px;min-height: 220px;padding:5px;border-radius:2px;', 
+					childNodes:[
+						Cr.txt('Independently licensed standalone apps now available for IOS and Android.'),
+						Cr.elm('br'),
+						Cr.elm('a', {style:'float:left;margin-right:10px;',target:"_blank",href:'http://vidsbee.com/ColorPick/Mobile'},[
+							Cr.elm('img',{src:'img/simulator.png',height:170})
+						]),
+						Cr.txt('  Details available at '),
+						Cr.elm('a', {target:"_blank",href:'http://vidsbee.com/ColorPick/Mobile'},[
+							Cr.txt("vidsbee.com/ColorPick/Mobile")
+						]),
+						Cr.txt('.'),
+						Cr.elm('br'),
+						Cr.elm('br'),
+						Cr.txt('Features:'),
+						Cr.elm('br'),
+						Cr.txt('View and save colors from any image on your device.'),
+						Cr.elm('br'),
+						Cr.txt('Challenge yourself to Mini-games and master hexadecimal!'),
+						Cr.elm('br'),
+						Cr.txt('Built from the ground up with SDL OpenGL.'),
+						Cr.elm('br'),
+						Cr.txt('More features and challenges will be added soon.'),
+						Cr.elm('br'),
+						Cr.txt('Support continued development, Buy the app today!')
+					]
+				})
+			]
+		})
 	]),
-	Cr.txt(".")
+
+	// Cr.elm("h3",{style:"margin-bottom:7px;clear:both;"},[
+	// 	Cr.txt("Alternative")
+	// ]),
+	// Cr.txt("If you do not wish to purchase a license at this time,"),
+	// Cr.elm("br"),
+	// Cr.txt("you may still place this ColorPick extension in registered mode by following the "),
+	// Cr.elm("a",{id:"license_link",href:"license.html?wide=1"},[
+	// 	Cr.txt("license agreement")
+	// ]),
+	// Cr.txt(".")
 ],document.body);
 	init();
 	gel('license_go').addEventListener('click', license_go);
