@@ -1,7 +1,7 @@
 var elmid1='color_pick_click_box',elmid2='ChromeExtension:Color-Pick.com';
 if(typeof(exitAndDetach)=='function')exitAndDetach();
 function _ge(n){return document.getElementById(n);}
-var n=false,c=false,hex='F00BAF',lasthex='',rgb=null;hsv=null;scal=1,ex=0,ey=0,isEnabled=false,isLocked=false,hexIsLowerCase=false,borderValue='1px solid black',blankgif='',msg_bg_unavail=chrome.i18n.getMessage('bgPageUnavailable');
+var n=false,c=false,hex='F00BAF',lasthex='',rgb=null;hsv=null;scal=1,ex=0,ey=0,isEnabled=false,isLocked=false,hexIsLowerCase=false,hexHasHash=false,borderValue='1px solid black',blankgif='',msg_bg_unavail=chrome.i18n.getMessage('bgPageUnavailable');
 var isUpdating=false,lastTimeout=0,lx=0,ly=0;
 var CSS3ColorFormat='(#1,#2,#3)';
 var opts={};
@@ -109,8 +109,8 @@ function setPixelPreview(zoom,hxe,lhex){
 		Cr.elm('div',{id:'previewArea'},[
 			icvs,
 			Cr.elm('br'),
-			EnableHex?Cr.txt('#'):0,
-			Cr.elm('input',{type:'text',size:7,style:'max-width:75px;font-size:10pt;border:'+borderValue,id:'cphexvl',value:hex,event:['mouseover',selectTargElm]}),
+			(EnableHex && !hexHasHash)?Cr.txt('#'):0,
+			Cr.elm('input',{type:'text',size:8,style:'max-width:75px;font-size:10pt;border:'+borderValue,id:'cphexvl',value:(hexHasHash?'#':'')+hex,event:['mouseover',selectTargElm]}),
 			//Cr.elm('input',{type:'image',src:chrome.extension.getURL('img/close.png'),alt:'Close',title:chrome.i18n.getMessage('closeAndExit'),id:'exitbtn',event:['click',dissableColorPickerFromHere,true]}),
 			(showPreviousClr&&lhex!='none'?Cr.elm('input',{type:'text',size:1,style:'max-width:50px;font-size:10pt;background-color:#'+lhex+';border:'+borderValue+';border-left:none;',value:''}):0),
 			(ShowRGBHSL&&EnableRGB&&rgb?Cr.elm('input',{type:'text',style:'max-width:150px;display:block;',value:'rgb'+formatColorValues(rgb.r,rgb.g,rgb.b),id:'cprgbvl',event:['mouseover',selectTargElm]}):0),
@@ -139,8 +139,8 @@ var goodHexCounter=0;
 function setDisplay(){//Cr.elm
 	emptyNode(n);
 	Cr.elm('div',{},[
-		EnableHex?Cr.txt('#'):0,
-		Cr.elm('input',{type:'text',size:7,style:'max-width:75px;font-size:10pt;border:'+borderValue,id:'cphexvl',value:hex,event:['mouseover',selectTargElm]}),
+		(EnableHex && !hexHasHash)?Cr.txt('#'):0,
+		Cr.elm('input',{type:'text',size:8,style:'max-width:75px;font-size:10pt;border:'+borderValue,id:'cphexvl',value:(hexHasHash?'#':'')+hex,event:['mouseover',selectTargElm]}),
 		Cr.elm('input',{type:'image',style:'width:20px;height:20px;min-width:20px;min-height:20px;box-sizing:unset;box-shadow:none;background:unset;padding:8px;',src:chrome.extension.getURL('img/close.png'),alt:'Close',title:chrome.i18n.getMessage('closeAndExit')+' [esc]',id:'exitbtn',event:['click',dissableColorPickerFromHere,true]}),
 		(ShowRGBHSL&&EnableRGB&&rgb?Cr.elm('input',{type:'text',style:'max-width:150px;display:block;',value:'rgb'+formatColorValues(rgb.r,rgb.g,rgb.b),id:'cprgbvl',event:['mouseover',selectTargElm]}):0),
 		(ShowRGBHSL&&EnableHSL&&hsv?Cr.elm('input',{type:'text',style:'max-width:150px;display:block;',value:'hsl'+formatColorValues(hsv.h,hsv.s,hsv.v,0,1,1),id:'cphslvl',event:['mouseover',selectTargElm]}):0)

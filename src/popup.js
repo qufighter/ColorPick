@@ -3,7 +3,7 @@ var tabid=0;
 var isScriptAlive=false,scriptAliveTimeout=1,reExecutedNeedlessly=false;
 var cpw=165,cph=303;
 //pref variables should be created dynamicaly
-var borderValue='1px solid grey',EnableRGB=true,EnableHSL=true,useCSSValues=true,usePrevColorBG=false,showPreviousClr=true,pickEveryTime=(isWindows?true:false),bbackgroundColor='white',hexIsLowerCase=false;
+var borderValue='1px solid grey',EnableRGB=true,EnableHSL=true,useCSSValues=true,usePrevColorBG=false,showPreviousClr=true,pickEveryTime=(isWindows?true:false),bbackgroundColor='white',hexHasHash=false,hexIsLowerCase=false;
 var cpScaleOffset=(isWindows?16:0);
 var isPicking=false,keyInputMode=false;
 var CSS3ColorFormat=(localStorage['CSS3ColorFormat']||pAdvOptions["CSS3ColorFormat"].def);
@@ -128,8 +128,9 @@ function rgb2hsv () {
 
 function updateCurrentColor(r,g,b,justFields,omitId){
 	var hex=RGBtoHex(r,g,b);
+	document.getElementById('hex-prefix').style.display=(hexHasHash?'none':'inline');
 	document.getElementById('hexpre').style.backgroundColor='#'+hex;
-	if(omitId!='hex')document.getElementById('hex').value=hex;
+	if(omitId!='hex')document.getElementById('hex').value=(hexHasHash?'#':'')+hex;
 	if(omitId!='cr')document.getElementById('cr').value=r;
 	if(omitId!='cg')document.getElementById('cg').value=g;
 	if(omitId!='cb')document.getElementById('cb').value=b;
@@ -279,6 +280,7 @@ function iin(){
 	if(typeof(localStorage["bbackgroundColor"])!='undefined')bbackgroundColor = (localStorage["bbackgroundColor"]);
 	if(typeof(localStorage["showPreviousClr"])!='undefined')showPreviousClr = ((localStorage["showPreviousClr"]=='true')?true:false);
 	if(typeof(localStorage["hexIsLowerCase"])!='undefined')hexIsLowerCase = ((localStorage["hexIsLowerCase"]=='true')?true:false);
+	if(typeof(localStorage["hexHasHash"])!='undefined')hexHasHash = ((localStorage["hexHasHash"]=='true')?true:false);
 
 	setPreviewSRC(chrome.extension.getURL('img/default.png'),true);
 
@@ -353,8 +355,12 @@ function showLoadingTimer(){
 		Cr.empty(timer);
 		var curTime = (new Date()).getTime();
 		var elapsedS = Math.floor((curTime - startTime) / 1000);
-		timer.appendChild(Cr.txt(':'+elapsedS));
-		setTimeout(showLoadingTimer, 250);
+		if( elapsedS <= 8 ){
+			timer.appendChild(Cr.txt(':'+elapsedS));
+			setTimeout(showLoadingTimer, 250);
+		}else{
+			timer.appendChild(Cr.txt('sorry, reload'));
+		}
 	}
 }
 
@@ -674,7 +680,8 @@ Cr.elm("div",{},[
 		Cr.elm("img",{align:'top',src:chrome.extension.getURL('img/close.png')})
 	]),
 	Cr.elm("span",{id:'hexrow'},[
-		Cr.txt("#"), Cr.elm("input",{type:"text",spellcheck:"false",id:"hex",size:"6"})
+		Cr.elm('span',{id:'hex-prefix'},[Cr.txt("#")]),
+		Cr.elm("input",{type:"text",spellcheck:"false",id:"hex",size:"8"})
 	]),
 	Cr.elm("a",{id:"hidemin",href:"#",class:'hilight',title:chrome.i18n.getMessage('hideMinimize')},[Cr.txt("_-")]),
 	Cr.elm("br",{}),

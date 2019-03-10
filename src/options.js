@@ -303,7 +303,7 @@ function sortSwatches(){
 	var colors = currentSwatches();
 	//sort
 	colors.sort(function(a,b){
-		return a.hsl.h - b.hsv.h || a.hsl.s - b.hsv.s  || a.hsv.v - b.hsv.v;
+		return a.hsl.h - b.hsl.h || a.hsl.s - b.hsl.s  || a.hsv.v - b.hsv.v;
 	});
 	//append new order
 	for( var c=0,cl=colors.length; c<cl; c++){

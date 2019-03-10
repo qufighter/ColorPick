@@ -155,8 +155,8 @@
    "hexIsLowerCase": {
       "message": "Lower case hexadecimal values"
    },
-   "hexIsHidden": {
-      "message": "Lower case hexadecimal values"
+   "hexHasHash": {
+      "message": "Prefix hex value with #"
    },
    "hasAgreedToLicense": {
       "message": "Has agreed to Terms of Use"

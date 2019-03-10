@@ -193,7 +193,7 @@ function createDOM(){
 		dest.appendChild(Cr.elm('a',{
 			style:'margin:10px 0;display:block;',
 			href:path+'#'+allHex.join(','),
-			title:'A fragment based URL is most secure type, although it may still be shared. Fragments are not normally sent to the server when visiting in web browser.'
+			title:'A fragment based URL is most secure type, although it may still be shared. Fragments are not normally sent to the server when visiting in web browser. \n\nBe wary some URL shorteners may omit the hash leading your colors to be lost - so test your links!'
 		},[Cr.txt('Fragment URL')]));
 	}
 

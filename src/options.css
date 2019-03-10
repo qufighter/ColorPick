@@ -13,7 +13,7 @@ label{padding:5px 5px 5px 5px;}
 label:hover{background-color:#DDD;}
 .toggleOpts{padding:5px 5px 5px 5px;display:block;width:400px;color:black;font-size:16px;font-weight:bold;}
 .toggleOpts:hover{background-color:#DDD;border-top-right-radius: 8px;border-bottom-left-radius: 8px;;}
-#history{position:relative;margin-bottom:15px;display:none;background-color:white;}
+#history{position:relative;margin-bottom:15px;display:none;background-color:white;box-shadow: 0px 0px 5px 2px white;}
 #historyInner{overflow-y:auto;overflow-x:hidden;}
 .clickSwatch{width:22px;height:22px;display:inline-block;cursor:copy;}
 .clickSwatch.last-selection{box-shadow: black 0px 0px 1px 1px inset;}
