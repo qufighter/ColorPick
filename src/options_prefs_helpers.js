@@ -3,7 +3,10 @@
 function sendReloadPrefs(cb){
 	var cbf=cb;
 	if(typeof(cbf)!='function')cbf=function(){};
-	chrome.runtime.sendMessage({reloadprefs: true}, function(response) {cbf()});
+	chrome.runtime.sendMessage({reloadprefs: true}, function(response) {
+		if(chrome.runtime.lastError)console.log('sendReloadPrefs error (if there are active views we tell them to reload the preferences which may have changed): '+chrome.runtime.lastError.message);
+		cbf()
+	});
 }
 
 function chromeStorageSaveALocalStor(tosave){

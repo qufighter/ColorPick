@@ -114,7 +114,7 @@ function(request, sender, sendResponse) {
 			localStorage['colorPickHistory']=(localStorage['colorPickHistory']||'')+"#"+curentHex;
 			//logs error when options is not showing... not sure of best way to prevent
 			chrome.runtime.sendMessage({historypush: true}, function(response) {
-					//console.log('disabled!');
+				if(chrome.runtime.lastError)console.log('historypush error: '+chrome.runtime.lastError.message);
 			});
 			if(autocopyhex&&autocopyhex!='false'){
 				var n=document.createElement('input');document.body.appendChild(n);

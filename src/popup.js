@@ -371,6 +371,7 @@ function setupInjectScripts(){
 	reExecutedNeedlessly=false;
 	try{
 		chrome.tabs.sendMessage(tabid, {testAlive:true}, function(response) {
+			if(chrome.runtime.lastError)console.log('Content scripts inactive, was the extension reloaded?: '+chrome.runtime.lastError.message);
 			if(response&&response.result){
 				if(scriptAliveTimeout==0){
 					setPreviewSRC(chrome.extension.getURL('img/error'+1+'.png'),true);
