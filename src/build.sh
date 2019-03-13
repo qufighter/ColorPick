@@ -43,6 +43,9 @@ echo $vers
 
 cd build
 
+cat manifest.json | grep -v browser_specific_settings > manifest2.json
+mv -f manifest2.json manifest.json
+
 find . -name ".DS_Store" -delete
 
 echo "Creating zip"
