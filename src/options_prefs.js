@@ -52,9 +52,22 @@ function formatColorValues(a,b,c,pcta,pctb,pctc){
 	return CSS3ColorFormat.replace('#1',a/*+(pcta?'%':'')*/).replace('#2',b+(pctb?'%':'')).replace('#3',c+(pctc?'%':''));
 }
 
+// this helper avoids new tabs when they already exist...
 function navTo(ev, html){
 	chrome.runtime.sendMessage({goToOrVisitTab:html}, function(r){});
 	ev.preventDefault();
+}
+
+function navToHelp(ev){
+	navTo(ev, 'help.html');
+}
+
+function navToDesktop(ev){
+	navTo(ev, 'desktop_app.html');
+}
+
+function navToMobile(ev){
+	navTo(ev, 'mobile_app.html');
 }
 
 function navToReg(ev){

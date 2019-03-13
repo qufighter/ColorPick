@@ -231,7 +231,10 @@
       "message": "Terms of Use"
    },
    "desktopapp": {
-      "message": "Desktop Color Pick App"
+      "message": "Desktop ColorPick App"
+   },
+   "mobileapp": {
+      "message": "Mobile ColorPick App"
    },
    "help": {
       "message": "Help/Info"

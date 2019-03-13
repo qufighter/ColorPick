@@ -619,11 +619,18 @@ Cr.elm("div",{id:"mainbox"},[
 		Cr.txt(chrome.i18n.getMessage('terms'))
 	]),
 	Cr.txt(" | "),
-	Cr.elm("a",{target:"_blank",href:"desktop_app.html"},[
+	Cr.elm("a",{target:"_blank",href:"desktop_app.html",event:['click', navToDesktop]},[
+		Cr.txt('\uD83D\uDDA5 '),
 		Cr.txt(chrome.i18n.getMessage('desktopapp'))
 	]),
 	Cr.txt(" | "),
-	Cr.elm("a",{target:"_blank",href:"help.html"},[
+	Cr.elm("a",{target:"_blank",href:"mobile_app.html",event:['click', navToMobile]},[
+		Cr.txt('\uD83D\uDCF1 '),
+		Cr.txt(chrome.i18n.getMessage('mobileapp'))
+	]),
+	Cr.txt(" | "),
+	Cr.elm("a",{target:"_blank",href:"help.html",event:['click', navToHelp]},[
+		Cr.elm('span',{style:'color:#444;'},[Cr.txt('\uFFFD ')]),
 		Cr.txt(chrome.i18n.getMessage('help'))
 	]),
 	Cr.elm("br",{}),

@@ -735,8 +735,13 @@ Cr.elm("div",{},[
 			Cr.elm("img",{align:"top",src:"img/refresh.png"})
 		]),
 		Cr.elm("a",{target:"_blank",class:'hilight',href:"options.html",event:['click',navToOptions],title:chrome.i18n.getMessage('configurationHelp'),id:"optsb"},[
-			Cr.elm("img",{align:"top",src:"img/settings.png"})
+			Cr.elm("img",{align:"top",style:'position:relative;top:0.5px;',src:"img/settings.png"})
 		]),
+
+		(!localStorage["hideMobilePromo"]?(Cr.elm("a",{target:"_blank",class:'hilight',href:"mobile_app.html",event:['click',navToMobile],title:chrome.i18n.getMessage('getStandaloneApp'),id:"mobileapp"},[
+			Cr.txt('\uD83D\uDCF1')
+		])):0),
+
 		// Cr.elm("a",{target:"_blank",class:'hilight',href:"desktop_app.html",title:chrome.i18n.getMessage('getStandaloneApp')},[
 		// 	Cr.elm("img",{align:"top",id:"plat_prev",src:"img/ico_win.png",style:"display:none;"})
 		// ]),

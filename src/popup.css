@@ -16,8 +16,8 @@ a.mvarrow{position:absolute;color:black;text-shadow:0px 0px 5px white;display:no
 #pres{position:relative;width:150px;height:36px;border:1px solid grey;z-index:1;top:-1px;}
 #ohexpre{z-index:0;position:absolute;left:0px;top:0px;width:150px;min-height:36px;}
 #hexpre{z-index:9999;position:absolute;left:0px;top:0px;width:75px;min-height:36px;cursor:url(img/icon16.png) 8 8,hand;}
-#ctrls{margin-top:2px;z-index:-1}
-#ctrls a{margin-right:2px;}
+#ctrls{margin:-3px 0 0 -2px;z-index:-1;}
+#ctrls a{margin-right:2px;display:inline-block;vertical-align: top;}
 #unreg_msg{display:none;position:absolute;bottom:0;left:0;width:75;text-align:left;color:blue;font-weight:bold;text-shadow:white 1px 1px 1px;padding:5px 3px;}
 #timer_msg{position:absolute;bottom:0;right:0;width:75;text-align:left;color:red;font-weight:bold;text-shadow:white 1px 1px 1px;padding:5px 3px;}
 .btnActive{border:1px solid #FFB923;}

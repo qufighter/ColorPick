@@ -282,7 +282,7 @@ Cr.elm("div",{id:"mainbox"},[
 			Cr.ent("&copy; Vidsbee.com by Sam Larison")
 		])
 	]),
-	Cr.txt("ColorPick is an Amazing Eye Dropper that allows precise selection of color values through it's one-of-a-kind zoomed preview!"),
+	Cr.txt("ColorPick is an Amazing Eyedropper tool that allows precise selection of color values through it's one-of-a-kind zoomed preview!"),
 	Cr.elm('div',{id:'chrome-inapp-reg', childNodes:[
 		Cr.elm("h3",{},[
 			Cr.txt("Register Chrome Extension only")
@@ -373,55 +373,7 @@ Cr.elm("div",{id:"mainbox"},[
 		Cr.txt(" Mobile Platforms")
 	]),
 	Cr.elm("small",{style:"",class:""},[
-		Cr.elm('div',{
-			id: 'phone-itself',
-			style:'border:5px solid black;border-radius:20px;max-width:510px;background-color:black;box-shadow:black 0px 0px 3px;padding: 0px 62px 0px 22px;position:relative;', 
-			childNodes:[
-				Cr.elm('div',{style:'position:absolute;top:50%;height:0;width:30px;right:15px;', childNodes:[
-					Cr.elm('div',{
-						style:'position:relative;border:2px solid white;border-radius:20px;height:29px;width:29px;top:-16px;',
-						event: ['click', function(){
-							var sh = gel('phone-itself');
-							sh.style.transition = '1s ease-out';
-							sh.style.transform = 'scale3d(0.8,0.8,1)';
-							setTimeout(function(){
-								sh.style.transform = 'scale3d(1.0,1.0,1)';
-
-							}, 1000);
-						}]
-					})
-				]}),
-				Cr.elm('div',{
-					id: 'screen-holder',
-					style:'background-color:#EEE;background:-webkit-linear-gradient(top, #FFF 0%,#EEE 50%,#EEE 100%);box-shadow:white 0px 0px 5px;min-height: 220px;padding:5px;border-radius:2px;', 
-					childNodes:[
-						Cr.txt('Independently licensed standalone apps now available for IOS and Android.'),
-						Cr.elm('br'),
-						Cr.elm('a', {style:'float:left;margin-right:10px;',target:"_blank",href:'http://vidsbee.com/ColorPick/Mobile'},[
-							Cr.elm('img',{src:'img/simulator.png',height:170})
-						]),
-						Cr.txt('  Details available at '),
-						Cr.elm('a', {target:"_blank",href:'http://vidsbee.com/ColorPick/Mobile'},[
-							Cr.txt("vidsbee.com/ColorPick/Mobile")
-						]),
-						Cr.txt('.'),
-						Cr.elm('br'),
-						Cr.elm('br'),
-						Cr.txt('Features:'),
-						Cr.elm('br'),
-						Cr.txt('View and save colors from any image on your device.'),
-						Cr.elm('br'),
-						Cr.txt('Challenge yourself to Mini-games and master hexadecimal!'),
-						Cr.elm('br'),
-						Cr.txt('Built from the ground up with SDL OpenGL.'),
-						Cr.elm('br'),
-						Cr.txt('More features and challenges will be added soon.'),
-						Cr.elm('br'),
-						Cr.txt('Support continued development, Buy the app today!')
-					]
-				})
-			]
-		})
+		createPhoneDiv()
 	]),
 
 	// Cr.elm("h3",{style:"margin-bottom:7px;clear:both;"},[
