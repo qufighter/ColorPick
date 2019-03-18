@@ -106,11 +106,14 @@ function save_options() {
   sendReloadPrefs();
 }
 
-function borderStyle(boolz, element){
+var textForWas = chrome.i18n.getMessage('was');
+
+function borderStyle(was, boolz, element){
 	var label = element.closest('label');
 	if(boolz){
 		label.classList.add('changed');
 		label.style.border='1px solid blue';
+		label.title=textForWas+': '+was;
 	}else{
 		label.classList.remove('changed');
 		label.style.border='';
@@ -120,10 +123,10 @@ function borderStyle(boolz, element){
 
 function show_default_option(element, defaultValue){
 	if(typeof(defaultValue)=='boolean'){
-		borderStyle(element.checked != defaultValue, element);
+		borderStyle(element.checked, element.checked != defaultValue, element);
 		element.checked = defaultValue;
 	}else{
-		borderStyle(element.value != defaultValue, element);
+		borderStyle(element.value, element.value != defaultValue, element);
 		element.value = defaultValue;
 	}
 }

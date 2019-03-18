@@ -98,6 +98,9 @@
    "loadsyncOptions": {
       "message": "Sync Storage options have been loaded and saved."
    },
+   "was": {
+      "message": "Was"
+   },
    "on": {
       "message": "On"
    },
