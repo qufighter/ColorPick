@@ -52,6 +52,7 @@ function save_options() {
   	var i;
 
   	for(i in pOptions){
+  		document.getElementById(i).closest('label').style.border='';
   		if(typeof(pOptions[i].def)=='boolean')
   			localStorage[i] = document.getElementById(i).checked;
   		else
@@ -60,11 +61,14 @@ function save_options() {
 	
 	
 	for(i in pAdvOptions){
+  		document.getElementById(i).closest('label').style.border='';
   		if(typeof(pAdvOptions[i].def)=='boolean')
   			localStorage[i] = document.getElementById(i).checked;
   		else
   			localStorage[i] = document.getElementById(i).value;
   	}
+
+
 	//localStorage["hqthumbs"] = document.getElementById("hqthumbs").checked;
 	//localStorage["showCurrentTab"] = document.getElementById("showCurrentTab").checked;
 	//localStorage["maxhistory"] = document.getElementById("maxhistory").value;
@@ -102,20 +106,36 @@ function save_options() {
   sendReloadPrefs();
 }
 
+function borderStyle(boolz, element){
+	var label = element.closest('label');
+	if(boolz){
+		label.classList.add('changed');
+		label.style.border='1px solid blue';
+	}else{
+		label.classList.remove('changed');
+		label.style.border='';
+	}
+	return boolz;
+}
+
+function show_default_option(element, defaultValue){
+	if(typeof(defaultValue)=='boolean'){
+		borderStyle(element.checked != defaultValue, element);
+		element.checked = defaultValue;
+	}else{
+		borderStyle(element.value != defaultValue, element);
+		element.value = defaultValue;
+	}
+}
+
 function reset_options() {
 	var i;
 	for(i in pOptions){
-		if(typeof(pOptions[i].def)=='boolean')
-			document.getElementById(i).checked = pOptions[i].def;
-		else
-			document.getElementById(i).value = pOptions[i].def;
+		show_default_option(document.getElementById(i), pOptions[i].def)
 	}
 	
 	for(i in pAdvOptions){
-		if(typeof(pAdvOptions[i].def)=='boolean')
-			document.getElementById(i).checked = pAdvOptions[i].def;
-		else
-			document.getElementById(i).value = pAdvOptions[i].def;
+		show_default_option(document.getElementById(i), pAdvOptions[i].def);
 	}
 	
 	var status = document.getElementById("status");

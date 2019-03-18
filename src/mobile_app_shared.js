@@ -23,7 +23,7 @@ function createPhoneDiv(){
 			]}),
 			Cr.elm('div',{
 				id: 'screen-holder',
-				style:'background-color:#EEE;background:-webkit-linear-gradient(top, #FFF 0%,#EEE 50%,#EEE 100%);box-shadow:white 0px 0px 5px;min-height: 220px;padding:5px;border-radius:2px;', 
+				style:'background-color:#EEE;background:-webkit-linear-gradient(top,#FFF 0%,#EEE 50%,#EEE 100%);box-shadow:white 0px 0px 5px;min-height: 220px;padding:5px;border-radius:2px;user-select:none;',
 				childNodes:[
 					Cr.txt('Independently licensed app now available for IOS and Android.'),
 					Cr.elm('br'),
