@@ -197,9 +197,11 @@ function chromeInappBuyBegin(){
 
 }
 
+var chromeStatusCounter=0;
+
 function getChromeInAppStatus(){
 	var inAppBtnArea = gel('chrome-inapp');
-
+	chromeStatusCounter++; // second time we should avoid showing the buy button alone...
 	google.payments.inapp.getPurchases({
 		parameters: {env: 'prod'},
 		success: function(resp){
@@ -218,7 +220,7 @@ function getChromeInAppStatus(){
 				inAppBtnArea.appendChild(Cr.elm('span', {
 					style: Cr.css({
 						color: "white",
-					    'font-size': '16px',
+						'font-size': '16px',
 						'background-color': '#6799CC',
 						'box-shadow': 'black 1px 1px 1px',
 						'border-radius': '4px',
@@ -231,6 +233,27 @@ function getChromeInAppStatus(){
 						Cr.txt('Buy License')
 					]
 				}));
+
+
+				if( chromeStatusCounter > 1 ){
+					// means the user may have already made a purchase.... but it has not yet charged their card
+					inAppBtnArea.appendChild(Cr.elm('div', {
+						childNodes: [
+							Cr.elm('br'),
+							Cr.elm("a",{class:"pointer",events:Cr.evt('click', toggle_next_sibling_display)},[
+								Cr.elm("img",{src:"img/expand.png",class:'expand-triangle'}),
+								Cr.txt(' Help'+nbsp)
+							]),
+							Cr.elm("ul",{style:"display:none;"},[
+								getSingleuserListItem(),
+								getNewSignInListItem(),
+								getJustPurchasedListItem()
+							])
+						]
+					}));
+				}
+
+
 			}
 		},
 		failure: function(resp){
@@ -264,11 +287,24 @@ function showInappFailure(){
 
 						])
 					]),
-					Cr.elm('li',{},[Cr.txt('This license is tied to a single user signed into chrome - for a more portable license that can be used for different users and platforms consider the full license below.')]),
-					Cr.elm('li',{},[Cr.txt('If you sign into chrome on a new computer you may have to re-visit this screen to activate your license there.')]),
-				]),
+					getSingleuserListItem(),
+					getNewSignInListItem(),
+					getJustPurchasedListItem()
+				])
 			]
 	}));
+}
+
+function getSingleuserListItem(){
+	return Cr.elm('li',{},[Cr.txt('This license is tied to a single user signed into chrome - for a more portable license that can be used for different users and platforms consider the full license below.')]);
+}
+
+function getNewSignInListItem(){
+	return Cr.elm('li',{},[Cr.txt('If you sign into chrome on a new computer you may have to re-visit this screen to activate your license there.')]);
+}
+
+function getJustPurchasedListItem(){
+	return Cr.elm('li',{},[Cr.txt('If you just made the purchase and have not seen the "completed" message here, check Google Wallet and revisit this page once the purchase is marked as charged.')]);
 }
 
 function createDOM(){
