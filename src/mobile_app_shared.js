@@ -25,11 +25,20 @@ function createPhoneDiv(){
 				id: 'screen-holder',
 				style:'background-color:#EEE;background:-webkit-linear-gradient(top,#FFF 0%,#EEE 50%,#EEE 100%);box-shadow:white 0px 0px 5px;min-height: 220px;padding:5px;border-radius:2px;user-select:none;',
 				childNodes:[
-					Cr.txt('Independently licensed app now available for IOS and Android.'),
-					Cr.elm('br'),
+					//Cr.txt('Independently licensed app now available for IOS and Android.'),
+					//Cr.elm('br'),
+					Cr.elm('strong',{style:'color:#333;display:block;margin-bottom:0.3em;'},[
+						Cr.elm('span',{style:'font-family:monospace'},[Cr.txt('BASIC ')]),
+						Cr.txt('version now available for FREE')
+					]),
 					Cr.elm('a', {style:'float:left;margin-right:10px;',target:"_blank",href:'http://vidsbee.com/ColorPick/Mobile'},[
 						Cr.elm('img',{src:'img/simulator.png',height:240})
 					]),
+					Cr.elm('strong',{style:'font-size:16px;'},[
+						Cr.txt('ColorPick: Eyedropper')
+					]),
+					Cr.elm('br'),
+
 					Cr.txt('  Details available at '),
 					Cr.elm('a', {target:"_blank",href:'http://vidsbee.com/ColorPick/Mobile'},[
 						Cr.txt("vidsbee.com/ColorPick/Mobile")
@@ -43,17 +52,15 @@ function createPhoneDiv(){
 					Cr.elm('a', {href:"https://play.google.com/store/apps/details?id=com.vidsbee.colorpicksdl&utm_source=chrome-ext&utm_campaign=web&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1", style:"display:inline-block;overflow:hidden;background:url(img/PlayStore.png) no-repeat;width:135px;height:40px;background-position: -10px -10px; background-size: 113%;"}),
 
 					Cr.elm('br'),
-					Cr.txt('Features:'),
+					//Cr.txt('Features:'),
 					Cr.elm('br'),
 					Cr.txt('View and save colors from any image on your device.'),
 					Cr.elm('br'),
 					Cr.txt('Challenge yourself to Mini-games and master hexadecimal!'),
 					Cr.elm('br'),
-					Cr.txt('Built from the ground up with SDL OpenGL 3d graphics.'),
+					Cr.txt('SDL OpenGL 3d graphics.'),
 					Cr.elm('br'),
-					Cr.txt('More features and challenges will be added soon.'),
-					Cr.elm('br'),
-					Cr.txt('Support continued development, Buy the app today!')
+					Cr.txt('Additional feature schedule available.'),
 				]
 			})
 		]

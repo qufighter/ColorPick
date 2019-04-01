@@ -399,13 +399,13 @@ Cr.elm("div",{id:"mainbox"},[
 
 
 	Cr.elm("h3",{style:"margin-bottom:7px;clear:both;"},[
-		Cr.txt('*'),
-		Cr.elm('span', {style:'color:red'}, [Cr.txt(' NEW ')]),
-		Cr.txt('*'),
-		Cr.elm('span', {style:'color:green'}, [Cr.txt(' March ')]),
-		Cr.txt('*'),
-		Cr.elm('span', {style:'color:blue'}, [Cr.txt(' 2019 ')]),
-		Cr.txt('*'),
+		// Cr.txt('*'),
+		// Cr.elm('span', {style:'color:red'}, [Cr.txt(' NEW ')]),
+		// Cr.txt('*'),
+		// Cr.elm('span', {style:'color:green'}, [Cr.txt(' March ')]),
+		// Cr.txt('*'),
+		// Cr.elm('span', {style:'color:blue'}, [Cr.txt(' 2019 ')]),
+		// Cr.txt('*'),
 		Cr.txt(" Mobile Platforms")
 	]),
 	Cr.elm("small",{style:"",class:""},[

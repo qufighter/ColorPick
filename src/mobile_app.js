@@ -4,7 +4,6 @@ function gel(n){
 }
 
 function getPromoStateChanger(){
-
 	if( !localStorage['hideMobilePromo'] ){
 		return Cr.elm('a',{
 			style:'cursor:pointer;color:blue;',
@@ -40,7 +39,6 @@ function createDOM(){
 		Cr.txt("ColorPick is an Amazing Eyedropper tool that allows precise selection of color values through it's one-of-a-kind zoomed preview!"),
 		Cr.elm("br"),
 		Cr.elm("br"),
-
 		Cr.elm("small",{style:"",class:""},[
 			createPhoneDiv()
 		]),
