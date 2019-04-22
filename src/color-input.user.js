@@ -10,6 +10,9 @@ TL;DR this lets your users leverage ColorPick Eyedropper on your website as long
 	1) the user has the extension
 	2) your code uses an input type=color field
 	3) the page is responsive enough that we may add the icon trigger before your input field (you may add the attribute colorpick-skip="1" to disable the extension for a particular input)
+
+testing: test here https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/color#Result
+specifically he change event should fire when we assign the value
 */
 
 
@@ -47,8 +50,10 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 
 	}else if(request.hexValueWasSelected && lastColorInputField){
 		lastColorInputField.value = '#'+request.hexValueWasSelected;
+		lastColorInputField.dispatchEvent(new Event('change', {'bubbles':true}));
 		lastColorInputField = null;
 		chrome.runtime.sendMessage({disableColorPicker:true},function(r){});
+		sendResponse({result:true});
 	}
 
 	//sendResponse({result:true});
