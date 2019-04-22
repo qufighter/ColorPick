@@ -53,7 +53,7 @@ function snapshotLoaded(){
 		
 		setTimeout(function(){
 			isMakingNew=false;
-			c.style.visibility="visible";n.style.visibility="visible";document.body.style.cursor='url('+chrome.extension.getURL('img/crosshair.png')+') 16 16,crosshair';updateColorPreview();
+			c.style.visibility="visible";n.style.visibility="visible";document.body.style.cursor=crosshairCss();updateColorPreview();
 		},255);
 }
 function reqLis(request, sender, sendResponse) {

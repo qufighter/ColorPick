@@ -167,6 +167,15 @@
    "seeTerms": {
       "message": "See Terms of Use"
    },
+   "seeOption": {
+      "message": "See option"
+   },
+   "seeAdvOption": {
+      "message": "See advanced option"
+   },
+   "selectWithExt": {
+      "message": "Select with ColorPick Eyedropper"
+   },
    "disableRewriting": {
       "message": "Disable affiliation of non-affiliate links"
    },
@@ -178,6 +187,9 @@
    },
    "usePNG": {
       "message": "Use PNG quality when available"
+   },
+   "supportColorInputs": {
+      "message": "Add trigger near input[type=color] fields on websites"
    },
    "useCSSValues": {
       "message": "Use CSS values for RGB/HSL"

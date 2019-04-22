@@ -123,6 +123,9 @@ function(request, sender, sendResponse) {
 				if( request.hsv && autocopyhex=='hsl' ) fmt='hsl'+formatColorValues(request.hsv.h,request.hsv.s,request.hsv.v,0,1,1);
 				n.value=fmt;n.select();document.execCommand('copy');n.parentNode.removeChild(n);
 			}
+			if( curentHex ){
+				chrome.tabs.sendMessage(tabid,{hexValueWasSelected:curentHex.toLowerCase()},function(response){});
+			}
 			sendResponse({});
 		}else if (request.browserIconMsg){
 			chrome.browserAction.setIcon({path:(request.path)});
@@ -133,6 +136,8 @@ function(request, sender, sendResponse) {
 			//chrome.browserAction.setBadgeText({text:''});
 			chrome.tabs.sendMessage(tabid, {disableColorPicker:true}, function(response) {});
 			sendResponse({});
+		}else if (request.activateForInput){
+			chrome.tabs.sendMessage(tabid,{enableColorPicker:true},function(response){});
 		}else if(request.goToOrVisitTab){
 			goToOrOpenTab(request.goToOrVisitTab);
 			sendResponse({});
