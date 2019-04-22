@@ -79,6 +79,36 @@ var isCurrentEnableReady=false,isRunning=false,updateAvailable=false;
 
 
 
+// during snapshot, we care to verify the tab didn't change.
+var tabActiveCtr=0;
+var lastActiveTabId=-1;
+chrome.tabs.onActivated.addListener(function(activeInfo){
+	// not 100% sure, but when we activate the tab via hotkeys (programatically via nother extension) it seems like this event may not fire....
+	lastActiveTabId = activeInfo.tabId;
+	// activeInfo.tabId
+	// activeInfo.windowId
+	tabActiveCtr++;
+});
+
+// TODO really we need timestamps above, for when the last modification occured, and that should suffice for all checks.... and we can add some padding to ensure no tab change occured...
+
+function getFauxSnap(){
+	var props = {width:600,height:400};
+    var cvs = document.createElement('canvas');
+    cvs.setAttribute('width', props.width)
+    cvs.setAttribute('height', props.height)
+    var ctx = cvs.getContext('2d');
+    ctx.fillStyle = "rgb(0,0,0)";
+    ctx.fillRect(0, 0, props.width, props.height);
+    ctx.fillStyle = "rgb(255,255,255)";
+    ctx.font = "24px sans-serif";
+    ctx.textAlign = "center";
+    ctx.fillText("Color Pick - Snapshot Error", 300, 175);
+	ctx.font = "12px sans-serif";
+	ctx.fillText("Press R, scroll or resize the window for a new snapshot", 300, 300);
+    return cvs.toDataURL();
+}
+
 chrome.runtime.onMessage.addListener(
 function(request, sender, sendResponse) {
 		if(sender.tab && sender.tab.id >= 0){
@@ -89,9 +119,14 @@ function(request, sender, sendResponse) {
 			tabid=request.tabi;
 		}
 		if (request.newImage){
+			var beginActiveCount = tabActiveCtr;
 			lsnaptabid=tabid;
 			var cbf=function(dataUrl){
-				chrome.tabs.sendMessage(lsnaptabid, {setPickerImage:true,pickerImage:dataUrl}, function(response) {});
+				if( beginActiveCount == tabActiveCtr /*&& (lastActiveTabId == lsnaptabid || lastActiveTabId==-1)*/ ){
+					chrome.tabs.sendMessage(lsnaptabid, {setPickerImage:true,pickerImage:dataUrl}, function(response) {});
+				}else{
+					chrome.tabs.sendMessage(lsnaptabid, {setPickerImage:true,pickerImage:getFauxSnap()}, function(response) {});
+				}
 			}
 			if(winid < 1)winid=null;
 			if(usePNG)chrome.tabs.captureVisibleTab(winid, {format:'png'}, cbf);
