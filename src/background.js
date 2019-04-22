@@ -80,17 +80,10 @@ var isCurrentEnableReady=false,isRunning=false,updateAvailable=false;
 
 
 // during snapshot, we care to verify the tab didn't change.
-var tabActiveCtr=0;
-var lastActiveTabId=-1;
+var lastActiveTabTime=0;
 chrome.tabs.onActivated.addListener(function(activeInfo){
-	// not 100% sure, but when we activate the tab via hotkeys (programatically via nother extension) it seems like this event may not fire....
-	lastActiveTabId = activeInfo.tabId;
-	// activeInfo.tabId
-	// activeInfo.windowId
-	tabActiveCtr++;
+	lastActiveTabTime=(new Date()).getTime();
 });
-
-// TODO really we need timestamps above, for when the last modification occured, and that should suffice for all checks.... and we can add some padding to ensure no tab change occured...
 
 function getFauxSnap(){
 	var props = {width:600,height:400};
@@ -103,8 +96,9 @@ function getFauxSnap(){
     ctx.fillStyle = "rgb(255,255,255)";
     ctx.font = "24px sans-serif";
     ctx.textAlign = "center";
-    ctx.fillText("Color Pick - Snapshot Error", 300, 175);
+    ctx.fillText("ColorPick - Snapshot Error", 300, 175);
 	ctx.font = "12px sans-serif";
+	ctx.fillText("For your security the screenshot was discarded", 300, 250);
 	ctx.fillText("Press R, scroll or resize the window for a new snapshot", 300, 300);
     return cvs.toDataURL();
 }
@@ -119,13 +113,17 @@ function(request, sender, sendResponse) {
 			tabid=request.tabi;
 		}
 		if (request.newImage){
-			var beginActiveCount = tabActiveCtr;
 			lsnaptabid=tabid;
 			var cbf=function(dataUrl){
-				if( beginActiveCount == tabActiveCtr /*&& (lastActiveTabId == lsnaptabid || lastActiveTabId==-1)*/ ){
+
+				var currentTime = (new Date()).getTime();
+				var snapDuration = currentTime - lastActiveTabTime; // measure duration since last tab activation....
+
+				if( snapDuration > 1000 ){ // tab has to have been active for at least this long.... (keep in mind we wait 255ms before calling this)
 					chrome.tabs.sendMessage(lsnaptabid, {setPickerImage:true,pickerImage:dataUrl}, function(response) {});
 				}else{
-					chrome.tabs.sendMessage(lsnaptabid, {setPickerImage:true,pickerImage:getFauxSnap()}, function(response) {});
+					// tab must have changed too recently - too risky to send this snapshot back... (might be wrong tab)
+					chrome.tabs.sendMessage(lsnaptabid, {setPickerImage:true,pickerImage:getFauxSnap(),isErrorTryAgain:true}, function(response) {});
 				}
 			}
 			if(winid < 1)winid=null;
