@@ -103,13 +103,13 @@ function(request, sender, sendResponse) {
 			if(request.hex) curentHex=request.hex;
 			if(showPreviousClr){lastLastHex=lastHex;lastHex=curentHex;}
 			else lastHex='none';
-			//user clicked, optionally store color to database...
-			if(shareClors){
-				var xhr = new XMLHttpRequest();
-				xhr.onreadystatechange=function(){if(xhr.readyState == 4){ }};
-				xhr.open('GET', 'http://vidzbigger.com/vcolors.php?colorhex='+curentHex, true);
-				xhr.send();
-			}
+			//user clicked, optionally store color to database... (db full... does not work)
+			// if(shareClors){
+			// 	var xhr = new XMLHttpRequest();
+			// 	xhr.onreadystatechange=function(){if(xhr.readyState == 4){ }};
+			// 	xhr.open('GET', 'http://vidzbigger.com/vcolors.php?colorhex='+curentHex, true);
+			// 	xhr.send();
+			// }
 			//store colors
 			localStorage['colorPickHistory']=(localStorage['colorPickHistory']||'')+"#"+curentHex;
 			//logs error when options is not showing... not sure of best way to prevent

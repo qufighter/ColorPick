@@ -27,11 +27,11 @@ function createPhoneDiv(){
 				childNodes:[
 					//Cr.txt('Independently licensed app now available for IOS and Android.'),
 					//Cr.elm('br'),
-					Cr.elm('strong',{style:'color:#333;display:block;margin-bottom:0.3em;'},[
-						Cr.elm('span',{style:'font-family:monospace'},[Cr.txt('BASIC ')]),
-						Cr.txt('version now available for FREE')
-					]),
-					Cr.elm('a', {style:'float:left;margin-right:10px;',target:"_blank",href:'http://vidsbee.com/ColorPick/Mobile'},[
+					// Cr.elm('strong',{style:'color:#333;display:block;margin-bottom:0.3em;'},[
+					// 	Cr.elm('span',{style:'font-family:monospace'},[Cr.txt('BASIC ')]),
+					// 	Cr.txt('version now available for FREE')
+					// ]),
+					Cr.elm('a', {style:'float:left;margin:10px 10px 10px 0;',target:"_blank",href:'http://vidsbee.com/ColorPick/Mobile'},[
 						Cr.elm('img',{src:'img/simulator.png',height:240})
 					]),
 					Cr.elm('strong',{style:'font-size:16px;'},[
@@ -51,7 +51,11 @@ function createPhoneDiv(){
 					Cr.txt(nbsp + nbsp ),
 					Cr.elm('a', {href:"https://play.google.com/store/apps/details?id=com.vidsbee.colorpicksdl&utm_source=chrome-ext&utm_campaign=web&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1", style:"display:inline-block;overflow:hidden;background:url(img/PlayStore.png) no-repeat;width:135px;height:40px;background-position: -10px -10px; background-size: 113%;"}),
 
-					Cr.elm('br'),
+					// basic
+					Cr.elm('a', {href:"https://itunes.apple.com/us/app/colorpick-eyedropper-basic/id1457611642?mt=8", class:'basic', style:"display:inline-block;overflow:hidden;width:135px;"}),
+					Cr.txt(nbsp + nbsp ),
+					Cr.elm('a', {href:"https://play.google.com/store/apps/details?id=com.vidsbee.colorpickbasicsdl&utm_source=chrome-ext&utm_campaign=web&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1", class:'basic', style:"display:inline-block;overflow:hidden;width:135px;background-position: -10px -10px; background-size: 113%;"}),
+
 					//Cr.txt('Features:'),
 					Cr.elm('br'),
 					Cr.txt('View and save colors from any image on your device.'),
@@ -61,6 +65,7 @@ function createPhoneDiv(){
 					Cr.txt('SDL OpenGL 3d graphics.'),
 					Cr.elm('br'),
 					Cr.txt('Additional feature schedule available.'),
+					Cr.elm('br', {style:'clear:both;'})
 				]
 			})
 		]

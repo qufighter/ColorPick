@@ -34,7 +34,7 @@ rm -fr build/chrome-api*
 rm -fr build/*.psd
 rm -fr build/*.sh
 rm -fr build/*.awk
-rm -fr build/finsupport_*
+rm -fr build/fin*
 
 echo "determining version number"
 vers=`cat manifest.json | awk -f build.awk`
