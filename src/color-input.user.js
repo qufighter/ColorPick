@@ -65,7 +65,22 @@ function getClickListenerForColorInput(inputColor){
 	return function(ev){
 		var targ = ev.target;
 		lastColorInputField = inputColor;
-		chrome.runtime.sendMessage({activateForInput:true}, function(response){});
+		try{
+			chrome.runtime.sendMessage({activateForInput:true}, function(response){});
+		}catch(e){
+			alert("Sorry - the page must be reloaded for ColorPick extension to work. This can occcur when the extension updates or is reloaded. " + e);
+			targ.remove();
+			removeColorPickInputTriggers(document);
+		}
+	}
+}
+
+function removeColorPickInputTriggers(context){
+	var triggers = context.querySelectorAll('.colorpick-eyedropper-input-trigger');
+	if( triggers && triggers.length ){
+		for( var t=0; t<triggers.length; t++ ){
+			triggers[t].remove();
+		}
 	}
 }
 
@@ -97,14 +112,7 @@ function beginColorInputProcessing(){
 
 				if( !colorInputOpts.supportColorInputs ){
 					// de-activate time....
-
-					var triggers = colorInputs[i].parentNode.querySelectorAll('.colorpick-eyedropper-input-trigger')
-					if( triggers && triggers.length ){
-						for( var t=0; t<triggers.length; t++ ){
-							triggers[t].remove();
-						}
-					}
-
+					removeColorPickInputTriggers(colorInputs[i].parentNode);
 					colorInputs[i].removeAttribute('colorpick-eyedropper-active')
 				}
 
