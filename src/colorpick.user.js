@@ -350,7 +350,7 @@ function newImage(){
 	snapshotLoadedTimeout = setTimeout(function(){
 		disableColorPicker();
 		console.warn("Sorry - Color Pick experienced issues while waiting for the snapshot - Reload the page in order to pick colors here.");
-	}, 3000); // max 3 second wait for image, attempt to prevent endless spin
+	}, 5000); // max 3 second wait for image, attempt to prevent endless spin
 
 	setTimeout(function(){
 		try{
