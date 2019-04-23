@@ -8,3 +8,10 @@ https://chrome.google.com/extensions/detail/ohcpnigalekghcmgcdcenkpelffpdolg
 Firefox Version
 https://addons.mozilla.org/en-US/firefox/addon/colorpick-eyedropper/
 
+## HTML5 API
+
+Do you want to leverage this extension's eyedropper feature on a website you operate?
+
+[Just use input type=color fields](https://github.com/qufighter/ColorPick/blob/master/src/color-input.user.js)
+
+Please note this extension feature is not enabled on all platforms by default.
