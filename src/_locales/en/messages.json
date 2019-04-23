@@ -189,7 +189,7 @@
       "message": "Use PNG quality when available"
    },
    "supportColorInputs": {
-      "message": "Add trigger near input[type=color] fields on websites"
+      "message": "Add eyedropper near input[type=color] fields on websites"
    },
    "useCSSValues": {
       "message": "Use CSS values for RGB/HSL"

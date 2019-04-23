@@ -13,7 +13,7 @@ function createPhoneDiv(){
 
 	return Cr.elm('div',{
 		id: 'phone-itself',
-		style:'border:5px solid black;border-radius:20px;max-width:510px;background-color:black;box-shadow:black 0px 0px 3px;padding: 0px 62px 0px 22px;position:relative;', 
+		style:'border:5px solid black;border-radius:20px;max-width:510px;background-color:black;box-shadow:black 0px 0px 3px;padding: 0px 62px 0px 22px;position:relative;min-width:450px;',
 		childNodes:[
 			Cr.elm('div',{style:'position:absolute;top:50%;height:0;width:30px;right:15px;', childNodes:[
 				Cr.elm('div',{
@@ -32,7 +32,7 @@ function createPhoneDiv(){
 					// 	Cr.txt('version now available for FREE')
 					// ]),
 					Cr.elm('a', {style:'float:left;margin:10px 10px 10px 0;',target:"_blank",href:'http://vidsbee.com/ColorPick/Mobile'},[
-						Cr.elm('img',{src:'img/simulator.png',height:240})
+						Cr.elm('img',{src:'img/simulator.png',height:240,style:'max-width:137px'})
 					]),
 					Cr.elm('strong',{style:'font-size:16px;'},[
 						Cr.txt('ColorPick: Eyedropper')

@@ -1,6 +1,7 @@
 var storage = chrome.storage.sync || chrome.storage.local;
-var isWindows=navigator.platform.substr(0,3).toLowerCase()=='win';
-var isMac=navigator.platform.substr(0,3).toLowerCase()=='mac';
+var plat3 = navigator.platform.substr(0,3).toLowerCase();
+var isWindows=plat3=='win';
+var isMac=plat3=='mac';
 var isFirefox = window.navigator.userAgent.indexOf('Firefox') > -1;
 var isChrome = window.navigator.userAgent.indexOf('Chrome/') > -1;
 var pOptions={};
@@ -24,8 +25,8 @@ pOptions["autocopyhex"]={def:'false',ind:0,select:{'false':chrome.i18n.getMessag
 //pAdvOptions["customCalibration"]={def:false,ind:0,name:'Enable the defunct calibration link above.'};
 pAdvOptions["usePNG"]={def:true,ind:0};
 pAdvOptions["useCSSValues"]={def:true,ind:0};
-pAdvOptions["supportColorInputs"]={def:isMac?false:true,ind:0,img:'img/icon16.png'};
 pAdvOptions["CSS3ColorFormat"]={def:'(#1,#2,#3)',ind:1};
+pAdvOptions["supportColorInputs"]={def:isMac?false:true,ind:0,img:'img/icon16.png'};
 pAdvOptions["hexIsLowerCase"]={def:false,ind:0};
 pAdvOptions["hexHasHash"]={def:false,ind:0};
 //pAdvOptions["iconIsPreview"]={def:false,ind:0,img:'img/opt_badge.png'};
