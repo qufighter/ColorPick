@@ -3,16 +3,18 @@ The purpose of this script
 is to find and identify the input[type=color] fields in this frame
 and to add a feature to trigger ColorPick extension near these input fields
 
-note the scope of this script may be odd, in that it has access to other content scripts if those ran, but there is no guarantee they did run in this context either....
-so great care is needed to name functions uniquely here, but also to register listeners carefully....
-
 TL;DR this lets your users leverage ColorPick Eyedropper on your website as long as:
 	1) the user has the extension
 	2) your code uses an input type=color field
-	3) the page is responsive enough that we may add the icon trigger before your input field (you may add the attribute colorpick-skip="1" to disable the extension for a particular input, or colorpick-after="1" to add the trigger after the input field instead of before)
+	3) the page is responsive enough that we may add the icon trigger before your input field
+	    a) you may add the attribute colorpick-skip="1" to disable the extension for a particular input
+	    b) you may add the attribute colorpick-after="1" to add the trigger after the input field instead of before
 
 testing: test here https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/color#Result
-specifically he change event should fire when we assign the value
+specifically the change event should fire when we assign the value
+
+dev note: the scope of this script may be odd, in that it has access to other content scripts if those ran, but there is no guarantee they did run in this context either....
+so great care is needed to name functions uniquely here, but also to register listeners carefully....
 */
 
 
