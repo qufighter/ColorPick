@@ -73,6 +73,10 @@ function reqLis(request, sender, sendResponse) {
 		}
   }else if (request.setPickerImage){
 		c.src=request.pickerImage;
+		if( request.isErrorTryAgain ){
+			/// do we let them have time to read it?? or not???
+			// if we are "locked" or not.... ?
+		}
   }else if (request.newImage){
   	ssf();
   }else if (request.doPick){
