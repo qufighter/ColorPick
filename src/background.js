@@ -85,22 +85,24 @@ chrome.tabs.onActivated.addListener(function(activeInfo){
 	lastActiveTabTime=(new Date()).getTime();
 });
 
-function getFauxSnap(){
+function getFauxSnap(dataUrl){
 	var props = {width:600,height:400};
-    var cvs = document.createElement('canvas');
-    cvs.setAttribute('width', props.width)
-    cvs.setAttribute('height', props.height)
-    var ctx = cvs.getContext('2d');
-    ctx.fillStyle = "rgb(0,0,0)";
-    ctx.fillRect(0, 0, props.width, props.height);
-    ctx.fillStyle = "rgb(255,255,255)";
-    ctx.font = "24px sans-serif";
-    ctx.textAlign = "center";
-    ctx.fillText("ColorPick - Snapshot Error", 300, 175);
+	var cvs = document.createElement('canvas');
+	cvs.setAttribute('width', props.width)
+	cvs.setAttribute('height', props.height)
+	var ctx = cvs.getContext('2d');
+	ctx.fillStyle = "rgb(7,7,7)";
+	ctx.fillRect(0, 0, props.width, props.height);
+	ctx.fillStyle = "rgb(255,255,255)";
+	ctx.font = "24px sans-serif";
+	ctx.textAlign = "center";
+	ctx.fillText("ColorPick - Snapshot Error", 300, 175);
 	ctx.font = "12px sans-serif";
-	ctx.fillText("For your security the screenshot was discarded", 300, 250);
+	if( dataUrl ){
+		ctx.fillText("The screenshot was discarded", 300, 250);
+	}
 	ctx.fillText("Press R, scroll or resize the window for a new snapshot", 300, 300);
-    return cvs.toDataURL();
+	return cvs.toDataURL();
 }
 
 chrome.runtime.onMessage.addListener(
@@ -119,11 +121,11 @@ function(request, sender, sendResponse) {
 				var currentTime = (new Date()).getTime();
 				var snapDuration = currentTime - lastActiveTabTime; // measure duration since last tab activation....
 
-				if( snapDuration > 1000 ){ // tab has to have been active for at least this long.... (keep in mind we wait 255ms before calling this)
+				if( snapDuration > 1000 && dataUrl ){ // tab has to have been active for at least this long.... (keep in mind we wait 255ms before calling this)
 					chrome.tabs.sendMessage(lsnaptabid, {setPickerImage:true,pickerImage:dataUrl}, function(response) {});
 				}else{
 					// tab must have changed too recently - too risky to send this snapshot back... (might be wrong tab)
-					chrome.tabs.sendMessage(lsnaptabid, {setPickerImage:true,pickerImage:getFauxSnap(),isErrorTryAgain:true}, function(response) {});
+					chrome.tabs.sendMessage(lsnaptabid, {setPickerImage:true,pickerImage:getFauxSnap(dataUrl),isErrorTryAgain:true}, function(response) {});
 				}
 			}
 			if(winid < 1)winid=null;
