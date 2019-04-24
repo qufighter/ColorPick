@@ -91,17 +91,19 @@ function getFauxSnap(dataUrl){
 	cvs.setAttribute('width', props.width)
 	cvs.setAttribute('height', props.height)
 	var ctx = cvs.getContext('2d');
-	ctx.fillStyle = "rgb(7,7,7)";
+	ctx.fillStyle = "rgb(77,77,77)";
 	ctx.fillRect(0, 0, props.width, props.height);
 	ctx.fillStyle = "rgb(255,255,255)";
-	ctx.font = "24px sans-serif";
 	ctx.textAlign = "center";
-	ctx.fillText("ColorPick - Snapshot Error", 300, 175);
+	ctx.font = "12px sans-serif";
+	ctx.fillText("Press R, scroll or resize the window for a new snapshot", 300, 50);
+	ctx.font = "24px sans-serif";
+	ctx.fillText("ColorPick - Snapshot Error", 300, 100);
 	ctx.font = "12px sans-serif";
 	if( dataUrl ){
-		ctx.fillText("The screenshot was discarded", 300, 250);
+		ctx.fillText("The screenshot was discarded", 300, 200);
 	}
-	ctx.fillText("Press R, scroll or resize the window for a new snapshot", 300, 300);
+	ctx.fillText("Press R, scroll or resize the window for a new snapshot", 300, 250);
 	return cvs.toDataURL();
 }
 
@@ -115,6 +117,7 @@ function(request, sender, sendResponse) {
 			tabid=request.tabi;
 		}
 		if (request.newImage){
+			//todo need desired size for getFauxSnap... we can match aspect ratio vertically
 			lsnaptabid=tabid;
 			var cbf=function(dataUrl){
 
@@ -173,6 +176,7 @@ function(request, sender, sendResponse) {
 			sendResponse({});
 		}else if (request.activateForInput){
 			chrome.tabs.sendMessage(tabid,{enableColorPicker:true},function(response){});
+			sendResponse({});
 		}else if(request.goToOrVisitTab){
 			goToOrOpenTab(request.goToOrVisitTab);
 			sendResponse({});
