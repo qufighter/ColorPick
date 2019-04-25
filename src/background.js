@@ -85,8 +85,13 @@ chrome.tabs.onActivated.addListener(function(activeInfo){
 	lastActiveTabTime=(new Date()).getTime();
 });
 
-function getFauxSnap(dataUrl){
+function getFauxSnap(dataUrl,w,h){
 	var props = {width:600,height:400};
+	w=w||props.width;
+	h=h||props.height;
+	var ratio = w/h;
+	props.height = props.width / ratio;
+	if( props.height < 400 ) props.height = 400;
 	var cvs = document.createElement('canvas');
 	cvs.setAttribute('width', props.width)
 	cvs.setAttribute('height', props.height)
@@ -128,7 +133,7 @@ function(request, sender, sendResponse) {
 					chrome.tabs.sendMessage(lsnaptabid, {setPickerImage:true,pickerImage:dataUrl}, function(response) {});
 				}else{
 					// tab must have changed too recently - too risky to send this snapshot back... (might be wrong tab)
-					chrome.tabs.sendMessage(lsnaptabid, {setPickerImage:true,pickerImage:getFauxSnap(dataUrl),isErrorTryAgain:true}, function(response) {});
+					chrome.tabs.sendMessage(lsnaptabid, {setPickerImage:true,pickerImage:getFauxSnap(dataUrl,request.w,request.h),isErrorTryAgain:true}, function(response) {});
 				}
 			}
 			if(winid < 1)winid=null;

@@ -370,7 +370,7 @@ function newImage(){
 
 	setTimeout(function(){
 		try{
-			chrome.runtime.sendMessage({newImage:true}, function(response){});
+			chrome.runtime.sendMessage({newImage:true,w:x,h:y}, function(response){});
 		}catch(e){
 			console.log("Sorry - Color Pick experienced a problem in newImage and has been disabled - Reload the page in order to pick colors here.", e);
 			exitAndDetach();
