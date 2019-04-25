@@ -1,7 +1,7 @@
 var elmid1='color_pick_click_box',elmid2='ChromeExtension:Color-Pick.com';
 if(typeof(exitAndDetach)=='function')exitAndDetach();
 function _ge(n){return document.getElementById(n);}
-var n=false,c=false,hex='F00BAF',lasthex='',rgb=null;hsv=null;scal=1,ex=0,ey=0,isEnabled=false,isLocked=false,hexIsLowerCase=false,hexHasHash=false,borderValue='1px solid black',blankgif='',msg_bg_unavail=chrome.i18n.getMessage('bgPageUnavailable');
+var n=false,c=false,hex='F00BAF',lasthex='',rgb=null;hsv=null;scal=1,ex=0,ey=0,isEnabled=false,isLocked=false,hexIsLowerCase=false,hexHasHash=false,borderValue='1px solid black',msg_bg_unavail=chrome.i18n.getMessage('bgPageUnavailable');
 var isUpdating=false,lastTimeout=0,lx=0,ly=0;
 var CSS3ColorFormat='(#1,#2,#3)';
 var opts={};
@@ -39,17 +39,23 @@ function rgb2hsl(r, g, b){//http://mjijackson.com/2008/02/rgb-to-hsl-and-rgb-to-
     };
 }
 function emptyNode(node){
-	while(node.lastChild)node.removeChild(node.lastChild);
+	Cr.empty(node);
 }
+var snapLoader=Cr.elm('img',{events:[['load',snapshotLoaded]]});
+var dirtyImage=Cr.elm('img');
 function snapshotLoaded(){
 		clearTimeout(snapshotLoadedTimeout);
-		c.style.height='auto';
-		c.style.width=(innerWidth)+'px';
-		x_cvs_scale=c.naturalWidth / innerWidth;
-		y_cvs_scale=c.naturalHeight / innerHeight;
-		cvs.width=c.naturalWidth;
-		cvs.height=c.naturalHeight;
-		ctx.drawImage(c,0,0);
+		c.height=innerHeight;
+		c.width=innerWidth;
+		var cctx=c.getContext("2d");
+		cctx.drawImage(dirtyImage,0,0); // taint the canvas to prevent malicious website (or framework) from stealing screenshots while color pick runs. To verify, select the canvas element and $0.toDataURL() to see an exception
+		cctx.drawImage(snapLoader,0,0,innerWidth,innerHeight);
+
+		x_cvs_scale=snapLoader.naturalWidth / innerWidth;
+		y_cvs_scale=snapLoader.naturalHeight / innerHeight;
+		cvs.width=snapLoader.naturalWidth;
+		cvs.height=snapLoader.naturalHeight;
+		ctx.drawImage(snapLoader,0,0);
 		
 		setTimeout(function(){
 			isMakingNew=false;
@@ -72,7 +78,7 @@ function reqLis(request, sender, sendResponse) {
 				resp.cb=rgb.b;
 		}
   }else if (request.setPickerImage){
-		c.src=request.pickerImage;
+		snapLoader.src=request.pickerImage;
 		if( request.isErrorTryAgain ){
 			/// do we let them have time to read it?? or not???
 			// if we are "locked" or not.... ?
@@ -234,6 +240,12 @@ function mmf(ev){
 function ssf(ev){
 	if(!isEnabled)return;
 	n.style.visibility="hidden";c.style.visibility="hidden";//redundent?
+	if( !c.parentNode ){
+		// this indicates our context has been invalidated by another instance of the script, possibly ext has been reloaded
+		console.log("Sorry - Color Pick experienced a problem in scrollFunction and has been disabled - Reload the page in order to pick colors here.");
+		exitAndDetach();
+		return;
+	}
 	clearTimeout(lastNewTimeout);
 	lastNewTimeout=setTimeout(function(){
 		newImage();//some delay required OR it won't update
@@ -269,8 +281,9 @@ function crosshairCss(){
 }
 function prefsLoadedCompleteInit(){
 	removeExistingNodes();
-	c=Cr.elm('img',{id:elmid1,src:blankgif,style:'position:fixed;max-width:none!important;max-height:none!important;top:0px;left:0px;margin:0px;padding:0px;overflow:hidden;z-index:2147483646;cursor:'+crosshairCss(),events:[['click',picked,true],['mousedown',function(ev){ev.preventDefault();}],['load',snapshotLoaded]]},[],document.body);
+	c=Cr.elm('canvas',{id:elmid1,style:'position:fixed;max-width:none!important;max-height:none!important;top:0px!important;left:0px!important;margin:0px!important;padding:0px!important;overflow:hidden;z-index:2147483646;cursor:'+crosshairCss(),events:[['click',picked,true],['mousedown',function(ev){ev.preventDefault();}]]},[],document.body);
 	n=Cr.elm('div',{id:elmid2,style:'position:fixed;min-width:30px;max-width:300px;min-height:30px;box-shadow:2px 2px 2px #666;border:'+borderValue+';z-index:2147483646;cursor:default;padding:4px;'},[Cr.txt(' ')],document.body);
+	dirtyImage.src=chrome.extension.getURL('img/close.png');
 	document.addEventListener('mousemove',mmf);
 	addEventListener('keyup',wk);
 	addEventListener('scroll',ssf);
@@ -345,10 +358,9 @@ function newImage(){
 	isMakingNew=true;
 	n.style.visibility="hidden";
 	c.style.visibility="hidden";
-	c.src=blankgif;
 	var x=innerWidth,y=innerHeight;
-	c.style.width=x+'px';
-	c.style.height=y+'px';
+	c.width=x;
+	c.height=y;
 
 	clearTimeout(snapshotLoadedTimeout);
 	snapshotLoadedTimeout = setTimeout(function(){
@@ -363,7 +375,7 @@ function newImage(){
 			console.log("Sorry - Color Pick experienced a problem in newImage and has been disabled - Reload the page in order to pick colors here.", e);
 			exitAndDetach();
 		}
-	},255);
+	},255); // todo: this delay may be redundant, consider removing delay in ssf
 }
 
 var lastPreviewURI;
