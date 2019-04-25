@@ -319,6 +319,11 @@ Cr.elm("div",{id:"mainbox"},[
 		])
 	]),
 	Cr.txt("ColorPick is an Amazing Eyedropper tool that allows precise selection of color values through it's one-of-a-kind zoomed preview!"),
+
+	Cr.elm('div',{style:'color:grey;font-size:11px;margin-top:10px;'},[
+		Cr.txt("ColorPick Does NOT require registration to work.  If you are having trouble please reach out to support.  Purchasing a license will not fix any errors you have encountered!")
+	]),
+
 	Cr.elm('div',{id:'chrome-inapp-reg', childNodes:[
 		Cr.elm("h3",{},[
 			Cr.txt("Register Chrome Extension only")
