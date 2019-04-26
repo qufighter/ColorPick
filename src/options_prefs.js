@@ -52,7 +52,11 @@ pSyncItems["reg_name"]={def:""};
 pSyncItems["reg_inapp"]={def:false};
 
 function formatColorValues(a,b,c,pcta,pctb,pctc){
-	return CSS3ColorFormat.replace('#1',a/*+(pcta?'%':'')*/).replace('#2',b+(pctb?'%':'')).replace('#3',c+(pctc?'%':''));
+	return formatColorValuesWith(CSS3ColorFormat,a,b,c,pcta,pctb,pctc);
+}
+
+function formatColorValuesWith(fmt,a,b,c,pcta,pctb,pctc){
+	return fmt.replace('#1',a/*+(pcta?'%':'')*/).replace('#2',b+(pctb?'%':'')).replace('#3',c+(pctc?'%':''));
 }
 
 // this helper avoids new tabs when they already exist...

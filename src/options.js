@@ -678,7 +678,9 @@ Cr.elm("div",{id:"mainbox"},[
 
 	document.getElementById('bload').addEventListener('click', load_syncd_options);
 	document.getElementById('cload').addEventListener('click', function(){
-		storage.clear(function(){});
+		storage.clear(function(){
+			console.log('storage cleared... clear localStorage too for a full reset');
+		});
 	});
 
 	document.body.style.opacity="1";

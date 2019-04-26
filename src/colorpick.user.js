@@ -1,14 +1,13 @@
 var elmid1='color_pick_click_box',elmid2='ChromeExtension:Color-Pick.com';
 if(typeof(exitAndDetach)=='function')exitAndDetach();
 function _ge(n){return document.getElementById(n);}
-var n=false,c=false,hex='F00BAF',lasthex='',rgb=null;hsv=null;scal=1,ex=0,ey=0,isEnabled=false,isLocked=false,hexIsLowerCase=false,hexHasHash=false,borderValue='1px solid black',msg_bg_unavail=chrome.i18n.getMessage('bgPageUnavailable');
+var n=false,c=false,hex='F00BAF',lasthex='',rgb=null;hsv=null;scal=1,ex=0,ey=0,isEnabled=false,isLocked=false,msg_bg_unavail=chrome.i18n.getMessage('bgPageUnavailable');
 var isUpdating=false,lastTimeout=0,lx=0,ly=0;
-var CSS3ColorFormat='(#1,#2,#3)';
 var opts={};
 var cvs = document.createElement('canvas');
 var ctx = cvs.getContext('2d'),x_cvs_scale=1,y_cvs_scale=1;
 function RGBtoHex(R,G,B) {return applyHexCase(toHex(R)+toHex(G)+toHex(B));}
-function applyHexCase(hex){return hexIsLowerCase ? hex.toLowerCase() : hex;}
+function applyHexCase(hex){return opts.hexIsLowerCase ? hex.toLowerCase() : hex;}
 function toHex(N) {//http://www.javascripter.net/faq/rgbtohex.htm
  if (N==null) return "00";
  N=parseInt(N); if (N==0 || isNaN(N)) return "00";
@@ -119,20 +118,20 @@ function setPixelPreview(zoom,hxe,lhex){
 		Cr.elm('div',{id:'previewArea'},[
 			ticvs,
 			Cr.elm('br'),
-			(EnableHex && !hexHasHash)?Cr.txt('#'):0,
-			Cr.elm('input',{type:'text',readonly:true,size:8,style:'max-width:75px;font-size:10pt;border:'+borderValue,id:'cphexvl',value:(hexHasHash?'#':'')+hex,event:['mouseover',selectTargElm]}),
+			(opts.EnableHex && !opts.hexHasHash)?Cr.txt('#'):0,
+			Cr.elm('input',{type:'text',readonly:true,size:8,style:'max-width:75px;font-size:10pt;border:'+opts.borderValue,id:'cphexvl',value:(opts.hexHasHash?'#':'')+hex,event:['mouseover',selectTargElm]}),
 			//Cr.elm('input',{type:'image',src:chrome.extension.getURL('img/close.png'),alt:'Close',title:chrome.i18n.getMessage('closeAndExit'),id:'exitbtn',event:['click',dissableColorPickerFromHere,true]}),
-			(showPreviousClr&&lhex!='none'?Cr.elm('input',{type:'text',size:1,style:'max-width:50px;font-size:10pt;background-color:#'+lhex+';border:'+borderValue+';border-left:none;',value:''}):0),
-			(ShowRGBHSL&&EnableRGB&&rgb?Cr.elm('input',{type:'text',readonly:true,style:'max-width:150px;display:block;',value:'rgb'+formatColorValues(rgb.r,rgb.g,rgb.b),id:'cprgbvl',event:['mouseover',selectTargElm]}):0),
-			(ShowRGBHSL&&EnableHSL&&hsv?Cr.elm('input',{type:'text',readonly:true,style:'max-width:150px;display:block;',value:'hsl'+formatColorValues(hsv.h,hsv.s,hsv.v,0,1,1),id:'cphslvl',event:['mouseover',selectTargElm]}):0)
+			(opts.showPreviousClr&&lhex!='none'?Cr.elm('input',{type:'text',size:1,style:'max-width:50px;font-size:10pt;background-color:#'+lhex+';border:'+opts.borderValue+';border-left:none;',value:''}):0),
+			(opts.ShowRGBHSL&&opts.EnableRGB&&rgb?Cr.elm('input',{type:'text',readonly:true,style:'max-width:150px;display:block;',value:'rgb'+formatColorValuesWith(opts.CSS3ColorFormat,rgb.r,rgb.g,rgb.b),id:'cprgbvl',event:['mouseover',selectTargElm]}):0),
+			(opts.ShowRGBHSL&&opts.EnableHSL&&hsv?Cr.elm('input',{type:'text',readonly:true,style:'max-width:150px;display:block;',value:'hsl'+formatColorValuesWith(opts.CSS3ColorFormat,hsv.h,hsv.s,hsv.v,0,1,1),id:'cphslvl',event:['mouseover',selectTargElm]}):0)
 		],n);
-		if(!EnableHex) _ge('cphexvl').style.display="none";
+		if(!opts.EnableHex) _ge('cphexvl').style.display="none";
 		keepOnScreen();
 	}else{
 		_ge('cphexvl').value=hex;
 		n.style.backgroundColor='#'+hex;
-		if(ShowRGBHSL&&EnableRGB&&rgb)_ge('cprgbvl').value='rgb'+formatColorValues(rgb.r,rgb.g,rgb.b);
-		if(ShowRGBHSL&&EnableHSL&&hsv)_ge('cphslvl').value='hsl'+formatColorValues(hsv.h,hsv.s,hsv.v,0,1,1);
+		if(opts.ShowRGBHSL&&opts.EnableRGB&&rgb)_ge('cprgbvl').value='rgb'+formatColorValuesWith(opts.CSS3ColorFormat,rgb.r,rgb.g,rgb.b);
+		if(opts.ShowRGBHSL&&opts.EnableHSL&&hsv)_ge('cphslvl').value='hsl'+formatColorValuesWith(opts.CSS3ColorFormat,hsv.h,hsv.s,hsv.v,0,1,1);
 	}
 }
 function setCurColor(r){
@@ -149,13 +148,13 @@ var goodHexCounter=0;
 function setDisplay(){//Cr.elm
 	emptyNode(n);
 	Cr.elm('div',{},[
-		(EnableHex && !hexHasHash)?Cr.txt('#'):0,
-		Cr.elm('input',{type:'text',readonly:true,size:8,style:'max-width:75px;font-size:10pt;border:'+borderValue,id:'cphexvl',value:(hexHasHash?'#':'')+hex,event:['mouseover',selectTargElm]}),
+		(opts.EnableHex && !opts.hexHasHash)?Cr.txt('#'):0,
+		Cr.elm('input',{type:'text',readonly:true,size:8,style:'max-width:75px;font-size:10pt;border:'+opts.borderValue,id:'cphexvl',value:(opts.hexHasHash?'#':'')+hex,event:['mouseover',selectTargElm]}),
 		Cr.elm('input',{type:'image',style:'width:20px;height:20px;min-width:20px;min-height:20px;box-sizing:unset;box-shadow:none;background:unset;padding:8px;',src:chrome.extension.getURL('img/close.png'),alt:'Close',title:chrome.i18n.getMessage('closeAndExit')+' [esc]',id:'exitbtn',event:['click',dissableColorPickerFromHere,true]}),
-		(ShowRGBHSL&&EnableRGB&&rgb?Cr.elm('input',{type:'text',readonly:true,style:'max-width:150px;display:block;',value:'rgb'+formatColorValues(rgb.r,rgb.g,rgb.b),id:'cprgbvl',event:['mouseover',selectTargElm]}):0),
-		(ShowRGBHSL&&EnableHSL&&hsv?Cr.elm('input',{type:'text',readonly:true,style:'max-width:150px;display:block;',value:'hsl'+formatColorValues(hsv.h,hsv.s,hsv.v,0,1,1),id:'cphslvl',event:['mouseover',selectTargElm]}):0)
+		(opts.ShowRGBHSL&&opts.EnableRGB&&rgb?Cr.elm('input',{type:'text',readonly:true,style:'max-width:150px;display:block;',value:'rgb'+formatColorValuesWith(opts.CSS3ColorFormat,rgb.r,rgb.g,rgb.b),id:'cprgbvl',event:['mouseover',selectTargElm]}):0),
+		(opts.ShowRGBHSL&&opts.EnableHSL&&hsv?Cr.elm('input',{type:'text',readonly:true,style:'max-width:150px;display:block;',value:'hsl'+formatColorValuesWith(opts.CSS3ColorFormat,hsv.h,hsv.s,hsv.v,0,1,1),id:'cphslvl',event:['mouseover',selectTargElm]}):0)
 	],n);
-	if(!EnableHex) _ge('cphexvl').style.display="none";
+	if(!opts.EnableHex) _ge('cphexvl').style.display="none";
 	if(_ge('cphexvl'))_ge('cphexvl').select();
 	if( opts.reg_chk!=true && hex && hex != lastHex && (!rgb || (rgb.r != rgb.g || rgb.r != rgb.b || rgb.g != rgb.b)) ){
 		goodHexCounter++;
@@ -257,7 +256,6 @@ function loadPref(i, obj, pOptions){
 		opts[i] = ((obj[i]=='true')?true:((obj[i]=='false')?false:pOptions[i].def));
 	else
 		opts[i] = ((obj[i])?obj[i]:pOptions[i].def);
-	window[i] = opts[i]; // options like showPreviewInContentS will be in scope... TODO: use opts.showPreviewInContentS instead?
 }
 
 function loadPrefs(cbf){
@@ -282,7 +280,7 @@ function crosshairCss(){
 function prefsLoadedCompleteInit(){
 	removeExistingNodes();
 	c=Cr.elm('canvas',{id:elmid1,style:'position:fixed;max-width:none!important;max-height:none!important;top:0px!important;left:0px!important;margin:0px!important;padding:0px!important;overflow:hidden;z-index:2147483646;cursor:'+crosshairCss(),events:[['click',picked,true],['mousedown',function(ev){ev.preventDefault();}]]},[],document.body);
-	n=Cr.elm('div',{id:elmid2,style:'position:fixed;min-width:30px;max-width:300px;min-height:30px;box-shadow:2px 2px 2px #666;border:'+borderValue+';z-index:2147483646;cursor:default;padding:4px;'},[Cr.txt(' ')],document.body);
+	n=Cr.elm('div',{id:elmid2,style:'position:fixed;min-width:30px;max-width:300px;min-height:30px;box-shadow:2px 2px 2px #666;border:'+opts.borderValue+';z-index:2147483646;cursor:default;padding:4px;'},[Cr.txt(' ')],document.body);
 	dirtyImage.src=chrome.extension.getURL('img/close.png');
 	document.addEventListener('mousemove',mmf);
 	addEventListener('keyup',wk);
@@ -406,7 +404,7 @@ function handleRendering(quick){
 //	}
 
 // under some circumstances we do not need to render anything....
-	if(isMakingNew || (!iconIsBitmap && !showPreviewInContentS && popupsShowing < 1)){
+	if(isMakingNew || (!opts.iconIsBitmap && !opts.showPreviewInContentS && popupsShowing < 1)){
 		isUpdating = false;
 		return;
 	}
@@ -415,7 +413,7 @@ function handleRendering(quick){
 	var ox=Math.round(x),oy=Math.round(y);
 	var ictx;
 
-	if(!pixelatedPreview || quick){
+	if(!opts.pixelatedPreview || quick){
 		ictx = getMain2dContext();
 		ictx.scale(2,2);
 		ictx.drawImage(cvs,-ox+(startPoint*0.5),-oy+(startPoint*0.5));
@@ -428,18 +426,18 @@ function handleRendering(quick){
 		ictx.fillRect(0,startPoint, totalWidth, 1);
 		
 	}else{
-		if(allowWebGl && webGlAvail){
+		if(opts.allowWebGl && webGlAvail){
 			getMain3dContext();
 			texturectx.drawImage(cvs,-ox+(64),-oy+(64));
 			//gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, texture);
 			gl.texSubImage2D(gl.TEXTURE_2D, 0, 0,0, gl.RGBA, gl.UNSIGNED_BYTE, texture);
 			gl.uniform1i(textureSampPosition, 0);
-			gl.uniform1f(fishEyeScalePosition, fishEye);
+			gl.uniform1f(fishEyeScalePosition, opts.fishEye);
 			gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
 		}else{
 			ictx = getMain2dContext();
 			ictx.drawImage(cvs,-ox+(startPoint),-oy+(startPoint));
-			var smi,spi,mp=fishEye-0;
+			var smi,spi,mp=opts.fishEye-0;
 			//xx,yy
 			for(var i=0;i<startPoint;i+=2){
 				smi=startPoint-i;
@@ -491,10 +489,10 @@ function handleRendering(quick){
 		}
 	}
 
-	if(iconIsBitmap){
+	if(opts.iconIsBitmap){
 		var browseIconWidth=(devicePixelRatio>1?38:19);
 		var srcBrowseIconWidth=browseIconWidth;
-		if( webGlAvail && pixelatedPreview && allowWebGl ){
+		if( webGlAvail && opts.pixelatedPreview && opts.allowWebGl ){
 			srcBrowseIconWidth*=2;
 		}
 		var browseIconHalfWidth = Math.floor(srcBrowseIconWidth*0.5);
@@ -512,8 +510,8 @@ function handleRendering(quick){
 	tictx.drawImage(dirtyImage,0,0,1,1,0,0,1,1); // taint the canvas to prevent malicious website (or framework) from stealing zoomed view while color pick runs. To verify, select the canvas element and $0.toDataURL() to see an exception
 	tictx.drawImage(icvs,0,0);
 
-	if(showPreviewInContentS){
-		setPixelPreview(contSprevZoomd,hex,lasthex);
+	if(opts.showPreviewInContentS){
+		setPixelPreview(opts.contSprevZoomd,hex,lasthex);
 	}
 
 	if(popupsShowing > 0){
@@ -547,7 +545,7 @@ function initializeCanvas(){
 	gl=0;
 	icvs = Cr.elm('canvas',{width:totalWidth,height:totalWidth});//icon canvas
 	ticvs = Cr.elm('canvas',{width:totalWidth,height:totalWidth});//tainted icon canvas
-	if( webGlAvail && pixelatedPreview && allowWebGl){
+	if( webGlAvail && opts.pixelatedPreview && opts.allowWebGl){
 		gl = icvs.getContext("webgl");
 
 		var squareVerticesBuffer = gl.createBuffer();
