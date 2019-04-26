@@ -48,7 +48,7 @@ function snapshotLoaded(){
 		c.height=innerHeight;
 		c.width=innerWidth;
 		var cctx=c.getContext("2d");
-		cctx.drawImage(dirtyImage,0,0); // taint the canvas to prevent malicious website (or framework) from stealing screenshots while color pick runs. To verify, select the canvas element and $0.toDataURL() to see an exception
+		cctx.drawImage(dirtyImage,0,0,1,1,0,0,1,1); // taint the canvas to prevent malicious website (or framework) from stealing screenshots while color pick runs. To verify, select the canvas element and $0.toDataURL() to see an exception
 		cctx.drawImage(snapLoader,0,0,innerWidth,innerHeight);
 
 		x_cvs_scale=snapLoader.naturalWidth / innerWidth;
@@ -117,7 +117,7 @@ function setPixelPreview(zoom,hxe,lhex){
 	if(!_ge('previewArea') || (rgb && !_ge('cprgbvl'))){
 		emptyNode(n);
 		Cr.elm('div',{id:'previewArea'},[
-			icvs,
+			ticvs,
 			Cr.elm('br'),
 			(EnableHex && !hexHasHash)?Cr.txt('#'):0,
 			Cr.elm('input',{type:'text',readonly:true,size:8,style:'max-width:75px;font-size:10pt;border:'+borderValue,id:'cphexvl',value:(hexHasHash?'#':'')+hex,event:['mouseover',selectTargElm]}),
@@ -381,7 +381,7 @@ function newImage(){
 var lastPreviewURI;
 var gl=0,texture=0,texturectx=0,snapTexture=0,shaderProgram=0,textureSampPosition=0,fishEyeScalePosition=0;
 
-var webGlAvail=false,icvs=0,totalWidth=150;//750
+var webGlAvail=false,icvs=0,ticvs=0,totalWidth=150;//750
 function testWebGlAvail(){
 	var testc=document.createElement("canvas");
 	var testctx = testc.getContext('webgl');
@@ -508,6 +508,10 @@ function handleRendering(quick){
 		chrome.runtime.sendMessage({browserIconMsg:true,path:(pathData)},function(){});
 	}
 
+	var tictx = ticvs.getContext('2d');
+	tictx.drawImage(dirtyImage,0,0,1,1,0,0,1,1); // taint the canvas to prevent malicious website (or framework) from stealing zoomed view while color pick runs. To verify, select the canvas element and $0.toDataURL() to see an exception
+	tictx.drawImage(icvs,0,0);
+
 	if(showPreviewInContentS){
 		setPixelPreview(contSprevZoomd,hex,lasthex);
 	}
@@ -541,9 +545,8 @@ function getMain3dContext(){
 
 function initializeCanvas(){
 	gl=0;
-	icvs = document.createElement('canvas');//icon canvas
-	icvs.width=totalWidth,
-	icvs.height=totalWidth;
+	icvs = Cr.elm('canvas',{width:totalWidth,height:totalWidth});//icon canvas
+	ticvs = Cr.elm('canvas',{width:totalWidth,height:totalWidth});//tainted icon canvas
 	if( webGlAvail && pixelatedPreview && allowWebGl){
 		gl = icvs.getContext("webgl");
 
