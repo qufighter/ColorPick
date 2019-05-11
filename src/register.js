@@ -307,6 +307,13 @@ function getJustPurchasedListItem(){
 	return Cr.elm('li',{},[Cr.txt('If you just made the purchase and have not seen the "completed" message here, check Google Wallet and revisit this page once the purchase is marked as charged.')]);
 }
 
+function safeGetVersion(){
+	if( typeof chrome.runtime.getManifest == 'function' ){
+		return ((chrome.runtime.getManifest() || {}).version) || 'null-version';
+	}
+	return 'no-version';
+}
+
 function createDOM(){
 Cr.elm("div",{id:"mainbox"},[
 	Cr.elm("h2",{},[
@@ -321,7 +328,11 @@ Cr.elm("div",{id:"mainbox"},[
 	Cr.txt("ColorPick is an Amazing Eyedropper tool that allows precise selection of color values through it's one-of-a-kind zoomed preview!"),
 
 	Cr.elm('div',{style:'color:grey;font-size:11px;margin-top:10px;'},[
-		Cr.txt("ColorPick Does NOT require registration to work.  If you are having trouble please reach out to support.  Purchasing a license will not fix any errors you have encountered!")
+		Cr.txt("ColorPick does NOT require registration to work.  If you are having trouble try ColorPick on a different website in a new tab, consider reloading the problem tab, and/or please reach out to "),
+		Cr.elm("a",{href:"http://www.vidsbee.com/Contact/?browserinfo=AppVersion:ExtenstionRegPage-"+safeGetVersion()},[
+			Cr.txt("support")
+		]),
+		Cr.txt(".")//" Purchasing a license will not fix any errors you may encounter!")
 	]),
 
 	Cr.elm('div',{id:'chrome-inapp-reg', childNodes:[

@@ -1,6 +1,6 @@
 body{font-family:sans-serif;margin:20px;opacity:0;transition:linear 0.2s;font-size:14px;line-height:1.75em;}
 h2 .subh{font-size:12px;position:relative;}
-a:visited{color:blue;}
+#phone-itself a:visited{color:blue;}
 .basic:before{
  content: 'BASIC VERSION FREE';
  display: inline-block;

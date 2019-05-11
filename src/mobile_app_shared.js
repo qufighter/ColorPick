@@ -39,11 +39,11 @@ function createPhoneDiv(){
 					]),
 					Cr.elm('br'),
 
-					Cr.txt('  Details available at '),
+					Cr.txt('  Details and Web demo at '),
 					Cr.elm('a', {target:"_blank",href:'http://vidsbee.com/ColorPick/Mobile'},[
 						Cr.txt("vidsbee.com/ColorPick/Mobile")
 					]),
-					Cr.txt('.'),
+					//Cr.txt('.'),
 					Cr.elm('br'),
 					Cr.elm('br'),
 
