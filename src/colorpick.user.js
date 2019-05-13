@@ -193,7 +193,7 @@ function exitAndDetach(){
 	chrome.runtime.onMessage.removeListener(reqLis);
 }
 function dissableColorPickerFromHere(){
-	var disableTimeout=setTimeout(disableColorPicker,8000);
+	var disableTimeout=setTimeout(disableColorPicker,500);
 	chrome.runtime.sendMessage({disableColorPicker:true},function(r){
 		clearTimeout(disableTimeout);
 	});
