@@ -59,7 +59,7 @@ function snapshotLoaded(){
 		setTimeout(function(){
 			isMakingNew=false;
 			c.style.visibility="visible";n.style.visibility="visible";document.body.style.cursor=crosshairCss();updateColorPreview();
-		},255);
+		},10);
 }
 function reqLis(request, sender, sendResponse) {
 	var resp={result:true};
@@ -193,7 +193,7 @@ function exitAndDetach(){
 	chrome.runtime.onMessage.removeListener(reqLis);
 }
 function dissableColorPickerFromHere(){
-	var disableTimeout=setTimeout(disableColorPicker,500);
+	var disableTimeout=setTimeout(disableColorPicker,8000);
 	chrome.runtime.sendMessage({disableColorPicker:true},function(r){
 		clearTimeout(disableTimeout);
 	});
@@ -248,7 +248,7 @@ function ssf(ev){
 	clearTimeout(lastNewTimeout);
 	lastNewTimeout=setTimeout(function(){
 		newImage();//some delay required OR it won't update
-	},250);
+	},10);
 }
 
 function loadPref(i, obj, pOptions){
@@ -349,7 +349,7 @@ function newImage(){
 	if(!isEnabled)return;
 	if(isMakingNew || !document.body.style){
 		clearTimeout(lastNewTimeout);
-		lastNewTimeout=setTimeout(function(){newImage();},255);
+		lastNewTimeout=setTimeout(function(){newImage();},500);
 		return;
 	}
 	document.body.style.cursor='wait';
@@ -364,7 +364,7 @@ function newImage(){
 	snapshotLoadedTimeout = setTimeout(function(){
 		disableColorPicker();
 		console.warn("Sorry - Color Pick experienced issues while waiting for the snapshot - Reload the page in order to pick colors here.");
-	}, 5000); // max 3 second wait for image, attempt to prevent endless spin
+	}, 6000); // max 3 second wait for image, attempt to prevent endless spin
 
 	setTimeout(function(){
 		try{
@@ -373,7 +373,7 @@ function newImage(){
 			console.log("Sorry - Color Pick experienced a problem in newImage and has been disabled - Reload the page in order to pick colors here.", e);
 			exitAndDetach();
 		}
-	},255); // todo: this delay may be redundant, consider removing delay in ssf
+	},10); // todo: this delay may be redundant, consider removing delay in ssf
 }
 
 var lastPreviewURI;
@@ -388,7 +388,7 @@ function testWebGlAvail(){
 
 function handleRenderingThrottle(){
 	var msDelay=0;
-	if( isUpdating ) msDelay=5;
+	if( isUpdating ) msDelay=8;
 	clearTimeout(lastTimeout);
 	isUpdating = true;
 	lastTimeout = setTimeout(handleRendering,msDelay);
