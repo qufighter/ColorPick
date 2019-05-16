@@ -32,7 +32,7 @@ function createPhoneDiv(){
 					// 	Cr.txt('version now available for FREE')
 					// ]),
 					Cr.elm('a', {style:'float:left;margin:10px 10px 10px 0;',target:"_blank",href:'http://vidsbee.com/ColorPick/Mobile'},[
-						Cr.elm('img',{src:'img/simulator.png',height:240,style:'max-width:137px'})
+						Cr.elm('img',{src:'img/simulator.png',width:137,style:'min-height:240px'})
 					]),
 					Cr.elm('strong',{style:'font-size:16px;'},[
 						Cr.txt('ColorPick: Eyedropper')

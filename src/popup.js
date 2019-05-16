@@ -410,7 +410,21 @@ function scriptsInjectedResult(){
 		finishSetup();
 }
 function finishSetup(){
-	var port = chrome.tabs.connect(tabid, {name:"popupshown"});
+	var port = null;
+	try{
+		port = chrome.tabs.connect(tabid, {name:"popupshown",frameId:0});
+	}catch(e){
+		console.log("Port connection error", port, e);
+	}
+	if(!port){
+		clearTimeout(scriptAliveTimeout);
+		gotAnUpdate=true;
+		console.log('Failed to chrome.tabs.connect name:"popupshown" - this may mean our background page or content script went away');
+		setPreviewSRC(chrome.extension.getURL('img/error0.1.png'),true);
+		init_color_chooser();
+		return;
+	}
+
 	chrome.tabs.sendMessage(tabid,{enableColorPicker:true},function(response){
 
 		if(response.hex)
@@ -715,7 +729,7 @@ Cr.elm("div",{},[
 		])
 	]),
 	Cr.elm("div",{id:"preview"},[
-		Cr.elm("a",{id:"unreg_msg",target:"_blank",href:"register.html",event:['click',navToReg],title:chrome.i18n.getMessage('buyRegisterTip')},[Cr.txt(chrome.i18n.getMessage('registerBanner'))]),
+		Cr.elm("a",{id:"unreg_msg",target:"_blank",href:"register.html",event:['click',navToReg],title:chrome.i18n.getMessage('buyRegisterTip')},[/*Cr.txt(chrome.i18n.getMessage('registerBanner'))*/]),
 		Cr.elm("span",{id:"timer_msg"},[]),
 		Cr.elm("a",{href:'#',id:'arr_u',class:'hilight mvarrow',name:38,event:['click',moveArrowBtn]},[Cr.txt(String.fromCharCode(9650))]),
 		Cr.elm("a",{href:'#',id:'arr_d',class:'hilight mvarrow',name:40,event:['click',moveArrowBtn]},[Cr.txt(String.fromCharCode(9660))]),
