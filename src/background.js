@@ -140,6 +140,8 @@ function(request, sender, sendResponse) {
 			if(usePNG)chrome.tabs.captureVisibleTab(winid, {format:'png'}, cbf);
 			else chrome.tabs.captureVisibleTab(winid, {format:'jpeg',quality:100}, cbf);
 			sendResponse({});
+		}else if (request.isBgAlive){
+			sendResponse({});
 		}else if (request.movePixel){
 			chrome.tabs.sendMessage(tabid,request,function(r){});
 		}else if (request.setColor){

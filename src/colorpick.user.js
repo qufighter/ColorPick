@@ -42,8 +42,11 @@ function emptyNode(node){
 }
 var snapLoader=Cr.elm('img',{events:[['load',snapshotLoaded]]});
 var dirtyImage=Cr.elm('img');
+var imagesRcvdCounter=0;
+var imagesLoadedCounter=0;
 function snapshotLoaded(){
 		clearTimeout(snapshotLoadedTimeout);
+		imagesLoadedCounter++;
 		c.height=innerHeight;
 		c.width=innerWidth;
 		var cctx=c.getContext("2d");
@@ -77,6 +80,7 @@ function reqLis(request, sender, sendResponse) {
 				resp.cb=rgb.b;
 		}
   }else if (request.setPickerImage){
+		imagesRcvdCounter++;
 		snapLoader.src=request.pickerImage;
 		if( request.isErrorTryAgain ){
 			/// do we let them have time to read it?? or not???
@@ -345,6 +349,7 @@ function updateColorPreview(ev){
 }
 
 var isMakingNew=false,lastNewTimeout=0,snapshotLoadedTimeout;
+var imageRequestReachedBg=0;
 function newImage(){
 	if(!isEnabled)return;
 	if(isMakingNew || !document.body.style){
@@ -363,12 +368,14 @@ function newImage(){
 	clearTimeout(snapshotLoadedTimeout);
 	snapshotLoadedTimeout = setTimeout(function(){
 		disableColorPicker();
-		console.warn("Sorry - Color Pick experienced issues while waiting for the snapshot - Reload the page in order to pick colors here.");
+		console.warn("Sorry - Color Pick experienced issues while waiting for the snapshot - Reload the page in order to pick colors here.  Here is how many newImage requests reached bg page:", imageRequestReachedBg, 'imagesRcvdCounter', imagesRcvdCounter, 'imagesLoadedCounter', imagesLoadedCounter, snapLoader);
 	}, 6000); // max 3 second wait for image, attempt to prevent endless spin
 
 	setTimeout(function(){
 		try{
-			chrome.runtime.sendMessage({newImage:true,w:x,h:y}, function(response){});
+			chrome.runtime.sendMessage({newImage:true,w:x,h:y}, function(response){
+				imageRequestReachedBg++;
+			});
 		}catch(e){
 			console.log("Sorry - Color Pick experienced a problem in newImage and has been disabled - Reload the page in order to pick colors here.", e);
 			exitAndDetach();

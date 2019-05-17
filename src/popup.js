@@ -7,7 +7,7 @@ var borderValue='1px solid grey',EnableRGB=true,EnableHSL=true,useCSSValues=true
 var cpScaleOffset=(isWindows?16:0);
 var isPicking=false,keyInputMode=false;
 var CSS3ColorFormat=(localStorage['CSS3ColorFormat']||pAdvOptions["CSS3ColorFormat"].def);
-var gotAnUpdate = false;EnableHex=true;
+var gotAnUpdate = false;EnableHex=true;otherError=false;
 var fishEye = (localStorage['fishEye']||pOptions["fishEye"].def)-0;
 var startTime = (new Date()).getTime();
 function getEventTargetA(ev){
@@ -335,7 +335,7 @@ function iin(){
 								setPreviewSRC(chrome.extension.getURL('img/error'+2+'.png'),true);
 							}else{
 								setTimeout(function(){
-									if(!gotAnUpdate){
+									if(!gotAnUpdate && !otherError){
 										setPreviewSRC(chrome.extension.getURL('img/error'+1+'.png'),true);
 										showLoadingTimer();
 									}
@@ -409,6 +409,13 @@ function scriptsInjectedResult(){
 	}else
 		finishSetup();
 }
+
+function bgPageOrPortError(){
+	otherError=true;
+	setPreviewSRC(chrome.extension.getURL('img/error0.1.png'),true);
+	init_color_chooser();
+}
+
 function finishSetup(){
 	var port = null;
 	try{
@@ -417,11 +424,8 @@ function finishSetup(){
 		console.log("Port connection error", port, e);
 	}
 	if(!port){
-		clearTimeout(scriptAliveTimeout);
-		gotAnUpdate=true;
 		console.log('Failed to chrome.tabs.connect name:"popupshown" - this may mean our background page or content script went away');
-		setPreviewSRC(chrome.extension.getURL('img/error0.1.png'),true);
-		init_color_chooser();
+		bgPageOrPortError();
 		return;
 	}
 
@@ -795,12 +799,21 @@ Cr.elm("div",{},[
 	document.addEventListener('mousemove',mmove);
 	document.body.addEventListener('click', popupClicked,false);
 
+	var bgWaitTimeout = setTimeout(function(){
+		console.warn("background alive wait timeout!")
+		bgPageOrPortError();
+	}, 4500);
 
-//log to bg page
-//var background = chrome.extension.getBackgroundPage();
-//background.console.log('hello bg');
+	chrome.runtime.sendMessage({isBgAlive:true},function(r){
+		if(chrome.runtime.lastError){
+			console.warn('Error during check of isBgAlive: '+chrome.runtime.lastError.message);
+			bgPageOrPortError();
+		}else{
+			iin();
+		}
+		clearTimeout(bgWaitTimeout);
+	});
 
-	iin();
 }
 
 document.addEventListener('DOMContentLoaded', createDOM);
