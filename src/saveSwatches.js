@@ -197,10 +197,12 @@ function createDOM(){
 		},[Cr.txt('Fragment URL')]));
 	}
 
+	var dataUrl=escape('<a href="http://www.vidsbee.com/ColorPick/Pallete#'+allHex.join(',')+'">ColorPick Eyedropper Swatch Viewer</a>'+(document.getElementById('exported-colors').innerHTML.replace(/\n/g,' ')));
+
 	dest.appendChild(Cr.elm('a',{
 		style:'margin:10px 0;display:block;',
 		target:'_blank',
-		href:'data:text/html;plain,<a href="http://www.vidsbee.com/ColorPick/Pallete#'+allHex.join(',')+'">ColorPick Eyedropper Swatch Viewer</a>'+(document.getElementById('exported-colors').innerHTML.replace(/\n/g,' ')),
+		href:'data:text/html;plain,'+dataUrl,
 		title:'Nifty.'
 	},[Cr.txt('Data URL')]));
 
