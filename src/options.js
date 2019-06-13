@@ -114,6 +114,10 @@ function borderStyle(was, boolz, element){
 		label.classList.add('changed');
 		label.style.border='1px solid blue';
 		label.title=textForWas+': '+was;
+		var area = label.closest('.indented-area');
+		if( area.style.display!='block' && area.previousElementSibling ){
+			toggle_next_sibling_display({target:area.previousElementSibling});
+		}
 	}else{
 		label.classList.remove('changed');
 		label.style.border='';
