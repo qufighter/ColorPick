@@ -2,7 +2,7 @@ var elmid1='color_pick_click_box',elmid2='ChromeExtension:Color-Pick.com';
 if(typeof(exitAndDetach)=='function')exitAndDetach();
 function _ge(n){return document.getElementById(n);}
 var n=false,c=false,hex='F00BAF',lasthex='',rgb=null;hsv=null;scal=1,ex=0,ey=0,isEnabled=false,isLocked=false,msg_bg_unavail=chrome.i18n.getMessage('bgPageUnavailable');
-var isUpdating=false,lastTimeout=0,lx=0,ly=0;
+var isUpdating=false,lastTimeout=0,lx=0,ly=0,histories=0;
 var opts={};
 var cvs = document.createElement('canvas');
 var ctx = cvs.getContext('2d'),x_cvs_scale=1,y_cvs_scale=1;
@@ -65,10 +65,11 @@ function snapshotLoaded(){
 		},10);
 }
 function reqLis(request, sender, sendResponse) {
-	var resp={result:true};
-	if (request.testAlive){
+  var resp={result:true};
+  if (request.testAlive){
 		//disableColorPicker();
   }else if (request.enableColorPicker){
+		histories = request.historyLen || 0;
 		resp.wasAlreadyEnabled=enableColorPicker();
 		if(request.workerHasChanged) lsnaptabid=-1;
 		if(resp.wasAlreadyEnabled){
@@ -162,7 +163,7 @@ function setDisplay(){//Cr.elm
 	if(_ge('cphexvl'))_ge('cphexvl').select();
 	if( opts.reg_chk!=true && hex && hex != lastHex && (!rgb || (rgb.r != rgb.g || rgb.r != rgb.b || rgb.g != rgb.b)) ){
 		goodHexCounter++;
-		if( goodHexCounter > 1 ){
+		if( goodHexCounter > 1 && histories > 50 ){
 			Cr.elm('div', {style:'text-shadow:white 1px 1px 2px;font-weight:bold;'}, [
 				Cr.elm('a', {
 					style: 'cursor:pointer;',

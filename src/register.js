@@ -182,7 +182,7 @@ function chromeInapPurchaseSuccess(){
 	}));
 	localStorage['reg_chk']='true';
 	localStorage['reg_inapp']='true';
-	localStorage['reg_name']=localStorage['reg_name'] || 'Chrome Exclusive';
+	localStorage['reg_name']=localStorage['reg_name'] || ((isChrome?'Chrome ':'') + 'Exclusive');
 	set_registered();
 	saveSyncItemsToChromeSyncStorage();
 }
@@ -195,6 +195,19 @@ function chromeInappBuyBegin(){
 		failure: getChromeInAppStatus
 	});
 
+}
+
+function steal(){
+	chromeInapPurchaseSuccess();
+	localStorage['was_stole']=new Date();
+}
+
+function unsteal(){
+	if( localStorage['was_stole'] ){
+		resetPurchases();
+		localStorage.removeItem('was_stole');
+		window.location.reload();
+	}
 }
 
 var chromeStatusCounter=0;
@@ -415,18 +428,22 @@ Cr.elm("div",{id:"mainbox"},[
 
 
 	Cr.elm("h3",{style:"margin-bottom:7px;clear:both;"},[
-		// Cr.txt('*'),
-		// Cr.elm('span', {style:'color:red'}, [Cr.txt(' NEW ')]),
-		// Cr.txt('*'),
-		// Cr.elm('span', {style:'color:green'}, [Cr.txt(' March ')]),
-		// Cr.txt('*'),
-		// Cr.elm('span', {style:'color:blue'}, [Cr.txt(' 2019 ')]),
-		// Cr.txt('*'),
+		Cr.txt('*'),
+		Cr.elm('span', {style:'color:red'}, [Cr.txt(' NEW ')]),
+		Cr.txt('*'),
+		Cr.elm('span', {style:'color:green'}, [Cr.txt(' March ')]),
+		Cr.txt('*'),
+		Cr.elm('span', {style:'color:blue'}, [Cr.txt(' 2019 ')]),
+		Cr.txt('*'),
 		Cr.txt(" Mobile Platforms")
 	]),
 	Cr.elm("small",{style:"",class:""},[
 		createPhoneDiv()
 	]),
+
+	// Cr.elm("h3",{style:"margin-bottom:7px;clear:both;"},[
+	// 	Cr.txt(" No Thanks")
+	// ]),
 
 	// Cr.elm("h3",{style:"margin-bottom:7px;clear:both;"},[
 	// 	Cr.txt("Alternative")
@@ -451,6 +468,11 @@ Cr.elm("div",{id:"mainbox"},[
 	//setTimeout(function(){
 		document.body.style.opacity="1";
 	//},250);
+
+	console.log("Hello - thank you for your interest in ColorPick registered mode.  Registered mode is what makes color pick great by ensuring continued development and support.  If you have a dollar or two please register!  You can always upgrade your license later if you want to support ColorPick more.  If everyone who uses color pick registered then I could work on ColorPick and future projects full time and create jobs, which is my dream.  I can't save the world without your support.  Life is short, pick the rainbow: it's realistic.  Don't be a pessimist.  Registration is optimistic.");
+	if( localStorage['was_stole'] || (!localStorage['was_stole'] && (!localStorage['reg_chk'] || localStorage['reg_chk']=='false')) ){
+		console.log("If you cannot afford to purchase at this time but plan to register later, and you can't stand the other work around to hide the please register message  (pick the same color again or clear the color history), you may call the steal() function at the prompt below.  Later when you decide to register just call the unsteal() function and register normally.  I wish to report that it also greatly helps when you leave a 5 star rating because it helps more people find the extension but this does not replace your registration.  Thank you!");
+	}
 }
 
 window.addEventListener('load', createDOM);

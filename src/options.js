@@ -115,7 +115,7 @@ function borderStyle(was, boolz, element){
 		label.style.border='1px solid blue';
 		label.title=textForWas+': '+was;
 		var area = label.closest('.indented-area');
-		if( area.style.display!='block' && area.previousElementSibling ){
+		if( area.style.display!='block' ){
 			toggle_next_sibling_display({target:area.previousElementSibling});
 		}
 	}else{

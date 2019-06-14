@@ -397,6 +397,7 @@ function scriptsInjectedResult(){
 		chrome.tabs.executeScript(tabid, {file: "Cr.js"}, function(){
 			if(chrome.runtime.lastError){
 				console.log(chrome.runtime.lastError.message);
+				//setPreviewSRC(chrome.extension.getURL('img/error'+1+'.png'),true);
 				return;
 			}
 			chrome.tabs.executeScript(tabid, {file: "options_prefs.js"}, function(){
@@ -428,8 +429,8 @@ function finishSetup(){
 		bgPageOrPortError();
 		return;
 	}
-
-	chrome.tabs.sendMessage(tabid,{enableColorPicker:true},function(response){
+	var history = localStorage['colorPickHistory'] || '';
+	chrome.tabs.sendMessage(tabid,{enableColorPicker:true, historyLen:history.length},function(response){
 
 		if(response.hex)
 			updateCurrentColor(response.cr,response.cg,response.cb);
