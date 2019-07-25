@@ -153,14 +153,20 @@ function keyResponse(isValid,validHash,validName){
 }
 
 function license_go(){
-	
-	
+
 	if(localStorage['reg_chk']=='true' && localStorage['reg_inapp']!='true'){
 		set_unregistered();
 		gel('license_key').value='';
 	}
 	
-	checkKey();
+	if(localStorage['reg_inapp']!='true'){
+		checkKey();
+	}else{
+		if( confirm("The exclusive license may not be modified in this way.  You can still register with a normal license purchased at vidsbee.com\n\nIf you would like to refund your exclusive license please contact me via the support link and include the Order number.  You should be able to refresh this page to activate your exclusive license again.\n\nPress OK to temporarily invalidate your exclusive license and register again.") ){
+			localStorage['reg_inapp'] = 'false';
+			license_go();
+		}
+	}
 }
 
 function resetPurchases(){
@@ -350,7 +356,7 @@ Cr.elm("div",{id:"mainbox"},[
 
 	Cr.elm('div',{id:'chrome-inapp-reg', childNodes:[
 		Cr.elm("h3",{},[
-			Cr.txt("Register Chrome Extension only")
+			Cr.txt("Register Chrome Extension only (Exclusive license)")
 		]),
 		Cr.elm('div',{id:'chrome-inapp', childNodes:[
 			Cr.elm("img",{src:"img/loading.gif",id:"indicator",title:"Checking in-app registration status.",event:['click', showInappFailure]}),
