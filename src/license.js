@@ -151,14 +151,14 @@ Cr.elm("div",{id:"container"},[
 		Cr.txt("By clicking agree you will automatically opt-into collecting usage statistics and receive registered status within this extension."),
 		Cr.elm("br"),
 		Cr.elm("br"),
-		Cr.txt("There are two ways to put Color Picker into registered status.  The first way is to agree with this agreement and opt-into gathering of usage statistics.  The second way is to provide a valid license key which can be purchased by clicking on the Register button or from the options screen."),
+		Cr.txt("You may agree with this agreement and opt-into gathering of usage statistics.  You may provide a valid license key which can be purchased by clicking on the Register button or from the options screen."),
 		Cr.elm("br"),
 		Cr.elm("br"),
-		Cr.txt("By agreeing with this licence you confirm that you are over the age of 18 or have parental consent to agree to this license.")
+		Cr.txt("By agreeing with this license you confirm that you are over the age of 18 or have parental consent to agree to this license.")
 	]),
 	Cr.elm("div",{id:"controls"},[
 		Cr.elm("input",{type:"button",id:"btn_agree",value:"Opt-in"}),
-		Cr.elm("input",{type:"button",id:"btn_try",value:"Try"}),
+		// Cr.elm("input",{type:"button",id:"btn_try",value:"Try"}),
 		Cr.elm("input",{type:"button",id:"btn_register",value:"Register"})
 	])
 ],document.body)
