@@ -41,6 +41,7 @@
    },
    "web_accessible_resources": [
      "img/icon16.png",
+     "img/icon64.png",
      "img/crosshair.png",
      "img/close.png"
    ],

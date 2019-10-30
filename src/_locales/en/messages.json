@@ -245,6 +245,9 @@
    "terms": {
       "message": "Terms of Use"
    },
+   "sponsors": {
+      "message": "Sponsors"
+   },
    "desktopapp": {
       "message": "Desktop ColorPick App"
    },

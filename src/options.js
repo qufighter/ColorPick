@@ -660,6 +660,10 @@ Cr.elm("div",{id:"mainbox"},[
 		Cr.elm('span',{style:'color:#444;'},[Cr.txt('\uFFFD ')]),
 		Cr.txt(chrome.i18n.getMessage('help'))
 	]),
+	Cr.txt(" | "),
+	Cr.elm("a",{id:"license_link",href:"sponsors.html"},[
+		Cr.txt(chrome.i18n.getMessage('sponsors'))
+	]),
 	Cr.elm("br",{}),
 	Cr.ent(chrome.i18n.getMessage('extName')+" &copy;"),
 	Cr.elm("a",{target:"_blank",href:"http://vidsbee.com/ColorPick/"},[
