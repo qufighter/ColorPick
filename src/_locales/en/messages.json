@@ -281,6 +281,9 @@
    "copycolorval": {
       "message": "Copy the color value"
    },
+   "watermark_help": {
+      "message": "Watermark may be disabled from advanced options once you have registered the extension."
+   },
    "emptyDesc": {
       "message": ""
    },

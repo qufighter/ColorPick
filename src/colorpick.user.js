@@ -1,8 +1,8 @@
 var elmid1='color_pick_click_box',elmid2='ChromeExtension:Color-Pick.com';
 if(typeof(exitAndDetach)=='function')exitAndDetach();
 function _ge(n){return document.getElementById(n);}
-var n=false,c=false,hex='F00BAF',lasthex='',rgb=null;hsv=null;scal=1,ex=0,ey=0,isEnabled=false,isLocked=false,msg_bg_unavail=chrome.i18n.getMessage('bgPageUnavailable');
-var isUpdating=false,lastTimeout=0,lx=0,ly=0,histories=0;
+var n=null,c=null,waterm=null,hex='F00BAF',lasthex='',rgb=null;hsv=null;scal=1,ex=0,ey=0,isEnabled=false,isLocked=false,msg_bg_unavail=chrome.i18n.getMessage('bgPageUnavailable');
+var isUpdating=false,lastTimeout=0,lx=0,ly=0,histories=0,nbsp='\u00A0';
 var opts={};
 var cvs = document.createElement('canvas');
 var ctx = cvs.getContext('2d'),x_cvs_scale=1,y_cvs_scale=1;
@@ -61,7 +61,7 @@ function snapshotLoaded(){
 		
 		setTimeout(function(){
 			isMakingNew=false;
-			c.style.visibility="visible";n.style.visibility="visible";document.body.style.cursor=crosshairCss();updateColorPreview();
+			showCtrls();document.body.style.cursor=crosshairCss();updateColorPreview();
 		},10);
 }
 function reqLis(request, sender, sendResponse) {
@@ -217,7 +217,8 @@ function removeExistingNodes(){
 		c=_ge(elmid1),n=_ge(elmid2);
 		if(c)document.body.removeChild(c);
 		if(n)document.body.removeChild(n);
-		c=false,n=false;
+		if(waterm)document.body.removeChild(waterm);
+		c=null,n=null,waterm=null;
 		if( document.body.style ) document.body.style.cursor='default';
 	}
 }
@@ -243,7 +244,7 @@ function mmf(ev){
 
 function ssf(ev){
 	if(!isEnabled)return;
-	n.style.visibility="hidden";c.style.visibility="hidden";//redundent?
+	hideCtrls();//redundent?
 	if( !c.parentNode ){
 		// this indicates our context has been invalidated by another instance of the script, possibly ext has been reloaded
 		console.log("Sorry - Color Pick experienced a problem in scrollFunction and has been disabled - Reload the page in order to pick colors here.");
@@ -282,10 +283,31 @@ function initialInit(){
 function crosshairCss(){
 	return 'url('+chrome.extension.getURL('img/crosshair.png')+') 16 16,crosshair';
 }
+
 function prefsLoadedCompleteInit(){
 	removeExistingNodes();
 	c=Cr.elm('canvas',{id:elmid1,style:'position:fixed;max-width:none!important;max-height:none!important;top:0px!important;left:0px!important;margin:0px!important;padding:0px!important;overflow:hidden;z-index:2147483646;cursor:'+crosshairCss(),events:[['click',picked,true],['mousedown',function(ev){ev.preventDefault();}]]},[],document.body);
 	n=Cr.elm('div',{id:elmid2,style:'position:fixed;min-width:30px;max-width:300px;min-height:30px;box-shadow:2px 2px 2px #666;border:'+opts.borderValue+';z-index:2147483646;cursor:default;padding:4px;'},[Cr.txt(' ')],document.body);
+	waterm=Cr.elm('div',{
+		id:'colorpick-watermark',
+		title: chrome.i18n.getMessage('watermark_help'),
+		style:"position:fixed;bottom:0;right:0;cursor:default;z-index:2147483646;transition:0.5s ease-out;user-select:none;",
+		events:['mouseover', moveWm],
+		childNodes:[
+			Cr.elm('div',{
+				style:"font-family:'Helvetica Neue','Lucida Grande',sans-serif;font-size:16px;color:black;font-weight:300;text-shadow:white 1px 1px 2px;line-height:24px;padding:5px;text-align:left;opacity:0.9;background:white;",
+				childNodes:[
+					Cr.elm('img',{src:chrome.extension.getURL('img/icon64.png'), align:"top"}),
+					Cr.elm('div',{
+						style:"display:inline-block;width:85px;margin:8px 0 0 5px;",
+						childNodes:[
+							Cr.txt(chrome.i18n.getMessage('extName'))
+						]
+					})
+				]
+			})
+		]
+	},document.body);
 	dirtyImage.src=chrome.extension.getURL('img/close.png');
 	document.addEventListener('mousemove',mmf);
 	addEventListener('keyup',wk);
@@ -294,6 +316,48 @@ function prefsLoadedCompleteInit(){
 	testWebGlAvail();
 	initializeCanvas();
 	remainingInit();
+}
+
+function showCtrls(){ // todo: single container
+	n.style.display="";
+	c.style.display="";
+	waterm.style.display="";
+}
+
+function hideCtrls(){
+	n.style.display="none";
+	c.style.display="none";
+	waterm.style.display="none";
+}
+
+
+function swapSides(elm, olds, news, length){
+	elm.style[olds] ='-'+length+'px';
+	setTimeout(function(){
+		elm.style[news] = elm.style[olds];
+		elm.style[olds] = '';
+		setTimeout(function(){
+			elm.style[news] = '0px';
+		}, 10);
+	}, 500);
+
+}
+function moveWm(ev){
+	var t=waterm.style.top.match(/^0/), r=waterm.style.right.match(/^0/), b=waterm.style.bottom.match(/^0/), l=waterm.style.left.match(/^0/);
+	var le = ev.offsetX < 10, re = ev.offsetX > waterm.clientWidth - 10;
+	if( le || re ){
+		if( r ){
+			swapSides(waterm, 'right', 'left', waterm.clientWidth);
+		}else if( l ){
+			swapSides(waterm, 'left', 'right', waterm.clientWidth);
+		}
+	}else{
+		if( b ){
+			swapSides(waterm, 'bottom', 'top', waterm.clientHeight);
+		}else if( t ){
+			swapSides(waterm, 'top', 'bottom', waterm.clientHeight);
+		}
+	}
 }
 
 function enableColorPicker(){
@@ -310,8 +374,7 @@ function remainingInit(){
 		return false;
 	}
 	if(!isEnabled){
-		n.style.visibility="hidden";
-		c.style.visibility="hidden";
+		hideCtrls();
 		if(isLocked)picked();//unlocks for next pick
 		document.body.style.cursor=crosshairCss();
 		isEnabled=true;
@@ -360,8 +423,7 @@ function newImage(){
 	}
 	document.body.style.cursor='wait';
 	isMakingNew=true;
-	n.style.visibility="hidden";
-	c.style.visibility="hidden";
+	hideCtrls();
 	var x=innerWidth,y=innerHeight;
 	c.width=x;
 	c.height=y;
