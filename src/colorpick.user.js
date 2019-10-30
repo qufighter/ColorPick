@@ -1,7 +1,7 @@
 var elmid1='color_pick_click_box',elmid2='ChromeExtension:Color-Pick.com';
 if(typeof(exitAndDetach)=='function')exitAndDetach();
 function _ge(n){return document.getElementById(n);}
-var n=null,c=null,waterm=null,hex='F00BAF',lasthex='',rgb=null;hsv=null;scal=1,ex=0,ey=0,isEnabled=false,isLocked=false,msg_bg_unavail=chrome.i18n.getMessage('bgPageUnavailable');
+var n=null,c=null,waterm=null,wmMoveCtr=0,hex='F00BAF',lasthex='',rgb=null;hsv=null;scal=1,ex=0,ey=0,isEnabled=false,isLocked=false,msg_bg_unavail=chrome.i18n.getMessage('bgPageUnavailable');
 var isUpdating=false,lastTimeout=0,lx=0,ly=0,histories=0,nbsp='\u00A0';
 var opts={};
 var cvs = document.createElement('canvas');
@@ -297,7 +297,7 @@ function prefsLoadedCompleteInit(){
 			Cr.elm('div',{
 				style:"font-family:'Helvetica Neue','Lucida Grande',sans-serif;font-size:16px;color:black;font-weight:300;text-shadow:white 1px 1px 2px;line-height:24px;padding:5px;text-align:left;opacity:0.9;background:white;",
 				childNodes:[
-					Cr.elm('img',{src:chrome.extension.getURL('img/icon64.png'), align:"top"}),
+					Cr.elm('img',{src:chrome.extension.getURL('img/icon64.png'), width:64, align:"top"}),
 					Cr.elm('div',{
 						style:"display:inline-block;width:85px;margin:8px 0 0 5px;",
 						childNodes:[
@@ -308,6 +308,7 @@ function prefsLoadedCompleteInit(){
 			})
 		]
 	},document.body);
+	wmMoveCtr=0;
 	dirtyImage.src=chrome.extension.getURL('img/close.png');
 	document.addEventListener('mousemove',mmf);
 	addEventListener('keyup',wk);
@@ -330,34 +331,44 @@ function hideCtrls(){
 	waterm.style.display="none";
 }
 
-
-function swapSides(elm, olds, news, length){
+function swapSides(elm, olds, news, length, swappedCb){
 	elm.style[olds] ='-'+length+'px';
 	setTimeout(function(){
 		elm.style[news] = elm.style[olds];
 		elm.style[olds] = '';
+		swappedCb();
 		setTimeout(function(){
 			elm.style[news] = '0px';
 		}, 10);
 	}, 500);
-
 }
 function moveWm(ev){
 	var t=waterm.style.top.match(/^0/), r=waterm.style.right.match(/^0/), b=waterm.style.bottom.match(/^0/), l=waterm.style.left.match(/^0/);
 	var le = ev.offsetX < 10, re = ev.offsetX > waterm.clientWidth - 10;
 	if( le || re ){
 		if( r ){
-			swapSides(waterm, 'right', 'left', waterm.clientWidth);
+			swapSides(waterm, 'right', 'left', waterm.clientWidth, wmSwapped);
 		}else if( l ){
-			swapSides(waterm, 'left', 'right', waterm.clientWidth);
+			swapSides(waterm, 'left', 'right', waterm.clientWidth, wmSwapped);
 		}
 	}else{
 		if( b ){
-			swapSides(waterm, 'bottom', 'top', waterm.clientHeight);
+			swapSides(waterm, 'bottom', 'top', waterm.clientHeight, wmSwapped);
 		}else if( t ){
-			swapSides(waterm, 'top', 'bottom', waterm.clientHeight);
+			swapSides(waterm, 'top', 'bottom', waterm.clientHeight, wmSwapped);
 		}
 	}
+}
+function wmSwapped(){
+	wmMoveCtr++;
+	if( wmMoveCtr > 3 ){
+		nextWm();
+	}
+}
+function nextWm(){
+	var wim = waterm.querySelector('img');
+	if( wim ) wim.src = chrome.extension.getURL('img/icon16.png');
+	// the full game script is now needed, lets request it...
 }
 
 function enableColorPicker(){
