@@ -476,8 +476,8 @@ Cr.elm("div",{id:"mainbox"},[
 	//},250);
 
 	console.log("Hello - thank you for your interest in ColorPick registered mode.  Registered mode is what makes color pick great by ensuring continued development and support.  If you have a dollar or two please register!  You can always upgrade your license later if you want to support ColorPick more.  If everyone who uses color pick registered then I could work on ColorPick and future projects full time and create jobs, which is my dream.  I can't save the world without your support.  Life is short, pick the rainbow: it's realistic.  Don't be a pessimist.  Registration is optimistic.");
-	if( localStorage['was_stole'] || (!localStorage['was_stole'] && (!localStorage['reg_chk'] || localStorage['reg_chk']=='false')) ){
-		console.log("If you cannot afford to purchase at this time but plan to register later, and you can't stand the other work around to hide the please register message  (pick the same color again or clear the color history), you may call the steal() function at the prompt below.  Later when you decide to register just call the unsteal() function and register normally.  I wish to report that it also greatly helps when you leave a 5 star rating because it helps more people find the extension but this does not replace your registration.  Thank you!");
+	if( localStorage['was_stole'] ){
+		console.log("If you cannot afford to purchase at this time but plan to register later, and you can't stand the other work around to hide the please register message  (pick the same color again or clear the color history), you may call the steal() function at the prompt below without paying.  Later when you decide to register just call the unsteal() function and register normally.  I wish to report that it also greatly helps when you leave a 5 star rating because it helps more people find the extension but this does not replace your registration.  Thank you!");
 	}
 }
 
