@@ -297,7 +297,7 @@ function prefsLoadedCompleteInit(){
 			Cr.elm('div',{
 				style:"font-family:'Helvetica Neue','Lucida Grande',sans-serif;font-size:16px;color:black;font-weight:300;text-shadow:white 1px 1px 2px;line-height:24px;padding:5px;text-align:left;opacity:0.9;background:white;",
 				childNodes:[
-					Cr.elm('img',{src:chrome.extension.getURL('img/icon64.png'), width:64, align:"top"}),
+					Cr.elm('img',{src:chrome.extension.getURL('img/icon64.png'), width:64, align:"top", style:'vertical-align:top;'}),
 					Cr.elm('div',{
 						style:"display:inline-block;width:85px;margin:8px 0 0 5px;",
 						childNodes:[
