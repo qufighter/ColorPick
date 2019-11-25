@@ -218,3 +218,14 @@ function DOMloaded(){
 }
 
 document.addEventListener('DOMContentLoaded', DOMloaded);
+
+function safeGetVersion(){
+	if( chrome.runtime.getManifest ){
+		return ((chrome.runtime.getManifest() || {}).version) || 'null-version';
+	}
+	return 'no-version';
+}
+
+if( chrome.runtime.setUninstallURL ){
+	chrome.runtime.setUninstallURL("https://www.vidsbee.com/Contact/?browserinfo=Please take a moment to briefly describe why you uninstalled Color Pick.%0A%0AThank you for your support!%0A%0AAppVersion:ExtenstionRegPage-"+safeGetVersion());
+}
