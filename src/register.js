@@ -327,7 +327,7 @@ function getJustPurchasedListItem(){
 }
 
 function safeGetVersion(){
-	if( typeof chrome.runtime.getManifest == 'function' ){
+	if( chrome.runtime.getManifest ){
 		return ((chrome.runtime.getManifest() || {}).version) || 'null-version';
 	}
 	return 'no-version';

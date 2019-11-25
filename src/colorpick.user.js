@@ -114,9 +114,8 @@ chrome.runtime.onConnect.addListener(function(port){
 	}
 });
 
-function setPixelPreview(zoom,hxe,lhex){
+function setPixelPreview(hxe,lhex){
 	if(isLocked)return;
-	var wid=75,padr=32;if(zoom)wid=150;
 	hex=hxe?hxe:hex;
 	if(!_ge('previewArea') || (rgb && !_ge('cprgbvl'))){
 		emptyNode(n);
@@ -592,7 +591,7 @@ function handleRendering(quick){
 	tictx.drawImage(icvs,0,0);
 
 	if(opts.showPreviewInContent && popupsShowing < 1){
-		setPixelPreview(opts.contSprevZoomd,hex,lasthex);
+		setPixelPreview(hex,lasthex);
 	}
 
 	if(popupsShowing > 0){

@@ -17,7 +17,7 @@ pOptions["EnableHex"]={def:true,ind:0,css:'display:inline-block;'};
 pOptions["EnableRGB"]={def:true,ind:0,css:'display:inline-block;margin-left:8px;'};
 pOptions["EnableHSL"]={def:false,ind:0,css:'display:inline-block;margin-left:8px;'};
 pOptions["showPreviewInContent"]={def:true,ind:0};
-pOptions["contSprevZoomd"]={def:true,ind:1};
+// pOptions["contSprevZoomd"]={def:true,ind:1};
 pOptions["ShowRGBHSL"]={def:false,ind:1};
 pOptions["autocopyhex"]={def:'false',ind:0,select:{'false':chrome.i18n.getMessage('off'),'true':'hexadecimal','rgb':'rgb','hsl':'hsl'}};
 

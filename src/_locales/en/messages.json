@@ -147,10 +147,7 @@
       "message": "Show image preview near cursor while picking"
    },
    "ShowRGBHSL": {
-      "message": "Show RGB and HSL on page"
-   },
-   "contSprevZoomd": {
-      "message": "Large size on page preview"
+      "message": "Also show Hex, RGB and/or HSL on page"
    },
    "autocopyhex": {
       "message": "Attempt to auto copy value to clipboard"
