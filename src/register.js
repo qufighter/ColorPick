@@ -2,6 +2,30 @@ var suppress_connection_errors=false;
 var registerdModeSku = 'colorpick_eyedropper_registered_mode';
 var searchQuery = window.location.search;
 var nbsp='\u00A0';
+var httpsWorks=false;
+
+function testHttps(doneCallback){
+	if( httpsWorks ){
+		doneCallback();
+		return;
+	}
+	var xhr = getXMLhttpObject();
+	xhr.onreadystatechange=function(){if(xhr.readyState == 4){
+		if(xhr.status==200){
+			httpsWorks=true;
+			setTimeout(httpsVidsbeeLinks, 250);
+		}
+		doneCallback();
+	}};
+	xhr.open('GET', "https://vidsbee.com/https-cert-validity-check", true);
+	xhr.send();
+}
+function httpsVidsbeeLinks(){
+	document.querySelectorAll('a[href^="http://vidsbee.com"]').forEach(function(a){
+		a.href = a.href.replace(/^http:/,'https:');
+	});
+}
+
 function gel(n){
 	return document.getElementById(n);
 }
@@ -60,7 +84,7 @@ function set_registered(){
 	gel('license_key').value='************************';
 	gel('license_go').value=chrome.i18n.getMessage('modifyLicense');
 	localStorage['reg_chk']=true;
-	gel('examine').href='http://vidsbee.com/ColorPick/Upgrade?khash='+(localStorage['reg_hash']||'');
+	gel('examine').href='http'+(httpsWorks?'s':'')+'://vidsbee.com/ColorPick/Upgrade?khash='+(localStorage['reg_hash']||'');
 }
 function set_unregistered(){
 	Cr.empty(gel('license_status')).appendChild(Cr.txt(chrome.i18n.getMessage('unregistered')));
@@ -69,7 +93,7 @@ function set_unregistered(){
 	gel('license_key').disabled=false;
 	gel('license_go').value=chrome.i18n.getMessage('registerButton');
 	localStorage['reg_chk']=false;
-	gel('examine').href='http://vidsbee.com/ColorPick/Upgrade/';
+	gel('examine').href='http'+(httpsWorks?'s':'')+'://vidsbee.com/ColorPick/Upgrade/';
 }
 function init(){
 	if(localStorage['reg_chk']=='true'){
@@ -101,6 +125,12 @@ function checkKey(){
 }
 
 function VerifyHashToLicSrv(p_khash,p_kname){
+	testHttps(function(){
+		ReallyVerifyHashToLicSrv(p_khash,p_kname);
+	});
+}
+
+function ReallyVerifyHashToLicSrv(p_khash,p_kname){
 	var khash=p_khash;
 	var kname=p_kname;
 	var suppress_err = suppress_connection_errors;
@@ -111,7 +141,7 @@ function VerifyHashToLicSrv(p_khash,p_kname){
 			if(xhr.responseText == 'VERIFIED') keyResponse(true,khash,kname);
 			else if(xhr.responseText == 'MAXIMUM_USE_EXCEEDED'){
 				if(confirm(chrome.i18n.getMessage('licenseExceeded'))){
-					window.location = 'http://vidsbee.com/ColorPick/Upgrade?khash='+localStorage['reg_hash'];
+					window.location = 'http'+(httpsWorks?'s':'')+'://vidsbee.com/ColorPick/Upgrade?khash='+localStorage['reg_hash'];
 				}
 				gel('loading').style.display='none';
 			}else if(!suppress_err) keyResponse(false);
@@ -134,7 +164,7 @@ function VerifyHashToLicSrv(p_khash,p_kname){
 			gel('loading').style.display='none';
 		}
 	}};
-	xhr.open('GET', "http://vidsbee.com/key_chk.php?khash=" + khash, true);
+	xhr.open('GET', 'http'+(httpsWorks?'s':'')+'://vidsbee.com/key_chk.php?khash=' + khash, true);
 	xhr.send();
 }
 

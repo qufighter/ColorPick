@@ -290,7 +290,7 @@ function prefsLoadedCompleteInit(){
 	waterm=Cr.elm('div',{
 		id:'colorpick-watermark',
 		title: chrome.i18n.getMessage('watermark_help'),
-		style:"position:fixed;bottom:0;right:0;cursor:default;z-index:2147483646;transition:0.5s ease-out;user-select:none;",
+		style:"position:fixed;bottom:0;right:0;cursor:default;z-index:2147483646;transition:0.5s ease-out;user-select:none;box-shadow:#000 0px 0px 10px 1px;",
 		events:['mouseover', moveWm],
 		childNodes:[
 			Cr.elm('div',{
