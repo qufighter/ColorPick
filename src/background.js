@@ -202,6 +202,8 @@ chrome.runtime.onUpdateAvailable.addListener(function(details){
 	updateAvailable=true;
 });
 
+chrome.runtime.onConnect.addListener(function(port){});
+
 //we need to save periodically in some way that won't over-use the sync api
 chrome.alarms.create("sync colorpick", {delayInMinutes:40,periodInMinutes:80});
 chrome.alarms.onAlarm.addListener(function(alarm){
