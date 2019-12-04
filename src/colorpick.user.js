@@ -150,6 +150,7 @@ function selectTargElm(ev){
 var lastHex='';
 var goodHexCounter=0;
 function setDisplay(){//Cr.elm
+	if( !n ) return;
 	emptyNode(n);
 	Cr.elm('div',{},[
 		(opts.EnableHex && !opts.hexHasHash)?Cr.txt('#'):0,
@@ -288,29 +289,31 @@ function prefsLoadedCompleteInit(){
 	removeExistingNodes();
 	c=Cr.elm('canvas',{id:elmid1,style:'position:fixed;max-width:none!important;max-height:none!important;top:0px!important;left:0px!important;margin:0px!important;padding:0px!important;overflow:hidden;z-index:2147483646;cursor:'+crosshairCss(),events:[['click',picked,true],['mousedown',function(ev){ev.preventDefault();}]]},[],document.body);
 	n=Cr.elm('div',{id:elmid2,style:'position:fixed;min-width:30px;max-width:300px;min-height:30px;box-shadow:2px 2px 2px #666;border:'+opts.borderValue+';z-index:2147483646;cursor:default;padding:4px;'},[Cr.txt(' ')],document.body);
-	waterml=Cr.elm('img',{src:chrome.extension.getURL('img/icon64.png'), width:64, align:"top", style:'vertical-align:top;display:inline-block;'});
-	watermct=Cr.elm('div',{id:'wm-content'});
-	waterm=Cr.elm('div',{
-		id:'colorpick-watermark',
-		title: chrome.i18n.getMessage('watermark_help'),
-		style:"position:fixed;bottom:0;right:0;cursor:default;z-index:2147483646;transition:0.5s ease-out;user-select:none;background:white;box-shadow:#000 0px 0px 10px 1px;font-family:sans-serif;max-width:225px;text-align:left;",
-		events:['mouseover', moveWm],
-		childNodes:[
-			Cr.elm('div',{
-				style:"font-family:'Helvetica Neue','Lucida Grande';font-size:16px;color:black;font-weight:300;text-shadow:white 1px 1px 2px;line-height:24px;padding:5px;text-align:left;opacity:0.9;",
-				childNodes:[
-					waterml,
-					Cr.elm('div',{
-						style:"display:inline-block;width:85px;margin:8px 0 0 5px;",
-						childNodes:[
-							Cr.txt(chrome.i18n.getMessage('extName'))
-						]
-					})
-				]
-			}),
-			watermct
-		]
-	},document.body);
+	if( opts.reg_chk!=true || !opts.hideWatermark ){
+		waterml=Cr.elm('img',{src:chrome.extension.getURL('img/icon64.png'), width:64, align:"top", style:'vertical-align:top;display:inline-block;'});
+		watermct=Cr.elm('div',{id:'wm-content'});
+		waterm=Cr.elm('div',{
+			id:'colorpick-watermark',
+			title: chrome.i18n.getMessage('watermark_help'),
+			style:"position:fixed;bottom:0;right:0;cursor:default;z-index:2147483646;transition:0.5s ease-out;user-select:none;background:white;box-shadow:#000 0px 0px 10px 1px;font-family:sans-serif;max-width:225px;text-align:left;",
+			events:['mouseover', moveWm],
+			childNodes:[
+				Cr.elm('div',{
+					style:"font-family:'Helvetica Neue','Lucida Grande';font-size:16px;color:black;font-weight:300;text-shadow:white 1px 1px 2px;line-height:24px;padding:5px;text-align:left;opacity:0.9;",
+					childNodes:[
+						waterml,
+						Cr.elm('div',{
+							style:"display:inline-block;width:85px;margin:8px 0 0 5px;",
+							childNodes:[
+								Cr.txt(chrome.i18n.getMessage('extName'))
+							]
+						})
+					]
+				}),
+				watermct
+			]
+		},document.body);
+	}
 	wmMoveCtr=0;
 	dirtyImage.src=chrome.extension.getURL('img/close.png');
 	document.addEventListener('mousemove',mmf);
@@ -325,13 +328,13 @@ function prefsLoadedCompleteInit(){
 function showCtrls(){ // todo: single container
 	n.style.display="";
 	c.style.display="";
-	waterm.style.display="";
+	if(waterm)waterm.style.display="";
 }
 
 function hideCtrls(){
 	n.style.display="none";
 	c.style.display="none";
-	waterm.style.display="none";
+	if(waterm)waterm.style.display="none";
 }
 
 function swapSides(elm, olds, news, length, swappedCb){
@@ -387,7 +390,7 @@ function updateTip(){
 function currentTip(){
 	if(!waterm) return;
 	Cr.empty(watermct);
-	var tipIndex = wmMoveCtr%5;
+	var tipIndex = wmMoveCtr%6;
 	var extra = '';
 	if( tipIndex == 1 && isLocked ){ extra = '_locked' }
 	Cr.elm('div',{style:'padding:5px',id:'tip_'+tipIndex,childNodes:[Cr.txt(chrome.i18n.getMessage('tips_'+tipIndex+extra))]}, watermct);

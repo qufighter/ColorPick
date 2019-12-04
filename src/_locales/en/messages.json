@@ -218,6 +218,9 @@
    "borderValue": {
       "message": "Borders to use (css value)"
    },
+   "hideWatermark": {
+      "message": "Hide ColorPick watermark on webpage corner (registered only)"
+   },
    "options": {
       "message": "Options"
    },
@@ -291,7 +294,7 @@
       "message": "Click to the web page to unlock and examine color values again."
    },
    "tips_2": {
-      "message": "Return to the ColorPick menu for fine adjustment or to exit ColorPick."
+      "message": "Return to the ColorPick menu for fine adjustment options or to exit ColorPick."
    },
    "tips_3": {
       "message": "Chase this message for tips and more."
