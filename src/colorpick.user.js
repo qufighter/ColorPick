@@ -1,7 +1,7 @@
 var elmid1='color_pick_click_box',elmid2='ChromeExtension:Color-Pick.com';
 if(typeof(exitAndDetach)=='function')exitAndDetach();
 function _ge(n){return document.getElementById(n);}
-var n=null,c=null,waterm=null,wmMoveCtr=0,hex='F00BAF',lasthex='',rgb=null;hsv=null;scal=1,ex=0,ey=0,isEnabled=false,isLocked=false,msg_bg_unavail=chrome.i18n.getMessage('bgPageUnavailable');
+var n=null,c=null,waterm=null,watermlo=null,watermct=null,wmMoveCtr=0,lastMoveInc=0,hex='F00BAF',lasthex='',rgb=null;hsv=null;scal=1,ex=0,ey=0,isEnabled=false,isLocked=false,msg_bg_unavail=chrome.i18n.getMessage('bgPageUnavailable');
 var isUpdating=false,lastTimeout=0,lx=0,ly=0,histories=0,nbsp='\u00A0';
 var opts={};
 var cvs = document.createElement('canvas');
@@ -190,6 +190,7 @@ function picked(){
 		isLocked=true;
 		setDisplay();
 	}
+	updateTip();
 	chrome.runtime.sendMessage({setPickState:true,isPicking:!isLocked}, function(r){});
 }
 function exitAndDetach(){
@@ -217,7 +218,7 @@ function removeExistingNodes(){
 		if(c)document.body.removeChild(c);
 		if(n)document.body.removeChild(n);
 		if(waterm)document.body.removeChild(waterm);
-		c=null,n=null,waterm=null;
+		c=null,n=null,waterm=null,watermlo=null,watermct=null;
 		if( document.body.style ) document.body.style.cursor='default';
 	}
 }
@@ -287,16 +288,18 @@ function prefsLoadedCompleteInit(){
 	removeExistingNodes();
 	c=Cr.elm('canvas',{id:elmid1,style:'position:fixed;max-width:none!important;max-height:none!important;top:0px!important;left:0px!important;margin:0px!important;padding:0px!important;overflow:hidden;z-index:2147483646;cursor:'+crosshairCss(),events:[['click',picked,true],['mousedown',function(ev){ev.preventDefault();}]]},[],document.body);
 	n=Cr.elm('div',{id:elmid2,style:'position:fixed;min-width:30px;max-width:300px;min-height:30px;box-shadow:2px 2px 2px #666;border:'+opts.borderValue+';z-index:2147483646;cursor:default;padding:4px;'},[Cr.txt(' ')],document.body);
+	waterml=Cr.elm('img',{src:chrome.extension.getURL('img/icon64.png'), width:64, align:"top", style:'vertical-align:top;display:inline-block;'});
+	watermct=Cr.elm('div',{id:'wm-content'});
 	waterm=Cr.elm('div',{
 		id:'colorpick-watermark',
 		title: chrome.i18n.getMessage('watermark_help'),
-		style:"position:fixed;bottom:0;right:0;cursor:default;z-index:2147483646;transition:0.5s ease-out;user-select:none;box-shadow:#000 0px 0px 10px 1px;",
+		style:"position:fixed;bottom:0;right:0;cursor:default;z-index:2147483646;transition:0.5s ease-out;user-select:none;background:white;box-shadow:#000 0px 0px 10px 1px;font-family:sans-serif;max-width:225px;text-align:left;",
 		events:['mouseover', moveWm],
 		childNodes:[
 			Cr.elm('div',{
-				style:"font-family:'Helvetica Neue','Lucida Grande',sans-serif;font-size:16px;color:black;font-weight:300;text-shadow:white 1px 1px 2px;line-height:24px;padding:5px;text-align:left;opacity:0.9;background:white;",
+				style:"font-family:'Helvetica Neue','Lucida Grande';font-size:16px;color:black;font-weight:300;text-shadow:white 1px 1px 2px;line-height:24px;padding:5px;text-align:left;opacity:0.9;",
 				childNodes:[
-					Cr.elm('img',{src:chrome.extension.getURL('img/icon64.png'), width:64, align:"top", style:'vertical-align:top;'}),
+					waterml,
 					Cr.elm('div',{
 						style:"display:inline-block;width:85px;margin:8px 0 0 5px;",
 						childNodes:[
@@ -304,7 +307,8 @@ function prefsLoadedCompleteInit(){
 						]
 					})
 				]
-			})
+			}),
+			watermct
 		]
 	},document.body);
 	wmMoveCtr=0;
@@ -342,13 +346,15 @@ function swapSides(elm, olds, news, length, swappedCb){
 	}, 500);
 }
 function moveWm(ev){
+	if(!waterm) return;
 	var t=waterm.style.top.match(/^0/), r=waterm.style.right.match(/^0/), b=waterm.style.bottom.match(/^0/), l=waterm.style.left.match(/^0/);
-	var le = ev.offsetX < 10, re = ev.offsetX > waterm.clientWidth - 10;
-	if( le || re ){
+	var cliw = waterm.clientWidth;
+	var le = ev.offsetX < 10, re = ev.offsetX > cliw - 10;
+	if( (le || re) && window.innerWidth > (cliw * 2 ) ){
 		if( r ){
-			swapSides(waterm, 'right', 'left', waterm.clientWidth, wmSwapped);
+			swapSides(waterm, 'right', 'left', cliw, wmSwapped);
 		}else if( l ){
-			swapSides(waterm, 'left', 'right', waterm.clientWidth, wmSwapped);
+			swapSides(waterm, 'left', 'right', cliw, wmSwapped);
 		}
 	}else{
 		if( b ){
@@ -359,14 +365,38 @@ function moveWm(ev){
 	}
 }
 function wmSwapped(){
-	wmMoveCtr++;
+	var t = (new Date()).getTime();
+	if( t - lastMoveInc > (wmMoveCtr == 1 ? 1000 : 500) ){
+		wmMoveCtr++;
+	}
+	lastMoveInc = t;
 	if( wmMoveCtr > 3 ){
 		nextWm();
+	}else{
+		currentTip();
 	}
 }
+function updateTip(){
+	// we can possibly more simply test wmMoveCtr is sufficient for tips... rather than querySelector....
+	if(!waterm) return;
+	var tip1 = waterm.querySelector('#tip_1');
+	if( tip1 ){
+		currentTip();
+	}
+}
+function currentTip(){
+	if(!waterm) return;
+	Cr.empty(watermct);
+	var tipIndex = wmMoveCtr%5;
+	var extra = '';
+	if( tipIndex == 1 && isLocked ){ extra = '_locked' }
+	Cr.elm('div',{style:'padding:5px',id:'tip_'+tipIndex,childNodes:[Cr.txt(chrome.i18n.getMessage('tips_'+tipIndex+extra))]}, watermct);
+}
 function nextWm(){
-	var wim = waterm.querySelector('img');
-	if( wim ) wim.src = chrome.extension.getURL('img/icon16.png');
+	if(!waterm) return;
+	waterml.src = chrome.extension.getURL('img/icon16.png');
+	currentTip();
+
 	// the full game script is now needed, lets request it...
 }
 

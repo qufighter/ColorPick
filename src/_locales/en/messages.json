@@ -281,6 +281,27 @@
    "watermark_help": {
       "message": "Watermark may be disabled from advanced options once you have registered the extension."
    },
+   "tips_0": {
+      "message": "Register ColorPick for the option to hide this message."
+   },
+   "tips_1": {
+      "message": "Move your mouse over the web page to examine pixel color values. Click to the web page to pick!"
+   },
+   "tips_1_locked": {
+      "message": "Click to the web page to unlock and examine color values again."
+   },
+   "tips_2": {
+      "message": "Return to the ColorPick menu for fine adjustment or to exit ColorPick."
+   },
+   "tips_3": {
+      "message": "Chase this message for tips and more."
+   },
+   "tips_4": {
+      "message": "Did you know? ColorPick Eyedropper is available for iPhone and Android!"
+   },
+   "tips_5": {
+      "message": "Your Ad Here - Contact via vidsb.com to Sponsor ColorPick."
+   },
    "emptyDesc": {
       "message": ""
    },
