@@ -211,9 +211,9 @@ function chromeInapPurchaseSuccess(){
 	var inAppBtnArea = gel('chrome-inapp');
 	Cr.empty(inAppBtnArea);
 	inAppBtnArea.appendChild(Cr.elm('div', {
-		class: 'note-bubble',
+		class: 'note-bubble greeen',
 		childNodes: [
-			Cr.txt('You have completed the in-app purchase to enable registered mode - thank you!  If the extension was not already in registered mode it will be placed into registered mode now.  Please reload any other views to see the latest registration status.')
+			Cr.txt('Registered! You have completed the in-app purchase to enable registered mode. The extension will enter registered mode now.  Please reload any other views to see the latest registration status.  Thank you for making ColorPick possible.')
 		]
 	}));
 	localStorage['reg_chk']='true';

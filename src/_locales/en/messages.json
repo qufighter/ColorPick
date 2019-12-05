@@ -291,7 +291,7 @@
       "message": "Move your mouse over the web page to examine pixel color values. Click to the web page to pick!"
    },
    "tips_1_locked": {
-      "message": "Click to the web page to unlock and examine color values again."
+      "message": "Click the web page to unlock and examine color values again."
    },
    "tips_2": {
       "message": "Return to the ColorPick menu for fine adjustment options or to exit ColorPick."
