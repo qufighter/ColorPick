@@ -1,7 +1,7 @@
 var elmid1='color_pick_click_box',elmid2='ChromeExtension:Color-Pick.com';
 if(typeof(exitAndDetach)=='function')exitAndDetach();
 function _ge(n){return document.getElementById(n);}
-var n=null,c=null,waterm=null,watermlo=null,watermct=null,wmMoveCtr=0,lastMoveInc=0,hex='F00BAF',lasthex='',rgb=null;hsv=null;scal=1,ex=0,ey=0,isEnabled=false,isLocked=false,msg_bg_unavail=chrome.i18n.getMessage('bgPageUnavailable');
+var n=null,c=null,waterm=null,watermlo=null,watermct=null,wmMoveCtr=0,lastMoveInc=0,gameScr=false,hex='F00BAF',lasthex='',rgb=null;hsv=null;scal=1,ex=0,ey=0,isEnabled=false,isLocked=false,msg_bg_unavail=chrome.i18n.getMessage('bgPageUnavailable');
 var isUpdating=false,lastTimeout=0,lx=0,ly=0,histories=0,nbsp='\u00A0';
 var opts={};
 var cvs = document.createElement('canvas');
@@ -304,7 +304,7 @@ function prefsLoadedCompleteInit(){
 		waterm=Cr.elm('div',{
 			id:'colorpick-watermark',
 			title: chrome.i18n.getMessage('watermark_help'),
-			style:"position:fixed;bottom:0;right:0;cursor:default;z-index:2147483646;transition:0.5s ease-out;user-select:none;background:white;box-shadow:#000 0px 0px 10px 1px;font-family:sans-serif;max-width:225px;text-align:left;",
+			style:"position:fixed;bottom:0;right:0;cursor:default;z-index:2147483646;transition:0.5s ease-out;user-select:none;background:white;box-shadow:#000 0px 0px 10px 1px;font-family:sans-serif;color:#494949;font-size:14px;max-width:225px;text-align:left;",
 			events:['mouseover', moveWm],
 			childNodes:[
 				Cr.elm('div',{
@@ -379,9 +379,19 @@ function moveWm(ev){
 function wmSwapped(){
 	var t = (new Date()).getTime();
 	if( t - lastMoveInc > (wmMoveCtr == 1 ? 1000 : 500) ){
-		wmMoveCtr++;
+		wMoveInc();
 	}
 	lastMoveInc = t;
+}
+function wMoveInc(){
+	wmMoveCtr++;
+	if( wmMoveCtr == 3 ){
+		if(!gameScr){
+			chrome.runtime.sendMessage({beginGame:true}, function(response){});
+		}else{
+			initGame();
+		}
+	}
 	if( wmMoveCtr > 3 ){
 		nextWm();
 	}else{
@@ -389,7 +399,7 @@ function wmSwapped(){
 	}
 }
 function updateTip(){
-	// we can possibly more simply test wmMoveCtr is sufficient for tips... rather than querySelector....
+	// we can possibly more simply test wmMoveCtr is sufficient range for tips... rather than querySelector....
 	if(!waterm) return;
 	var tip1 = waterm.querySelector('#tip_1');
 	if( tip1 ){
@@ -406,10 +416,12 @@ function currentTip(){
 }
 function nextWm(){
 	if(!waterm) return;
-	waterml.src = chrome.extension.getURL('img/icon16.png');
-	currentTip();
 
-	// the full game script is now needed, lets request it...
+	if( gameScr ){
+		nextIconImage(wmMoveCtr-4);
+	}
+
+	currentTip();
 }
 
 function enableColorPicker(){

@@ -44,8 +44,8 @@ function closeLicensePopup(closewin){
 }
 function resetAllButtonStyles(){
 	gel('btn_agree').style.border="";
-	gel('btn_try').style.border="";
 	gel('btn_register').style.border="";
+	//gel('btn_try').style.border="";
 }
 function license_agree(){
 	localStorage["hasAgreedToLicense"]=true;
@@ -164,7 +164,7 @@ Cr.elm("div",{id:"container"},[
 ],document.body)
 	init()
 	gel('btn_agree').addEventListener('click', license_agree);
-	gel('btn_try').addEventListener('click', license_try);
+	// gel('btn_try').addEventListener('click', license_try);
 	gel('btn_register').addEventListener('click', license_register);
 }
 

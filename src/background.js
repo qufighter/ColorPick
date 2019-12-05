@@ -175,6 +175,9 @@ function(request, sender, sendResponse) {
 		}else if (request.browserIconMsg){
 			chrome.browserAction.setIcon({path:(request.path)});
 			sendResponse({});
+		}else if (request.beginGame){
+			chrome.tabs.executeScript(tabid, {file: "colorgame.user.js"}, function(){});
+			sendResponse({});
 		}else if (request.disableColorPicker){
 			isRunning=false;
 			defaultIcon();

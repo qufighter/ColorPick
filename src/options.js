@@ -574,7 +574,7 @@ function showRegistrationStatus(){
 	if(localStorage['shareClors']=='true'){
 		cotd.style.display="block";
 		createDailyColorViewer(cotd);
-		document.getElementById('ifcotd').src='http://vidzbigger.com/vcolors_ofday.php';
+		document.getElementById('ifcotd').src='sorry.html';//http://vidzbigger.com/vcolors_ofday.php';
 	}else{
 		cotd.style.display="none";
 	}
@@ -661,7 +661,11 @@ Cr.elm("div",{id:"mainbox"},[
 		Cr.txt(chrome.i18n.getMessage('help'))
 	]),
 	Cr.txt(" | "),
-	Cr.elm("a",{id:"license_link",href:"sponsors.html"},[
+	Cr.elm("a",{href:"credits.html"},[
+		Cr.txt(chrome.i18n.getMessage('credits'))
+	]),
+	Cr.txt(" | "),
+	Cr.elm("a",{href:"sponsors.html"},[
 		Cr.txt(chrome.i18n.getMessage('sponsors'))
 	]),
 	Cr.elm("br",{}),

@@ -144,7 +144,7 @@
       "message": "Show HSL"
    },
    "showPreviewInContent": {
-      "message": "Show image preview near cursor while picking"
+      "message": "Show zoom preview near cursor while picking"
    },
    "ShowRGBHSL": {
       "message": "Also show Hex, RGB and/or HSL on page"
@@ -247,6 +247,9 @@
    },
    "sponsors": {
       "message": "Sponsors"
+   },
+   "credits": {
+      "message": "Credits"
    },
    "desktopapp": {
       "message": "Desktop ColorPick App"
