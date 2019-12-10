@@ -147,7 +147,7 @@
       "message": "Show zoom preview near cursor while picking"
    },
    "ShowRGBHSL": {
-      "message": "Also show Hex, RGB and/or HSL on page"
+      "message": "Also show Hex, RGB and/or HSL (configure above)"
    },
    "autocopyhex": {
       "message": "Attempt to auto copy value to clipboard"
