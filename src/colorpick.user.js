@@ -305,7 +305,7 @@ function prefsLoadedCompleteInit(){
 			id:'colorpick-watermark',
 			title: chrome.i18n.getMessage('watermark_help'),
 			style:"position:fixed;bottom:0;right:0;cursor:default;z-index:2147483646;transition:0.5s ease-out;user-select:none;background:white;box-shadow:#000 0px 0px 10px 1px;font-family:sans-serif;color:#494949;font-size:14px;max-width:225px;text-align:left;",
-			events:['mouseover', moveWm],
+			events:[['mouseover', moveWm],['click', moveWm]],
 			childNodes:[
 				Cr.elm('div',{
 					style:"font-family:'Helvetica Neue','Lucida Grande';font-size:16px;color:black;font-weight:300;text-shadow:white 1px 1px 2px;line-height:24px;padding:5px;text-align:left;opacity:0.9;",
