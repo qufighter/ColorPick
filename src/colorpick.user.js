@@ -165,7 +165,7 @@ function setDisplay(){//Cr.elm
 	if(_ge('cphexvl'))_ge('cphexvl').select();
 	if( opts.reg_chk!=true && hex && hex != lastHex && (!rgb || (rgb.r != rgb.g || rgb.r != rgb.b || rgb.g != rgb.b)) ){
 		goodHexCounter++;
-		if( goodHexCounter > 1 && histories > 50 ){
+		if( goodHexCounter > 1 && histories > 25 ){
 			Cr.elm('div', {style:'text-shadow:white 1px 1px 2px;font-weight:bold;'}, [
 				Cr.elm('a', {
 					style: 'cursor:pointer;',
