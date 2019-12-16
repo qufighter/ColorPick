@@ -300,7 +300,7 @@ function prefsLoadedCompleteInit(){
 	n=Cr.elm('div',{id:elmid2,style:'position:fixed;min-width:30px;max-width:300px;min-height:30px;box-shadow:2px 2px 2px #666;border:'+opts.borderValue+';z-index:2147483646;cursor:default;padding:4px;'},[Cr.txt(' ')],document.body);
 	if( opts.reg_chk!=true || !opts.hideWatermark ){
 		waterml=Cr.elm('img',{src:chrome.extension.getURL('img/icon64.png'), width:64, align:"top", style:'vertical-align:top;display:inline-block;'});
-		watermct=Cr.elm('div',{id:'wm-content',style:'padding:7px'});
+		watermct=Cr.elm('div',{id:'wm-content',style:'margin:7px'});
 		waterm=Cr.elm('div',{
 			id:'colorpick-watermark',
 			title: chrome.i18n.getMessage('watermark_help'),
