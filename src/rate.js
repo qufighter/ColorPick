@@ -47,6 +47,8 @@ function rateOut(ev){
 function restorePreviousRating(){
 	if(typeof(localStorage['lastRating']) != 'undefined'){
 		setRating(localStorage['lastRating'] - 0)
+	}else{
+		setRating(4);
 	}
 }
 function setRating(starNo){
