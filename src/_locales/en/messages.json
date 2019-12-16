@@ -45,7 +45,7 @@
       "message": "Reload"
    },
    "configurationHelp": {
-      "message": "Help & Options"
+      "message": "Help, Options & History"
    },
    "getStandaloneApp": {
       "message": "ColorPick Standalone Application"
@@ -297,7 +297,7 @@
       "message": "Click the web page to unlock and examine color values again."
    },
    "tips_2": {
-      "message": "Return to the ColorPick menu for fine adjustment options or to exit ColorPick."
+      "message": "Return to the ColorPick menu for fine adjustment options, history or to exit ColorPick."
    },
    "tips_3": {
       "message": "Chase this message for tips and more."
