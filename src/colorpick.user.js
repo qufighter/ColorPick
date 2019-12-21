@@ -308,7 +308,7 @@ function prefsLoadedCompleteInit(){
 			events:[['mouseover', moveWm],['click', moveWm]],
 			childNodes:[
 				Cr.elm('div',{
-					style:"font-family:'Helvetica Neue','Lucida Grande';font-size:16px;color:black;font-weight:300;text-shadow:white 1px 1px 2px;line-height:24px;padding:5px;text-align:left;opacity:0.9;",
+					style:"font-family:'Helvetica Neue','Lucida Grande',sans-serif;font-size:16px;color:black;font-weight:300;text-shadow:white 1px 1px 2px;line-height:24px;padding:5px;text-align:left;opacity:0.9;",
 					childNodes:[
 						waterml,
 						Cr.elm('div',{
