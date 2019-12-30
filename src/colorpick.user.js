@@ -104,12 +104,14 @@ function reqLis(request, sender, sendResponse) {
 chrome.runtime.onMessage.addListener(reqLis);
 
 var popupsShowing=0;
+var lastPopupDecriment=0;
 chrome.runtime.onConnect.addListener(function(port){
 	if(port.name == "popupshown"){
 		popupsShowing++;
 		port.onDisconnect.addListener(function(msg) {
 			popupsShowing--;
 			if(popupsShowing < 0)popupsShowing=0;
+			lastPopupDecriment = (new Date()).getTime();
 		});
 	}
 });
@@ -645,7 +647,9 @@ function handleRendering(quick){
 	tictx.drawImage(icvs,0,0);
 
 	if(opts.showPreviewInContent && popupsShowing < 1){
-		setPixelPreview(hex,lasthex);
+		if( (new Date()).getTime() - lastPopupDecriment > 250 ){
+			setPixelPreview(hex,lasthex);
+		}
 	}
 
 	if(popupsShowing > 0){
