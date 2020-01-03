@@ -2,7 +2,7 @@ var elmid1='color_pick_click_box',elmid2='ChromeExtension:Color-Pick.com';
 if(typeof(exitAndDetach)=='function')exitAndDetach();
 function _ge(n){return document.getElementById(n);}
 var n=null,c=null,waterm=null,watermlo=null,watermct=null,wmMoveCtr=0,lastMoveInc=0,gameScr=false,hex='F00BAF',lasthex='',rgb=null;hsv=null;scal=1,ex=0,ey=0,isEnabled=false,isLocked=false,msg_bg_unavail=chrome.i18n.getMessage('bgPageUnavailable');
-var isUpdating=false,lastTimeout=0,lx=0,ly=0,histories=0,nbsp='\u00A0';
+var isUpdating=false,lastTimeout=0,lx=0,ly=0,histories=0,nbsp='\u00A0',popupsShowing=0,connectListener=false;
 var opts={};
 var cvs = document.createElement('canvas');
 var ctx = cvs.getContext('2d'),x_cvs_scale=1,y_cvs_scale=1;
@@ -103,18 +103,19 @@ function reqLis(request, sender, sendResponse) {
 }
 chrome.runtime.onMessage.addListener(reqLis);
 
-var popupsShowing=0;
+function decrementPopupsShowing(){
+	popupsShowing--;
+	if(popupsShowing < 0)popupsShowing=0;
+}
+
 chrome.runtime.onConnect.addListener(function(port){
 	if(port.name == "popupshown"){
 		popupsShowing++;
 		port.onDisconnect.addListener(function(msg) {
-			popupsShowing--;
-			if(popupsShowing < 0)popupsShowing=0;
+			setTimeout(decrementPopupsShowing, 250);
 		});
 	}
 });
-
-var connectListener=false;
 
 function setPixelPreview(hxe,lhex){
 	if(isLocked)return;
