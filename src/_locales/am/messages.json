@@ -1,0 +1,191 @@
+﻿{
+    "closeAndExit": {
+        "message": "ከቅጥ አማራጮች ሁነታ ዝጋ እና መውጣት"
+    },
+    "hideMinimize": {
+        "message": "ደብቅ / አሳንስ [esc]"
+    },
+    "showColorChooser": {
+        "message": "ቀለም መራጭ አሳይ"
+    },
+    "rightClick": {
+        "message": "በቀኝ ጠቅታ"
+    },
+    "dblClick": {
+        "message": "ድርብ ጠቅ ያድርጉ"
+    },
+    "pickAgainLocked": {
+        "message": "ሌላ ቀለም ይምረጡ [Enter]"
+    },
+    "pickAgainUnlocked": {
+        "message": "የአሁኑን ቀመር ይምረጡ [Enter]"
+    },
+    "disablePickEveryTime": {
+        "message": "እያንዳንዱ ጊዜ ብቅ ባይ መጫን አይጀምርም"
+    },
+    "reSnapPage": {
+        "message": "የገጹን ፎቶን አድስ [r]"
+    },
+    "popOutWindow": {
+        "message": "ብቅ-ባይ (የተለየ መስኮት)"
+    },
+    "pressEnterToPick": {
+        "message": "ቀለም ለመምረጥ አስገባን ይጫኑ"
+    },
+    "bgPageUnavailable": {
+        "message": "የጀርባ ቅፅበታዊ እይታ ምላሽ የማይሰጡ - እባክህ ገጹን አድስ እና እንደገና ሞክር."
+    },
+    "registered": {
+        "message": "የተመዘገበ"
+    },
+    "unregistered": {
+        "message": "ያልተመዘገበ"
+    },
+    "approved": {
+        "message": "ጸድቋል"
+    },
+    "registerButton": {
+        "message": "መዝግብ"
+    },
+    "modifyLicense": {
+        "message": "ፍቃድ ቀይር"
+    },
+    "error": {
+        "message": "ስህተት"
+    },
+    "showndefaults": {
+        "message": "እባክዎ አስቀምጥ ን, አሁን ነባሪዎችን አሳይ."
+    },
+    "savedoptions": {
+        "message": "አማራጮች ተቀምጠዋል."
+    },
+    "loadsyncOptions": {
+        "message": "የማመሳሰል አማራጮች ተጭነው ተቀምጠዋል."
+    },
+    "on": {
+        "message": "በ"
+    },
+    "off": {
+        "message": "ጠፍቷል"
+    },
+    "default": {
+        "message": "ነባሪ"
+    },
+    "full": {
+        "message": "ሙሉ"
+    },
+    "maxZoom": {
+        "message": "ከፍተኛ አጉላ"
+    },
+    "pickEveryTime": {
+        "message": "በእያንዳንዱ ጊዜ ብቅ ባይ ጠቅላላ ቀለሞችን ለመምረጥ ይጀምሩ"
+    },
+    "pixelatedPreview": {
+        "message": "የጎለበ ቅድመ-ዕይታ በፒክሰል የተሰራ ነው"
+    },
+    "fishEye": {
+        "message": "የዓሣ ማጥመጃ መጠን"
+    },
+    "EnableRGB": {
+        "message": "አሳይ RGB"
+    },
+    "EnableHSL": {
+        "message": "አሳይ HSL"
+    },
+    "hasAgreedToLicense": {
+        "message": "ለአጠቃቀም አንቀፆች ተስማምተዋል"
+    },
+    "seeTerms": {
+        "message": "የአጠቃቀም ውል ይመልከቱ"
+    },
+    "disableRewriting": {
+        "message": "የሽያጭ አጋሮች አገናኞችን ማሰናከል"
+    },
+    "usageStatistics": {
+        "message": "የአጠቃቀም ስታቲክሶችን (የአጠቃቀም ደንቦችን ይመልከቱ)"
+    },
+    "shareClors": {
+        "message": "የዘመኑ ስታትስቲክስ ቀለሞች (የአጠቃቀም ደንቦችን ይመልከቱ)"
+    },
+    "usePNG": {
+        "message": "መጠቀም PNG ጥራት በሚኖርበት ጊዜ"
+    },
+    "useCSSValues": {
+        "message": "ለ css እሴቶች ተጠቀም RGB/HSL"
+    },
+    "iconIsPreview": {
+        "message": "የመለያ ባጅ ካሬ ቀለም ቅድመ-እይታን ይጠቀሙ"
+    },
+    "appleIcon": {
+        "message": "መጠቀም Apple Digital የቀለም ምልክት ምልክት"
+    },
+    "iconIsBitmap": {
+        "message": "አዶ ምስሉ የፒክሰል ቅድመ-እይታ አጉልቷል"
+    },
+    "resetIcon": {
+        "message": "ወደ መደበኛ አዶ ይመልሱ"
+    },
+    "bbackgroundColor": {
+        "message": "ብቅ ባይ መነሻ ቀለም"
+    },
+    "usePrevColorBG": {
+        "message": "ቀዳሚውን ቀለም ለጀርባ ተጠቀም"
+    },
+    "showPreviousClr": {
+        "message": "በቀዳሚው ቀለም የተለያየ ቀለም ቅድመ እይታ አሳይ"
+    },
+    "borderValue": {
+        "message": "ጥቅም ላይ የሚውሉ ክፈፎች (የሲኤስ እሴት)"
+    },
+    "options": {
+        "message": "አማራጮች"
+    },
+    "advancedOptions": {
+        "message": "የላቁ አማራጮች"
+    },
+    "fetchSync": {
+        "message": "ቅንብሮችን ከ Google መለያ ማመሳሰል ማከማቻ ላይ አውጣ"
+    },
+    "clearSync": {
+        "message": "የማመሳሰል ማከማቻን አጽዳ"
+    },
+    "saveOptions": {
+        "message": "የማስቀመጫ አማራጮች"
+    },
+    "showDefaults": {
+        "message": "ነባሪዎችን አሳይ"
+    },
+    "colorOfDay": {
+        "message": "የቀኑን ቀለም"
+    },
+    "terms": {
+        "message": "የአጠቃቀም መመሪያ"
+    },
+    "help": {
+        "message": "እገዛ / መረጃ"
+    },
+    "history": {
+        "message": "ታሪክ"
+    },
+    "noSwatches": {
+        "message": "በቀለም ቀለም ውስጥ ቀለሞችን ለማስቀመጥ እና ለማተም ወደ ቤተ-ስዕላት ያክሏቸው."
+    },
+    "addToPalette": {
+        "message": "ወደ የቀለም ቤተ-ስዕል ጨምር"
+    },
+    "sort": {
+        "message": "ተራ"
+    },
+    "dedupe": {
+        "message": "የተቆረጠ"
+    },
+    "printSave": {
+        "message": "ማተም / ማስቀመጥ..."
+    },
+    "clear": {
+        "message": "ግልፅ"
+    },
+    "copycolorval": {
+        "message": "የቀለም እሴት ቅዳ"
+    }
+}

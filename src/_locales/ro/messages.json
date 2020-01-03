@@ -1,0 +1,191 @@
+﻿{
+    "closeAndExit": {
+        "message": "Închideți și ieșiți din modul de alegere a culorii"
+    },
+    "hideMinimize": {
+        "message": "Ascunde / minimizarea [esc]"
+    },
+    "showColorChooser": {
+        "message": "Arată selectorul de culori"
+    },
+    "rightClick": {
+        "message": "Click dreapta"
+    },
+    "dblClick": {
+        "message": "Dublu click"
+    },
+    "pickAgainLocked": {
+        "message": "Alegeți altă culoare [Enter]"
+    },
+    "pickAgainUnlocked": {
+        "message": "Selectați culoarea curentă [Enter]"
+    },
+    "disablePickEveryTime": {
+        "message": "Nu începeți să alegeți de fiecare dată când faceți clic pe popup"
+    },
+    "reSnapPage": {
+        "message": "Reîmprospătați imaginea paginii [r]"
+    },
+    "popOutWindow": {
+        "message": "Pop-out (fereastră separată)"
+    },
+    "pressEnterToPick": {
+        "message": "Apăsați enter pentru a alege culoarea"
+    },
+    "bgPageUnavailable": {
+        "message": "Imaginea de fundal nu răspunde - vă rugăm să actualizați pagina și să încercați din nou."
+    },
+    "registered": {
+        "message": "Înregistrat"
+    },
+    "unregistered": {
+        "message": "Neînregistrat"
+    },
+    "approved": {
+        "message": "Aprobat"
+    },
+    "registerButton": {
+        "message": "Inregistreaza-te"
+    },
+    "modifyLicense": {
+        "message": "Modificați licența"
+    },
+    "error": {
+        "message": "Eroare"
+    },
+    "showndefaults": {
+        "message": "Apăsați butonul Salvare, afișează acum valorile implicite."
+    },
+    "savedoptions": {
+        "message": "Opțiunile salvate."
+    },
+    "loadsyncOptions": {
+        "message": "S-au încărcat și salvat opțiunile de stocare pentru sincronizare."
+    },
+    "on": {
+        "message": "Pe"
+    },
+    "off": {
+        "message": "De pe"
+    },
+    "default": {
+        "message": "Mod implicit"
+    },
+    "full": {
+        "message": "Deplin"
+    },
+    "maxZoom": {
+        "message": "Maxim mărite"
+    },
+    "pickEveryTime": {
+        "message": "Începeți să alegeți culori de fiecare dată când faceți clic pe popup"
+    },
+    "pixelatedPreview": {
+        "message": "Previzualizarea zoom este pixelată"
+    },
+    "fishEye": {
+        "message": "Pește ochi zoom suma"
+    },
+    "EnableRGB": {
+        "message": "Spectacol RGB"
+    },
+    "EnableHSL": {
+        "message": "Spectacol HSL"
+    },
+    "hasAgreedToLicense": {
+        "message": "A fost de acord cu termenii de utilizare"
+    },
+    "seeTerms": {
+        "message": "Consultați termenii de utilizare"
+    },
+    "disableRewriting": {
+        "message": "Dezactiva afilierea unor link-uri care nu sunt afiliate"
+    },
+    "usageStatistics": {
+        "message": "Aduna statistici de utilizare (a se vedea termenii de utilizare)"
+    },
+    "shareClors": {
+        "message": "Culoarea statisticii zilei (a se vedea termenii de utilizare)"
+    },
+    "usePNG": {
+        "message": "Utilizare PNG calitate atunci când este disponibilă"
+    },
+    "useCSSValues": {
+        "message": "Utilizați valorile css pentru RGB/HSL"
+    },
+    "iconIsPreview": {
+        "message": "Utilizați pictograma pictogramă previzualizare pătrat color"
+    },
+    "appleIcon": {
+        "message": "Utilizare Apple Digital Logo-ul culorilor"
+    },
+    "iconIsBitmap": {
+        "message": "Pictograma este mărită cu pixel"
+    },
+    "resetIcon": {
+        "message": "Reveniți la pictograma normală"
+    },
+    "bbackgroundColor": {
+        "message": "Culoarea de fundal popup"
+    },
+    "usePrevColorBG": {
+        "message": "Utilizați culoarea anterioară pentru fundal"
+    },
+    "showPreviousClr": {
+        "message": "Afișați previzualizarea culorilor în culori anterioare cu culoarea anterioară"
+    },
+    "borderValue": {
+        "message": "Frontierele de utilizat (valoarea css)"
+    },
+    "options": {
+        "message": "Opțiuni"
+    },
+    "advancedOptions": {
+        "message": "Opțiuni avansate"
+    },
+    "fetchSync": {
+        "message": "Preluați setările din spațiul de stocare sincronizare Google Account"
+    },
+    "clearSync": {
+        "message": "Stocare sincronă clară"
+    },
+    "saveOptions": {
+        "message": "Salvați opțiunile"
+    },
+    "showDefaults": {
+        "message": "Afișați valorile implicite"
+    },
+    "colorOfDay": {
+        "message": "Culoarea zilei"
+    },
+    "terms": {
+        "message": "Termeni de utilizare"
+    },
+    "help": {
+        "message": "Ajutor / info"
+    },
+    "history": {
+        "message": "Istorie"
+    },
+    "noSwatches": {
+        "message": "Faceți clic pe culorile din istoricul culorilor pentru a le adăuga într-o paletă pentru salvarea și imprimarea."
+    },
+    "addToPalette": {
+        "message": "Adăugați la paleta de culori"
+    },
+    "sort": {
+        "message": "fel"
+    },
+    "printSave": {
+        "message": "Tipăriți / salvați..."
+    },
+    "clear": {
+        "message": "Clar"
+    },
+    "copycolorval": {
+        "message": "Copiați valoarea culorii"
+    },
+    "allowWebGl": {
+        "message": "Permiteți accesul webgl pentru previzualizare pixelată"
+    }
+}

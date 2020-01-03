@@ -1,0 +1,194 @@
+﻿{
+    "closeAndExit": {
+        "message": "Затваряне и излизане от режим на избор на цвят"
+    },
+    "hideMinimize": {
+        "message": "Скриване / минимизиране [esc]"
+    },
+    "showColorChooser": {
+        "message": "Показване на избор на цветове"
+    },
+    "rightClick": {
+        "message": "Кликнете с десния бутон"
+    },
+    "dblClick": {
+        "message": "Кликнете два пъти"
+    },
+    "pickAgainLocked": {
+        "message": "Изберете друг цвят [Enter]"
+    },
+    "pickAgainUnlocked": {
+        "message": "Изберете текущия цвят [Enter]"
+    },
+    "disablePickEveryTime": {
+        "message": "Не започвайте да избирате всеки път, когато кликнете върху изскачащия прозорец"
+    },
+    "reSnapPage": {
+        "message": "Опресняване на снимката на страницата [r]"
+    },
+    "popOutWindow": {
+        "message": "Изскачащ прозорец (отделен прозорец)"
+    },
+    "pressEnterToPick": {
+        "message": "Натиснете enter, за да изберете цвят"
+    },
+    "bgPageUnavailable": {
+        "message": "Фонова снимка не отговаря - моля, опреснете страницата и опитайте отново."
+    },
+    "registered": {
+        "message": "Препоръчано"
+    },
+    "unregistered": {
+        "message": "Нерегистриран"
+    },
+    "approved": {
+        "message": "Одобрен"
+    },
+    "registerButton": {
+        "message": "Регистрирам"
+    },
+    "modifyLicense": {
+        "message": "Промяна на лиценза"
+    },
+    "error": {
+        "message": "Грешка"
+    },
+    "showndefaults": {
+        "message": "Моля, натиснете бутона Запиши, като сега се показват по подразбиране."
+    },
+    "savedoptions": {
+        "message": "Опциите са запазени."
+    },
+    "loadsyncOptions": {
+        "message": "Опциите за съхранение на синхронизиране са заредени и запазени."
+    },
+    "on": {
+        "message": "За"
+    },
+    "off": {
+        "message": "От"
+    },
+    "default": {
+        "message": "По подразбиране"
+    },
+    "full": {
+        "message": "Пълен"
+    },
+    "maxZoom": {
+        "message": "Макс увеличен"
+    },
+    "pickEveryTime": {
+        "message": "Започнете да избирате цветовете всеки път, когато се натисне изскачащ прозорец"
+    },
+    "pixelatedPreview": {
+        "message": "Увеличената визуализация е пикселирана"
+    },
+    "fishEye": {
+        "message": "Размер на рибеното око"
+    },
+    "EnableRGB": {
+        "message": "Шоу RGB"
+    },
+    "EnableHSL": {
+        "message": "Шоу HSL"
+    },
+    "hasAgreedToLicense": {
+        "message": "Се съгласи с условията за ползване"
+    },
+    "seeTerms": {
+        "message": "Вижте условията за ползване"
+    },
+    "disableRewriting": {
+        "message": "Деактивиране на присъединяването на несвързани връзки"
+    },
+    "usageStatistics": {
+        "message": "Събиране на статистически данни за ползване (вижте условията за ползване)"
+    },
+    "shareClors": {
+        "message": "Цвят на деня статистика (вижте условията за ползване)"
+    },
+    "usePNG": {
+        "message": "Употреба PNG качество, когато е налице"
+    },
+    "useCSSValues": {
+        "message": "Използвайте css стойности за RGB/HSL"
+    },
+    "iconIsPreview": {
+        "message": "Използване икона значка квадрат цвят преглед"
+    },
+    "appleIcon": {
+        "message": "Употреба Apple Digital Цветен логотип"
+    },
+    "iconIsBitmap": {
+        "message": "Иконата е увеличена"
+    },
+    "resetIcon": {
+        "message": "Се върнете към нормалната икона"
+    },
+    "bbackgroundColor": {
+        "message": "Изскачащ цвят на фона"
+    },
+    "usePrevColorBG": {
+        "message": "Използвайте предишния цвят за фон"
+    },
+    "showPreviousClr": {
+        "message": "Показват разделителна цветна визуализация с предишен цвят"
+    },
+    "borderValue": {
+        "message": "Границите за използване (css стойност)"
+    },
+    "options": {
+        "message": "Настроики"
+    },
+    "advancedOptions": {
+        "message": "Разширени опции"
+    },
+    "fetchSync": {
+        "message": "Извличане на настройките от хранилището за синхронизиране на профила в Google"
+    },
+    "clearSync": {
+        "message": "Ясни хранилище за синхронизиране"
+    },
+    "saveOptions": {
+        "message": "Запишете опции"
+    },
+    "showDefaults": {
+        "message": "Покажете по подразбиране"
+    },
+    "colorOfDay": {
+        "message": "Цвят на деня"
+    },
+    "terms": {
+        "message": "Условия за ползване"
+    },
+    "help": {
+        "message": "Помощ / инфо"
+    },
+    "history": {
+        "message": "История"
+    },
+    "noSwatches": {
+        "message": "Кликнете върху цветовете в хронологията на цветовете, за да ги добавите към палитрата за пестене и печат."
+    },
+    "addToPalette": {
+        "message": "Добавете към цветовата палитра"
+    },
+    "sort": {
+        "message": "вид"
+    },
+    "dedupe": {
+        "message": "премахване на дубликати"
+    },
+    "printSave": {
+        "message": "Печат / запазване..."
+    },
+    "clear": {
+        "message": "Ясно"
+    },
+    "copycolorval": {
+        "message": "Копирайте цветовата стойност"
+    },
+    "allowWebGl": {
+        "message": "Позволете на webgl за пикселна визуализация"
+    }
+}

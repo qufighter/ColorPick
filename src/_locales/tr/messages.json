@@ -1,0 +1,194 @@
+﻿{
+    "closeAndExit": {
+        "message": "Renk seçme modunu kapat ve çık"
+    },
+    "hideMinimize": {
+        "message": "/ gizlemek en aza indirmek [esc]"
+    },
+    "showColorChooser": {
+        "message": "Renk seçiciyi göster"
+    },
+    "rightClick": {
+        "message": "Sağ tık"
+    },
+    "dblClick": {
+        "message": "Çift ​​tıklama"
+    },
+    "pickAgainLocked": {
+        "message": "Başka bir renk seç [Enter]"
+    },
+    "pickAgainUnlocked": {
+        "message": "Geçerli rengi seç [Enter]"
+    },
+    "disablePickEveryTime": {
+        "message": "Popup'u her tıklattığınızda toplama işlemini başlatmayın"
+    },
+    "reSnapPage": {
+        "message": "Sayfanın resmini yenileyin [r]"
+    },
+    "popOutWindow": {
+        "message": "Açılır pencere (ayrı pencere)"
+    },
+    "pressEnterToPick": {
+        "message": "Rengi almak için enter tuşuna basın"
+    },
+    "bgPageUnavailable": {
+        "message": "Arka plan anlık görüntüsü yanıt vermiyor - lütfen sayfayı yenileyin ve tekrar deneyin."
+    },
+    "registered": {
+        "message": "Kayıtlı"
+    },
+    "unregistered": {
+        "message": "Kayıtsız"
+    },
+    "approved": {
+        "message": "Onaylı"
+    },
+    "registerButton": {
+        "message": "Kayıt olmak"
+    },
+    "modifyLicense": {
+        "message": "Lisansı değiştir"
+    },
+    "error": {
+        "message": "Hata"
+    },
+    "showndefaults": {
+        "message": "Lütfen varsayılanları gösteren şimdi kaydet tuşuna basın."
+    },
+    "savedoptions": {
+        "message": "Seçenekler kaydedildi."
+    },
+    "loadsyncOptions": {
+        "message": "Senkronizasyon saklama seçenekleri yüklendi ve kaydedildi."
+    },
+    "on": {
+        "message": "Üzerinde"
+    },
+    "off": {
+        "message": "Kapalı"
+    },
+    "default": {
+        "message": "Varsayılan"
+    },
+    "full": {
+        "message": "Tam"
+    },
+    "maxZoom": {
+        "message": "Maksimum yakınlaştırılmış"
+    },
+    "pickEveryTime": {
+        "message": "Açılır pencere her tıklandığında renk seçmeye başlayın"
+    },
+    "pixelatedPreview": {
+        "message": "Yakınlaştırılmış önizleme piksellenir"
+    },
+    "fishEye": {
+        "message": "Balık gözü yakınlaştırma miktarı"
+    },
+    "EnableRGB": {
+        "message": "Göstermek RGB"
+    },
+    "EnableHSL": {
+        "message": "Göstermek HSL"
+    },
+    "hasAgreedToLicense": {
+        "message": "Kullanım şartlarını kabul etti"
+    },
+    "seeTerms": {
+        "message": "Kullanım koşullarına bak"
+    },
+    "disableRewriting": {
+        "message": "Bağlı olmayan bağlantıların üyeliğini devre dışı bırak"
+    },
+    "usageStatistics": {
+        "message": "Kullanım istatistiklerini toplayın (kullanım koşullarına bakın)"
+    },
+    "shareClors": {
+        "message": "Günün istatistiği renkleri (kullanım şartlarına bakınız)"
+    },
+    "usePNG": {
+        "message": "Kullanım PNG mevcut olduğunda kalite"
+    },
+    "useCSSValues": {
+        "message": "Için css değerlerini kullan RGB/HSL"
+    },
+    "iconIsPreview": {
+        "message": "Simge rozeti kare renk önizleme kullanın"
+    },
+    "appleIcon": {
+        "message": "Kullanım Apple Digital Renk ölçer logosu"
+    },
+    "iconIsBitmap": {
+        "message": "Simge yakınlaştırılmış piksel önizleme"
+    },
+    "resetIcon": {
+        "message": "Normal simgeye geri dön"
+    },
+    "bbackgroundColor": {
+        "message": "Açılır arka plan rengi"
+    },
+    "usePrevColorBG": {
+        "message": "Arka plan için önceki rengi kullan"
+    },
+    "showPreviousClr": {
+        "message": "Önceki renkle bölünmüş renk önizlemesini göster"
+    },
+    "borderValue": {
+        "message": "Sınırlar (css değeri)"
+    },
+    "options": {
+        "message": "Seçenekleri"
+    },
+    "advancedOptions": {
+        "message": "Gelişmiş seçenekler"
+    },
+    "fetchSync": {
+        "message": "Ayarları Google hesabı senkronizasyon saklama alanından getir"
+    },
+    "clearSync": {
+        "message": "Senkronizasyonu saklama alanı"
+    },
+    "saveOptions": {
+        "message": "Seçenekleri kaydet"
+    },
+    "showDefaults": {
+        "message": "Varsayılanları göster"
+    },
+    "colorOfDay": {
+        "message": "Günün rengi"
+    },
+    "terms": {
+        "message": "Kullanım Şartları"
+    },
+    "help": {
+        "message": "Yardım / bilgi"
+    },
+    "history": {
+        "message": "Tarih"
+    },
+    "noSwatches": {
+        "message": "Kaydetme ve yazdırma için onları palete eklemek için renk geçmişindeki renkleri tıklayın."
+    },
+    "addToPalette": {
+        "message": "Renk paletine ekle"
+    },
+    "sort": {
+        "message": "çeşit"
+    },
+    "dedupe": {
+        "message": "tekilleştirme"
+    },
+    "printSave": {
+        "message": "Yazdır / kaydet..."
+    },
+    "clear": {
+        "message": "Açık"
+    },
+    "copycolorval": {
+        "message": "Renk değerini kopyala"
+    },
+    "allowWebGl": {
+        "message": "Pikselli önizleme için webglöre izin verin"
+    }
+}

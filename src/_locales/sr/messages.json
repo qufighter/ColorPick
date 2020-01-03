@@ -1,0 +1,194 @@
+﻿{
+    "closeAndExit": {
+        "message": "Затворите и изађите из режима избора боје"
+    },
+    "hideMinimize": {
+        "message": "Сакрити / смањити [esc]"
+    },
+    "showColorChooser": {
+        "message": "Покажи боју избора"
+    },
+    "rightClick": {
+        "message": "Десни клик"
+    },
+    "dblClick": {
+        "message": "Дупли клик"
+    },
+    "pickAgainLocked": {
+        "message": "Изаберите другу боју [Enter]"
+    },
+    "pickAgainUnlocked": {
+        "message": "Изаберите тренутну боју [Enter]"
+    },
+    "disablePickEveryTime": {
+        "message": "Не покрећите сваки пут кад кликнете на попуп"
+    },
+    "reSnapPage": {
+        "message": "Освежите слику странице [r]"
+    },
+    "popOutWindow": {
+        "message": "Поп-оут (посебан прозор)"
+    },
+    "pressEnterToPick": {
+        "message": "Притисните ентер да бисте изабрали боју"
+    },
+    "bgPageUnavailable": {
+        "message": "Снимак позадине не одговара - освежите страницу и покушајте поново."
+    },
+    "registered": {
+        "message": "Регистровани"
+    },
+    "unregistered": {
+        "message": "Нерегистрована"
+    },
+    "approved": {
+        "message": "Одобрена"
+    },
+    "registerButton": {
+        "message": "Регистровати"
+    },
+    "modifyLicense": {
+        "message": "Измените лиценцу"
+    },
+    "error": {
+        "message": "Грешка"
+    },
+    "showndefaults": {
+        "message": "Молимо притисните тастер сачувај, сада показујући подразумеване вредности."
+    },
+    "savedoptions": {
+        "message": "Опције сачуване."
+    },
+    "loadsyncOptions": {
+        "message": "Опције складиштења синхронизације су учитане и сачуване."
+    },
+    "on": {
+        "message": "На"
+    },
+    "off": {
+        "message": "Ван"
+    },
+    "default": {
+        "message": "Уобичајено"
+    },
+    "full": {
+        "message": "Пуна"
+    },
+    "maxZoom": {
+        "message": "Мак зоомед"
+    },
+    "pickEveryTime": {
+        "message": "Почните да бирате боје сваки пут када се кликне"
+    },
+    "pixelatedPreview": {
+        "message": "Увећани приказ је пикселиран"
+    },
+    "fishEye": {
+        "message": "Количина зума око очију"
+    },
+    "EnableRGB": {
+        "message": "Схов RGB"
+    },
+    "EnableHSL": {
+        "message": "Схов HSL"
+    },
+    "hasAgreedToLicense": {
+        "message": "Се сложио са условима коришћења"
+    },
+    "seeTerms": {
+        "message": "Погледајте услове коришћења"
+    },
+    "disableRewriting": {
+        "message": "Онемогућити припадност непридрживих веза"
+    },
+    "usageStatistics": {
+        "message": "Прикупите статистику коришћења (погледајте услове коришћења)"
+    },
+    "shareClors": {
+        "message": "Статистика боја дана (погледајте услове коришћења)"
+    },
+    "usePNG": {
+        "message": "Користите PNG квалитет кад је доступно"
+    },
+    "useCSSValues": {
+        "message": "Користите ЦСС вредности за RGB/HSL"
+    },
+    "iconIsPreview": {
+        "message": "Користите ознаку квадратне боје иконе иконе"
+    },
+    "appleIcon": {
+        "message": "Користите Apple Digital Колор метар лого"
+    },
+    "iconIsBitmap": {
+        "message": "Икона је увећан приказ пиксела"
+    },
+    "resetIcon": {
+        "message": "Вратити се на нормалну икону"
+    },
+    "bbackgroundColor": {
+        "message": "Попуп боја позадине"
+    },
+    "usePrevColorBG": {
+        "message": "Користите претходну боју за позадину"
+    },
+    "showPreviousClr": {
+        "message": "Приказати подељени преглед боја са претходном бојом"
+    },
+    "borderValue": {
+        "message": "Границе које треба користити (цсс вриједност)"
+    },
+    "options": {
+        "message": "Опције"
+    },
+    "advancedOptions": {
+        "message": "Напредне опције"
+    },
+    "fetchSync": {
+        "message": "Преузмите поставке из складишта синхронизације за Гоогле налог"
+    },
+    "clearSync": {
+        "message": "Чисто складиште за синхронизацију"
+    },
+    "saveOptions": {
+        "message": "Сачувајте опције"
+    },
+    "showDefaults": {
+        "message": "Покажи подразумеване вредности"
+    },
+    "colorOfDay": {
+        "message": "Боја дана"
+    },
+    "terms": {
+        "message": "Услови коришћења"
+    },
+    "help": {
+        "message": "Помоћ / инфо"
+    },
+    "history": {
+        "message": "Историја"
+    },
+    "noSwatches": {
+        "message": "Кликните боје у историји боја да бисте их додали у палету за чување и штампање."
+    },
+    "addToPalette": {
+        "message": "Додајте у палету боја"
+    },
+    "sort": {
+        "message": "врста"
+    },
+    "dedupe": {
+        "message": "дедупе"
+    },
+    "printSave": {
+        "message": "Принт / саве..."
+    },
+    "clear": {
+        "message": "Јасно"
+    },
+    "copycolorval": {
+        "message": "Копирајте вредност боје"
+    },
+    "allowWebGl": {
+        "message": "Дозволите вебгл за пикелатед превиев"
+    }
+}

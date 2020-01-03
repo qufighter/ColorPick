@@ -1,0 +1,188 @@
+﻿{
+    "closeAndExit": {
+        "message": "Värvi valimise režiimi sulgemine ja väljumine"
+    },
+    "hideMinimize": {
+        "message": "Peida / minimeerima [esc]"
+    },
+    "showColorChooser": {
+        "message": "Näidake värvivalijat"
+    },
+    "rightClick": {
+        "message": "Paremklõps"
+    },
+    "dblClick": {
+        "message": "Topeltklõps"
+    },
+    "pickAgainLocked": {
+        "message": "Vali teine ​​värv [Enter]"
+    },
+    "pickAgainUnlocked": {
+        "message": "Vali praegune värv [Enter]"
+    },
+    "disablePickEveryTime": {
+        "message": "Ärge alustage iga kord, kui hüpikakasti klõpsatakse"
+    },
+    "reSnapPage": {
+        "message": "Värskenda lehe pilti [r]"
+    },
+    "popOutWindow": {
+        "message": "Pop-out (eraldi aken)"
+    },
+    "pressEnterToPick": {
+        "message": "Värvi valimiseks vajutage sisestusklahvi"
+    },
+    "bgPageUnavailable": {
+        "message": "Taustpildi ei vasta - palun värskenda lehte ja proovige uuesti."
+    },
+    "registered": {
+        "message": "Registreeritud"
+    },
+    "unregistered": {
+        "message": "Registreerimata"
+    },
+    "approved": {
+        "message": "Heaks kiidetud"
+    },
+    "registerButton": {
+        "message": "Registreeruge"
+    },
+    "modifyLicense": {
+        "message": "Muuta litsentsi"
+    },
+    "error": {
+        "message": "Viga"
+    },
+    "showndefaults": {
+        "message": "Palun vajutage salvestamist, näidates nüüd vaikimisi."
+    },
+    "savedoptions": {
+        "message": "Salvestatud valikud."
+    },
+    "loadsyncOptions": {
+        "message": "Sünkroonimise sätted on laaditud ja salvestatud."
+    },
+    "off": {
+        "message": "Väljas"
+    },
+    "default": {
+        "message": "Vaikimisi"
+    },
+    "full": {
+        "message": "Täis"
+    },
+    "maxZoom": {
+        "message": "Max suumitud"
+    },
+    "pickEveryTime": {
+        "message": "Alustada värvide valimist iga kord, kui klõpsatakse hüpikaknal"
+    },
+    "pixelatedPreview": {
+        "message": "Suumitud eelvaade on pikslitustatud"
+    },
+    "fishEye": {
+        "message": "Kala silma suumi summa"
+    },
+    "EnableRGB": {
+        "message": "Näidata RGB"
+    },
+    "EnableHSL": {
+        "message": "Näidata HSL"
+    },
+    "hasAgreedToLicense": {
+        "message": "On nõustunud kasutustingimustega"
+    },
+    "seeTerms": {
+        "message": "Vaata kasutustingimusi"
+    },
+    "disableRewriting": {
+        "message": "Keelata mittepartnerlusside sidumine"
+    },
+    "usageStatistics": {
+        "message": "Koguda kasutusstatistikat (vt kasutustingimusi)"
+    },
+    "shareClors": {
+        "message": "Päeva statistika värv (vt kasutustingimused)"
+    },
+    "usePNG": {
+        "message": "Kasutage PNG kvaliteet, kui see on olemas"
+    },
+    "useCSSValues": {
+        "message": "Kasuta css väärtusi RGB/HSL"
+    },
+    "iconIsPreview": {
+        "message": "Kasuta ikooni märgi ruudu eelvaatlust"
+    },
+    "appleIcon": {
+        "message": "Kasutage Apple Digital Värviarvesti logo"
+    },
+    "iconIsBitmap": {
+        "message": "Ikoon on suumitud piksli eelvaade"
+    },
+    "resetIcon": {
+        "message": "Pöörduda tavalise ikooni juurde"
+    },
+    "bbackgroundColor": {
+        "message": "Popup taustavärv"
+    },
+    "usePrevColorBG": {
+        "message": "Kasutada taustal eelmist värvi"
+    },
+    "showPreviousClr": {
+        "message": "Näidake split värvi eelvaate eelmise värviga"
+    },
+    "borderValue": {
+        "message": "Piirid kasutamiseks (css väärtus)"
+    },
+    "options": {
+        "message": "Valikud"
+    },
+    "advancedOptions": {
+        "message": "Täpsemad valikud"
+    },
+    "fetchSync": {
+        "message": "Hüpikakende seaded Google'i konto sünkroonimisraamatusse"
+    },
+    "clearSync": {
+        "message": "Selge sünkroonimisraamat"
+    },
+    "saveOptions": {
+        "message": "Salvestada valikuid"
+    },
+    "showDefaults": {
+        "message": "Näidata vaikimisi"
+    },
+    "colorOfDay": {
+        "message": "Päeva värv"
+    },
+    "terms": {
+        "message": "Kasutustingimused"
+    },
+    "help": {
+        "message": "Help / info"
+    },
+    "history": {
+        "message": "Ajalugu"
+    },
+    "noSwatches": {
+        "message": "Värvimisajal värvide värvimiseks lisage need palettesse salvestamiseks ja printimiseks."
+    },
+    "addToPalette": {
+        "message": "Lisada värvipaletile"
+    },
+    "sort": {
+        "message": "sorteerima"
+    },
+    "printSave": {
+        "message": "Print / save..."
+    },
+    "clear": {
+        "message": "Selge"
+    },
+    "copycolorval": {
+        "message": "Kopeerige värvi väärtus"
+    },
+    "allowWebGl": {
+        "message": "Lubage webglil pikslit eelvaate jaoks"
+    }
+}

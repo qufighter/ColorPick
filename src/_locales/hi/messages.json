@@ -1,0 +1,188 @@
+﻿{
+    "closeAndExit": {
+        "message": "बंद करें और बाहर निकलें रंग पिक मोड"
+    },
+    "hideMinimize": {
+        "message": "छिपाने / कम से कम [esc]"
+    },
+    "showColorChooser": {
+        "message": "रंग चयनकर्ता दिखाएं"
+    },
+    "rightClick": {
+        "message": "दाएँ क्लिक करें"
+    },
+    "dblClick": {
+        "message": "डबल क्लिक करें"
+    },
+    "pickAgainLocked": {
+        "message": "दूसरा रंग चुनें [Enter]"
+    },
+    "pickAgainUnlocked": {
+        "message": "मौजूदा रंग का चयन करें [Enter]"
+    },
+    "disablePickEveryTime": {
+        "message": "हर बार पॉपअप को क्लिक करने से शुरू नहीं किया जाता है"
+    },
+    "reSnapPage": {
+        "message": "पेज की तस्वीर ताज़ा करें [r]"
+    },
+    "popOutWindow": {
+        "message": "पॉप-आउट (अलग विंडो)"
+    },
+    "pressEnterToPick": {
+        "message": "रंग लेने के लिए एन्टर दबाएं"
+    },
+    "bgPageUnavailable": {
+        "message": "पृष्ठभूमि स्नैपशॉट जवाब नहीं दे रहा है - कृपया पृष्ठ को रीफ्रेश करें और फिर से प्रयास करें।"
+    },
+    "registered": {
+        "message": "दर्ज कराई"
+    },
+    "unregistered": {
+        "message": "अपंजीकृत"
+    },
+    "approved": {
+        "message": "मंजूर की"
+    },
+    "registerButton": {
+        "message": "रजिस्टर"
+    },
+    "modifyLicense": {
+        "message": "लाइसेंस संशोधित करें"
+    },
+    "error": {
+        "message": "त्रुटि"
+    },
+    "showndefaults": {
+        "message": "कृपया बचाओ दबाएं, अब डिफॉल्ट दिखा रहा है"
+    },
+    "savedoptions": {
+        "message": "विकल्प सेव किये गए।"
+    },
+    "loadsyncOptions": {
+        "message": "सिंक स्टोरेज विकल्प लोड और सहेजे गए हैं।"
+    },
+    "on": {
+        "message": "पर"
+    },
+    "off": {
+        "message": "बंद"
+    },
+    "default": {
+        "message": "चूक"
+    },
+    "full": {
+        "message": "पूर्ण"
+    },
+    "maxZoom": {
+        "message": "अधिकतम जूम किया गया"
+    },
+    "pickEveryTime": {
+        "message": "हर बार पॉपअप को क्लिक करने पर रंग चुनना शुरू होता है"
+    },
+    "pixelatedPreview": {
+        "message": "ज़ूम केलेले पूर्वावलोकन पिक्सलेटेड है"
+    },
+    "fishEye": {
+        "message": "मछली की आँख ज़ूम राशि"
+    },
+    "EnableRGB": {
+        "message": "दिखाना RGB"
+    },
+    "EnableHSL": {
+        "message": "दिखाना HSL"
+    },
+    "hasAgreedToLicense": {
+        "message": "उपयोग की शर्तों पर सहमत हुए हैं"
+    },
+    "seeTerms": {
+        "message": "उपयोग की शर्तें देखें"
+    },
+    "disableRewriting": {
+        "message": "गैर-संबद्ध लिंकों को अक्षम करना अक्षम"
+    },
+    "usageStatistics": {
+        "message": "उपयोग के आँकड़े इकट्ठा करें (उपयोग की शर्तों देखें)"
+    },
+    "shareClors": {
+        "message": "दिन के आंकड़ों का रंग (देखें उपयोग की शर्तें देखें)"
+    },
+    "usePNG": {
+        "message": "उपयोग PNG उपलब्ध होने पर गुणवत्ता"
+    },
+    "useCSSValues": {
+        "message": "के लिए सीएसएस मूल्यों का उपयोग करें RGB/HSL"
+    },
+    "iconIsPreview": {
+        "message": "आइकन बैज स्क्वायर रंग पूर्वावलोकन का उपयोग करें"
+    },
+    "appleIcon": {
+        "message": "उपयोग Apple Digital रंग मीटर लोगो"
+    },
+    "iconIsBitmap": {
+        "message": "आइकन पिक्सेल पूर्वावलोकन ज़ूम किया गया है"
+    },
+    "resetIcon": {
+        "message": "सामान्य आइकन पर लौटें"
+    },
+    "bbackgroundColor": {
+        "message": "पॉपअप पृष्ठभूमि रंग"
+    },
+    "usePrevColorBG": {
+        "message": "पृष्ठभूमि के लिए पिछले रंग का उपयोग करें"
+    },
+    "showPreviousClr": {
+        "message": "पिछले रंग के साथ विभाजित रंग पूर्वावलोकन दिखाएं"
+    },
+    "borderValue": {
+        "message": "सीमाओं का उपयोग करने के लिए (सीएसएस मूल्य)"
+    },
+    "options": {
+        "message": "विकल्प"
+    },
+    "advancedOptions": {
+        "message": "उन्नत विकल्प"
+    },
+    "fetchSync": {
+        "message": "Google खाता समन्वयन संग्रहण से सेटिंग प्राप्त करें"
+    },
+    "clearSync": {
+        "message": "सिंक मेमोरी साफ़ करें"
+    },
+    "saveOptions": {
+        "message": "विकल्पों को बचाएं"
+    },
+    "showDefaults": {
+        "message": "चूक दिखाना"
+    },
+    "colorOfDay": {
+        "message": "दिन का रंग"
+    },
+    "terms": {
+        "message": "उपयोग की शर्तें"
+    },
+    "help": {
+        "message": "मदद / जानकारी"
+    },
+    "history": {
+        "message": "इतिहास"
+    },
+    "noSwatches": {
+        "message": "रंग इतिहास में रंगों को उन्हें सहेजने और छपाई के लिए पैलेट में जोड़ने के लिए क्लिक करें।"
+    },
+    "addToPalette": {
+        "message": "रंग पैलेट में जोड़ें"
+    },
+    "sort": {
+        "message": "तरह"
+    },
+    "printSave": {
+        "message": "प्रिंट / सहेजें..."
+    },
+    "clear": {
+        "message": "स्पष्ट"
+    },
+    "copycolorval": {
+        "message": "रंग मान की नकल करें"
+    }
+}

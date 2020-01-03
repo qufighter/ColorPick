@@ -1,0 +1,191 @@
+﻿{
+    "closeAndExit": {
+        "message": "Fechar e sair do modo de escolha de cor"
+    },
+    "hideMinimize": {
+        "message": "Esconder / minimizar [esc]"
+    },
+    "showColorChooser": {
+        "message": "Mostrar o escolhedor de cores"
+    },
+    "rightClick": {
+        "message": "Clique direito"
+    },
+    "dblClick": {
+        "message": "Duplo click"
+    },
+    "pickAgainLocked": {
+        "message": "Escolha outra cor [Enter]"
+    },
+    "pickAgainUnlocked": {
+        "message": "Selecione a cor atual [Enter]"
+    },
+    "disablePickEveryTime": {
+        "message": "Não comece a escolher cada vez que o popup é clicado"
+    },
+    "reSnapPage": {
+        "message": "Atualizar foto da página [r]"
+    },
+    "popOutWindow": {
+        "message": "Pop-out (janela separada)"
+    },
+    "pressEnterToPick": {
+        "message": "Pressione enter para escolher cor"
+    },
+    "bgPageUnavailable": {
+        "message": "Instantâneo de fundo não está respondendo - atualize a página e tente novamente."
+    },
+    "registered": {
+        "message": "Registrado"
+    },
+    "unregistered": {
+        "message": "Não registrado"
+    },
+    "approved": {
+        "message": "Aprovado"
+    },
+    "registerButton": {
+        "message": "Registo"
+    },
+    "modifyLicense": {
+        "message": "Modificar licença"
+    },
+    "error": {
+        "message": "Erro"
+    },
+    "showndefaults": {
+        "message": "Pressione Salvar, exibindo padrões."
+    },
+    "savedoptions": {
+        "message": "Opcões salvas."
+    },
+    "loadsyncOptions": {
+        "message": "As opções de sincronização de armazenamento foram carregadas e salvas."
+    },
+    "on": {
+        "message": "Em"
+    },
+    "off": {
+        "message": "Fora"
+    },
+    "default": {
+        "message": "Padrão"
+    },
+    "full": {
+        "message": "Cheio"
+    },
+    "maxZoom": {
+        "message": "Zoom máximo"
+    },
+    "pickEveryTime": {
+        "message": "Começar a escolher cores sempre que o popup seja clicado"
+    },
+    "pixelatedPreview": {
+        "message": "A visualização ampliada é pixelada"
+    },
+    "fishEye": {
+        "message": "Quantidade de zoom de olho de peixe"
+    },
+    "EnableRGB": {
+        "message": "Exposição RGB"
+    },
+    "EnableHSL": {
+        "message": "Exposição HSL"
+    },
+    "hasAgreedToLicense": {
+        "message": "Concordou com os termos de uso"
+    },
+    "seeTerms": {
+        "message": "Veja os termos de uso"
+    },
+    "disableRewriting": {
+        "message": "Desativar a afiliação de links que não sejam afiliados"
+    },
+    "usageStatistics": {
+        "message": "Coletar estatísticas de uso (ver termos de uso)"
+    },
+    "shareClors": {
+        "message": "Estatísticas de cores do dia (ver termos de uso)"
+    },
+    "usePNG": {
+        "message": "Usar PNG qualidade quando disponível"
+    },
+    "useCSSValues": {
+        "message": "Use valores css para RGB/HSL"
+    },
+    "iconIsPreview": {
+        "message": "Use a previsão de cor quadrada do emblema do ícone"
+    },
+    "appleIcon": {
+        "message": "Usar Apple Digital Logotipo do medidor de cores"
+    },
+    "iconIsBitmap": {
+        "message": "O ícone é uma visualização de pixel com zoom"
+    },
+    "resetIcon": {
+        "message": "Reverter para o ícone normal"
+    },
+    "bbackgroundColor": {
+        "message": "Cor de fundo popup"
+    },
+    "usePrevColorBG": {
+        "message": "Use a cor anterior para o plano de fundo"
+    },
+    "showPreviousClr": {
+        "message": "Mostre a visualização de cores divididas com cor anterior"
+    },
+    "borderValue": {
+        "message": "Bordas para usar (valor css)"
+    },
+    "options": {
+        "message": "Opções"
+    },
+    "advancedOptions": {
+        "message": "Opções avançadas"
+    },
+    "fetchSync": {
+        "message": "Buscar configurações do armazenamento de sincronização de conta do google"
+    },
+    "clearSync": {
+        "message": "Armazenamento de sincronização transparente"
+    },
+    "saveOptions": {
+        "message": "Salvar opções"
+    },
+    "showDefaults": {
+        "message": "Mostrar padrões"
+    },
+    "colorOfDay": {
+        "message": "Cor do dia"
+    },
+    "terms": {
+        "message": "Termos de uso"
+    },
+    "help": {
+        "message": "Ajuda / informação"
+    },
+    "history": {
+        "message": "História"
+    },
+    "noSwatches": {
+        "message": "Clique em cores no histórico de cores para adicioná-las a uma paleta para salvar e imprimir."
+    },
+    "addToPalette": {
+        "message": "Adicionar a paleta de cores"
+    },
+    "sort": {
+        "message": "ordenar"
+    },
+    "printSave": {
+        "message": "Imprimir / salvar..."
+    },
+    "clear": {
+        "message": "Claro"
+    },
+    "copycolorval": {
+        "message": "Copie o valor da cor"
+    },
+    "allowWebGl": {
+        "message": "Permitir webgl para a visualização pixelada"
+    }
+}

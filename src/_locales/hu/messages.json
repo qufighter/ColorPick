@@ -1,0 +1,191 @@
+﻿{
+    "closeAndExit": {
+        "message": "Zárja be és kilép a színválasztási módból"
+    },
+    "hideMinimize": {
+        "message": "Elrejtése / minimalizálása [esc]"
+    },
+    "showColorChooser": {
+        "message": "Színválasztó megjelenítése"
+    },
+    "rightClick": {
+        "message": "Jobb klikk"
+    },
+    "dblClick": {
+        "message": "Dupla kattintás"
+    },
+    "pickAgainLocked": {
+        "message": "Válasszon másik színt [Enter]"
+    },
+    "pickAgainUnlocked": {
+        "message": "Válassza ki az aktuális színt [Enter]"
+    },
+    "disablePickEveryTime": {
+        "message": "Ne kezdjen szedni minden alkalommal, amikor a felugró ablakra kattint"
+    },
+    "reSnapPage": {
+        "message": "Frissítse az oldalt [r]"
+    },
+    "popOutWindow": {
+        "message": "Kiugró (külön ablak)"
+    },
+    "pressEnterToPick": {
+        "message": "Nyomja meg az Enter billentyűt a szín kiválasztásához"
+    },
+    "bgPageUnavailable": {
+        "message": "Háttér pillanatkép nem válaszol - kérjük, frissítse az oldalt, és próbálja újra."
+    },
+    "registered": {
+        "message": "Bejegyzett"
+    },
+    "unregistered": {
+        "message": "Nem regisztrált"
+    },
+    "approved": {
+        "message": "Jóváhagyott"
+    },
+    "registerButton": {
+        "message": "Regisztráció"
+    },
+    "modifyLicense": {
+        "message": "Módosíthatja a licencet"
+    },
+    "error": {
+        "message": "Hiba"
+    },
+    "showndefaults": {
+        "message": "Kérjük, nyomja meg a Mentés gombot, most megjeleníti az alapértelmezett értékeket."
+    },
+    "savedoptions": {
+        "message": "Mentett beállítások."
+    },
+    "loadsyncOptions": {
+        "message": "A szinkronizálási tárolási beállítások betöltése és mentése."
+    },
+    "on": {
+        "message": "Tovább"
+    },
+    "off": {
+        "message": "Ki"
+    },
+    "default": {
+        "message": "Alapértelmezett"
+    },
+    "full": {
+        "message": "Teljes"
+    },
+    "maxZoom": {
+        "message": "Max zoomozott"
+    },
+    "pickEveryTime": {
+        "message": "Kezdje el a színek szedését minden alkalommal, amikor a felugró ablakra kattint"
+    },
+    "pixelatedPreview": {
+        "message": "A nagyított előnézet pixeles"
+    },
+    "fishEye": {
+        "message": "Hal szem zoom mennyiségét"
+    },
+    "EnableRGB": {
+        "message": "Előadás RGB"
+    },
+    "EnableHSL": {
+        "message": "Előadás HSL"
+    },
+    "hasAgreedToLicense": {
+        "message": "Beleegyezett a használati feltételekbe"
+    },
+    "seeTerms": {
+        "message": "Lásd a használati feltételeket"
+    },
+    "disableRewriting": {
+        "message": "Letiltja a nem affiliate linkek kapcsolódását"
+    },
+    "usageStatistics": {
+        "message": "Összegyűjteni a használati statisztikákat (lásd a használati feltételeket)"
+    },
+    "shareClors": {
+        "message": "Napi statisztikák színe (lásd a használati feltételeket)"
+    },
+    "usePNG": {
+        "message": "Használat PNG minőség, ha rendelkezésre áll"
+    },
+    "useCSSValues": {
+        "message": "Használja a css értékeket RGB/HSL"
+    },
+    "iconIsPreview": {
+        "message": "Használja a ikon térképrészletének színes előnézetét"
+    },
+    "appleIcon": {
+        "message": "Használat Apple Digital Színmérő logó"
+    },
+    "iconIsBitmap": {
+        "message": "Ikon nagyított képpont előnézet"
+    },
+    "resetIcon": {
+        "message": "Visszatér a normál ikonhoz"
+    },
+    "bbackgroundColor": {
+        "message": "Popup háttérszín"
+    },
+    "usePrevColorBG": {
+        "message": "Használjon korábbi színt a háttér számára"
+    },
+    "showPreviousClr": {
+        "message": "A színes előnézet megjelenítése az előző színnel"
+    },
+    "borderValue": {
+        "message": "Határok használata (css érték)"
+    },
+    "options": {
+        "message": "Lehetőségek"
+    },
+    "advancedOptions": {
+        "message": "Haladó beállítások"
+    },
+    "fetchSync": {
+        "message": "A Google fiók szinkronizálási adattartalmának lekérése"
+    },
+    "clearSync": {
+        "message": "Tiszta szinkron tároló"
+    },
+    "saveOptions": {
+        "message": "Mentse a beállításokat"
+    },
+    "showDefaults": {
+        "message": "Megmutatja az alapértelmezett értékeket"
+    },
+    "colorOfDay": {
+        "message": "A nap színét"
+    },
+    "terms": {
+        "message": "Használati feltételek"
+    },
+    "help": {
+        "message": "Súgó / info"
+    },
+    "history": {
+        "message": "Történelem"
+    },
+    "noSwatches": {
+        "message": "A színek előzményeiben kattintson a színekre, hogy azokat mentéshez és nyomtatáshoz hozzáadja egy palettához."
+    },
+    "addToPalette": {
+        "message": "Adj hozzá színpalettát"
+    },
+    "sort": {
+        "message": "fajta"
+    },
+    "printSave": {
+        "message": "Nyomtatás / mentés..."
+    },
+    "clear": {
+        "message": "Egyértelmű"
+    },
+    "copycolorval": {
+        "message": "Másolja a színértéket"
+    },
+    "allowWebGl": {
+        "message": "Engedélyezze a webgl pixeles előnézetre"
+    }
+}

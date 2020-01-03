@@ -1,0 +1,188 @@
+﻿{
+    "closeAndExit": {
+        "message": "Dekat dan keluar dari mode pengambilan warna"
+    },
+    "hideMinimize": {
+        "message": "Sembunyikan / kurangi [esc]"
+    },
+    "showColorChooser": {
+        "message": "Tampilkan pemilih warna"
+    },
+    "rightClick": {
+        "message": "Klik kanan"
+    },
+    "dblClick": {
+        "message": "Klik dua kali"
+    },
+    "pickAgainLocked": {
+        "message": "Pilih warna lain [Enter]"
+    },
+    "pickAgainUnlocked": {
+        "message": "Pilih warna sekarang [Enter]"
+    },
+    "disablePickEveryTime": {
+        "message": "Jangan mulai memetik setiap kali popup diklik"
+    },
+    "reSnapPage": {
+        "message": "Refresh gambar halaman [r]"
+    },
+    "popOutWindow": {
+        "message": "Pop-out (jendela terpisah)"
+    },
+    "pressEnterToPick": {
+        "message": "Tekan enter untuk memilih warna"
+    },
+    "bgPageUnavailable": {
+        "message": "Snapshot latar belakang tidak merespons - segarkan halaman dan coba lagi."
+    },
+    "registered": {
+        "message": "Terdaftar"
+    },
+    "unregistered": {
+        "message": "Tidak terdaftar"
+    },
+    "approved": {
+        "message": "Disetujui"
+    },
+    "registerButton": {
+        "message": "Daftar"
+    },
+    "modifyLicense": {
+        "message": "Memodifikasi lisensi"
+    },
+    "error": {
+        "message": "Kesalahan"
+    },
+    "showndefaults": {
+        "message": "Silahkan tekan save, sekarang tampilkan defaultnya."
+    },
+    "savedoptions": {
+        "message": "Pilihan disimpan"
+    },
+    "loadsyncOptions": {
+        "message": "Pilihan penyimpanan sinkron telah dimuat dan disimpan."
+    },
+    "on": {
+        "message": "Di"
+    },
+    "off": {
+        "message": "Mati"
+    },
+    "full": {
+        "message": "Penuh"
+    },
+    "maxZoom": {
+        "message": "Maks diperbesar"
+    },
+    "pickEveryTime": {
+        "message": "Mulai memetik warna setiap kali popup diklik"
+    },
+    "pixelatedPreview": {
+        "message": "Pratinjau yang diperbesar dipelototi"
+    },
+    "fishEye": {
+        "message": "Jumlah zoom mata ikan"
+    },
+    "EnableRGB": {
+        "message": "Menunjukkan RGB"
+    },
+    "EnableHSL": {
+        "message": "Menunjukkan HSL"
+    },
+    "hasAgreedToLicense": {
+        "message": "Telah menyetujui persyaratan penggunaan"
+    },
+    "seeTerms": {
+        "message": "Lihat syarat penggunaan"
+    },
+    "disableRewriting": {
+        "message": "Nonaktifkan afiliasi dari link non-afiliasi"
+    },
+    "usageStatistics": {
+        "message": "Kumpulkan statistik penggunaan (lihat persyaratan penggunaan)"
+    },
+    "shareClors": {
+        "message": "Warna hari statistik (lihat syarat penggunaan)"
+    },
+    "usePNG": {
+        "message": "Menggunakan PNG kualitas bila tersedia"
+    },
+    "useCSSValues": {
+        "message": "Gunakan nilai css untuk RGB/HSL"
+    },
+    "iconIsPreview": {
+        "message": "Gunakan icon badge square color preview"
+    },
+    "appleIcon": {
+        "message": "Menggunakan Apple Digital Logo meteran warna"
+    },
+    "iconIsBitmap": {
+        "message": "Ikon diperbesar pixel preview"
+    },
+    "resetIcon": {
+        "message": "Kembali ke ikon normal"
+    },
+    "bbackgroundColor": {
+        "message": "Warna latar belakang popup"
+    },
+    "usePrevColorBG": {
+        "message": "Gunakan warna sebelumnya untuk latar belakang"
+    },
+    "showPreviousClr": {
+        "message": "Tampilkan preview warna split dengan warna sebelumnya"
+    },
+    "borderValue": {
+        "message": "Batas untuk digunakan (nilai css)"
+    },
+    "options": {
+        "message": "Pilihan"
+    },
+    "advancedOptions": {
+        "message": "Pilihan lanjutan"
+    },
+    "fetchSync": {
+        "message": "Ambil setelan dari penyimpanan sinkronisasi akun google"
+    },
+    "clearSync": {
+        "message": "Hapus sinkronisasi penyimpanan"
+    },
+    "saveOptions": {
+        "message": "Simpan pilihan"
+    },
+    "showDefaults": {
+        "message": "Tampilkan default"
+    },
+    "colorOfDay": {
+        "message": "Warna hari"
+    },
+    "terms": {
+        "message": "Syarat Penggunaan"
+    },
+    "help": {
+        "message": "Bantuan / info"
+    },
+    "history": {
+        "message": "Sejarah"
+    },
+    "noSwatches": {
+        "message": "Klik warna dalam sejarah warna untuk menambahkannya ke palet untuk disimpan dan dicetak."
+    },
+    "addToPalette": {
+        "message": "Tambahkan ke palet warna"
+    },
+    "sort": {
+        "message": "menyortir"
+    },
+    "printSave": {
+        "message": "Cetak / simpan..."
+    },
+    "clear": {
+        "message": "Bersih"
+    },
+    "copycolorval": {
+        "message": "Salin nilai warnanya"
+    },
+    "allowWebGl": {
+        "message": "Izinkan webgl untuk pratinjau piksel"
+    }
+}

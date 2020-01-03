@@ -1,0 +1,191 @@
+﻿{
+    "closeAndExit": {
+        "message": "بستن و خروج حالت انتخاب رنگ"
+    },
+    "hideMinimize": {
+        "message": "پنهان کردن / به حداقل رساندن [esc]"
+    },
+    "showColorChooser": {
+        "message": "انتخاب رنگ را نشان می دهد"
+    },
+    "rightClick": {
+        "message": "کلیک راست"
+    },
+    "dblClick": {
+        "message": "دوبار کلیک کنید"
+    },
+    "pickAgainLocked": {
+        "message": "رنگ دیگری انتخاب کنید [Enter]"
+    },
+    "pickAgainUnlocked": {
+        "message": "رنگ فعلی را انتخاب کنید [Enter]"
+    },
+    "disablePickEveryTime": {
+        "message": "شروع به برداشتن هر بار کلیک بر روی پنجره انجام ندهید"
+    },
+    "reSnapPage": {
+        "message": "تازه کردن تصویر صفحه [r]"
+    },
+    "popOutWindow": {
+        "message": "پاپ آپ (پنجره جداگانه)"
+    },
+    "pressEnterToPick": {
+        "message": "مطبوعات وارد کنید تا انتخاب رنگ کنید"
+    },
+    "bgPageUnavailable": {
+        "message": "عکس فوری پس زمینه پاسخ نمی دهد - لطفا صفحه را تازه سازی کنید و دوباره امتحان کنید."
+    },
+    "registered": {
+        "message": "ثبت نام شده"
+    },
+    "unregistered": {
+        "message": "ثبت نشده"
+    },
+    "approved": {
+        "message": "تایید کرد"
+    },
+    "registerButton": {
+        "message": "ثبت نام"
+    },
+    "modifyLicense": {
+        "message": "مجوز را تغییر دهید"
+    },
+    "error": {
+        "message": "خطا"
+    },
+    "showndefaults": {
+        "message": "لطفا ذخیره را فشار دهید، در حال حاضر نمایش پیش فرض."
+    },
+    "savedoptions": {
+        "message": "گزینه های ذخیره شده"
+    },
+    "loadsyncOptions": {
+        "message": "گزینه های همگام ذخیره سازی بارگیری و ذخیره شده اند."
+    },
+    "on": {
+        "message": "بر"
+    },
+    "off": {
+        "message": "خاموش"
+    },
+    "default": {
+        "message": "به طور پیش فرض"
+    },
+    "full": {
+        "message": "پر شده"
+    },
+    "maxZoom": {
+        "message": "حداکثر بزرگنمایی"
+    },
+    "pickEveryTime": {
+        "message": "شروع به جمع آوری رنگ هر بار کلیک بر روی پنجره کلیک کنید"
+    },
+    "pixelatedPreview": {
+        "message": "پیش نمایش زوم پیکسل شده است"
+    },
+    "fishEye": {
+        "message": "مقدار چشم ماهی چشم"
+    },
+    "EnableRGB": {
+        "message": "نشان بده RGB"
+    },
+    "EnableHSL": {
+        "message": "نشان بده HSL"
+    },
+    "hasAgreedToLicense": {
+        "message": "با شرایط استفاده موافقت کرده است"
+    },
+    "seeTerms": {
+        "message": "شرایط استفاده را ببینید"
+    },
+    "disableRewriting": {
+        "message": "غیر وابسته بودن لینک های غیر وابسته"
+    },
+    "usageStatistics": {
+        "message": "جمع آوری آمار استفاده (نگاه کنید به شرایط استفاده)"
+    },
+    "shareClors": {
+        "message": "رنگ آمار روز (شرایط استفاده را ببینید)"
+    },
+    "usePNG": {
+        "message": "استفاده کنید PNG کیفیت در صورت موجود بودن"
+    },
+    "useCSSValues": {
+        "message": "استفاده از CSS برای RGB/HSL"
+    },
+    "iconIsPreview": {
+        "message": "استفاده از آیکون نشان مربع پیش نمایش رنگ"
+    },
+    "appleIcon": {
+        "message": "استفاده کنید Apple Digital آرم رنگ سنج"
+    },
+    "iconIsBitmap": {
+        "message": "نماد بزرگنمایی پیش نمایش پیکسل است"
+    },
+    "resetIcon": {
+        "message": "بازگشت به عادی آیکون"
+    },
+    "bbackgroundColor": {
+        "message": "رنگ پس زمینه پنجره"
+    },
+    "usePrevColorBG": {
+        "message": "استفاده از رنگ قبلی برای پس زمینه"
+    },
+    "showPreviousClr": {
+        "message": "پیش نمایش رنگ تقسیم با رنگ قبلی نشان می دهد"
+    },
+    "borderValue": {
+        "message": "مرزها برای استفاده (مقدار CSS)"
+    },
+    "options": {
+        "message": "گزینه ها"
+    },
+    "advancedOptions": {
+        "message": "گزینه های پیشرفته"
+    },
+    "fetchSync": {
+        "message": "دریافت تنظیمات از ذخیره سازی همگام سازی حساب Google"
+    },
+    "clearSync": {
+        "message": "ذخیره سازی همگام سازی روشن"
+    },
+    "saveOptions": {
+        "message": "گزینه های ذخیره کنید"
+    },
+    "showDefaults": {
+        "message": "نمایش پیش فرض ها"
+    },
+    "colorOfDay": {
+        "message": "رنگ روز"
+    },
+    "terms": {
+        "message": "شرایط استفاده"
+    },
+    "help": {
+        "message": "کمک / اطلاعات"
+    },
+    "history": {
+        "message": "تاریخ"
+    },
+    "noSwatches": {
+        "message": "روی رنگها در تاریخ رنگ کلیک کنید تا آنها را برای ذخیره و چاپ به پالت اضافه کنید."
+    },
+    "addToPalette": {
+        "message": "به پالت رنگ اضافه کنید"
+    },
+    "sort": {
+        "message": "مرتب سازی"
+    },
+    "dedupe": {
+        "message": "دیوید"
+    },
+    "printSave": {
+        "message": "چاپ / ذخیره کنید..."
+    },
+    "clear": {
+        "message": "روشن است"
+    },
+    "copycolorval": {
+        "message": "مقدار رنگ را کپی کنید"
+    }
+}

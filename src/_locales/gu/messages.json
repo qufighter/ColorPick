@@ -1,0 +1,191 @@
+﻿{
+    "closeAndExit": {
+        "message": "બંધ અને બહાર નીકળો રંગ ચૂંટેલા મોડ"
+    },
+    "hideMinimize": {
+        "message": "છુપાવો / ઘટાડો [esc]"
+    },
+    "showColorChooser": {
+        "message": "રંગ પસંદકર્તા બતાવો"
+    },
+    "rightClick": {
+        "message": "જમણું બટન દબાવો"
+    },
+    "dblClick": {
+        "message": "ડબલ ક્લિક કરો"
+    },
+    "pickAgainLocked": {
+        "message": "અન્ય રંગ પસંદ કરો [Enter]"
+    },
+    "pickAgainUnlocked": {
+        "message": "વર્તમાન રંગ પસંદ કરો [Enter]"
+    },
+    "disablePickEveryTime": {
+        "message": "દર વખતે પોપઅપ ક્લિક કરવામાં આવે ત્યારે પસંદ કરવાનું શરૂ ન કરો"
+    },
+    "reSnapPage": {
+        "message": "પૃષ્ઠનું તાજું ચિત્ર [r]"
+    },
+    "popOutWindow": {
+        "message": "પોપ-આઉટ (અલગ વિંડો)"
+    },
+    "pressEnterToPick": {
+        "message": "રંગ પસંદ કરવા માટે enter દબાવો"
+    },
+    "bgPageUnavailable": {
+        "message": "પૃષ્ઠભૂમિ સ્નેપશોટ જવાબ નથી - કૃપા કરીને પૃષ્ઠ તાજું કરો અને ફરી પ્રયાસ કરો."
+    },
+    "registered": {
+        "message": "રજીસ્ટર"
+    },
+    "unregistered": {
+        "message": "નોંધણી વગરના"
+    },
+    "approved": {
+        "message": "મંજૂર"
+    },
+    "registerButton": {
+        "message": "રજીસ્ટર કરો"
+    },
+    "modifyLicense": {
+        "message": "લાઇસેંસ સંશોધિત કરો"
+    },
+    "error": {
+        "message": "ભૂલ"
+    },
+    "showndefaults": {
+        "message": "કૃપા કરી સાચવો દબાવો, હવે ડિફૉલ્લો દર્શાવશો"
+    },
+    "savedoptions": {
+        "message": "વિકલ્પો સાચવવામાં."
+    },
+    "loadsyncOptions": {
+        "message": "સમન્વયન સંગ્રહ વિકલ્પો લોડ અને સાચવવામાં આવી છે."
+    },
+    "on": {
+        "message": "ચાલુ"
+    },
+    "off": {
+        "message": "બંધ"
+    },
+    "default": {
+        "message": "ડિફૉલ્ટ"
+    },
+    "full": {
+        "message": "સંપૂર્ણ"
+    },
+    "maxZoom": {
+        "message": "મહત્તમ ઝૂમ કરેલું"
+    },
+    "pickEveryTime": {
+        "message": "દરેક વખતે પોપઅપ ક્લિક કરવામાં આવે ત્યારે રંગો ચૂંટવું શરૂ કરો"
+    },
+    "pixelatedPreview": {
+        "message": "ઝૂમ કરેલું પૂર્વાવલોકન પિક્સેલ કર્યું છે"
+    },
+    "fishEye": {
+        "message": "માછલી આંખ ઝૂમ જથ્થો"
+    },
+    "EnableRGB": {
+        "message": "શો RGB"
+    },
+    "EnableHSL": {
+        "message": "શો HSL"
+    },
+    "hasAgreedToLicense": {
+        "message": "ઉપયોગની શરતો માટે સંમત છે"
+    },
+    "seeTerms": {
+        "message": "ઉપયોગની શરતો જુઓ"
+    },
+    "disableRewriting": {
+        "message": "બિન-સંલગ્ન લિંક્સના જોડાણને અક્ષમ કરો"
+    },
+    "usageStatistics": {
+        "message": "ઉપયોગનાં આંકડાઓ એકત્રિત કરો (ઉપયોગની શરતો જુઓ)"
+    },
+    "shareClors": {
+        "message": "દિવસના આંકડાઓનો રંગ (ઉપયોગની શરતો જુઓ)"
+    },
+    "usePNG": {
+        "message": "વાપરવુ PNG જ્યારે ઉપલબ્ધ હોય ત્યારે ગુણવત્તા"
+    },
+    "useCSSValues": {
+        "message": "માટે CSS મૂલ્યોનો ઉપયોગ કરો RGB/HSL"
+    },
+    "iconIsPreview": {
+        "message": "ચિહ્ન બેજ સ્ક્વેર રંગ પૂર્વાવલોકનનો ઉપયોગ કરો"
+    },
+    "appleIcon": {
+        "message": "વાપરવુ Apple Digital રંગ મીટર લોગો"
+    },
+    "iconIsBitmap": {
+        "message": "આયકન ઝૂમ કરેલ પિક્સેલ પૂર્વાવલોકન છે"
+    },
+    "resetIcon": {
+        "message": "સામાન્ય આયકન પર પાછા ફરો"
+    },
+    "bbackgroundColor": {
+        "message": "પોપઅપ પૃષ્ઠભૂમિ રંગ"
+    },
+    "usePrevColorBG": {
+        "message": "પૃષ્ઠભૂમિ માટે પહેલાનાં રંગનો ઉપયોગ કરો"
+    },
+    "showPreviousClr": {
+        "message": "અગાઉના રંગ સાથે વિભાજિત રંગ પૂર્વાવલોકન બતાવો"
+    },
+    "borderValue": {
+        "message": "વાપરવા માટે બોર્ડર્સ (CSS મૂલ્ય)"
+    },
+    "options": {
+        "message": "વિકલ્પો"
+    },
+    "advancedOptions": {
+        "message": "અદ્યતન વિકલ્પો"
+    },
+    "fetchSync": {
+        "message": "Google એકાઉન્ટ સમન્વયન સંગ્રહમાંથી સેટિંગ્સ મેળવો"
+    },
+    "clearSync": {
+        "message": "સમન્વયન સ્ટોરેજ સાફ કરો"
+    },
+    "saveOptions": {
+        "message": "વિકલ્પો સાચવો"
+    },
+    "showDefaults": {
+        "message": "ડિફોલ્ટ્સ બતાવો"
+    },
+    "colorOfDay": {
+        "message": "દિવસનો રંગ"
+    },
+    "terms": {
+        "message": "વાપરવાના નિયમો"
+    },
+    "help": {
+        "message": "મદદ / માહિતી"
+    },
+    "history": {
+        "message": "ઇતિહાસ"
+    },
+    "noSwatches": {
+        "message": "રંગ ઇતિહાસમાં રંગોને બચાવવા અને છાપવા માટે પેલેટમાં ઉમેરવા માટે ક્લિક કરો."
+    },
+    "addToPalette": {
+        "message": "કલરને ઉમેરો"
+    },
+    "sort": {
+        "message": "સૉર્ટ કરો"
+    },
+    "dedupe": {
+        "message": "ડીડપેની"
+    },
+    "printSave": {
+        "message": "પ્રિન્ટ / સેવ કરો..."
+    },
+    "clear": {
+        "message": "ચોખ્ખુ"
+    },
+    "copycolorval": {
+        "message": "રંગ મૂલ્યની નકલ કરો"
+    }
+}

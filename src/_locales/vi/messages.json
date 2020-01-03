@@ -1,0 +1,191 @@
+﻿{
+    "closeAndExit": {
+        "message": "Đóng và thoát chế độ chọn màu"
+    },
+    "hideMinimize": {
+        "message": "Ẩn / giảm thiểu [esc]"
+    },
+    "showColorChooser": {
+        "message": "Hiển thị màu chooser"
+    },
+    "rightClick": {
+        "message": "Click chuột phải"
+    },
+    "dblClick": {
+        "message": "Nhấn đúp chuột"
+    },
+    "pickAgainLocked": {
+        "message": "Chọn màu khác [Enter]"
+    },
+    "pickAgainUnlocked": {
+        "message": "Chọn màu hiện tại [Enter]"
+    },
+    "disablePickEveryTime": {
+        "message": "Không bắt đầu chọn mỗi lần bật lên quảng cáo"
+    },
+    "reSnapPage": {
+        "message": "Làm mới hình ảnh của trang [r]"
+    },
+    "popOutWindow": {
+        "message": "Pop-out (cửa sổ riêng biệt)"
+    },
+    "pressEnterToPick": {
+        "message": "Nhấn Enter để chọn màu"
+    },
+    "bgPageUnavailable": {
+        "message": "Ảnh chụp màn hình nền không phản hồi - vui lòng làm mới trang và thử lại."
+    },
+    "registered": {
+        "message": "Đã đăng ký"
+    },
+    "unregistered": {
+        "message": "Không đăng ký"
+    },
+    "approved": {
+        "message": "Tán thành"
+    },
+    "registerButton": {
+        "message": "Ghi danh"
+    },
+    "modifyLicense": {
+        "message": "Sửa giấy phép"
+    },
+    "error": {
+        "message": "Lỗi"
+    },
+    "showndefaults": {
+        "message": "Xin vui lòng nhấn lưu, bây giờ hiển thị mặc định."
+    },
+    "savedoptions": {
+        "message": "Tùy chọn lưu."
+    },
+    "loadsyncOptions": {
+        "message": "Các tùy chọn lưu trữ đồng bộ đã được tải và lưu."
+    },
+    "on": {
+        "message": "Trên"
+    },
+    "off": {
+        "message": "Tắt"
+    },
+    "default": {
+        "message": "Mặc định"
+    },
+    "full": {
+        "message": "Đầy"
+    },
+    "maxZoom": {
+        "message": "Tối đa phóng to"
+    },
+    "pickEveryTime": {
+        "message": "Bắt đầu chọn màu sắc mỗi khi bật popup"
+    },
+    "pixelatedPreview": {
+        "message": "Xem trước phóng to được pixel"
+    },
+    "fishEye": {
+        "message": "Con cá mắt phóng to"
+    },
+    "EnableRGB": {
+        "message": "Chỉ RGB"
+    },
+    "EnableHSL": {
+        "message": "Chỉ HSL"
+    },
+    "hasAgreedToLicense": {
+        "message": "Đã đồng ý với các điều khoản sử dụng"
+    },
+    "seeTerms": {
+        "message": "Xem điều khoản sử dụng"
+    },
+    "disableRewriting": {
+        "message": "Vô hiệu hóa liên kết của liên kết không liên kết"
+    },
+    "usageStatistics": {
+        "message": "Thu thập số liệu thống kê sử dụng (xem điều khoản sử dụng)"
+    },
+    "shareClors": {
+        "message": "Màu sắc của thống kê ngày (xem điều khoản sử dụng)"
+    },
+    "usePNG": {
+        "message": "Sử dụng PNG chất lượng khi có sẵn"
+    },
+    "useCSSValues": {
+        "message": "Sử dụng giá trị css cho RGB/HSL"
+    },
+    "iconIsPreview": {
+        "message": "Sử dụng biểu tượng badge màu hình vuông"
+    },
+    "appleIcon": {
+        "message": "Sử dụng Apple Digital Biểu tượng mét màu"
+    },
+    "iconIsBitmap": {
+        "message": "Biểu tượng được phóng to điểm ảnh trước"
+    },
+    "resetIcon": {
+        "message": "Trở lại biểu tượng bình thường"
+    },
+    "bbackgroundColor": {
+        "message": "Màu nền của cửa sổ bật lên"
+    },
+    "usePrevColorBG": {
+        "message": "Sử dụng màu nền trước"
+    },
+    "showPreviousClr": {
+        "message": "Hiển thị chia màu sắc trước với màu sắc trước"
+    },
+    "borderValue": {
+        "message": "Biên giới để sử dụng (giá trị css)"
+    },
+    "options": {
+        "message": "Lựa chọn"
+    },
+    "advancedOptions": {
+        "message": "Tùy chọn nâng cao"
+    },
+    "fetchSync": {
+        "message": "Tìm nạp cài đặt từ bộ nhớ đồng bộ hóa tài khoản Google"
+    },
+    "clearSync": {
+        "message": "Lưu trữ đồng bộ hóa rõ ràng"
+    },
+    "saveOptions": {
+        "message": "Lưu tùy chọn"
+    },
+    "showDefaults": {
+        "message": "Hiển thị mặc định"
+    },
+    "colorOfDay": {
+        "message": "Màu sắc trong ngày"
+    },
+    "terms": {
+        "message": "Điều khoản sử dụng"
+    },
+    "help": {
+        "message": "Trợ giúp / thông tin"
+    },
+    "history": {
+        "message": "Lịch sử"
+    },
+    "noSwatches": {
+        "message": "Nhấp vào màu sắc trong lịch sử màu sắc để thêm chúng vào bảng màu để lưu và in."
+    },
+    "addToPalette": {
+        "message": "Thêm vào bảng màu"
+    },
+    "sort": {
+        "message": "sắp xếp"
+    },
+    "printSave": {
+        "message": "In / lưu..."
+    },
+    "clear": {
+        "message": "Trong sáng"
+    },
+    "copycolorval": {
+        "message": "Sao chép giá trị màu"
+    },
+    "allowWebGl": {
+        "message": "Cho phép webgl để xem trước pixel"
+    }
+}

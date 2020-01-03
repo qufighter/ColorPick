@@ -1,0 +1,191 @@
+﻿{
+    "closeAndExit": {
+        "message": "关闭退出颜色选择模式"
+    },
+    "hideMinimize": {
+        "message": "隐藏/最小化 [esc]"
+    },
+    "showColorChooser": {
+        "message": "显示颜色选择器"
+    },
+    "rightClick": {
+        "message": "右键点击"
+    },
+    "dblClick": {
+        "message": "双击"
+    },
+    "pickAgainLocked": {
+        "message": "挑选另一种颜色 [Enter]"
+    },
+    "pickAgainUnlocked": {
+        "message": "选择当前颜色 [Enter]"
+    },
+    "disablePickEveryTime": {
+        "message": "每次弹出单击时都不要开始选择"
+    },
+    "reSnapPage": {
+        "message": "刷新页面图片 [r]"
+    },
+    "popOutWindow": {
+        "message": "弹出窗口（单独窗口）"
+    },
+    "pressEnterToPick": {
+        "message": "按enter键选择颜色"
+    },
+    "bgPageUnavailable": {
+        "message": "后台快照无响应 - 请刷新页面，然后重试。"
+    },
+    "registered": {
+        "message": "注册"
+    },
+    "unregistered": {
+        "message": "未注册"
+    },
+    "approved": {
+        "message": "批准"
+    },
+    "registerButton": {
+        "message": "寄存器"
+    },
+    "modifyLicense": {
+        "message": "修改许可证"
+    },
+    "error": {
+        "message": "错误"
+    },
+    "showndefaults": {
+        "message": "请按保存，现在显示默认值。"
+    },
+    "savedoptions": {
+        "message": "保存选项"
+    },
+    "loadsyncOptions": {
+        "message": "已加载并保存同步存储选项。"
+    },
+    "on": {
+        "message": "上"
+    },
+    "off": {
+        "message": "离"
+    },
+    "default": {
+        "message": "默认"
+    },
+    "full": {
+        "message": "充分"
+    },
+    "maxZoom": {
+        "message": "最大放大"
+    },
+    "pickEveryTime": {
+        "message": "每次点击弹出窗口时，开始挑选颜色"
+    },
+    "pixelatedPreview": {
+        "message": "缩放的预览是像素化的"
+    },
+    "fishEye": {
+        "message": "鱼眼缩放量"
+    },
+    "EnableRGB": {
+        "message": "显示 RGB"
+    },
+    "EnableHSL": {
+        "message": "显示 HSL"
+    },
+    "hasAgreedToLicense": {
+        "message": "已同意使用条款"
+    },
+    "seeTerms": {
+        "message": "看到使用条款"
+    },
+    "disableRewriting": {
+        "message": "禁止关联非联属网络连结"
+    },
+    "usageStatistics": {
+        "message": "收集使用统计资料（见使用条款）"
+    },
+    "shareClors": {
+        "message": "日间颜色统计（见使用条款）"
+    },
+    "usePNG": {
+        "message": "使用 PNG 质量可用"
+    },
+    "useCSSValues": {
+        "message": "使用css值 RGB/HSL"
+    },
+    "iconIsPreview": {
+        "message": "使用图标徽章正方形颜色预览"
+    },
+    "appleIcon": {
+        "message": "使用 Apple Digital 彩色仪表标志"
+    },
+    "iconIsBitmap": {
+        "message": "图标是缩放像素预览"
+    },
+    "resetIcon": {
+        "message": "恢复正常图标"
+    },
+    "bbackgroundColor": {
+        "message": "弹出背景颜色"
+    },
+    "usePrevColorBG": {
+        "message": "使用以前的颜色作为背景"
+    },
+    "showPreviousClr": {
+        "message": "显示以前颜色的分割颜色预览"
+    },
+    "borderValue": {
+        "message": "使用边界（css值）"
+    },
+    "options": {
+        "message": "选项"
+    },
+    "advancedOptions": {
+        "message": "高级选项"
+    },
+    "fetchSync": {
+        "message": "从Google帐户同步存储中获取设置"
+    },
+    "clearSync": {
+        "message": "清除同步存储"
+    },
+    "saveOptions": {
+        "message": "保存选项"
+    },
+    "showDefaults": {
+        "message": "显示默认值"
+    },
+    "colorOfDay": {
+        "message": "一天的颜色"
+    },
+    "terms": {
+        "message": "使用条款"
+    },
+    "help": {
+        "message": "帮助/信息"
+    },
+    "history": {
+        "message": "历史"
+    },
+    "noSwatches": {
+        "message": "单击颜色历史记录中的颜色将其添加到调色板进行保存和打印。"
+    },
+    "addToPalette": {
+        "message": "添加到调色板"
+    },
+    "sort": {
+        "message": "分类"
+    },
+    "dedupe": {
+        "message": "重复数据删除"
+    },
+    "printSave": {
+        "message": "打印/保存..."
+    },
+    "clear": {
+        "message": "明确"
+    },
+    "copycolorval": {
+        "message": "复制颜色值"
+    }
+}

@@ -1,0 +1,194 @@
+﻿{
+    "closeAndExit": {
+        "message": "Закрыть и выйти из режима выбора цвета"
+    },
+    "hideMinimize": {
+        "message": "Скрыть / минимизировать [esc]"
+    },
+    "showColorChooser": {
+        "message": "Показать выбор цвета"
+    },
+    "rightClick": {
+        "message": "Правый клик"
+    },
+    "dblClick": {
+        "message": "Двойной клик"
+    },
+    "pickAgainLocked": {
+        "message": "Выбрать другой цвет [Enter]"
+    },
+    "pickAgainUnlocked": {
+        "message": "Выбрать текущий цвет [Enter]"
+    },
+    "disablePickEveryTime": {
+        "message": "Не начинайте сбор при каждом нажатии всплывающего окна"
+    },
+    "reSnapPage": {
+        "message": "Обновить изображение страницы [r]"
+    },
+    "popOutWindow": {
+        "message": "Всплывающее окно (отдельное окно)"
+    },
+    "pressEnterToPick": {
+        "message": "Нажмите enter, чтобы выбрать цвет"
+    },
+    "bgPageUnavailable": {
+        "message": "Фоновый снимок не отвечает - обновите страницу и повторите попытку."
+    },
+    "registered": {
+        "message": "Зарегистрированный"
+    },
+    "unregistered": {
+        "message": "Незарегистрированный"
+    },
+    "approved": {
+        "message": "Утвержденный"
+    },
+    "registerButton": {
+        "message": "Регистр"
+    },
+    "modifyLicense": {
+        "message": "Изменить лицензию"
+    },
+    "error": {
+        "message": "Ошибка"
+    },
+    "showndefaults": {
+        "message": "Нажмите «Сохранить», теперь отображаются значения по умолчанию."
+    },
+    "savedoptions": {
+        "message": "Варианты сохранены."
+    },
+    "loadsyncOptions": {
+        "message": "Параметры синхронизации хранилища были загружены и сохранены."
+    },
+    "on": {
+        "message": "На"
+    },
+    "off": {
+        "message": "От"
+    },
+    "default": {
+        "message": "По умолчанию"
+    },
+    "full": {
+        "message": "Полный"
+    },
+    "maxZoom": {
+        "message": "Максимальное увеличение"
+    },
+    "pickEveryTime": {
+        "message": "Начинать выбирать цвета при каждом нажатии всплывающего окна"
+    },
+    "pixelatedPreview": {
+        "message": "Увеличенный предварительный просмотр пикселирован"
+    },
+    "fishEye": {
+        "message": "Увеличить размер глаз"
+    },
+    "EnableRGB": {
+        "message": "Показать RGB"
+    },
+    "EnableHSL": {
+        "message": "Показать HSL"
+    },
+    "hasAgreedToLicense": {
+        "message": "Согласился с условиями использования"
+    },
+    "seeTerms": {
+        "message": "См. условия использования"
+    },
+    "disableRewriting": {
+        "message": "Отключить присоединение не связанных сторон"
+    },
+    "usageStatistics": {
+        "message": "Собирать статистику использования (см. условия использования)"
+    },
+    "shareClors": {
+        "message": "Цвет статистики дня (см. условия использования)"
+    },
+    "usePNG": {
+        "message": "Использование PNG качество при наличии"
+    },
+    "useCSSValues": {
+        "message": "Используйте значения css для RGB/HSL"
+    },
+    "iconIsPreview": {
+        "message": "Использовать значок значок квадрат превью"
+    },
+    "appleIcon": {
+        "message": "Использование Apple Digital Цветной логотип"
+    },
+    "iconIsBitmap": {
+        "message": "Значок увеличенного предварительного просмотра пикселей"
+    },
+    "resetIcon": {
+        "message": "Вернуться к нормальному значку"
+    },
+    "bbackgroundColor": {
+        "message": "Цвет фона всплывающего окна"
+    },
+    "usePrevColorBG": {
+        "message": "Использовать предыдущий цвет для фона"
+    },
+    "showPreviousClr": {
+        "message": "Показать предварительный просмотр цвета с предыдущим цветом"
+    },
+    "borderValue": {
+        "message": "Границы для использования (значение css)"
+    },
+    "options": {
+        "message": "Опции"
+    },
+    "advancedOptions": {
+        "message": "Расширенные опции"
+    },
+    "fetchSync": {
+        "message": "Выбор настроек из хранилища синхронизации учетных записей google"
+    },
+    "clearSync": {
+        "message": "Очистить хранилище синхронизации"
+    },
+    "saveOptions": {
+        "message": "Сохранить параметры"
+    },
+    "showDefaults": {
+        "message": "Показывать значения по умолчанию"
+    },
+    "colorOfDay": {
+        "message": "Цвет дня"
+    },
+    "terms": {
+        "message": "Условия эксплуатации"
+    },
+    "help": {
+        "message": "Помощь / Информация"
+    },
+    "history": {
+        "message": "История"
+    },
+    "noSwatches": {
+        "message": "Нажмите цвета в истории цветов, чтобы добавить их в палитру для сохранения и печати."
+    },
+    "addToPalette": {
+        "message": "Добавить в палитру цветов"
+    },
+    "sort": {
+        "message": "сортировать"
+    },
+    "dedupe": {
+        "message": "дедупликации"
+    },
+    "printSave": {
+        "message": "Печать / сохранение..."
+    },
+    "clear": {
+        "message": "Чисто"
+    },
+    "copycolorval": {
+        "message": "Скопировать значение цвета"
+    },
+    "allowWebGl": {
+        "message": "Разрешить webgl для пиксельного предварительного просмотра"
+    }
+}

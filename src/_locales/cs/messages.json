@@ -1,0 +1,185 @@
+﻿{
+    "closeAndExit": {
+        "message": "Zavřete a ukončete režim výběru barev"
+    },
+    "hideMinimize": {
+        "message": "Skrýt / minimalizovat [esc]"
+    },
+    "showColorChooser": {
+        "message": "Zobrazit výběr barev"
+    },
+    "rightClick": {
+        "message": "Klikněte pravým tlačítkem myši"
+    },
+    "dblClick": {
+        "message": "Dvojklik"
+    },
+    "pickAgainLocked": {
+        "message": "Vyberte jinou barvu [Enter]"
+    },
+    "pickAgainUnlocked": {
+        "message": "Vyberte aktuální barvu [Enter]"
+    },
+    "disablePickEveryTime": {
+        "message": "Nezačínejte při každém kliknutí na vyskakovací okno"
+    },
+    "reSnapPage": {
+        "message": "Obnovit obraz stránky [r]"
+    },
+    "popOutWindow": {
+        "message": "Pop-out (oddělené okno)"
+    },
+    "pressEnterToPick": {
+        "message": "Stisknutím tlačítka enter vyberte barvu"
+    },
+    "bgPageUnavailable": {
+        "message": "Pozadí neodpovídá - obnovte stránku a zkuste to znovu."
+    },
+    "registered": {
+        "message": "Registrovaný"
+    },
+    "unregistered": {
+        "message": "Neregistrovaný"
+    },
+    "approved": {
+        "message": "Schválený"
+    },
+    "registerButton": {
+        "message": "Registrovat"
+    },
+    "modifyLicense": {
+        "message": "Změnit licenci"
+    },
+    "error": {
+        "message": "Chyba"
+    },
+    "showndefaults": {
+        "message": "Stiskněte tlačítko Uložit, nyní se zobrazují výchozí hodnoty."
+    },
+    "savedoptions": {
+        "message": "Uložené možnosti."
+    },
+    "loadsyncOptions": {
+        "message": "Možnosti nahrávání synchronizace byly načteny a uloženy."
+    },
+    "on": {
+        "message": "Na"
+    },
+    "off": {
+        "message": "Vypnuto"
+    },
+    "default": {
+        "message": "Výchozí"
+    },
+    "full": {
+        "message": "Plný"
+    },
+    "maxZoom": {
+        "message": "Max zoom"
+    },
+    "pickEveryTime": {
+        "message": "Začněte vybírat barvy při každém kliknutí"
+    },
+    "pixelatedPreview": {
+        "message": "Zvětšený náhled je pixelovaný"
+    },
+    "fishEye": {
+        "message": "Velikost rybí oko"
+    },
+    "hasAgreedToLicense": {
+        "message": "Souhlasil s podmínkami používání"
+    },
+    "seeTerms": {
+        "message": "Viz podmínky použití"
+    },
+    "disableRewriting": {
+        "message": "Zakázat přidružení odkazů, které nejsou přidružené"
+    },
+    "usageStatistics": {
+        "message": "Shromažďovat statistiky využití (viz podmínky použití)"
+    },
+    "shareClors": {
+        "message": "Statistika barev dne (viz podmínky použití)"
+    },
+    "usePNG": {
+        "message": "Použití PNG pokud je k dispozici"
+    },
+    "useCSSValues": {
+        "message": "Použijte css hodnoty pro RGB/HSL"
+    },
+    "iconIsPreview": {
+        "message": "Použít ikonu odznak náměstí barevný náhled"
+    },
+    "appleIcon": {
+        "message": "Použití Apple Digital Logo barometru"
+    },
+    "iconIsBitmap": {
+        "message": "Ikona byla zvětšena"
+    },
+    "resetIcon": {
+        "message": "Návrat k normální ikoně"
+    },
+    "bbackgroundColor": {
+        "message": "Popup barvu pozadí"
+    },
+    "usePrevColorBG": {
+        "message": "Použijte předchozí barvu pro pozadí"
+    },
+    "showPreviousClr": {
+        "message": "Zobrazit rozdělený barevný náhled s předchozí barvou"
+    },
+    "borderValue": {
+        "message": "Hranice pro použití (css hodnota)"
+    },
+    "options": {
+        "message": "Možnosti"
+    },
+    "advancedOptions": {
+        "message": "Pokročilé možnosti"
+    },
+    "fetchSync": {
+        "message": "Načíst nastavení z úložiště synchronizace účtu Google"
+    },
+    "clearSync": {
+        "message": "Jasné ukládání synchronizace"
+    },
+    "saveOptions": {
+        "message": "Možnosti ukládání"
+    },
+    "showDefaults": {
+        "message": "Zobrazit výchozí hodnoty"
+    },
+    "colorOfDay": {
+        "message": "Barvu dne"
+    },
+    "terms": {
+        "message": "Podmínky použití"
+    },
+    "help": {
+        "message": "Pomoc / info"
+    },
+    "history": {
+        "message": "Dějiny"
+    },
+    "noSwatches": {
+        "message": "Kliknutím na barvy v historii barev přidáte do palety pro ukládání a tisk."
+    },
+    "addToPalette": {
+        "message": "Přidat do palety barev"
+    },
+    "sort": {
+        "message": "třídění"
+    },
+    "printSave": {
+        "message": "Tisk / uložení..."
+    },
+    "clear": {
+        "message": "Průhledná"
+    },
+    "copycolorval": {
+        "message": "Zkopírujte hodnotu barvy"
+    },
+    "allowWebGl": {
+        "message": "Povolit webglu pro pixelový náhled"
+    }
+}

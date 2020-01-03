@@ -1,0 +1,191 @@
+﻿{
+    "closeAndExit": {
+        "message": "終了してカラーピックモードを終了する"
+    },
+    "hideMinimize": {
+        "message": "隠す/最小化する [esc]"
+    },
+    "showColorChooser": {
+        "message": "ショーカラーチューザー"
+    },
+    "rightClick": {
+        "message": "右クリック"
+    },
+    "dblClick": {
+        "message": "ダブルクリック"
+    },
+    "pickAgainLocked": {
+        "message": "別の色を選ぶ [Enter]"
+    },
+    "pickAgainUnlocked": {
+        "message": "現在の色を選択 [Enter]"
+    },
+    "disablePickEveryTime": {
+        "message": "ポップアップがクリックされるたびにピッキングを開始しない"
+    },
+    "reSnapPage": {
+        "message": "ページをリフレッシュする [r]"
+    },
+    "popOutWindow": {
+        "message": "ポップアウト（別ウィンドウ）"
+    },
+    "pressEnterToPick": {
+        "message": "Enterキーを押して色を選択"
+    },
+    "bgPageUnavailable": {
+        "message": "背景スナップショットが応答していません - ページを更新してもう一度お試しください。"
+    },
+    "registered": {
+        "message": "登録された"
+    },
+    "unregistered": {
+        "message": "登録されていない"
+    },
+    "approved": {
+        "message": "承認された"
+    },
+    "registerButton": {
+        "message": "登録"
+    },
+    "modifyLicense": {
+        "message": "ライセンスを変更する"
+    },
+    "error": {
+        "message": "エラー"
+    },
+    "showndefaults": {
+        "message": "保存を押して、デフォルトを表示してください。"
+    },
+    "savedoptions": {
+        "message": "オプションが保存されました。"
+    },
+    "loadsyncOptions": {
+        "message": "同期ストレージオプションが読み込まれて保存されました。"
+    },
+    "on": {
+        "message": "に"
+    },
+    "off": {
+        "message": "オフ"
+    },
+    "default": {
+        "message": "デフォルト"
+    },
+    "full": {
+        "message": "満員"
+    },
+    "maxZoom": {
+        "message": "最大ズーム"
+    },
+    "pickEveryTime": {
+        "message": "ポップアップがクリックされるたびに色を選択し始める"
+    },
+    "pixelatedPreview": {
+        "message": "ズームプレビューはピクセル化されています"
+    },
+    "fishEye": {
+        "message": "魚眼レンズズーム量"
+    },
+    "EnableRGB": {
+        "message": "ショー RGB"
+    },
+    "EnableHSL": {
+        "message": "ショー HSL"
+    },
+    "hasAgreedToLicense": {
+        "message": "利用規約に同意した"
+    },
+    "seeTerms": {
+        "message": "利用規約を参照してください"
+    },
+    "disableRewriting": {
+        "message": "非アフィリエイトリンクの所属を無効にする"
+    },
+    "usageStatistics": {
+        "message": "使用統計を収集する（利用規約を参照）"
+    },
+    "shareClors": {
+        "message": "日統計の色（使用条件を参照）"
+    },
+    "usePNG": {
+        "message": "つかいます PNG 利用可能な場合は品質"
+    },
+    "useCSSValues": {
+        "message": "のCSS値を使用する RGB/HSL"
+    },
+    "iconIsPreview": {
+        "message": "アイコンのバッジを使用する正方形の色のプレビュー"
+    },
+    "appleIcon": {
+        "message": "つかいます Apple Digital カラーメーターロゴ"
+    },
+    "iconIsBitmap": {
+        "message": "アイコンはズームされたピクセルプレビュー"
+    },
+    "resetIcon": {
+        "message": "通常のアイコンに戻る"
+    },
+    "bbackgroundColor": {
+        "message": "ポップアップ背景色"
+    },
+    "usePrevColorBG": {
+        "message": "バックグラウンドに前の色を使用する"
+    },
+    "showPreviousClr": {
+        "message": "前の色で分割カラープレビューを表示する"
+    },
+    "borderValue": {
+        "message": "使用する境界（CSS値）"
+    },
+    "options": {
+        "message": "オプション"
+    },
+    "advancedOptions": {
+        "message": "高度なオプション"
+    },
+    "fetchSync": {
+        "message": "Googleアカウントの同期ストレージから設定を取得する"
+    },
+    "clearSync": {
+        "message": "クリア同期ストレージ"
+    },
+    "saveOptions": {
+        "message": "オプションを保存"
+    },
+    "showDefaults": {
+        "message": "デフォルトを表示"
+    },
+    "colorOfDay": {
+        "message": "今日の色"
+    },
+    "terms": {
+        "message": "利用規約"
+    },
+    "help": {
+        "message": "ヘルプ/情報"
+    },
+    "history": {
+        "message": "歴史"
+    },
+    "noSwatches": {
+        "message": "色履歴の色をクリックして、保存および印刷用のパレットに色を追加します。"
+    },
+    "addToPalette": {
+        "message": "カラーパレットに追加する"
+    },
+    "sort": {
+        "message": "ソート"
+    },
+    "dedupe": {
+        "message": "重複除外"
+    },
+    "printSave": {
+        "message": "印刷/保存..."
+    },
+    "clear": {
+        "message": "クリア"
+    },
+    "copycolorval": {
+        "message": "色の値をコピーする"
+    }
+}

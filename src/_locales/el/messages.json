@@ -1,0 +1,191 @@
+﻿{
+    "closeAndExit": {
+        "message": "Κλείσιμο και έξοδο από τη λειτουργία επιλογής χρώματος"
+    },
+    "hideMinimize": {
+        "message": "Απόκρυψη / ελαχιστοποίηση [esc]"
+    },
+    "showColorChooser": {
+        "message": "Εμφάνιση επιλογέα χρώματος"
+    },
+    "rightClick": {
+        "message": "Κάντε δεξί κλικ"
+    },
+    "dblClick": {
+        "message": "Διπλό κλικ"
+    },
+    "pickAgainLocked": {
+        "message": "Επιλέξτε ένα άλλο χρώμα [Enter]"
+    },
+    "pickAgainUnlocked": {
+        "message": "Επιλέξτε το τρέχον χρώμα [Enter]"
+    },
+    "disablePickEveryTime": {
+        "message": "Μην ξεκινάτε να επιλέγετε κάθε φορά που κάνετε κλικ στο popup"
+    },
+    "reSnapPage": {
+        "message": "Ανανέωση της εικόνας της σελίδας [r]"
+    },
+    "popOutWindow": {
+        "message": "Pop-out (ξεχωριστό παράθυρο)"
+    },
+    "pressEnterToPick": {
+        "message": "Πατήστε enter για να επιλέξετε χρώμα"
+    },
+    "bgPageUnavailable": {
+        "message": "Το στιγμιότυπο φόντου δεν ανταποκρίνεται - ανανεώστε τη σελίδα και δοκιμάστε ξανά."
+    },
+    "registered": {
+        "message": "Εγγεγραμμένος"
+    },
+    "unregistered": {
+        "message": "Αδήλωτος"
+    },
+    "approved": {
+        "message": "Εγκριθεί"
+    },
+    "registerButton": {
+        "message": "Κανω ΕΓΓΡΑΦΗ"
+    },
+    "modifyLicense": {
+        "message": "Τροποποιήσετε την άδεια"
+    },
+    "error": {
+        "message": "Λάθος"
+    },
+    "showndefaults": {
+        "message": "Πατήστε το πλήκτρο αποθήκευσης, εμφανίζοντας τώρα τις προεπιλογές."
+    },
+    "savedoptions": {
+        "message": "Αποθηκευμένες επιλογές."
+    },
+    "loadsyncOptions": {
+        "message": "Οι επιλογές αποθήκευσης συγχρονισμού έχουν φορτωθεί και αποθηκευτεί."
+    },
+    "on": {
+        "message": "Επί"
+    },
+    "off": {
+        "message": "Μακριά από"
+    },
+    "default": {
+        "message": "Προκαθορισμένο"
+    },
+    "full": {
+        "message": "Γεμάτος"
+    },
+    "maxZoom": {
+        "message": "Μέγιστο ζουμ"
+    },
+    "pickEveryTime": {
+        "message": "Ξεκινήστε να συλλέγετε χρώματα κάθε φορά που κάνετε κλικ στο popup"
+    },
+    "pixelatedPreview": {
+        "message": "Η μεγέθυνση της προεπισκόπησης είναι pixelated"
+    },
+    "fishEye": {
+        "message": "Μέγεθος μάτι ψαριού μάτι"
+    },
+    "EnableRGB": {
+        "message": "Προβολή RGB"
+    },
+    "EnableHSL": {
+        "message": "Προβολή HSL"
+    },
+    "hasAgreedToLicense": {
+        "message": "Έχει συμφωνήσει με τους όρους χρήσης"
+    },
+    "seeTerms": {
+        "message": "Δείτε τους όρους χρήσης"
+    },
+    "disableRewriting": {
+        "message": "Απενεργοποιήσετε τη σύνδεση μη συνδέσμων θυγατρικών"
+    },
+    "usageStatistics": {
+        "message": "Συλλέγουν στατιστικά στοιχεία χρήσης (δείτε τους όρους χρήσης)"
+    },
+    "shareClors": {
+        "message": "Το χρώμα των στατιστικών της ημέρας (βλέπε όρους χρήσης)"
+    },
+    "usePNG": {
+        "message": "Χρήση PNG ποιότητα όταν είναι διαθέσιμη"
+    },
+    "useCSSValues": {
+        "message": "Χρησιμοποιήστε τις τιμές css για RGB/HSL"
+    },
+    "iconIsPreview": {
+        "message": "Χρήση εικονιδίου εικονίδιο τετράγωνο προεπισκόπηση χρώματος"
+    },
+    "appleIcon": {
+        "message": "Χρήση Apple Digital Λογότυπο μετρητή χρώματος"
+    },
+    "iconIsBitmap": {
+        "message": "Το εικονίδιο μεγεθύνεται η προεπισκόπηση εικονοστοιχείων"
+    },
+    "resetIcon": {
+        "message": "Επιστρέψτε στο κανονικό εικονίδιο"
+    },
+    "bbackgroundColor": {
+        "message": "Αναδυόμενο χρώμα φόντου"
+    },
+    "usePrevColorBG": {
+        "message": "Χρησιμοποιήστε το προηγούμενο χρώμα για φόντο"
+    },
+    "showPreviousClr": {
+        "message": "Παρουσιάζουν προεπισκόπηση χρώματος με προηγούμενο χρώμα"
+    },
+    "borderValue": {
+        "message": "Σύνορα για χρήση (τιμή css)"
+    },
+    "options": {
+        "message": "Επιλογές"
+    },
+    "advancedOptions": {
+        "message": "Προχωρημένες επιλογές"
+    },
+    "fetchSync": {
+        "message": "Λήψη ρυθμίσεων από αποθήκευση συγχρονισμού λογαριασμού Google"
+    },
+    "clearSync": {
+        "message": "Αποθήκευση σαφούς συγχρονισμού"
+    },
+    "saveOptions": {
+        "message": "Επιλογές αποθήκευσης"
+    },
+    "showDefaults": {
+        "message": "Εμφάνιση των προεπιλογών"
+    },
+    "colorOfDay": {
+        "message": "Χρώμα της ημέρας"
+    },
+    "terms": {
+        "message": "Όροι χρήσης"
+    },
+    "help": {
+        "message": "Βοήθεια / πληροφορίες"
+    },
+    "history": {
+        "message": "Ιστορία"
+    },
+    "noSwatches": {
+        "message": "Κάντε κλικ στα χρώματα στο ιστορικό χρωμάτων για να τα προσθέσετε σε μια παλέτα για αποθήκευση και εκτύπωση."
+    },
+    "addToPalette": {
+        "message": "Προσθήκη στην παλέτα χρωμάτων"
+    },
+    "sort": {
+        "message": "είδος"
+    },
+    "printSave": {
+        "message": "Εκτύπωση / αποθήκευση..."
+    },
+    "clear": {
+        "message": "Σαφή"
+    },
+    "copycolorval": {
+        "message": "Αντιγράψτε την τιμή χρώματος"
+    },
+    "allowWebGl": {
+        "message": "Επιτρέψτε στο webgl για προβολή σε pixellated"
+    }
+}

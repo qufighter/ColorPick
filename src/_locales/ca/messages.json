@@ -1,0 +1,185 @@
+﻿{
+    "closeAndExit": {
+        "message": "Tancar i sortir del mode de selecció del color"
+    },
+    "hideMinimize": {
+        "message": "Ocultar / minimitzar [esc]"
+    },
+    "showColorChooser": {
+        "message": "Mostra el selector de colors"
+    },
+    "rightClick": {
+        "message": "Clic dret"
+    },
+    "dblClick": {
+        "message": "Feu doble clic"
+    },
+    "pickAgainLocked": {
+        "message": "Tria un altre color [Enter]"
+    },
+    "pickAgainUnlocked": {
+        "message": "Seleccioneu el color actual [Enter]"
+    },
+    "disablePickEveryTime": {
+        "message": "No comença a escollir cada vegada que es fa clic a la finestra emergent"
+    },
+    "reSnapPage": {
+        "message": "Actualitza la imatge de la pàgina [r]"
+    },
+    "popOutWindow": {
+        "message": "Finestra emergent (finestra separada)"
+    },
+    "pressEnterToPick": {
+        "message": "Premeu Intro per seleccionar el color"
+    },
+    "bgPageUnavailable": {
+        "message": "Instantània de fons que no respon: torneu a actualitzar la pàgina i torneu-ho a provar."
+    },
+    "registered": {
+        "message": "Enregistrat"
+    },
+    "unregistered": {
+        "message": "No registrat"
+    },
+    "approved": {
+        "message": "Aprovat"
+    },
+    "registerButton": {
+        "message": "Registreu-vos"
+    },
+    "modifyLicense": {
+        "message": "Modifica la llicència"
+    },
+    "showndefaults": {
+        "message": "Premeu Guardar, que ara mostra els valors predeterminats."
+    },
+    "savedoptions": {
+        "message": "Opcions desades."
+    },
+    "loadsyncOptions": {
+        "message": "S'han carregat i desat les opcions d'emmagatzematge de sincronització."
+    },
+    "off": {
+        "message": "Fora"
+    },
+    "default": {
+        "message": "Per defecte"
+    },
+    "full": {
+        "message": "Ple"
+    },
+    "maxZoom": {
+        "message": "Max zoomed"
+    },
+    "pickEveryTime": {
+        "message": "Comenceu a seleccionar colors cada cop que es fa clic a la finestra emergent"
+    },
+    "pixelatedPreview": {
+        "message": "La vista prèvia ampliada està pixelada"
+    },
+    "fishEye": {
+        "message": "Ull de peix quantitat de zoom"
+    },
+    "EnableRGB": {
+        "message": "Espectacle RGB"
+    },
+    "EnableHSL": {
+        "message": "Espectacle HSL"
+    },
+    "hasAgreedToLicense": {
+        "message": "Ha acceptat els termes d'ús"
+    },
+    "seeTerms": {
+        "message": "Vegeu els termes d'ús"
+    },
+    "disableRewriting": {
+        "message": "Inhabiliteu l'afiliació d'enllaços que no siguin d'afiliació"
+    },
+    "usageStatistics": {
+        "message": "Recopileu estadístiques d'ús (consulteu els termes d'ús)"
+    },
+    "shareClors": {
+        "message": "Estadístiques del color del dia (consulteu els termes d'ús)"
+    },
+    "usePNG": {
+        "message": "Ús PNG qualitat quan estigui disponible"
+    },
+    "useCSSValues": {
+        "message": "Utilitza els valors de css per a RGB/HSL"
+    },
+    "iconIsPreview": {
+        "message": "Utilitzeu la previsualització del color quadrat de la placa d'icona"
+    },
+    "appleIcon": {
+        "message": "Ús Apple Digital Logotip del metre de color"
+    },
+    "iconIsBitmap": {
+        "message": "La icona és una vista prèvia de píxels avançada"
+    },
+    "resetIcon": {
+        "message": "Torna a la icona normal"
+    },
+    "bbackgroundColor": {
+        "message": "Color de fons emergent"
+    },
+    "usePrevColorBG": {
+        "message": "Utilitzeu el color anterior per al fons"
+    },
+    "showPreviousClr": {
+        "message": "Mostra la vista prèvia de color dividit amb color anterior"
+    },
+    "borderValue": {
+        "message": "Vores a usar (valor css)"
+    },
+    "options": {
+        "message": "Opcions"
+    },
+    "advancedOptions": {
+        "message": "Opcions avançades"
+    },
+    "fetchSync": {
+        "message": "Obtingueu la configuració des de l'emmagatzematge de sincronització del compte de Google"
+    },
+    "clearSync": {
+        "message": "Emmagatzematge de sincronització clara"
+    },
+    "saveOptions": {
+        "message": "Desar opcions"
+    },
+    "showDefaults": {
+        "message": "Mostra els valors predeterminats"
+    },
+    "colorOfDay": {
+        "message": "Color del dia"
+    },
+    "terms": {
+        "message": "Condicions d'ús"
+    },
+    "help": {
+        "message": "Ajuda / informació"
+    },
+    "history": {
+        "message": "Història"
+    },
+    "noSwatches": {
+        "message": "Feu clic a colors a l'historial de colors per afegir-los a una paleta per desar-los i imprimir-los."
+    },
+    "addToPalette": {
+        "message": "Afegiu a la paleta de colors"
+    },
+    "sort": {
+        "message": "ordenar"
+    },
+    "printSave": {
+        "message": "Imprimir / guardar..."
+    },
+    "clear": {
+        "message": "Clar"
+    },
+    "copycolorval": {
+        "message": "Copieu el valor del color"
+    },
+    "allowWebGl": {
+        "message": "Permet webgl per a la previsualització amb píxels"
+    }
+}

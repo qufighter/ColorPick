@@ -1,0 +1,188 @@
+﻿{
+    "closeAndExit": {
+        "message": "നിറം തിരഞ്ഞെടുക്കാനുള്ള മോഡ് അടച്ചശേഷം പുറത്തുകടക്കുക"
+    },
+    "hideMinimize": {
+        "message": "ചുരുക്കുക / കുറയ്ക്കുക [esc]"
+    },
+    "showColorChooser": {
+        "message": "നിറം തിരഞ്ഞെടുക്കൽ കാണിക്കുക"
+    },
+    "rightClick": {
+        "message": "വലത് ക്ലിക്കിൽ"
+    },
+    "dblClick": {
+        "message": "ഇരട്ട ഞെക്കിലൂടെ"
+    },
+    "pickAgainLocked": {
+        "message": "മറ്റൊരു നിറം തിരഞ്ഞെടുക്കുക [Enter]"
+    },
+    "pickAgainUnlocked": {
+        "message": "നിലവിലെ വർണ്ണം തിരഞ്ഞെടുക്കുക [Enter]"
+    },
+    "disablePickEveryTime": {
+        "message": "ഓരോ തവണയും പോപ്പ്അപ്പ് ക്ലിക്കുചെയ്യുന്നത് ആരംഭിക്കരുത്"
+    },
+    "reSnapPage": {
+        "message": "പേജിന്റെ പുതുക്കിയ ചിത്രം [r]"
+    },
+    "popOutWindow": {
+        "message": "പോപ്പ് ഔട്ട് (പ്രത്യേക വിൻഡോ)"
+    },
+    "pressEnterToPick": {
+        "message": "നിറം തിരഞ്ഞെടുക്കുന്നതിന് enter അമർത്തുക"
+    },
+    "bgPageUnavailable": {
+        "message": "പശ്ചാത്തല സ്നാപ്പ്ഷോട്ട് പ്രതികരിക്കുന്നില്ല - പേജ് പുതുക്കി വീണ്ടും ശ്രമിക്കുക."
+    },
+    "registered": {
+        "message": "രജിസ്റ്റർ ചെയ്തു"
+    },
+    "unregistered": {
+        "message": "രജിസ്റ്റർ ചെയ്യാത്തത്"
+    },
+    "approved": {
+        "message": "അംഗീകരിച്ചു"
+    },
+    "registerButton": {
+        "message": "രജിസ്റ്റർ ചെയ്യുക"
+    },
+    "modifyLicense": {
+        "message": "ലൈസൻസ് പരിഷ്കരിക്കുക"
+    },
+    "error": {
+        "message": "പിശക്"
+    },
+    "showndefaults": {
+        "message": "ഡിസ്പ്ലേകൾ കാണിക്കുന്നു, ഇപ്പോൾ സംരക്ഷിക്കുക അമർത്തുക."
+    },
+    "savedoptions": {
+        "message": "ഓപ്ഷനുകൾ സംരക്ഷിച്ചു."
+    },
+    "loadsyncOptions": {
+        "message": "സമന്വയ സംഭരണ ​​ഓപ്ഷനുകൾ ലോഡുചെയ്ത് സംരക്ഷിക്കപ്പെട്ടു."
+    },
+    "on": {
+        "message": "ഓണാണ്"
+    },
+    "off": {
+        "message": "ഓഫ്"
+    },
+    "default": {
+        "message": "സ്ഥിരസ്ഥിതി"
+    },
+    "full": {
+        "message": "നിറഞ്ഞു"
+    },
+    "maxZoom": {
+        "message": "പരമാവധി സൂം ചെയ്യുക"
+    },
+    "pickEveryTime": {
+        "message": "ഓരോ തവണയും പോപ്പ്അപ് ക്ലിക്കുചെയ്തുകൊണ്ട് നിറങ്ങൾ എടുക്കാൻ തുടങ്ങുക"
+    },
+    "pixelatedPreview": {
+        "message": "സൂംചെയ്ത പ്രിവ്യൂ പിക്സലെറ്റുചെയ്തു"
+    },
+    "fishEye": {
+        "message": "മീൻ കണ്ണ് സൂം തുക"
+    },
+    "EnableRGB": {
+        "message": "കാണിക്കുക RGB"
+    },
+    "EnableHSL": {
+        "message": "കാണിക്കുക HSL"
+    },
+    "hasAgreedToLicense": {
+        "message": "ഉപയോഗ നിബന്ധനകൾ അംഗീകരിച്ചു"
+    },
+    "seeTerms": {
+        "message": "ഉപയോഗ നിബന്ധനകൾ കാണുക"
+    },
+    "disableRewriting": {
+        "message": "നോൺ-അഫിലിയേറ്റ് ലിങ്കുകളുടെ അഫിലിയേഷൻ അപ്രാപ്തമാക്കുക"
+    },
+    "usageStatistics": {
+        "message": "ഉപയോഗ സ്ഥിതിവിവരക്കണക്കുകൾ ശേഖരിക്കുക (ഉപയോഗ നിബന്ധനകൾ കാണുക)"
+    },
+    "shareClors": {
+        "message": "ദിവസ സ്ഥിതിവിവരക്കണക്കുകൾ കാണുക (ഉപയോഗ നിബന്ധനകൾ കാണുക)"
+    },
+    "usePNG": {
+        "message": "ഉപയോഗിക്കുക PNG ഗുണമേന്മ ലഭ്യമാകുമ്പോൾ"
+    },
+    "useCSSValues": {
+        "message": "ഇതിനായി css മൂല്യങ്ങൾ ഉപയോഗിക്കുക RGB/HSL"
+    },
+    "iconIsPreview": {
+        "message": "ഐക്കൺ ബാഡ്ജ് ചതുര വർണ്ണ പ്രിവ്യൂ ഉപയോഗിക്കുക"
+    },
+    "appleIcon": {
+        "message": "ഉപയോഗിക്കുക Apple Digital വർണ്ണ മീറ്റർ ലോഗോ"
+    },
+    "iconIsBitmap": {
+        "message": "ഐക്കണിൽ പിക്സൽ തിരനോട്ടം സൂം ചെയ്തിരിക്കുന്നു"
+    },
+    "resetIcon": {
+        "message": "സാധാരണ ഐക്കണിലേക്ക് മാറ്റുക"
+    },
+    "bbackgroundColor": {
+        "message": "പോപ്പ്അപ്പ് പശ്ചാത്തല വർണ്ണം"
+    },
+    "usePrevColorBG": {
+        "message": "പശ്ചാത്തലത്തിനായി മുൻ വർണ്ണം ഉപയോഗിക്കുക"
+    },
+    "showPreviousClr": {
+        "message": "മുൻ കളർ ഉപയോഗിച്ച് സ്പ്ലിറ്റ് വർണ്ണ പ്രിവ്യൂ കാണിക്കുക"
+    },
+    "borderValue": {
+        "message": "ഉപയോഗിക്കാനുള്ള ബോർഡറുകൾ (css മൂല്യം)"
+    },
+    "options": {
+        "message": "ഓപ്ഷനുകൾ"
+    },
+    "advancedOptions": {
+        "message": "വിപുലമായ ഓപ്ഷനുകൾ"
+    },
+    "fetchSync": {
+        "message": "Google അക്കൗണ്ട് സമന്വയ സംഭരണത്തിൽ നിന്നും ക്രമീകരണങ്ങൾ ലഭ്യമാക്കുക"
+    },
+    "clearSync": {
+        "message": "സമന്വയ സംഭരണം മായ്ക്കുക"
+    },
+    "saveOptions": {
+        "message": "ഓപ്ഷനുകൾ സംരക്ഷിക്കുക"
+    },
+    "showDefaults": {
+        "message": "സ്ഥിരസ്ഥിതികൾ കാണിക്കുക"
+    },
+    "colorOfDay": {
+        "message": "ദിവസത്തിന്റെ നിറം"
+    },
+    "terms": {
+        "message": "ഉപയോഗ നിബന്ധനകൾ"
+    },
+    "help": {
+        "message": "സഹായം / വിവരം"
+    },
+    "history": {
+        "message": "ചരിത്രം"
+    },
+    "noSwatches": {
+        "message": "സംരക്ഷിക്കുന്നതിനും പ്രിന്റുചെയ്യുന്നതിനും ഒരു കളിക്കുട്ടിയിലേക്ക് വർണ്ണ ചരിത്രത്തിൽ വർണ്ണങ്ങൾ ക്ലിക്കുചെയ്യുക."
+    },
+    "addToPalette": {
+        "message": "വർണ്ണ പാലറ്റിൽ ചേർക്കുക"
+    },
+    "sort": {
+        "message": "അടുക്കുക"
+    },
+    "printSave": {
+        "message": "പ്രിന്റ് / സേവ് ചെയ്യുക..."
+    },
+    "clear": {
+        "message": "വ്യക്തമാക്കുക"
+    },
+    "copycolorval": {
+        "message": "വർണ്ണ മൂല്യം പകർത്തുക"
+    }
+}

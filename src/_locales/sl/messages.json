@@ -1,0 +1,176 @@
+﻿{
+    "closeAndExit": {
+        "message": "Zapiranje in izstop v načinu izbire barv"
+    },
+    "hideMinimize": {
+        "message": "Skriti / zmanjšati [esc]"
+    },
+    "showColorChooser": {
+        "message": "Pokaži barvne izbirnike"
+    },
+    "rightClick": {
+        "message": "Desni klik"
+    },
+    "dblClick": {
+        "message": "Dvojni klik"
+    },
+    "pickAgainLocked": {
+        "message": "Izberite drugo barvo [Enter]"
+    },
+    "pickAgainUnlocked": {
+        "message": "Izberite trenutno barvo [Enter]"
+    },
+    "disablePickEveryTime": {
+        "message": "Ne zaženejte vsakič, ko kliknete pojavno okno"
+    },
+    "reSnapPage": {
+        "message": "Osvežite sliko strani [r]"
+    },
+    "popOutWindow": {
+        "message": "Pop-out (ločeno okno)"
+    },
+    "pressEnterToPick": {
+        "message": "Pritisnite enter za izbiro barve"
+    },
+    "bgPageUnavailable": {
+        "message": "Posnetek v ozadju se ne odziva - osvežite stran in poskusite znova."
+    },
+    "registered": {
+        "message": "Registrirano"
+    },
+    "unregistered": {
+        "message": "Neregistrirane"
+    },
+    "approved": {
+        "message": "Odobren"
+    },
+    "modifyLicense": {
+        "message": "Spremeniti licenco"
+    },
+    "error": {
+        "message": "Napaka"
+    },
+    "showndefaults": {
+        "message": "Prosimo, pritisnite Shrani, zdaj pa prikažete privzete nastavitve."
+    },
+    "savedoptions": {
+        "message": "Možnosti shranjene."
+    },
+    "loadsyncOptions": {
+        "message": "Možnosti shranjevanja sinhronizacije so bile naložene in shranjene."
+    },
+    "on": {
+        "message": "Naprej"
+    },
+    "default": {
+        "message": "Privzeto"
+    },
+    "full": {
+        "message": "Polno"
+    },
+    "maxZoom": {
+        "message": "Največja povečava"
+    },
+    "pickEveryTime": {
+        "message": "Vsakič, ko kliknete pojavno okno, začnite izbrati barve"
+    },
+    "pixelatedPreview": {
+        "message": "Predogled z zoomom je pixelated"
+    },
+    "fishEye": {
+        "message": "Količino povečave za oko"
+    },
+    "hasAgreedToLicense": {
+        "message": "Se je strinjal s pogoji uporabe"
+    },
+    "seeTerms": {
+        "message": "Glej pogoje uporabe"
+    },
+    "disableRewriting": {
+        "message": "Onemogočite pripadnost povezav, ki niso povezane z affiliate-om"
+    },
+    "usageStatistics": {
+        "message": "Zbiranje statističnih podatkov o uporabi (glej pogoje uporabe)"
+    },
+    "shareClors": {
+        "message": "Barva dnevne statistike (glej pogoje uporabe)"
+    },
+    "usePNG": {
+        "message": "Uporaba PNG kakovost, če je na voljo"
+    },
+    "useCSSValues": {
+        "message": "Uporabite css vrednosti za RGB/HSL"
+    },
+    "iconIsPreview": {
+        "message": "Uporabite ikono značke kvadratni barvni predogled"
+    },
+    "appleIcon": {
+        "message": "Uporaba Apple Digital Barvni logotip"
+    },
+    "iconIsBitmap": {
+        "message": "Ikona je povečana predogled piksla"
+    },
+    "resetIcon": {
+        "message": "Vrnite se na običajno ikono"
+    },
+    "bbackgroundColor": {
+        "message": "Popup barve ozadja"
+    },
+    "usePrevColorBG": {
+        "message": "Uporabite prejšnjo barvo za ozadje"
+    },
+    "showPreviousClr": {
+        "message": "Prikaži predogled barvnega predogleda s prejšnjo barvo"
+    },
+    "borderValue": {
+        "message": "Meje za uporabo (css vrednost)"
+    },
+    "options": {
+        "message": "Opcije"
+    },
+    "advancedOptions": {
+        "message": "Napredne možnosti"
+    },
+    "fetchSync": {
+        "message": "Pridobite nastavitve iz shrambe za sinhronizacijo v računu Google"
+    },
+    "clearSync": {
+        "message": "Jasno sinhronizacijo shranjevanja"
+    },
+    "saveOptions": {
+        "message": "Shranite možnosti"
+    },
+    "showDefaults": {
+        "message": "Prikaži privzete nastavitve"
+    },
+    "colorOfDay": {
+        "message": "Barva dneva"
+    },
+    "terms": {
+        "message": "Pogoji uporabe"
+    },
+    "help": {
+        "message": "Pomoč / info"
+    },
+    "history": {
+        "message": "Zgodovina"
+    },
+    "noSwatches": {
+        "message": "V barvni zgodovini kliknite barve, da jih dodate v paleto za shranjevanje in tiskanje."
+    },
+    "addToPalette": {
+        "message": "Dodajte v barvno paleto"
+    },
+    "sort": {
+        "message": "razvrsti"
+    },
+    "printSave": {
+        "message": "Tiskanje / shranjevanje..."
+    },
+    "clear": {
+        "message": "Jasno"
+    },
+    "copycolorval": {
+        "message": "Kopirajte barvno vrednost"
+    }
+}

@@ -1,0 +1,191 @@
+﻿{
+    "closeAndExit": {
+        "message": "ಮುಚ್ಚಿ ಮತ್ತು ನಿರ್ಗಮನ ಬಣ್ಣ ಪಿಕ್ ಮೋಡ್"
+    },
+    "hideMinimize": {
+        "message": "ಮರೆಮಾಡಿ / ಕಡಿಮೆ ಮಾಡಿ [esc]"
+    },
+    "showColorChooser": {
+        "message": "ಬಣ್ಣ ಆಯ್ಕೆಗಾರನನ್ನು ತೋರಿಸು"
+    },
+    "rightClick": {
+        "message": "ಬಲ ಕ್ಲಿಕ್"
+    },
+    "dblClick": {
+        "message": "ಎರಡು ಬಾರಿ ಕ್ಲಿಕ್ಕಿಸು"
+    },
+    "pickAgainLocked": {
+        "message": "ಮತ್ತೊಂದು ಬಣ್ಣವನ್ನು ಆರಿಸಿ [Enter]"
+    },
+    "pickAgainUnlocked": {
+        "message": "ಪ್ರಸ್ತುತ ಬಣ್ಣವನ್ನು ಆರಿಸಿ [Enter]"
+    },
+    "disablePickEveryTime": {
+        "message": "ಪಾಪ್ಅಪ್ ಪ್ರತಿ ಬಾರಿ ಕ್ಲಿಕ್ ಮಾಡುವುದನ್ನು ಪ್ರಾರಂಭಿಸಬೇಡಿ"
+    },
+    "reSnapPage": {
+        "message": "ಪುಟದ ಚಿತ್ರವನ್ನು ರಿಫ್ರೆಶ್ ಮಾಡಿ [r]"
+    },
+    "popOutWindow": {
+        "message": "ಪಾಪ್-ಔಟ್ (ಪ್ರತ್ಯೇಕ ವಿಂಡೋ)"
+    },
+    "pressEnterToPick": {
+        "message": "ಬಣ್ಣವನ್ನು ಆಯ್ಕೆ ಮಾಡಲು ಎಂಟರ್ ಒತ್ತಿರಿ"
+    },
+    "bgPageUnavailable": {
+        "message": "ಹಿನ್ನೆಲೆ ಸ್ನ್ಯಾಪ್ಶಾಟ್ ಪ್ರತಿಕ್ರಿಯಿಸುತ್ತಿಲ್ಲ - ದಯವಿಟ್ಟು ಪುಟವನ್ನು ರಿಫ್ರೆಶ್ ಮಾಡಿ ಮತ್ತು ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ."
+    },
+    "registered": {
+        "message": "ನೋಂದಾಯಿಸಲಾಗಿದೆ"
+    },
+    "unregistered": {
+        "message": "ನೋಂದಾಯಿಸದ"
+    },
+    "approved": {
+        "message": "ಅನುಮೋದಿಸಲಾಗಿದೆ"
+    },
+    "registerButton": {
+        "message": "ನೋಂದಣಿ"
+    },
+    "modifyLicense": {
+        "message": "ಪರವಾನಗಿ ಮಾರ್ಪಡಿಸಿ"
+    },
+    "error": {
+        "message": "ದೋಷ"
+    },
+    "showndefaults": {
+        "message": "ದಯವಿಟ್ಟು ಉಳಿಸು ಒತ್ತಿ, ಈಗ ಡೀಫಾಲ್ಟ್ಗಳನ್ನು ತೋರಿಸಲಾಗುತ್ತಿದೆ."
+    },
+    "savedoptions": {
+        "message": "ಆಯ್ಕೆಗಳನ್ನು ಉಳಿಸಲಾಗಿದೆ."
+    },
+    "loadsyncOptions": {
+        "message": "ಸಿಂಕ್ ಶೇಖರಣಾ ಆಯ್ಕೆಗಳನ್ನು ಲೋಡ್ ಮಾಡಲಾಗಿದೆ ಮತ್ತು ಉಳಿಸಲಾಗಿದೆ."
+    },
+    "on": {
+        "message": "ಆನ್"
+    },
+    "off": {
+        "message": "ಆಫ್"
+    },
+    "default": {
+        "message": "ಡೀಫಾಲ್ಟ್"
+    },
+    "full": {
+        "message": "ಪೂರ್ಣ"
+    },
+    "maxZoom": {
+        "message": "ಗರಿಷ್ಠ ಜೂಮ್ ಮಾಡಲಾಗಿದೆ"
+    },
+    "pickEveryTime": {
+        "message": "ಪಾಪ್ಅಪ್ ಕ್ಲಿಕ್ ಮಾಡಿದ ಪ್ರತಿ ಬಾರಿಯೂ ಬಣ್ಣಗಳನ್ನು ತೆಗೆದುಕೊಳ್ಳುವುದನ್ನು ಪ್ರಾರಂಭಿಸಿ"
+    },
+    "pixelatedPreview": {
+        "message": "ಜೂಮ್ ಪೂರ್ವವೀಕ್ಷಣೆ ಪಿಕ್ಸೆಲ್ ಆಗಿದೆ"
+    },
+    "fishEye": {
+        "message": "ಮೀನು ಕಣ್ಣಿನ ಜೂಮ್ ಪ್ರಮಾಣ"
+    },
+    "EnableRGB": {
+        "message": "ತೋರಿಸು RGB"
+    },
+    "EnableHSL": {
+        "message": "ತೋರಿಸು HSL"
+    },
+    "hasAgreedToLicense": {
+        "message": "ಬಳಕೆಯ ನಿಯಮಗಳಿಗೆ ಒಪ್ಪಿಕೊಂಡಿದೆ"
+    },
+    "seeTerms": {
+        "message": "ಬಳಕೆಯ ನಿಯಮಗಳನ್ನು ನೋಡಿ"
+    },
+    "disableRewriting": {
+        "message": "ಸಂಯೋಜಿತ ಲಿಂಕ್ಗಳ ಸಂಬಂಧವನ್ನು ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಿ"
+    },
+    "usageStatistics": {
+        "message": "ಬಳಕೆಯ ಅಂಕಿಅಂಶಗಳನ್ನು ಸಂಗ್ರಹಿಸಿ (ಬಳಕೆಯ ಪದಗಳನ್ನು ನೋಡಿ)"
+    },
+    "shareClors": {
+        "message": "ದಿನದ ಅಂಕಿಅಂಶಗಳ ಬಣ್ಣ (ಬಳಕೆಯ ನಿಯಮಗಳನ್ನು ನೋಡಿ)"
+    },
+    "usePNG": {
+        "message": "ಬಳಕೆ PNG ಗುಣಮಟ್ಟದ ಲಭ್ಯವಿದ್ದಾಗ"
+    },
+    "useCSSValues": {
+        "message": "ಫಾರ್ CSS ಮೌಲ್ಯಗಳನ್ನು ಬಳಸಿ RGB/HSL"
+    },
+    "iconIsPreview": {
+        "message": "ಐಕಾನ್ ಬ್ಯಾಡ್ಜ್ ಚದರ ಬಣ್ಣದ ಪೂರ್ವವೀಕ್ಷಣೆಯನ್ನು ಬಳಸಿ"
+    },
+    "appleIcon": {
+        "message": "ಬಳಕೆ Apple Digital ಬಣ್ಣ ಮೀಟರ್ ಲೋಗೋ"
+    },
+    "iconIsBitmap": {
+        "message": "ಐಕಾನ್ ಪಿಕ್ಸೆಲ್ ಪೂರ್ವವೀಕ್ಷಣೆಯನ್ನು ಝೂಮ್ ಮಾಡಿದೆ"
+    },
+    "resetIcon": {
+        "message": "ಸಾಮಾನ್ಯ ಐಕಾನ್ಗೆ ಹಿಂದಿರುಗಿ"
+    },
+    "bbackgroundColor": {
+        "message": "ಪಾಪ್ಅಪ್ ಹಿನ್ನೆಲೆ ಬಣ್ಣ"
+    },
+    "usePrevColorBG": {
+        "message": "ಹಿನ್ನೆಲೆಯಲ್ಲಿ ಹಿಂದಿನ ಬಣ್ಣವನ್ನು ಬಳಸಿ"
+    },
+    "showPreviousClr": {
+        "message": "ಹಿಂದಿನ ಬಣ್ಣದೊಂದಿಗೆ ಸ್ಪ್ಲಿಟ್ ಬಣ್ಣ ಪೂರ್ವವೀಕ್ಷಣೆಯನ್ನು ತೋರಿಸಿ"
+    },
+    "borderValue": {
+        "message": "ಬಳಸಲು ಗಡಿಗಳು (CSS ಮೌಲ್ಯ)"
+    },
+    "options": {
+        "message": "ಆಯ್ಕೆಗಳು"
+    },
+    "advancedOptions": {
+        "message": "ಮುಂದುವರಿದ ಆಯ್ಕೆಗಳು"
+    },
+    "fetchSync": {
+        "message": "Google ಖಾತೆಯ ಸಿಂಕ್ ಸಂಗ್ರಹಣೆಯಿಂದ ಸೆಟ್ಟಿಂಗ್ಗಳನ್ನು ಪಡೆದುಕೊಳ್ಳಿ"
+    },
+    "clearSync": {
+        "message": "ಸ್ಪಷ್ಟ ಸಿಂಕ್ ಸಂಗ್ರಹ"
+    },
+    "saveOptions": {
+        "message": "ಆಯ್ಕೆಗಳನ್ನು ಉಳಿಸಿ"
+    },
+    "showDefaults": {
+        "message": "ಡೀಫಾಲ್ಟ್ಗಳನ್ನು ತೋರಿಸು"
+    },
+    "colorOfDay": {
+        "message": "ದಿನದ ಬಣ್ಣ"
+    },
+    "terms": {
+        "message": "ಬಳಕೆಯ ನಿಯಮಗಳು"
+    },
+    "help": {
+        "message": "ಸಹಾಯ / ಮಾಹಿತಿ"
+    },
+    "history": {
+        "message": "ಇತಿಹಾಸ"
+    },
+    "noSwatches": {
+        "message": "ಬಣ್ಣ ಇತಿಹಾಸದಲ್ಲಿ ಬಣ್ಣಗಳನ್ನು ಉಳಿಸಲು ಮತ್ತು ಮುದ್ರಣಕ್ಕಾಗಿ ಪ್ಯಾಲೆಟ್ಗೆ ಸೇರಿಸಲು ಅವುಗಳನ್ನು ಕ್ಲಿಕ್ ಮಾಡಿ."
+    },
+    "addToPalette": {
+        "message": "ಬಣ್ಣದ ಪ್ಯಾಲೆಟ್ಗೆ ಸೇರಿಸಿ"
+    },
+    "sort": {
+        "message": "ರೀತಿಯ"
+    },
+    "printSave": {
+        "message": "ಮುದ್ರಣ / ಉಳಿಸಿ..."
+    },
+    "clear": {
+        "message": "ಸ್ಪಷ್ಟ"
+    },
+    "copycolorval": {
+        "message": "ಬಣ್ಣ ಮೌಲ್ಯವನ್ನು ನಕಲಿಸಿ"
+    },
+    "allowWebGl": {
+        "message": "Pixelated ಪೂರ್ವವೀಕ್ಷಣೆಗಾಗಿ webgl ಅನ್ನು ಅನುಮತಿಸಿ"
+    }
+}

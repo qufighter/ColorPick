@@ -1,0 +1,191 @@
+﻿{
+    "closeAndExit": {
+        "message": "Fermer et quitter le mode de sélection des couleurs"
+    },
+    "hideMinimize": {
+        "message": "Cacher / minimiser [esc]"
+    },
+    "showColorChooser": {
+        "message": "Afficher le sélecteur de couleurs"
+    },
+    "rightClick": {
+        "message": "Clic-droit"
+    },
+    "dblClick": {
+        "message": "Double clic"
+    },
+    "pickAgainLocked": {
+        "message": "Choisir une autre couleur [Enter]"
+    },
+    "pickAgainUnlocked": {
+        "message": "Sélectionnez la couleur actuelle [Enter]"
+    },
+    "disablePickEveryTime": {
+        "message": "Ne commence pas à choisir chaque fois que l'on clique sur la fenêtre contextuelle"
+    },
+    "reSnapPage": {
+        "message": "Actualiser l'image de la page [r]"
+    },
+    "popOutWindow": {
+        "message": "Pop-out (fenêtre séparée)"
+    },
+    "pressEnterToPick": {
+        "message": "Appuyez sur Entrée pour choisir la couleur"
+    },
+    "bgPageUnavailable": {
+        "message": "L'instantané d'arrière-plan ne répond pas - veuillez actualiser la page et réessayer."
+    },
+    "registered": {
+        "message": "Inscrit"
+    },
+    "unregistered": {
+        "message": "Non enregistré"
+    },
+    "approved": {
+        "message": "Approuvé"
+    },
+    "registerButton": {
+        "message": "Registre"
+    },
+    "modifyLicense": {
+        "message": "Modifier la licence"
+    },
+    "error": {
+        "message": "Erreur"
+    },
+    "showndefaults": {
+        "message": "S'il vous plaît appuyez sur Enregistrer, montrant maintenant les valeurs par défaut."
+    },
+    "savedoptions": {
+        "message": "Options sauvegardées."
+    },
+    "loadsyncOptions": {
+        "message": "Les options de stockage de synchronisation ont été chargées et enregistrées."
+    },
+    "on": {
+        "message": "Sur"
+    },
+    "off": {
+        "message": "De"
+    },
+    "default": {
+        "message": "Défaut"
+    },
+    "full": {
+        "message": "Plein"
+    },
+    "maxZoom": {
+        "message": "Max zoomé"
+    },
+    "pickEveryTime": {
+        "message": "Commence à cueillir les couleurs chaque fois que l'on clique sur la fenêtre contextuelle"
+    },
+    "pixelatedPreview": {
+        "message": "L'aperçu zoomé est pixélisé"
+    },
+    "fishEye": {
+        "message": "Quantité de zoom des yeux de poisson"
+    },
+    "EnableRGB": {
+        "message": "Montrer RGB"
+    },
+    "EnableHSL": {
+        "message": "Montrer HSL"
+    },
+    "hasAgreedToLicense": {
+        "message": "A accepté les conditions d'utilisation"
+    },
+    "seeTerms": {
+        "message": "Voir les conditions d'utilisation"
+    },
+    "disableRewriting": {
+        "message": "Désactiver l'affiliation des liens non affiliés"
+    },
+    "usageStatistics": {
+        "message": "Recueillir des statistiques d'utilisation (voir conditions d'utilisation)"
+    },
+    "shareClors": {
+        "message": "Couleur de la journée (voir les conditions d'utilisation)"
+    },
+    "usePNG": {
+        "message": "Utilisation PNG qualité quand disponible"
+    },
+    "useCSSValues": {
+        "message": "Utiliser les valeurs CSS pour RGB/HSL"
+    },
+    "iconIsPreview": {
+        "message": "Utiliser l'icône badge square color preview"
+    },
+    "appleIcon": {
+        "message": "Utilisation Apple Digital Logo du mètre de couleur"
+    },
+    "iconIsBitmap": {
+        "message": "L'icône est zoomée"
+    },
+    "resetIcon": {
+        "message": "Revenir à l'icône normale"
+    },
+    "bbackgroundColor": {
+        "message": "Couleur d'arrière-plan popup"
+    },
+    "usePrevColorBG": {
+        "message": "Utiliser la couleur précédente pour le fond"
+    },
+    "showPreviousClr": {
+        "message": "Afficher l'aperçu couleur fractionné avec la couleur précédente"
+    },
+    "borderValue": {
+        "message": "Frontières à utiliser (valeur CSS)"
+    },
+    "advancedOptions": {
+        "message": "Options avancées"
+    },
+    "fetchSync": {
+        "message": "Récupérer les paramètres depuis le stockage de synchronisation Google"
+    },
+    "clearSync": {
+        "message": "Effacer le stockage de synchronisation"
+    },
+    "saveOptions": {
+        "message": "Enregistrer les options"
+    },
+    "showDefaults": {
+        "message": "Afficher les valeurs par défaut"
+    },
+    "colorOfDay": {
+        "message": "Couleur de la journée"
+    },
+    "terms": {
+        "message": "Conditions d'utilisation"
+    },
+    "help": {
+        "message": "Aide / info"
+    },
+    "history": {
+        "message": "Histoire"
+    },
+    "noSwatches": {
+        "message": "Cliquez sur les couleurs de l'historique des couleurs pour les ajouter à une palette afin de les enregistrer et de les imprimer."
+    },
+    "addToPalette": {
+        "message": "Ajouter à la palette de couleurs"
+    },
+    "sort": {
+        "message": "trier"
+    },
+    "dedupe": {
+        "message": "déduplication"
+    },
+    "printSave": {
+        "message": "Imprimer / enregistrer..."
+    },
+    "clear": {
+        "message": "Clair"
+    },
+    "copycolorval": {
+        "message": "Copier la valeur de la couleur"
+    },
+    "allowWebGl": {
+        "message": "Autoriser webgl pour l'aperçu pixélisé"
+    }
+}

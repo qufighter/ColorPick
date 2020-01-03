@@ -1,0 +1,191 @@
+﻿{
+    "closeAndExit": {
+        "message": "ปิดและเลือกโหมดการเลือกสี"
+    },
+    "hideMinimize": {
+        "message": "ซ่อน / ลด [esc]"
+    },
+    "showColorChooser": {
+        "message": "แสดง color chooser"
+    },
+    "rightClick": {
+        "message": "คลิกขวา"
+    },
+    "dblClick": {
+        "message": "ดับเบิลคลิก"
+    },
+    "pickAgainLocked": {
+        "message": "เลือกสีอื่น [Enter]"
+    },
+    "pickAgainUnlocked": {
+        "message": "เลือกสีปัจจุบัน [Enter]"
+    },
+    "disablePickEveryTime": {
+        "message": "ไม่เริ่มต้นการเลือกป๊อปอัปแต่ละครั้งที่มีการคลิก"
+    },
+    "reSnapPage": {
+        "message": "รีเฟรชภาพหน้า [r]"
+    },
+    "popOutWindow": {
+        "message": "Pop-out (หน้าต่างแยก)"
+    },
+    "pressEnterToPick": {
+        "message": "กด Enter เพื่อเลือกสี"
+    },
+    "bgPageUnavailable": {
+        "message": "ภาพพื้นหลังไม่ตอบสนอง - โปรดรีเฟรชหน้านี้และลองอีกครั้ง"
+    },
+    "registered": {
+        "message": "ลงทะเบียน"
+    },
+    "unregistered": {
+        "message": "เชลยศักดิ์"
+    },
+    "approved": {
+        "message": "ได้รับการอนุมัติ"
+    },
+    "registerButton": {
+        "message": "การลงทะเบียน"
+    },
+    "modifyLicense": {
+        "message": "แก้ไขใบอนุญาต"
+    },
+    "error": {
+        "message": "ความผิดพลาด"
+    },
+    "showndefaults": {
+        "message": "โปรดกดบันทึกตอนนี้แสดงค่าเริ่มต้น"
+    },
+    "savedoptions": {
+        "message": "ตัวเลือกที่บันทึกไว้"
+    },
+    "loadsyncOptions": {
+        "message": "ซิงค์ตัวเลือกการเก็บข้อมูลได้รับการโหลดและบันทึกแล้ว"
+    },
+    "on": {
+        "message": "บน"
+    },
+    "off": {
+        "message": "ปิด"
+    },
+    "default": {
+        "message": "ค่าเริ่มต้น"
+    },
+    "full": {
+        "message": "เต็ม"
+    },
+    "maxZoom": {
+        "message": "ซูมสูงสุด"
+    },
+    "pickEveryTime": {
+        "message": "เริ่มเลือกสีทุกครั้งที่มีการคลิกป๊อปอัป"
+    },
+    "pixelatedPreview": {
+        "message": "ภาพตัวอย่างแบบซูมจะเรียงเป็นภาพ"
+    },
+    "fishEye": {
+        "message": "ปลาตาซูมจำนวน"
+    },
+    "EnableRGB": {
+        "message": "แสดง RGB"
+    },
+    "EnableHSL": {
+        "message": "แสดง HSL"
+    },
+    "hasAgreedToLicense": {
+        "message": "ได้ตกลงที่จะเงื่อนไขการใช้งาน"
+    },
+    "seeTerms": {
+        "message": "ดูข้อกำหนดในการใช้งาน"
+    },
+    "disableRewriting": {
+        "message": "ปิดการใช้งาน Affiliate ของลิงค์ที่ไม่ใช่ Affiliate"
+    },
+    "usageStatistics": {
+        "message": "รวบรวมสถิติการใช้งาน (ดูข้อกำหนดการใช้งาน)"
+    },
+    "shareClors": {
+        "message": "สีของสถิติวัน (ดูข้อกำหนดในการใช้งาน)"
+    },
+    "usePNG": {
+        "message": "ใช้ PNG คุณภาพเมื่อมี"
+    },
+    "useCSSValues": {
+        "message": "ใช้ค่า css สำหรับ RGB/HSL"
+    },
+    "iconIsPreview": {
+        "message": "ใช้ไอคอนป้ายแสดงตัวอย่างสีสี่เหลี่ยม"
+    },
+    "appleIcon": {
+        "message": "ใช้ Apple Digital โลโก้มาตรวัดสี"
+    },
+    "iconIsBitmap": {
+        "message": "ไอคอนถูกซูมภาพตัวอย่างพิกเซล"
+    },
+    "resetIcon": {
+        "message": "เปลี่ยนกลับเป็นไอคอนปกติ"
+    },
+    "bbackgroundColor": {
+        "message": "สีพื้นหลังป๊อปอัป"
+    },
+    "usePrevColorBG": {
+        "message": "ใช้สีก่อนหน้าสำหรับพื้นหลัง"
+    },
+    "showPreviousClr": {
+        "message": "แสดงตัวอย่างสีแยกกับสีก่อนหน้า"
+    },
+    "borderValue": {
+        "message": "เส้นขอบที่จะใช้ (ค่า css)"
+    },
+    "options": {
+        "message": "ตัวเลือก"
+    },
+    "advancedOptions": {
+        "message": "ตัวเลือกขั้นสูง"
+    },
+    "fetchSync": {
+        "message": "เรียกการตั้งค่าจากที่เก็บซิงค์บัญชี Google"
+    },
+    "clearSync": {
+        "message": "จัดเก็บซิงค์ที่ชัดเจน"
+    },
+    "saveOptions": {
+        "message": "บันทึกตัวเลือก"
+    },
+    "showDefaults": {
+        "message": "แสดงค่าเริ่มต้น"
+    },
+    "colorOfDay": {
+        "message": "สีของวัน"
+    },
+    "terms": {
+        "message": "ข้อกำหนดการใช้งาน"
+    },
+    "help": {
+        "message": "ช่วยเหลือ / ข้อมูล"
+    },
+    "history": {
+        "message": "ประวัติศาสตร์"
+    },
+    "noSwatches": {
+        "message": "คลิกสีในประวัติสีเพื่อเพิ่มลงในจานสีสำหรับการบันทึกและการพิมพ์"
+    },
+    "addToPalette": {
+        "message": "เพิ่มลงในจานสี"
+    },
+    "sort": {
+        "message": "ประเภท"
+    },
+    "printSave": {
+        "message": "พิมพ์ / บันทึก..."
+    },
+    "clear": {
+        "message": "ชัดเจน"
+    },
+    "copycolorval": {
+        "message": "คัดลอกค่าสี"
+    },
+    "allowWebGl": {
+        "message": "อนุญาตให้ webgl สำหรับการแสดงตัวอย่างแบบ pixelated"
+    }
+}

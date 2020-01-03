@@ -1,0 +1,191 @@
+﻿{
+    "closeAndExit": {
+        "message": "மூடு மற்றும் வெளியேறும் வண்ணத் தேர்வு முறை"
+    },
+    "hideMinimize": {
+        "message": "மறைக்க / குறைக்க [esc]"
+    },
+    "showColorChooser": {
+        "message": "வண்ணத் தேர்வரைக் காட்டு"
+    },
+    "rightClick": {
+        "message": "வலது கிளிக்"
+    },
+    "dblClick": {
+        "message": "இரட்டை கிளிக்"
+    },
+    "pickAgainLocked": {
+        "message": "மற்றொரு வண்ணத்தைத் தேர்ந்தெடுக்கவும் [Enter]"
+    },
+    "pickAgainUnlocked": {
+        "message": "தற்போதைய வண்ணத்தைத் தேர்ந்தெடுக்கவும் [Enter]"
+    },
+    "disablePickEveryTime": {
+        "message": "பாப் அப் கிளிக் ஒவ்வொரு முறை எடுக்கவில்லை தொடங்க கூடாது"
+    },
+    "reSnapPage": {
+        "message": "பக்கத்தின் புதுப்பிப்பு படம் [r]"
+    },
+    "popOutWindow": {
+        "message": "பாப்-அவுட் (தனி சாளரம்)"
+    },
+    "pressEnterToPick": {
+        "message": "வண்ணத்தைத் தேர்ந்தெடுக்க Enter ஐ அழுத்தவும்"
+    },
+    "bgPageUnavailable": {
+        "message": "பின்னணி புகைப்படம் பதிலளிக்காது - தயவுசெய்து பக்கத்தை புதுப்பித்து மீண்டும் முயற்சிக்கவும்."
+    },
+    "registered": {
+        "message": "பதிவு"
+    },
+    "unregistered": {
+        "message": "பதிவுசெய்யப்படாத"
+    },
+    "approved": {
+        "message": "ஒப்புதல்"
+    },
+    "registerButton": {
+        "message": "பதிவு"
+    },
+    "modifyLicense": {
+        "message": "உரிமம் மாற்ற"
+    },
+    "error": {
+        "message": "பிழை"
+    },
+    "showndefaults": {
+        "message": "இப்போது சேமிப்பதை அழுத்தி, இயல்புநிலைகளை இப்போது காட்டும்."
+    },
+    "savedoptions": {
+        "message": "விருப்பங்கள் சேமிக்கப்பட்டன."
+    },
+    "loadsyncOptions": {
+        "message": "ஒத்திசைவு சேமிப்பக விருப்பங்கள் ஏற்றப்பட்டு சேமிக்கப்பட்டன."
+    },
+    "on": {
+        "message": "மீது"
+    },
+    "off": {
+        "message": "ஆஃப்"
+    },
+    "default": {
+        "message": "இயல்புநிலை"
+    },
+    "full": {
+        "message": "முழு"
+    },
+    "maxZoom": {
+        "message": "அதிகபட்சமாக பெரிதாக்கப்பட்டது"
+    },
+    "pickEveryTime": {
+        "message": "ஒவ்வொரு முறையும் பாப் அப் சொடுக்கும் வண்ணங்களைத் தேர்ந்தெடுப்பதைத் தொடங்கவும்"
+    },
+    "pixelatedPreview": {
+        "message": "பெரிதாக்கப்பட்ட முன்னோட்ட pixelated"
+    },
+    "fishEye": {
+        "message": "மீன் கண் ஜூம் அளவு"
+    },
+    "EnableRGB": {
+        "message": "நிகழ்ச்சி RGB"
+    },
+    "EnableHSL": {
+        "message": "நிகழ்ச்சி HSL"
+    },
+    "hasAgreedToLicense": {
+        "message": "பயன்பாட்டு விதிமுறைகளுக்கு உடன்பட்டுள்ளது"
+    },
+    "seeTerms": {
+        "message": "பயன்பாட்டு விதிகளைப் பார்க்கவும்"
+    },
+    "disableRewriting": {
+        "message": "அல்லாத இணைப்பு இணைப்புகள் துணை முடக்க"
+    },
+    "usageStatistics": {
+        "message": "பயன்பாட்டு புள்ளிவிவரங்களை சேகரிக்கவும் (பயன்பாட்டு விதிமுறைகளைப் பார்க்கவும்)"
+    },
+    "shareClors": {
+        "message": "நாள் புள்ளிவிவரத்தின் நிறம் (பயன்பாட்டு விதிமுறைகளைப் பார்க்கவும்)"
+    },
+    "usePNG": {
+        "message": "பயன்படுத்த PNG தரம் கிடைக்கும் போது"
+    },
+    "useCSSValues": {
+        "message": "பயன்படுத்த CSS மதிப்புகள் RGB/HSL"
+    },
+    "iconIsPreview": {
+        "message": "ஐகான் பேட்ஜ் சதுர நிற முன்னோட்டத்தைப் பயன்படுத்தவும்"
+    },
+    "appleIcon": {
+        "message": "பயன்படுத்த Apple Digital வண்ண மீட்டர் லோகோ"
+    },
+    "iconIsBitmap": {
+        "message": "ஐகான் பிக்சல் முன்னோட்டத்தை பெரிதாக்கிக் கொண்டிருக்கிறது"
+    },
+    "resetIcon": {
+        "message": "சாதாரண ஐகானுக்கு மாற்றவும்"
+    },
+    "bbackgroundColor": {
+        "message": "பாப் அப் பின்னணி நிறம்"
+    },
+    "usePrevColorBG": {
+        "message": "பின்னணிக்கு முந்தைய நிறத்தை பயன்படுத்தவும்"
+    },
+    "showPreviousClr": {
+        "message": "முந்தைய நிறத்துடன் பிளவு வண்ணத்தை காண்பி"
+    },
+    "borderValue": {
+        "message": "பயன்படுத்த எல்லைகள் (CSS மதிப்பு)"
+    },
+    "options": {
+        "message": "விருப்பங்கள்"
+    },
+    "advancedOptions": {
+        "message": "மேம்பட்ட விருப்பங்கள்"
+    },
+    "fetchSync": {
+        "message": "Google கணக்கு ஒத்திசைவு சேமிப்பகத்திலிருந்து அமைப்புகளை எடு"
+    },
+    "clearSync": {
+        "message": "ஒத்திசைவு சேமிப்பகத்தை அழிக்கவும்"
+    },
+    "saveOptions": {
+        "message": "விருப்பங்களை சேமிக்கவும்"
+    },
+    "showDefaults": {
+        "message": "இயல்புநிலைகளைக் காண்பிக்கவும்"
+    },
+    "colorOfDay": {
+        "message": "நாள் நிறம்"
+    },
+    "terms": {
+        "message": "பயன்பாட்டு விதிமுறைகளை"
+    },
+    "help": {
+        "message": "உதவி / தகவல்"
+    },
+    "history": {
+        "message": "வரலாறு"
+    },
+    "noSwatches": {
+        "message": "வண்ண வரலாற்றில் வண்ணங்களைக் கிளிக் செய்து சேமிப்பதற்கும் அச்சிடுவதற்கும் ஒரு தட்டுடன் சேர்க்கலாம்."
+    },
+    "addToPalette": {
+        "message": "வண்ண தட்டுக்கு சேர்க்கவும்"
+    },
+    "sort": {
+        "message": "வகையான"
+    },
+    "printSave": {
+        "message": "அச்சிடு / சேமி..."
+    },
+    "clear": {
+        "message": "தெளிவான"
+    },
+    "copycolorval": {
+        "message": "வண்ண மதிப்பு நகலெடுக்கவும்"
+    },
+    "allowWebGl": {
+        "message": "Pixelated preview க்கு webgl ஐ அனுமதி"
+    }
+}

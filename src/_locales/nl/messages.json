@@ -1,0 +1,194 @@
+﻿{
+    "closeAndExit": {
+        "message": "Sluit en sluit de kleurenkeuze modus uit"
+    },
+    "hideMinimize": {
+        "message": "Verbergen / minimaliseren [esc]"
+    },
+    "showColorChooser": {
+        "message": "Toon kleurkiezer"
+    },
+    "rightClick": {
+        "message": "Met de rechtermuisknop"
+    },
+    "dblClick": {
+        "message": "Dubbelklik"
+    },
+    "pickAgainLocked": {
+        "message": "Kies een andere kleur [Enter]"
+    },
+    "pickAgainUnlocked": {
+        "message": "Selecteer de huidige kleur [Enter]"
+    },
+    "disablePickEveryTime": {
+        "message": "Begin niet met het plukken van elke keer dat pop-up wordt geklikt"
+    },
+    "reSnapPage": {
+        "message": "Vernieuw foto van pagina [r]"
+    },
+    "popOutWindow": {
+        "message": "Pop-out (apart venster)"
+    },
+    "pressEnterToPick": {
+        "message": "Druk op enter om kleur te kiezen"
+    },
+    "bgPageUnavailable": {
+        "message": "Achtergrond snapshot reageert niet. Vernieuw de pagina en probeer het opnieuw."
+    },
+    "registered": {
+        "message": "Geregistreerd"
+    },
+    "unregistered": {
+        "message": "Niet ingeschreven"
+    },
+    "approved": {
+        "message": "Aangenomen"
+    },
+    "registerButton": {
+        "message": "Registreren"
+    },
+    "modifyLicense": {
+        "message": "Wijziging van de licentie"
+    },
+    "error": {
+        "message": "Fout"
+    },
+    "showndefaults": {
+        "message": "Druk alstublieft op opslaan, nu de standaardinstellingen weergeven."
+    },
+    "savedoptions": {
+        "message": "Opties opgeslagen."
+    },
+    "loadsyncOptions": {
+        "message": "Sync-opslagopties zijn geladen en opgeslagen."
+    },
+    "on": {
+        "message": "Op"
+    },
+    "off": {
+        "message": "Uit"
+    },
+    "default": {
+        "message": "Standaard"
+    },
+    "full": {
+        "message": "Vol"
+    },
+    "maxZoom": {
+        "message": "Maximaal ingezoomd"
+    },
+    "pickEveryTime": {
+        "message": "Begin met het plukken van kleuren elke keer dat pop-up wordt geklikt"
+    },
+    "pixelatedPreview": {
+        "message": "Inzoomen preview is pixelated"
+    },
+    "fishEye": {
+        "message": "Visoogzoomhoeveelheid"
+    },
+    "EnableRGB": {
+        "message": "Tonen RGB"
+    },
+    "EnableHSL": {
+        "message": "Tonen HSL"
+    },
+    "hasAgreedToLicense": {
+        "message": "Heeft ingestemd met gebruiksvoorwaarden"
+    },
+    "seeTerms": {
+        "message": "Zie gebruiksvoorwaarden"
+    },
+    "disableRewriting": {
+        "message": "De affiliatie van niet-geaffilieerde links uitschakelen"
+    },
+    "usageStatistics": {
+        "message": "Gebruiksstatistieken verzamelen (zie gebruiksvoorwaarden)"
+    },
+    "shareClors": {
+        "message": "Kleur van de dag statistieken (zie gebruiksvoorwaarden)"
+    },
+    "usePNG": {
+        "message": "Gebruik PNG kwaliteit wanneer beschikbaar"
+    },
+    "useCSSValues": {
+        "message": "Gebruik css waarden voor RGB/HSL"
+    },
+    "iconIsPreview": {
+        "message": "Gebruik pictogram badge vierkante kleur preview"
+    },
+    "appleIcon": {
+        "message": "Gebruik Apple Digital Kleuren meter logo"
+    },
+    "iconIsBitmap": {
+        "message": "Het pictogram is zoomen pixel preview"
+    },
+    "resetIcon": {
+        "message": "Ga terug naar het normale pictogram"
+    },
+    "bbackgroundColor": {
+        "message": "Popup achtergrondkleur"
+    },
+    "usePrevColorBG": {
+        "message": "Gebruik vorige kleur voor achtergrond"
+    },
+    "showPreviousClr": {
+        "message": "Toon gesplitste kleurenweergave met vorige kleur"
+    },
+    "borderValue": {
+        "message": "Grenzen om te gebruiken (css waarde)"
+    },
+    "options": {
+        "message": "Opties"
+    },
+    "advancedOptions": {
+        "message": "Geavanceerde mogelijkheden"
+    },
+    "fetchSync": {
+        "message": "Instellingen ophalen van Google Sync-opslag"
+    },
+    "clearSync": {
+        "message": "Verwijder synchronisatie opslag"
+    },
+    "saveOptions": {
+        "message": "Opties opslaan"
+    },
+    "showDefaults": {
+        "message": "Toon standaardwaarden"
+    },
+    "colorOfDay": {
+        "message": "Kleur van de dag"
+    },
+    "terms": {
+        "message": "Gebruiksvoorwaarden"
+    },
+    "help": {
+        "message": "Help / info"
+    },
+    "history": {
+        "message": "Geschiedenis"
+    },
+    "noSwatches": {
+        "message": "Klik op kleuren in kleurgeschiedenis om ze toe te voegen aan een palet voor het opslaan en afdrukken."
+    },
+    "addToPalette": {
+        "message": "Voeg toe aan kleurenpalet"
+    },
+    "sort": {
+        "message": "soort"
+    },
+    "dedupe": {
+        "message": "deduplicatie"
+    },
+    "printSave": {
+        "message": "Printen / opslaan..."
+    },
+    "clear": {
+        "message": "Duidelijk"
+    },
+    "copycolorval": {
+        "message": "Kopieer de kleurwaarde"
+    },
+    "allowWebGl": {
+        "message": "Laat webgl voor pixelated preview"
+    }
+}

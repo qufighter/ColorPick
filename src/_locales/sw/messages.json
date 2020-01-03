@@ -1,0 +1,185 @@
+﻿{
+    "closeAndExit": {
+        "message": "Funga njia ya kuchagua ya rangi na ya kuacha"
+    },
+    "hideMinimize": {
+        "message": "Kujificha / kupunguza [esc]"
+    },
+    "showColorChooser": {
+        "message": "Onyesha chagua rangi"
+    },
+    "rightClick": {
+        "message": "Click haki"
+    },
+    "dblClick": {
+        "message": "Bonyeza mara mbili"
+    },
+    "pickAgainLocked": {
+        "message": "Chukua rangi nyingine [Enter]"
+    },
+    "pickAgainUnlocked": {
+        "message": "Chagua rangi ya sasa [Enter]"
+    },
+    "disablePickEveryTime": {
+        "message": "Usianza kuokota kila wakati popup inafungwa"
+    },
+    "reSnapPage": {
+        "message": "Furahisha picha ya ukurasa [r]"
+    },
+    "popOutWindow": {
+        "message": "Pop-out (dirisha tofauti)"
+    },
+    "pressEnterToPick": {
+        "message": "Bonyeza kuingia ili upe rangi"
+    },
+    "bgPageUnavailable": {
+        "message": "Kielelezo cha historia hakijibu - tafadhali rasha ukurasa na jaribu tena."
+    },
+    "registered": {
+        "message": "Imesajiliwa"
+    },
+    "unregistered": {
+        "message": "Haijasajiliwa"
+    },
+    "approved": {
+        "message": "Imeidhinishwa"
+    },
+    "registerButton": {
+        "message": "Kujiandikisha"
+    },
+    "modifyLicense": {
+        "message": "Rekebisha leseni"
+    },
+    "error": {
+        "message": "Kosa"
+    },
+    "showndefaults": {
+        "message": "Tafadhali waandishi wa habari, salama sasa."
+    },
+    "savedoptions": {
+        "message": "Chaguzi zimehifadhiwa."
+    },
+    "loadsyncOptions": {
+        "message": "Kusawazisha chaguo za hifadhi zimehifadhiwa na kuokolewa."
+    },
+    "on": {
+        "message": "Juu"
+    },
+    "full": {
+        "message": "Kamili"
+    },
+    "maxZoom": {
+        "message": "Max kupanuliwa"
+    },
+    "pickEveryTime": {
+        "message": "Kuanza kuokota rangi kila wakati popup inafungwa"
+    },
+    "pixelatedPreview": {
+        "message": "Preview preview ni pixelated"
+    },
+    "fishEye": {
+        "message": "Samaki jicho zoom zoom"
+    },
+    "EnableRGB": {
+        "message": "Onyesha RGB"
+    },
+    "EnableHSL": {
+        "message": "Onyesha HSL"
+    },
+    "hasAgreedToLicense": {
+        "message": "Imekubaliana na maneno ya matumizi"
+    },
+    "seeTerms": {
+        "message": "Tazama masharti ya matumizi"
+    },
+    "disableRewriting": {
+        "message": "Afya ya ushirika wa viungo visivyo na uhusiano"
+    },
+    "usageStatistics": {
+        "message": "Kukusanya takwimu za matumizi (angalia masharti ya matumizi)"
+    },
+    "shareClors": {
+        "message": "Rangi ya takwimu za siku (tazama masharti ya matumizi)"
+    },
+    "usePNG": {
+        "message": "Kutumia PNG ubora wakati inapatikana"
+    },
+    "useCSSValues": {
+        "message": "Tumia maadili ya css RGB/HSL"
+    },
+    "iconIsPreview": {
+        "message": "Tumia hakikisho la rangi ya mraba wa mraba"
+    },
+    "appleIcon": {
+        "message": "Kutumia Apple Digital Alama ya mita ya rangi"
+    },
+    "iconIsBitmap": {
+        "message": "Ikoni ni kupima preview ya pixel"
+    },
+    "resetIcon": {
+        "message": "Rejea kwenye ishara ya kawaida"
+    },
+    "bbackgroundColor": {
+        "message": "Rangi ya asili ya popup"
+    },
+    "usePrevColorBG": {
+        "message": "Tumia rangi ya awali kwa background"
+    },
+    "showPreviousClr": {
+        "message": "Onyesha hakikisho ya rangi ya rangi na rangi ya awali"
+    },
+    "borderValue": {
+        "message": "Mipaka kutumia (thamani ya css)"
+    },
+    "options": {
+        "message": "Chaguo"
+    },
+    "advancedOptions": {
+        "message": "Chaguzi za juu"
+    },
+    "fetchSync": {
+        "message": "Pata mipangilio kutoka kwa hifadhi ya kusawazisha akaunti ya google"
+    },
+    "clearSync": {
+        "message": "Salama ya kusawazisha wazi"
+    },
+    "saveOptions": {
+        "message": "Chagua chaguo"
+    },
+    "showDefaults": {
+        "message": "Onyesha upungufu"
+    },
+    "colorOfDay": {
+        "message": "Rangi ya siku"
+    },
+    "terms": {
+        "message": "Masharti ya matumizi"
+    },
+    "help": {
+        "message": "Msaada / maelezo"
+    },
+    "history": {
+        "message": "Historia"
+    },
+    "noSwatches": {
+        "message": "Bonyeza rangi katika historia ya rangi ili uwaongeze kwenye palette ya kuokoa na uchapishaji."
+    },
+    "addToPalette": {
+        "message": "Ongeza kwenye palette ya rangi"
+    },
+    "sort": {
+        "message": "fanya"
+    },
+    "printSave": {
+        "message": "Kuchapisha / kuokoa..."
+    },
+    "clear": {
+        "message": "Wazi"
+    },
+    "copycolorval": {
+        "message": "Nakala nakala ya rangi"
+    },
+    "allowWebGl": {
+        "message": "Ruhusu webgl kwa hakikisho la pixelated"
+    }
+}

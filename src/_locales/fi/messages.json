@@ -1,0 +1,185 @@
+﻿{
+    "closeAndExit": {
+        "message": "Sulje ja poistu värin valinta -tilasta"
+    },
+    "hideMinimize": {
+        "message": "Piilottaa / minimoida [esc]"
+    },
+    "showColorChooser": {
+        "message": "Näytä värivalitsin"
+    },
+    "rightClick": {
+        "message": "Oikealla painikkeella"
+    },
+    "dblClick": {
+        "message": "Tuplaklikkaus"
+    },
+    "pickAgainLocked": {
+        "message": "Valitse toinen väri [Enter]"
+    },
+    "pickAgainUnlocked": {
+        "message": "Valitse nykyinen väri [Enter]"
+    },
+    "disablePickEveryTime": {
+        "message": "Älä aloita poimia joka kerta, kun ponnahdusikkuna on napsautettu"
+    },
+    "reSnapPage": {
+        "message": "Päivitä sivun kuva [r]"
+    },
+    "popOutWindow": {
+        "message": "Ponnahdusikkuna (erillinen ikkuna)"
+    },
+    "pressEnterToPick": {
+        "message": "Paina Enter ja valitse väri"
+    },
+    "bgPageUnavailable": {
+        "message": "Taustakuva ei reagoi - päivitä sivu ja yritä uudelleen."
+    },
+    "registered": {
+        "message": "Kirjattu"
+    },
+    "unregistered": {
+        "message": "Rekisteröimätön"
+    },
+    "approved": {
+        "message": "Hyväksytty"
+    },
+    "registerButton": {
+        "message": "Ilmoittautua"
+    },
+    "modifyLicense": {
+        "message": "Muokkaa lisenssiä"
+    },
+    "error": {
+        "message": "Virhe"
+    },
+    "showndefaults": {
+        "message": "Paina Tallenna, näytetään nyt oletusasetukset."
+    },
+    "savedoptions": {
+        "message": "Tallennetut asetukset."
+    },
+    "loadsyncOptions": {
+        "message": "Synkronoinnin tallennusvaihtoehdot on ladattu ja tallennettu."
+    },
+    "on": {
+        "message": "Päällä"
+    },
+    "off": {
+        "message": "Pois päältä"
+    },
+    "default": {
+        "message": "Oletusarvo"
+    },
+    "full": {
+        "message": "Koko"
+    },
+    "maxZoom": {
+        "message": "Max zoomattu"
+    },
+    "pickEveryTime": {
+        "message": "Aloita poimien värit aina kun ponnahdusikkuna napsautetaan"
+    },
+    "pixelatedPreview": {
+        "message": "Zoomattu esikatselu on pikseloitua"
+    },
+    "fishEye": {
+        "message": "Kala silmän zoom määrä"
+    },
+    "hasAgreedToLicense": {
+        "message": "On sopinut käyttöehdoista"
+    },
+    "seeTerms": {
+        "message": "Katso käyttöehdot"
+    },
+    "disableRewriting": {
+        "message": "Estä kumppanuusyhteyksien linkittäminen"
+    },
+    "usageStatistics": {
+        "message": "Kerätä käyttötilastot (katso käyttöehdot)"
+    },
+    "shareClors": {
+        "message": "Päiväpäivän tilasto (ks. käyttöehdot)"
+    },
+    "usePNG": {
+        "message": "Käyttää PNG laatu, kun niitä on saatavilla"
+    },
+    "useCSSValues": {
+        "message": "Käytä CSS arvoja RGB/HSL"
+    },
+    "iconIsPreview": {
+        "message": "Käytä kuvaketta neliön värien esikatselussa"
+    },
+    "appleIcon": {
+        "message": "Käyttää Apple Digital Värimittarin logo"
+    },
+    "iconIsBitmap": {
+        "message": "Kuvake on zoomattu pikselin esikatselu"
+    },
+    "resetIcon": {
+        "message": "Palaa normaaliin kuvakkeeseen"
+    },
+    "bbackgroundColor": {
+        "message": "Ponnahdusikkunan väri"
+    },
+    "usePrevColorBG": {
+        "message": "Käytä edellistä väriä taustalle"
+    },
+    "showPreviousClr": {
+        "message": "Näytä halkaistu väri esikatselu edellisellä värillä"
+    },
+    "borderValue": {
+        "message": "Rajojen käyttöä (css-arvo)"
+    },
+    "options": {
+        "message": "Vaihtoehtoja"
+    },
+    "advancedOptions": {
+        "message": "Edistyneet asetukset"
+    },
+    "fetchSync": {
+        "message": "Hae asetukset Google-tilisi synkronointivaraukselta"
+    },
+    "clearSync": {
+        "message": "Selkeä synkronointivaraus"
+    },
+    "saveOptions": {
+        "message": "Tallenna asetukset"
+    },
+    "showDefaults": {
+        "message": "Näytä oletusarvot"
+    },
+    "colorOfDay": {
+        "message": "Päivän väri"
+    },
+    "terms": {
+        "message": "Käyttöehdot"
+    },
+    "help": {
+        "message": "Help / info"
+    },
+    "history": {
+        "message": "Historia"
+    },
+    "noSwatches": {
+        "message": "Lisää värien historia väreihin lisätäksesi ne peliohjaukseen ja tulostamiseen."
+    },
+    "addToPalette": {
+        "message": "Lisää väripaletti"
+    },
+    "sort": {
+        "message": "järjestellä"
+    },
+    "printSave": {
+        "message": "Tulostaa / tallentaa..."
+    },
+    "clear": {
+        "message": "Asia selvä"
+    },
+    "copycolorval": {
+        "message": "Kopioi väriarvo"
+    },
+    "allowWebGl": {
+        "message": "Sallikaa webgl pikseli-esikatselulle"
+    }
+}
