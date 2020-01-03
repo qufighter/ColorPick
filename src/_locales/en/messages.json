@@ -149,17 +149,20 @@
       "message": "Show hexadecimal"
    },
    "EnableRGB": {
-      "message": "Show RGB"
+      "message": "Show RGB",
+      "description": "'RGB' refers to the red-green-blue color format"
    },
    "EnableHSL": {
-      "message": "Show HSL"
+      "message": "Show HSL",
+      "description": "'HSL' refers to the hue-saturation-lightness color format"
    },
    "showPreviewInContent": {
       "message": "Show zoom preview near cursor while picking",
       "description": "'picking' in this usage refers to being in color selection mode."
    },
    "ShowRGBHSL": {
-      "message": "Also show Hex, RGB and/or HSL (configure above)"
+      "message": "Also show Hex, RGB and/or HSL (configure above)",
+      "description": "'RGB' refers to the red-green-blue color format, 'HSL' refers to the hue-saturation-lightness color format 'Hex' refers to the hexadecimal color format"
    },
    "autocopyhex": {
       "message": "Attempt to auto copy value to clipboard"
@@ -196,7 +199,8 @@
       "message": "Color of the Day Statistics (See Terms of Use)"
    },
    "usePNG": {
-      "message": "Use PNG quality when available"
+      "message": "Use PNG quality when available",
+      "description": "'PNG' refers to web technology for image encoding"
    },
    "supportColorInputs": {
       "message": "Add ColorPick Eyedropper near input[type=color] fields on websites",
@@ -204,7 +208,7 @@
    },
    "useCSSValues": {
       "message": "Use CSS values for RGB/HSL",
-      "description": "'CSS' refers to web technology, 'RGB' refers to the red-green-blue color format, 'HSL' refers to the hue-saturation-lightness color format "
+      "description": "'CSS' refers to web technology, 'RGB' refers to the red-green-blue color format, 'HSL' refers to the hue-saturation-lightness color format"
    },
    "CSS3ColorFormat": {
       "message": "CSS value format eg: (#1,#2,#3)",
@@ -214,7 +218,8 @@
       "message": "Use icon badge square color preview"
    },
    "appleIcon": {
-      "message": "Use Apple Digital Color Meter logo"
+      "message": "Use Apple Digital Color Meter logo",
+      "description": "'Apple' refers to the company, 'Digital Color Meter' refers to a program included on MacOS and developed by Apple. This is for people who do not like the default logo."
    },
    "iconIsBitmap": {
       "message": "Icon is zoomed pixel preview"
@@ -232,7 +237,8 @@
       "message": "Show Split Color Preview with Previous Color"
    },
    "borderValue": {
-      "message": "Borders to use (css value)"
+      "message": "Borders to use (css value)",
+      "description": "'css' refers to web technology"
    },
    "hideWatermark": {
       "message": "Hide ColorPick watermark on webpage corner (registered only)",
@@ -245,7 +251,8 @@
       "message": "Advanced Options"
    },
    "fetchSync": {
-      "message": "Fetch settings from Google Account Sync Storage"
+      "message": "Fetch settings from Google Account Sync Storage",
+      "description": "'Google' refers to the company, 'Account Sync Storage' refers to the ability to synchronize sittings across devices.  This feature pulls the setting stored to the account for display."
    },
    "clearSync": {
       "message": "Clear Sync Storage"
