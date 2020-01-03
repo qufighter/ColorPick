@@ -1,25 +1,28 @@
 {
    "extName": {
-      "message": "ColorPick Eyedropper"
+      "message": "ColorPick Eyedropper",
+      "description": "The extension name may translate easily from 'Color Pick Eyedropper' however it is preferred to leave it english unless your locale has a matching translation for eyedropper, color, and pick.  If you can omit the space between Color and Pick in your language then please do so.  Eyedropper referrs to what the tool would be called in image editing software such as photoshop in your locale.  Definitions follow: color - the property possessed by an object of producing different sensations on the eye as a result of the way the object reflects or emits light.  pick -  choose (someone or something) from a number of alternatives, typically after careful thought.  eyedropper - a short glass tube with a rubber bulb at one end and a tiny hole at the other, for measuring out drops of medicine or other liquids, (also eyedropper tool) (in image-editing software) a function enabling the user to copy color from any part of an image."
    },
    "extDescription": {
-      "message": "An eye-dropper & color-picker tool that allows you to select color values from webpages."
+      "message": "A zoomed eyedropper & color chooser tool that allows you to select color values from webpages and more."
    },
    "closeAndExit": {
       "message": "Close and Exit Color Pick Mode"
    },
    "hideMinimize": {
       "message": "Hide/Minimize [esc]",
-      "description": "This will hide the popup, the [esc] key does this too."
+      "description": "This will hide the extension's popup menu triggered when clicking the extension icon, the [esc] key does this too."
    },
    "buyRegisterTip": {
-      "message": "Click to Buy & Register a ColorPick License."
+      "message": "Click to Buy & Register a ColorPick License.",
+      "description": "'ColorPick' refers to the extName key, see that description for details, if that key is not translated leave this part of the string untranslated"
    },
    "registerBanner": {
       "message": "Happy? Register"
    },
    "registerBannerLong": {
-      "message": "Please Register ColorPick!"
+      "message": "Please Register ColorPick!",
+      "description": "'ColorPick' refers to the extName key, see that description for details, if that key is not translated leave this part of the string untranslated"
    },
    "showColorChooser": {
       "message": "Show Color Chooser"
@@ -39,7 +42,8 @@
       "description": "Select Current Color, the [Enter] keyboard key does this too."
    },
    "disablePickEveryTime": {
-      "message": "Do not start picking each time popup is clicked"
+      "message": "Do not start picking each time popup is clicked",
+      "description": "'start picking' in this usage refers to entering color selection mode.  By default the mode will be retained instead (locked (selected) or unlocked (picking)).  'popup' refers to the extension's popup menu triggered when clicking the icon."
    },
    "reSnapPage": {
       "message": "Refresh Picture of Page [r]",
@@ -52,7 +56,8 @@
       "message": "Help, Options & History"
    },
    "getStandaloneApp": {
-      "message": "ColorPick Standalone Application"
+      "message": "ColorPick Standalone Application",
+      "description": "'ColorPick' refers to the extName key, see that description for details, if that key is not translated leave this part of the string untranslated"
    },
    "popOutWindow": {
       "message": "Pop-Out (separate window)"
@@ -127,7 +132,8 @@
       "message": "Max Zoomed"
    },
    "pickEveryTime": {
-      "message": "Start picking colors each time popup is clicked"
+      "message": "Start picking colors each time popup is clicked",
+      "description": "'Start picking' in this usage refers to entering color selection mode.  If this feature is disabled the previous mode will be retained instead (locked (selected) or unlocked (picking)).  'popup' refers to the extension's popup menu triggered when clicking the icon."
    },
    "pixelatedPreview": {
       "message": "Zoomed Preview is Pixelated"
@@ -149,7 +155,8 @@
       "message": "Show HSL"
    },
    "showPreviewInContent": {
-      "message": "Show zoom preview near cursor while picking"
+      "message": "Show zoom preview near cursor while picking",
+      "description": "'picking' in this usage refers to being in color selection mode."
    },
    "ShowRGBHSL": {
       "message": "Also show Hex, RGB and/or HSL (configure above)"
@@ -161,7 +168,7 @@
       "message": "Lower case hexadecimal values"
    },
    "hexHasHash": {
-      "message": "Prefix hex value with #"
+      "message": "Prefix hexadecimal value with #"
    },
    "hasAgreedToLicense": {
       "message": "Has agreed to Terms of Use"
@@ -176,7 +183,8 @@
       "message": "See advanced option"
    },
    "selectWithExt": {
-      "message": "Select with ColorPick Eyedropper"
+      "message": "Select with ColorPick Eyedropper",
+      "description": "'ColorPick Eyedropper' refers to the extName key, see that description for details, if that key is not translated leave this part of the string untranslated"
    },
    "disableRewriting": {
       "message": "Disable affiliation of non-affiliate links"
@@ -191,13 +199,16 @@
       "message": "Use PNG quality when available"
    },
    "supportColorInputs": {
-      "message": "Add eyedropper near input[type=color] fields on websites"
+      "message": "Add ColorPick Eyedropper near input[type=color] fields on websites",
+      "description": "'ColorPick Eyedropper' refers to the extName key, see that description for details.  'input[type=color]' is an html query selector literal known to developers and should remain intact"
    },
    "useCSSValues": {
-      "message": "Use CSS values for RGB/HSL"
+      "message": "Use CSS values for RGB/HSL",
+      "description": "'CSS' refers to web technology, 'RGB' refers to the red-green-blue color format, 'HSL' refers to the hue-saturation-lightness color format "
    },
    "CSS3ColorFormat": {
-      "message": "CSS value format eg: (#1,#2,#3)"
+      "message": "CSS value format eg: (#1,#2,#3)",
+      "description": "'CSS' refers to web technology, the eg: (#1,#2,#3) refers to an example default value for the field which is literally '(#1,#2,#3)'"
    },
    "iconIsPreview": {
       "message": "Use icon badge square color preview"
@@ -224,7 +235,8 @@
       "message": "Borders to use (css value)"
    },
    "hideWatermark": {
-      "message": "Hide ColorPick watermark on webpage corner (registered only)"
+      "message": "Hide ColorPick watermark on webpage corner (registered only)",
+      "description": "'ColorPick' refers to the extName key, see that description for details, if that key is not translated leave this part of the string untranslated"
    },
    "options": {
       "message": "Options"
@@ -257,10 +269,12 @@
       "message": "Credits"
    },
    "desktopapp": {
-      "message": "Desktop ColorPick App"
+      "message": "Desktop ColorPick App",
+      "description": "'ColorPick' refers to the extName key, see that description for details, if that key is not translated leave this part of the string untranslated"
    },
    "mobileapp": {
-      "message": "Mobile ColorPick App"
+      "message": "Mobile ColorPick App",
+      "description": "'ColorPick' refers to the extName key, see that description for details, if that key is not translated leave this part of the string untranslated"
    },
    "help": {
       "message": "Help/Info"
@@ -293,25 +307,30 @@
       "message": "Watermark may be disabled from advanced options once you have registered the extension."
    },
    "tips_0": {
-      "message": "Register ColorPick for the option to hide this message."
+      "message": "Register ColorPick for the option to hide this message.",
+      "description": "'ColorPick' refers to the extName key, see that description for details, if that key is not translated leave this part of the string untranslated"
    },
    "tips_1": {
-      "message": "Move your mouse over the web page to examine pixel color values. Click to the web page to pick!"
+      "message": "Move your mouse over the web page to examine pixel color values. Click to the web page to pick!",
+      "description": "'pick' refers to selection of the current color, or the user has chosen the current color."
    },
    "tips_1_locked": {
       "message": "Click the web page to unlock and examine color values again."
    },
    "tips_2": {
-      "message": "Return to the ColorPick menu for fine adjustment options, history or to exit ColorPick."
+      "message": "Return to the ColorPick menu for fine adjustment options, history or to exit ColorPick.",
+      "description": "'ColorPick' refers to the extName key, see that description for details, if that key is not translated leave this part of the string untranslated"
    },
    "tips_3": {
       "message": "Chase this message for tips and more."
    },
    "tips_4": {
-      "message": "Did you know? ColorPick Eyedropper is available for iPhone and Android!"
+      "message": "Did you know? ColorPick Eyedropper is available for iPhone and Android!",
+      "description": "'ColorPick Eyedropper' refers to the extName key, see that description for details, if that key is not translated leave this part of the string untranslated"
    },
    "tips_5": {
-      "message": "Your Ad Here - Contact via vidsb.com to Sponsor ColorPick."
+      "message": "Your Ad Here - Contact via vidsb.com to Sponsor ColorPick.",
+      "description": "'ColorPick' refers to the extName key, see that description for details, if that key is not translated leave this part of the string untranslated"
    },
    "emptyDesc": {
       "message": ""
