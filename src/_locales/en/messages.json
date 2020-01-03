@@ -9,7 +9,8 @@
       "message": "Close and Exit Color Pick Mode"
    },
    "hideMinimize": {
-      "message": "Hide/Minimize [esc]"
+      "message": "Hide/Minimize [esc]",
+      "description": "This will hide the popup, the [esc] key does this too."
    },
    "buyRegisterTip": {
       "message": "Click to Buy & Register a ColorPick License."
@@ -30,16 +31,19 @@
       "message": "Double click"
    },
    "pickAgainLocked": {
-      "message": "Pick Another Color [Enter]"
+      "message": "Pick Another Color [Enter]",
+      "description": "Pick Another Color, the [Enter] keyboard key does this too."
    },
    "pickAgainUnlocked": {
-      "message": "Select Current Color [Enter]"
+      "message": "Select Current Color [Enter]",
+      "description": "Select Current Color, the [Enter] keyboard key does this too."
    },
    "disablePickEveryTime": {
       "message": "Do not start picking each time popup is clicked"
    },
    "reSnapPage": {
-      "message": "Refresh Picture of Page [r]"
+      "message": "Refresh Picture of Page [r]",
+      "description": "Take a new snapshot for colors, the [r] keyboard key does this too."
    },
    "reLoad": {
       "message": "Reload"
@@ -129,7 +133,8 @@
       "message": "Zoomed Preview is Pixelated"
    },
    "allowWebGl": {
-      "message": "Allow WebGL for Pixelated Preview"
+      "message": "Allow WebGL for Pixelated Preview",
+      "description": "The technology known as 'WebGL' is used for zoomed preview, see https://get.webgl.org/"
    },
    "fishEye": {
       "message": "Fish Eye Zoom Amount"
