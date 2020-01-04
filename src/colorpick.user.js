@@ -553,13 +553,10 @@ function handleRendering(quick){
 		ictx.scale(2,2);
 		ictx.drawImage(cvs,-ox+(startPoint*0.5),-oy+(startPoint*0.5));
 		ictx.scale(0.5,0.5);
-		
 		ictx.fillStyle = "rgba(0,0,0,0.3)";//croshair
 		//ictx.globalAlpha = 1.0;
-		
 		ictx.fillRect(startPoint, 0, 1, totalWidth);
 		ictx.fillRect(0,startPoint, totalWidth, 1);
-		
 	}else{
 		if(opts.allowWebGl && webGlAvail){
 			getMain3dContext();
@@ -578,18 +575,10 @@ function handleRendering(quick){
 				smi=startPoint-i;
 				spi=startPoint+i;
 				//drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight) //CANVAS
-				ictx.drawImage(icvs,spi,0,smi,totalWidth,//total width really??
-														spi+1,0,smi,totalWidth);
-
-				ictx.drawImage(icvs,0,0,smi+1,totalWidth,
-														-1,0,smi+1,totalWidth);
-
-				ictx.drawImage(icvs,0,spi,totalWidth,smi,
-														0,spi+1,totalWidth,smi);
-
-				ictx.drawImage(icvs,0,0,totalWidth,smi+1,
-														0,-1,totalWidth,smi+1);
-
+				ictx.drawImage(icvs,spi,0,smi,totalWidth, spi+1,0,smi,totalWidth);
+				ictx.drawImage(icvs,0,0,smi+1,totalWidth, -1,0,smi+1,totalWidth);
+				ictx.drawImage(icvs,0,spi,totalWidth,smi, 0,spi+1,totalWidth,smi);
+				ictx.drawImage(icvs,0,0,totalWidth,smi+1, 0,-1,totalWidth,smi+1);
 				if(i==0){
 					var dat = ictx.getImageData(startPoint, startPoint, 1, 1).data;//notarget
 //					ictx.fillStyle = "rgba("+(255-data[0])+","+(255-data[1])+","+(255-data[2])+",0.9)";
@@ -602,17 +591,10 @@ function handleRendering(quick){
 					if(++i>=startPoint)break;
 					smi=startPoint-i;
 					spi=startPoint+i;
-					ictx.drawImage(icvs,spi,0,smi,totalWidth,
-															spi+1,0,smi,totalWidth);
-
-					ictx.drawImage(icvs,0,0,smi+1,totalWidth,
-															-1,0,smi+1,totalWidth);
-
-					ictx.drawImage(icvs,0,spi,totalWidth,smi,
-															0,spi+1,totalWidth,smi);
-
-					ictx.drawImage(icvs,0,0,totalWidth,smi+1,
-															0,-1,totalWidth,smi+1);
+					ictx.drawImage(icvs,spi,0,smi,totalWidth, spi+1,0,smi,totalWidth);
+					ictx.drawImage(icvs,0,0,smi+1,totalWidth, -1,0,smi+1,totalWidth);
+					ictx.drawImage(icvs,0,spi,totalWidth,smi, 0,spi+1,totalWidth,smi);
+					ictx.drawImage(icvs,0,0,totalWidth,smi+1, 0,-1,totalWidth,smi+1);
 				}
 				mp--;
 				if(mp<1)mp=1;
