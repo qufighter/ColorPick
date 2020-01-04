@@ -127,19 +127,14 @@ function beginColorInputProcessing(){
 
 			var modeAfter = colorInputs[i].getAttribute('colorpick-after');
 
-			var btn = Cr.elm('img',{
-				style:'min-width:16px;min-height:16px;box-sizing:unset;box-shadow:none;background:unset;padding:'+(modeAfter?'0 0 0 6px':'0 6px 0 0')+';cursor:pointer;',
-				src:chrome.extension.getURL('img/icon16.png'),
-				title:toolTipMessage,
-				class:'colorpick-eyedropper-input-trigger',
-				event:['click',getClickListenerForColorInput(colorInputs[i]),true]
-			});
+			var btn = document.createElement('img');
+			btn.setAttribute('style', 'min-width:16px;min-height:16px;box-sizing:unset;box-shadow:none;background:unset;padding:'+(modeAfter?'0 0 0 6px':'0 6px 0 0')+';cursor:pointer;');
+			btn.setAttribute('src', chrome.extension.getURL('img/icon16.png'));
+			btn.setAttribute('title', toolTipMessage);
+			btn.setAttribute('class', 'colorpick-eyedropper-input-trigger');
+			btn.addEventListener('click', getClickListenerForColorInput(colorInputs[i]), true);
 
-			if( modeAfter ){
-				Cr.insertNode(btn, colorInputs[i].parentNode, colorInputs[i].nextSibling);
-			}else{
-				Cr.insertNode(btn, colorInputs[i].parentNode, colorInputs[i]);
-			}
+			colorInputs[i].parentNode.insertBefore(btn, (modeAfter ? colorInputs[i].nextSibling : colorInputs[i]));
 
 			colorInputs[i].setAttribute('colorpick-eyedropper-active', true);
 		}
