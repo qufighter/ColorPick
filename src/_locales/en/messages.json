@@ -342,6 +342,9 @@
    "emptyDesc": {
       "message": ""
    },
+   "reloadRequired": {
+      "message": "Sorry - the page must be reloaded for this feature of the ColorPick extension to work. This can occcur when the extension updates or is reloaded."
+   },
    "helpPage": {
       "message": "todo"
    }

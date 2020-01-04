@@ -21,6 +21,7 @@ so great care is needed to name functions uniquely here, but also to register li
 var colorInputOpts={};
 var lastColorInputField = null;
 var colorInputsHaveRun = false;
+var errorMessage = 'Sorry:';
 
 function loadColorInputPrefs(cbf){
 	// we can't import options_prefs as it may be added twice.. we really only need to parse one option here
@@ -72,7 +73,7 @@ function getClickListenerForColorInput(inputColor){
 		try{
 			chrome.runtime.sendMessage({activateForInput:true}, function(response){});
 		}catch(e){
-			alert("Sorry - the page must be reloaded for ColorPick extension to work. This can occcur when the extension updates or is reloaded. " + e);
+			alert(errorMessage + " " + e);
 			targ.remove();
 			removeColorPickInputTriggers(document);
 		}
@@ -93,7 +94,7 @@ function beginColorInputProcessing(){
 	// we'll call this mulitple times... it should be able to both activate AND de-activate our features on any field....
 
 	loadColorInputPrefs(function(){
-
+		errorMessage = chrome.i18n.getMessage('reloadRequired');
 		// first check our prefs and see.... also some delay won't hurt if dynamic dom is being processed....
 
 		if( !colorInputsHaveRun && !colorInputOpts.supportColorInputs ){
