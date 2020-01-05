@@ -188,7 +188,7 @@ function picked(){
 		try{
 			chrome.runtime.sendMessage({setColor:true,hex:hex,rgb:rgb,hsv:hsv}, function(response){});
 		}catch(e){
-			console.log("Sorry - ColorPick experienced a problem during setColor and has been disabled - Reload the page in order to pick colors here.", e);
+			console.log("Sorry - ColorPick experienced a problem during setColor and has been disabled - Reload the page in order to pick colors here.", msg_bg_unavail, e);
 			exitAndDetach();
 		}
 		isLocked=true;
@@ -251,7 +251,7 @@ function ssf(ev){
 	hideCtrls();//redundent?
 	if( !c.parentNode ){
 		// this indicates our context has been invalidated by another instance of the script, possibly ext has been reloaded
-		console.log("Sorry - ColorPick experienced a problem in scrollFunction and has been disabled - Reload the page in order to pick colors here.");
+		console.log("Sorry - ColorPick experienced a problem in scrollFunction and has been disabled - Reload the page in order to pick colors here.", msg_bg_unavail);
 		exitAndDetach();
 		return;
 	}
@@ -285,7 +285,7 @@ function initialInit(){
 	});
 	if( !connectListener ){
 		chrome.runtime.connect().onDisconnect.addListener(function() {
-			console.log("Sorry - ColorPick detected the extension has been reloaded.  This instance of the content script is now defunct. You may have to refresh the page to use ColorPick here!")
+			console.log("Sorry - ColorPick detected the extension has been reloaded.  This instance of the content script is now defunct. You may have to refresh the page to use ColorPick here!", msg_bg_unavail)
 			exitAndDetach();
 		})
 		connectListener=true;
@@ -496,7 +496,7 @@ function newImage(){
 	clearTimeout(snapshotLoadedTimeout);
 	snapshotLoadedTimeout = setTimeout(function(){
 		disableColorPicker();
-		console.warn("Sorry - ColorPick experienced issues while waiting for the snapshot - Reload the page in order to pick colors here.  Here is how many newImage requests reached bg page:", imageRequestReachedBg, 'imagesRcvdCounter', imagesRcvdCounter, 'imagesLoadedCounter', imagesLoadedCounter, snapLoader);
+		console.warn("Sorry - ColorPick experienced issues while waiting for the snapshot - Reload the page in order to pick colors here.  Here is how many newImage requests reached bg page:", imageRequestReachedBg, 'imagesRcvdCounter', imagesRcvdCounter, 'imagesLoadedCounter', imagesLoadedCounter, snapLoader, msg_bg_unavail);
 	}, 6000); // max 3 second wait for image, attempt to prevent endless spin
 
 	setTimeout(function(){
@@ -505,7 +505,7 @@ function newImage(){
 				imageRequestReachedBg++;
 			});
 		}catch(e){
-			console.log("Sorry - ColorPick experienced a problem in newImage and has been disabled - Reload the page in order to pick colors here.", e);
+			console.log("Sorry - ColorPick experienced a problem in newImage and has been disabled - Reload the page in order to pick colors here.", e, msg_bg_unavail);
 			exitAndDetach();
 		}
 	},10); // todo: this delay may be redundant, consider removing delay in ssf
