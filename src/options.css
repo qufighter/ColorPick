@@ -26,9 +26,26 @@ label.changed:before{
 .clickSwatch.last-selection{box-shadow: black 0px 0px 1px 1px inset;}
 .hist_drag_sizer{display:block;background-color:#CCC;opacity:0.5;position:absolute;}
 #swatch-holder{position:absolute;width:400px;left:480px;transition:margin-top ease-out 0.1s;margin-bottom:35px;}
-.swatch{padding:10px;}
+#swatches{border-top: 1px solid #EEE;border-bottom: 1px solid #EEE;clear: right;}
+.swatch-spacer{transition:margin ease-out 0.15s;}
+.swatch{padding:10px;transition:margin ease-in 0.15s;}
 .swatch .hex{background-color:transparent;border:none;text-shadow:1px 1px 6px white;width: 72px;padding-left:10px;}
 .swatch .close{float:right;cursor:pointer;}
+.swatchCtrl{
+	color:black;
+	padding:3px 10px 3px 0;
+	display:inline-block;
+}
+#generate-palette-area{
+	padding:5px 0;
+}
+.palette-nav{
+	color: grey;
+	text-shadow:1px 1px 1px white;
+}
+.palette-nav:hover{
+	text-decoration:none;
+}
 #req_win, #req_mac{display:none;}
 .rounded{
 	border:2px solid #AAA;

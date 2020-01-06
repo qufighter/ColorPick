@@ -2,6 +2,7 @@ var _ext_homepage="https://chrome.google.com/webstore/detail/color-picker/ohcpni
 if( isFirefox ){
 	_ext_homepage="https://addons.mozilla.org/en-US/firefox/addon/colorpick-eyedropper/";
 }
+var nbsp='\u00A0';
 function getEventTargetA(ev){
 	ev = ev || event;
 	var targ=(typeof(ev.target)!='undefined') ? ev.target : ev.srcElement;
@@ -254,15 +255,89 @@ function rgb2hsv () {
         }
     }
     return {
-        h: Math.round(h * 360),
+        h: Math.round(h * 360), // MAYBE 360 should become 0 ??
         s: Math.round(s * 100),
         v: Math.round(v * 100)
     };
 }
 
+// found in 4096wheel.js, adapted for needs, fixed vars and structure somewhat, input 0-100???, fixed bug with 360
+// HSV conversion algorithm adapted from easyrgb.com
+function hsv2rgb(Hdeg,S,V) {
+	var R,G,B,var_r,var_g,var_b;
+	var H = Hdeg/360.0;		// convert from to 0 to 1
+	S = S / 100.0;
+	V = V / 100.0;
+	if (S==0) {				// HSV values = From 0 to 1
+		var_r = V;			// RGB results = From 0 to 255
+		var_g = V;
+		var_b = V;
+	}else{
+		var var_h = H*6;
+		var var_i = Math.floor( var_h );
+		var var_1 = V*(1-S);
+		var var_2 = V*(1-S*(var_h-var_i));
+		var var_3 = V*(1-S*(1-(var_h-var_i)));
+		var_i = var_i % 6; //	360 == 0
+		if (var_i==0)      {var_r=V ;    var_g=var_3; var_b=var_1}
+		else if (var_i==1) {var_r=var_2; var_g=V;     var_b=var_1}
+		else if (var_i==2) {var_r=var_1; var_g=V;     var_b=var_3}
+		else if (var_i==3) {var_r=var_1; var_g=var_2; var_b=V    }
+		else if (var_i==4) {var_r=var_3; var_g=var_1; var_b=V    }
+		else               {var_r=V;     var_g=var_1; var_b=var_2}
+	}
+	R = Math.round(var_r*255);	//RGB results = From 0 to 255
+	G = Math.round(var_g*255);
+	B = Math.round(var_b*255);
+	return {r: R, g: G, b: B};
+}
+
+function test_rgb2hsv_to_hsv2rgb(){ // 16777216 total possible rgb colors
+	var matched=0;
+	var mismatched = 0;
+	var wayMismatched = 0;
+	var errPct = 0;
+	for( var r=0; r<256; r++ ){
+		for( var g=0; g<256; g++ ){
+			for( var b=0; b<256; b++ ){
+				var hsv = rgb2hsv(r,g,b);
+				var rgb = hsv2rgb(hsv.h, hsv.s, hsv.v);
+				if( rgb.r == r && rgb.g == g && rgb.b == b ){
+					matched++;
+				}else{
+					var thisErrPct = Math.abs(rgb.r - r) + Math.abs(rgb.g - g) + Math.abs(rgb.b - b);
+					errPct += thisErrPct;
+					if( thisErrPct > 5 ){
+						wayMismatched++;
+						// // most of the ones > 15 off are also > 128 off... we should look at some of the more extreme cases more closely ! (this issue was fixed, 360~==0)
+						// Cr.elm('div',{},[
+						// 	Cr.elm('div', {style:'display:inline-block;background-color:rgb('+r    +','+g    +','+b    +');width:150px;height:50px;'}),
+						// 	Cr.elm('div', {style:'display:inline-block;background-color:rgb('+rgb.r+','+rgb.g+','+rgb.b+');width:150px;height:50px;'}),
+						// 	Cr.txt(' R: '),
+						// 	Cr.txt(Math.abs(rgb.r - r)),
+						// 	Cr.txt(' G: '),
+						// 	Cr.txt(Math.abs(rgb.g - g)),
+						// 	Cr.txt(' B: '),
+						// 	Cr.txt(Math.abs(rgb.b - b)),
+						// 	Cr.txt(' H: '),
+						// 	Cr.txt(hsv.h),
+						// ], document.body);
+					}
+					mismatched++;
+				}
+			}
+		}
+	}
+	var total = matched + mismatched;
+	// errPct = (errPct / (mismatched * 255 * 3) );
+	errPct = (errPct / (total * 255 * 3) );
+	console.log(" tested ", total, " and found ", matched, "matched and", mismatched, " mismatched and ", wayMismatched, " wayMismatched with error percentage (0-1) computed as ", errPct, " or " , errPct * 100, '% innaccurate');
+	// the result colors are off by 3/10 of one percent when they are off
+	// the result colors are off by 2/10 of one percent overall
+}
 
 function clear_history(ev){
-	if(confirm("are you sure?")){
+	if(confirm(chrome.i18n.getMessage('deleteConfirm'))){
 		localStorage['colorPickHistory']='';
 		load_history();
 		sendReloadPrefs();
@@ -293,6 +368,19 @@ function moveDn(e){
 
 function removeSwatch(e){
 	e.target.parentNode.parentNode.removeChild(e.target.parentNode);
+	addOrRemovePalleteGenerationFeatureIf();
+}
+
+function colorMetaForHex(hex, associatedNode){
+	hex = cleanHex(hex);
+	var rgb = fromHexClr(hex)
+	return {
+		node: associatedNode,
+		hex: hex,
+		rgb: rgb,
+		hsl: rgb2hsl(rgb.r,rgb.g,rgb.b),
+		hsv: rgb2hsv(rgb.r,rgb.g,rgb.b)
+	};
 }
 
 function currentSwatches(){
@@ -300,21 +388,12 @@ function currentSwatches(){
 	var colors=[];
 	var swHld = document.getElementById('swatches');
 	var hexInp = swHld.getElementsByClassName('hex');
-	var hex,rgb;
 	for( var s=0,l=hexInp.length; s<l; s++){
-		hex = cleanHex(hexInp[s].value);
-		rgb = fromHexClr(hex);
-		colors.push({
-			node: hexInp[s].parentNode,
-			hex: hex,
-			rgb: rgb,
-			hsl: rgb2hsl(rgb.r,rgb.g,rgb.b),
-			hsv: rgb2hsv(rgb.r,rgb.g,rgb.b)
-		});
+		colors.push(colorMetaForHex(hexInp[s].value, hexInp[s].parentNode));
 	}
-	var exi=document.getElementById('pallete-help');
+	var exi=document.getElementById('palette-help');
 	if(colors.length<1 && !exi){
-		swHld.appendChild(Cr.elm('div', {id: 'pallete-help',childNodes:[
+		swHld.appendChild(Cr.elm('div', {id: 'palette-help',childNodes:[
 			Cr.txt(chrome.i18n.getMessage('noSwatches'))
 		]}));
 		var n=document.getElementById('showhist');
@@ -338,34 +417,232 @@ function sortSwatches(){
 	}
 }
 
+function clearSwatches(){
+	var swHld = document.getElementById('swatches');
+	var colorElms = swHld.getElementsByClassName('hex');
+	if( colorElms.length > 0 && !confirm(chrome.i18n.getMessage('deleteConfirm')) ){
+		return;
+	}
+	Cr.empty(swHld);
+	document.getElementById('clear-palette').style.display='none';
+}
+
 function dedupeSwatches(){
 	var swHld = document.getElementById('swatches');
 	var colors = currentSwatches();
 	var found={};
 	for( var c=0,l=colors.length; c<l; c++ ){
-		//params+='||'+JSON.stringify({hex: colors[c].hex,rgb: colors[c].rgb, hsl: colors[c].hsl, hsv: colors[c].hsv})
 		if( found[colors[c].hex] ){
 			swHld.removeChild(colors[c].node);
-			//e.target.parentNode.parentNode.removeChild(e.target.parentNode);
 		}
 		found[colors[c].hex] = true;
 	}
+	addOrRemovePalleteGenerationFeatureIf();
 }
 
 function swatchChanged(ev){
 	ev.target.parentNode.style.backgroundColor=ev.target.value;
 }
 
+var dragMeta = {
+	active: false,
+	sourceObj: null,
+	lastDest: null,
+	resetDest: function(){
+		if( this.lastDest ){
+			this.lastDest.style.marginBottom = 0;
+			this.lastDest = null;
+		}
+	},
+	setDest: function(destElm){
+		this.resetDest();
+		this.lastDest = destElm;
+		this.lastDest.style.marginBottom = this.sourceObj.clientHeight + 'px';
+	},
+	reset: function(){
+		this.resetDest();
+		this.active = false;
+	},
+	insertAfter: function(element, afterElm){ // todo: this belongs somewhere else
+		if( afterElm.nextSibling ){
+			afterElm.parentNode.insertBefore(element, afterElm.nextSibling);
+		}else{
+			afterElm.parentNode.appendChild(element);
+		}
+	}
+}
+
+function swatchDragStart(ev){
+	dragMeta.active = true;
+	dragMeta.sourceObj = ev.target.closest('.swatch');
+	dragMeta.sourceObj.style.marginLeft='-10px';
+	dragMeta.sourceObj.style.marginRight='10px';
+}
+
+function swatchDragOverEntry(ev){
+	dragMeta.setDest(ev.target.closest('.swatch'));
+	ev.preventDefault();
+	ev.dataTransfer.dropEffect = "move"
+}
+
+function swatchDragOutEntry(ev){
+	dragMeta.resetDest();
+}
+
+function swatchDroppedEntry(ev){
+	if( dragMeta.active ){
+		dragMeta.sourceObj.style.marginLeft=0;
+		dragMeta.sourceObj.style.marginRight=0;
+		if( dragMeta.lastDest && ev.type == 'drop' ){
+			var spacer = Cr.elm('div',{class:"swatch-spacer", style:"margin-bottom:" + dragMeta.sourceObj.clientHeight + 'px;'});
+			dragMeta.insertAfter(spacer, dragMeta.sourceObj);
+			setTimeout(function(){
+				spacer.style.marginBottom = 0;
+				setTimeout(function(){ spacer.remove(); }, 250);
+			}, 0);
+			dragMeta.insertAfter(dragMeta.sourceObj, dragMeta.lastDest);
+			ev.preventDefault();
+		}
+	}
+	dragMeta.reset();
+}
+
 function addSwatchEntry(hex){
+	if( hex.length == 6 ){ hex = '#'+hex; }
+	hex = hex.toUpperCase();
 	var swHld = document.getElementById('swatches');
-	Cr.elm('div',{class:'swatch',style:'background-color:'+hex+';'},[
+	Cr.elm('div',{class:'swatch',draggable:true,style:'background-color:'+hex+';',events:[['dragover', swatchDragOverEntry],['dragleave', swatchDragOutEntry],['drop', swatchDroppedEntry],['dragend', swatchDroppedEntry],['dragstart', swatchDragStart]]},[
 		//Cr.elm('span',{style:'position:absolute;left:-40px;'},[ // for some reason breaks the events
-			Cr.elm("a",{events:['click',moveUp]},[Cr.txt('\u25B3')]),
-			Cr.elm("a",{events:['click',moveDn]},[Cr.txt('\u25BD')]),
+			Cr.elm("a",{class:'palette-nav', style:'cursor:ns-resize;', },[Cr.txt('\u25CF ')]),
+			Cr.elm("a",{class:'palette-nav', events:['click',moveUp]},[Cr.txt('\u25B3')]),
+			Cr.elm("a",{class:'palette-nav', events:['click',moveDn]},[Cr.txt('\u25BD')]),
 		//]),
 		Cr.elm('input',{type:'text',value:hex,class:'hex',event:['change', swatchChanged]}),
-		Cr.elm("img",{class:'close',align:'top',src:chrome.extension.getURL('img/close.png'),events:['click',removeSwatch]})
+		Cr.elm("a",{class:'palette-nav', events:['click',paletteForColorHex]},[Cr.txt('\u25B7')]),
+		Cr.elm("img",{class:'close',draggable:false,align:'top',src:chrome.extension.getURL('img/close.png'),events:['click',removeSwatch]})
 	],swHld);
+	document.getElementById('clear-palette').style.display='';
+	var exi=document.getElementById('palette-help');
+	if(exi)exi.remove();
+	addOrRemovePalleteGenerationFeatureIf();
+}
+
+function paletteForColorHex(ev){
+	var hex = ev.target.parentNode.getElementsByClassName('hex');
+	addOrRemovePalleteGenerationFeatureIf(hex[0]);
+}
+
+function addOrRemovePalleteGenerationFeatureIf(pColorInput){
+	var pgHld = document.getElementById('generate-palette-area');
+	if( pgHld ){
+		Cr.empty(pgHld);
+		var swHld = document.getElementById('swatches');
+		var colorElms = swHld.getElementsByClassName('hex');
+		var colorInput = null;
+		if( colorElms.length == 1 ){
+			colorInput = colorElms[0];
+		}else{
+			colorInput = pColorInput;
+		}
+		if( colorInput ){
+			Cr.elm('div', {
+				childNodes: [
+					Cr.txt('Generate Pallete for '),
+					Cr.elm('span', {id:'palette-gen-selection', style: 'border:1px solid black;display:inline-block;width:1em;background-color:' + colorInput.value, title: colorInput.value, childNodes:[Cr.txt(nbsp)]}),
+					Cr.txt(' using '),
+					Cr.elm('select', {
+						id: 'palette-gen-mode',
+						childNodes: [
+							Cr.elm('option', {value: 'complement', childNodes:[Cr.txt('Complement')]})
+						]
+					}),
+					Cr.txt(' '),
+					Cr.elm('input', {type:'button', value:'generate', event: ['click', generatePalleteFromSwatchES]})
+				]
+			}, pgHld);
+			if( pgHld.scrollIntoViewIfNeeded ) pgHld.scrollIntoViewIfNeeded();
+			else if( pgHld.scrollIntoView ) pgHld.scrollIntoView();
+		}
+	}
+}
+
+var paletteStep = 360 / 12;
+var paletteGenerationModes = {
+
+	complement: {
+		name: 'Complement',
+		results: [
+			{ angle: 0 },
+			{ angle: 6 * paletteStep },
+
+			{ angle: 0 },
+			{ angle: paletteStep }, // Analogous
+			{ angle: -paletteStep }, // Analogous
+
+			{ angle: 0 },
+			{ angle: 2 * paletteStep }, // Harmonious
+			{ angle: -2 *paletteStep }, // Harmonious
+
+			{ angle: 0 },
+			{ angle: 3 * paletteStep }, // Contrasting
+			{ angle: -3 *paletteStep }, // Contrasting
+
+			{ angle: 0 },
+			{ angle: 4 * paletteStep }, // TRIADIC
+			{ angle: -4 *paletteStep }, // TRIADIC
+
+			{ angle: 0 },
+			{ angle: 5 * paletteStep }, // SPLIT-COMPLEMENTARY
+			{ angle: -5 *paletteStep }, // SPLIT-COMPLEMENTARY
+
+			{ angle: 0 }, // SQUARE
+			{ angle: 3 * paletteStep }, // SQUARE
+			{ angle: -3 *paletteStep }, // SQUARE
+			{ angle: 6 * paletteStep },  // SQUARE
+
+			{ angle: 0 }, // TETRADIC (Rectangular) Right
+			{ angle: 2 * paletteStep }, // TETRADIC (Rectangular) Right
+			{ angle: 6 * paletteStep },  // TETRADIC (Rectangular) Right
+			{ angle: 8 * paletteStep },  // TETRADIC (Rectangular) Right
+
+			{ angle: 0 }, // TETRADIC (Rectangular) Right
+			{ angle: -2 * paletteStep }, // TETRADIC (Rectangular) Right
+			{ angle: -6 * paletteStep },  // TETRADIC (Rectangular) Right
+			{ angle: -8 * paletteStep },  // TETRADIC (Rectangular) Right
+
+		]
+	}
+}
+
+function generatePalleteFromSwatchES(){
+	var palette_selection = document.getElementById('palette-gen-selection');
+
+	var c = colorMetaForHex(palette_selection.title);
+
+	var palette_mode = document.getElementById('palette-gen-mode').value;
+
+
+	console.log('clicked!', palette_mode, c, c.hex);
+
+
+	if( paletteGenerationModes[palette_mode] ){
+
+
+		for( var r=0,rl=paletteGenerationModes[palette_mode].results.length; r<rl; r++){
+			var result = paletteGenerationModes[palette_mode].results[r];
+			var h = c.hsv.h, s = c.hsv.s, v = c.hsv.v;
+			if( result.angle ){
+				h = ((h + result.angle) + 360) % 360
+			}
+			var rgbResult = hsv2rgb(h,s,v);
+			addSwatchEntry( RGBtoHex(rgbResult.r, rgbResult.g, rgbResult.b) );
+		}
+
+
+	}else{
+		var rgbResult = hsv2rgb( c.hsv.h, c.hsv.s, c.hsv.v);
+		addSwatchEntry( RGBtoHex(rgbResult.r, rgbResult.g, rgbResult.b) );
+	}
 }
 
 var lastHistorySelection = null;
@@ -605,10 +882,12 @@ Cr.elm("div",{id:"mainbox"},[
 	]),
 	Cr.elm("br",{}),
 	Cr.elm("div",{id:"swatch-holder"},[
-		Cr.elm("a",{class:"swatchCtrl",event:['click',dedupeSwatches],style:'text-align:center;position:absolute;display:block;width:50%;margin-left:25%;'},[Cr.txt(chrome.i18n.getMessage('dedupe'))]),
+		Cr.elm("a",{class:"swatchCtrl",event:['click',clearSwatches],style:'text-align:center;position:absolute;display:block;width:50%;margin-left:25%;display:none;',id:'clear-palette'},[Cr.txt(chrome.i18n.getMessage('clear').toLowerCase())]),
 		Cr.elm("a",{class:"swatchCtrl",event:['click',sortSwatches],style:''},[Cr.txt(chrome.i18n.getMessage('sort'))]),
+		Cr.elm("a",{class:"swatchCtrl",event:['click',dedupeSwatches]},[Cr.txt(chrome.i18n.getMessage('dedupe'))]),
 		Cr.elm("a",{class:"swatchCtrl",event:['click',printSwatches],style:'float:right;',target:'_blank'},[Cr.txt(chrome.i18n.getMessage('printSave'))]),
-		Cr.elm("div",{id:"swatches"})
+		Cr.elm("div",{id:"swatches", style:'display:block;position:relative;'}),
+		Cr.elm("div",{id:"generate-palette-area"})
 	]),
 	Cr.elm("a",{href:"#",id:"showhist",class:"toggleOpts"},[
 		Cr.elm("img",{src:"img/expand.png"}),
@@ -660,6 +939,11 @@ Cr.elm("div",{id:"mainbox"},[
 		Cr.elm('span',{style:'color:#444;'},[Cr.txt('\uFFFD ')]),
 		Cr.txt(chrome.i18n.getMessage('help'))
 	]),
+	Cr.elm("br",{}),
+	Cr.ent(chrome.i18n.getMessage('extName')+" &copy;"),
+	Cr.elm("a",{target:"_blank",href:"http://vidsbee.com/ColorPick/"},[
+		Cr.txt("Vidsbee.com")
+	]),
 	Cr.txt(" | "),
 	Cr.elm("a",{href:"credits.html"},[
 		Cr.txt(chrome.i18n.getMessage('credits'))
@@ -667,11 +951,6 @@ Cr.elm("div",{id:"mainbox"},[
 	Cr.txt(" | "),
 	Cr.elm("a",{href:"sponsors.html"},[
 		Cr.txt(chrome.i18n.getMessage('sponsors'))
-	]),
-	Cr.elm("br",{}),
-	Cr.ent(chrome.i18n.getMessage('extName')+" &copy;"),
-	Cr.elm("a",{target:"_blank",href:"http://vidsbee.com/ColorPick/"},[
-		Cr.txt("Vidsbee.com")
 	]),
 	Cr.elm('div',{'id':'rate_position'})
 ],document.body);

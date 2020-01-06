@@ -345,6 +345,9 @@
    "reloadRequired": {
       "message": "Sorry - the page must be reloaded for this feature of the ColorPick extension to work. This can occcur when the extension updates or is reloaded."
    },
+   "deleteConfirm":{
+      "message": "Are you sure?"
+   },
    "helpPage": {
       "message": "todo"
    }
