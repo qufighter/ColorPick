@@ -532,6 +532,228 @@ function paletteForColorHex(ev){
 	addOrRemovePalleteGenerationFeatureIf(hex[0]);
 }
 
+var paletteStep = 360 / 12;
+var paletteGenerationModes = {
+
+	complement: {
+		name: 'Complement',
+		info: 'The complment for a given color is 180 degrees away and it\'s opposite on the color wheel.  This is 6 30\u00b0 increments away.  Please note slight percision innaccuracy is possible as we move into and out of the HSV color space, you can work around this by taking the complement of the complementary color.',
+		order: 0,
+		results: [
+			{ angle: 6 * paletteStep }
+		]
+	},
+	analogous: {
+		name: 'Analogous',
+		order: 1,
+		results: [
+			{ angle: paletteStep }, // Analogous
+			{ angle: -paletteStep }, // Analogous
+		]
+	},
+	harmonious: {
+		name: 'Harmonious',
+		order: 2,
+		results: [
+			{ angle: 2 * paletteStep }, // Harmonious
+			{ angle: -2 *paletteStep }, // Harmonious
+		]
+	},
+	contrasting: {
+		name: 'Contrasting',
+		order: 3,
+		results: [
+			{ angle: 3 * paletteStep }, // Contrasting
+			{ angle: -3 *paletteStep }, // Contrasting
+		]
+	},
+	triadic: {
+		name: 'Triadic',
+		order: 4,
+		results: [
+			{ angle: 4 * paletteStep }, // TRIADIC
+			{ angle: -4 *paletteStep }, // TRIADIC
+		]
+	},
+	analogous: {
+		name: 'Split Complementary',
+		info: 'Split complementary colors are 2 colors 5 30\u00b0 increments away from the base color, each a single 30\u00b0 increment from the complementaray color.',
+		order: 5,
+		results: [
+			{ angle: 5 * paletteStep }, // SPLIT-COMPLEMENTARY
+			{ angle: -5 *paletteStep }, // SPLIT-COMPLEMENTARY
+		]
+	},
+	square: {
+		name: 'Square',
+		order: 6,
+		results: [
+			{ angle: 3 * paletteStep }, // SQUARE
+			{ angle: -3 *paletteStep }, // SQUARE
+			{ angle: 6 * paletteStep },  // SQUARE
+		]
+	},
+	tetradic_l: {
+		name: 'Left Tetradic (Rectangular)',
+		order: 7,
+		results: [
+			{ angle: 2 * paletteStep }, // TETRADIC (Rectangular) Left
+			{ angle: 6 * paletteStep },  // TETRADIC (Rectangular) Left
+			{ angle: 8 * paletteStep },  // TETRADIC (Rectangular) Left
+		]
+	},
+	tetradic_r: {
+		name: 'Right Tetradic (Rectangular)',
+		order: 8,
+		results: [
+			{ angle: -2 * paletteStep }, // TETRADIC (Rectangular) Right
+			{ angle: -6 * paletteStep },  // TETRADIC (Rectangular) Right
+			{ angle: -8 * paletteStep },  // TETRADIC (Rectangular) Right
+		]
+	}
+};
+
+// TODO move the folowing into some helper generator class... instead of executing right here and now...
+
+// by denominator in 1/x
+var iFractionNames = {
+	2: 'half',
+	3: 'third',
+	4: 'quarter',
+	5: 'fifth'
+}
+var fractionNames = { // TODO: localized these
+	2: 'Half',
+	3: 'Third',
+	4: 'Quarter',
+	5: 'Fifth'
+}
+
+var toneModes = {
+	tone:{
+		tone_fade:{iname:'tone_fade', name: '-Saturation', key: 'sat', dir: -1},
+		tone_boost:{iname:'tone_boost', name: '+Saturation', key: 'sat', dir: 1}
+	},
+	bright:{
+		bright_fade:{iname:'bright_fade', name: '+Darkness', key: 'val', dir: -1},
+		bright_boost:{iname:'bright_boost', name: '-Darkness', key: 'val', dir: 1}
+	}
+
+}
+
+var toneOrdering = 1;
+var paletteGenerationTones = {
+	none: {
+		name: 'Default',
+		info: '',
+		order: 0,
+		results: [
+			{sat: 1.0},
+			{val: 1.0}
+		]
+	}
+};
+
+function addCorrespondingTones(opsArr){
+	// TODO pass in ORDER (its global-ish 	 !!!!!!!!!!!!!!!
+	// console.log(opsArr);
+
+	var iter = 2;
+	var max = 6; // we do up to fifths...
+
+	var o, ops;
+
+	while( iter < max ){
+
+		var resultKeyParts = [];
+		var resultNameParts = [];
+		var results = [];
+
+		var inc = 1.0 / iter;
+		var progs = []; // up to optsArr length...
+		for( o=0; o<opsArr.length; o++ ){
+			ops = opsArr[o];
+
+			resultKeyParts.push(iFractionNames[iter] + '_' +ops.iname);
+			resultNameParts.push(fractionNames[iter] + ' ' + ops.name);
+
+			progs.push(1.0); // we stat at 1.0 and either - or + by inc
+		}
+
+
+
+		while( progs[0] > 0.1 && progs[0] < 1.9 ){
+			// either prog direciton should expire simultaneously :)
+
+			var result = {};
+
+			for( o=0; o<opsArr.length; o++ ){
+				ops = opsArr[o];
+
+				result[ops.key] = progs[o];
+
+
+
+				progs[o] += ops.dir * inc;
+			}
+
+			results.push(result);
+
+
+		}
+		iter++;
+
+		// console.log(resultKeyParts, resultNameParts, results);
+
+		paletteGenerationTones[resultKeyParts.join('_')] = {
+			name: resultNameParts.join(' '),
+			order: toneOrdering++,
+			results: results
+		}
+	}
+
+}
+
+var completedTypes = {}
+for( var type in toneModes ){
+	for( var itype in toneModes[type] ){
+		//console.log( itype)
+		addCorrespondingTones([toneModes[type][itype]]);
+
+		for( var rtype in toneModes ){
+			if( rtype == type || completedTypes[rtype] ) continue;
+			for( var ritype in toneModes[rtype] ){
+				//console.log( itype, ritype)
+				addCorrespondingTones([toneModes[type][itype], toneModes[rtype][ritype]]);
+
+
+			}
+		}
+	}
+	completedTypes[type] = true;
+}
+
+// console.log(var paletteGenerationTones); // anticipate paletteGenerationTones
+
+
+function selectOptionsForObject(modesObj){
+	var options = [];
+	for( var palleteKey in modesObj ){
+		var palleteMeta = modesObj[palleteKey];
+		options.push(Cr.elm('option', {
+			title: palleteMeta.info,
+			order: palleteMeta.order,
+			value: palleteKey,
+			childNodes:[Cr.txt(palleteMeta.name)]
+		}))
+	}
+
+	options.sort(function(a,b){
+		return a.getAttribute('order') - b.getAttribute('order');
+	})
+	return options;
+}
+
 function addOrRemovePalleteGenerationFeatureIf(pColorInput){
 	var pgHld = document.getElementById('generate-palette-area');
 	if( pgHld ){
@@ -545,16 +767,40 @@ function addOrRemovePalleteGenerationFeatureIf(pColorInput){
 			colorInput = pColorInput;
 		}
 		if( colorInput ){
+
+			var options = selectOptionsForObject(paletteGenerationModes)
+			var toneOptions = selectOptionsForObject(paletteGenerationTones)
+
 			Cr.elm('div', {
 				childNodes: [
-					Cr.txt('Generate Pallete for '),
+					Cr.txt('Generate pallete for '),
 					Cr.elm('span', {id:'palette-gen-selection', style: 'border:1px solid black;display:inline-block;width:1em;background-color:' + colorInput.value, title: colorInput.value, childNodes:[Cr.txt(nbsp)]}),
-					Cr.txt(' using '),
+					Cr.txt(' '),
 					Cr.elm('select', {
 						id: 'palette-gen-mode',
-						childNodes: [
-							Cr.elm('option', {value: 'complement', childNodes:[Cr.txt('Complement')]})
-						]
+						style: 'width:100px;',
+						childNodes: options
+					}),
+					Cr.elm('span', {
+						style: 'cursor:pointer',
+						events:[
+							['mouseover', function(ev){
+								var s=ev.target.previousSibling;
+								var selOpt = s.querySelector("[value="+s.value+"]");
+								ev.target.title = selOpt.title || 'no additional info';
+							}],
+							['click', function(ev){
+								var s=ev.target.previousSibling;
+								var selOpt = s.querySelector("[value="+s.value+"]");
+								alert(selOpt.title || 'no additional info');
+							}]
+						],
+						childNodes:[Cr.txt(' \u24D8 ')]
+					}),
+					Cr.elm('select', {
+						id: 'palette-gen-tone',
+						style: 'width:100px;',
+						childNodes: toneOptions
 					}),
 					Cr.txt(' '),
 					Cr.elm('input', {type:'button', value:'generate', event: ['click', generatePalleteFromSwatchES]})
@@ -566,52 +812,21 @@ function addOrRemovePalleteGenerationFeatureIf(pColorInput){
 	}
 }
 
-var paletteStep = 360 / 12;
-var paletteGenerationModes = {
-
-	complement: {
-		name: 'Complement',
-		results: [
-			{ angle: 0 },
-			{ angle: 6 * paletteStep },
-
-			{ angle: 0 },
-			{ angle: paletteStep }, // Analogous
-			{ angle: -paletteStep }, // Analogous
-
-			{ angle: 0 },
-			{ angle: 2 * paletteStep }, // Harmonious
-			{ angle: -2 *paletteStep }, // Harmonious
-
-			{ angle: 0 },
-			{ angle: 3 * paletteStep }, // Contrasting
-			{ angle: -3 *paletteStep }, // Contrasting
-
-			{ angle: 0 },
-			{ angle: 4 * paletteStep }, // TRIADIC
-			{ angle: -4 *paletteStep }, // TRIADIC
-
-			{ angle: 0 },
-			{ angle: 5 * paletteStep }, // SPLIT-COMPLEMENTARY
-			{ angle: -5 *paletteStep }, // SPLIT-COMPLEMENTARY
-
-			{ angle: 0 }, // SQUARE
-			{ angle: 3 * paletteStep }, // SQUARE
-			{ angle: -3 *paletteStep }, // SQUARE
-			{ angle: 6 * paletteStep },  // SQUARE
-
-			{ angle: 0 }, // TETRADIC (Rectangular) Right
-			{ angle: 2 * paletteStep }, // TETRADIC (Rectangular) Right
-			{ angle: 6 * paletteStep },  // TETRADIC (Rectangular) Right
-			{ angle: 8 * paletteStep },  // TETRADIC (Rectangular) Right
-
-			{ angle: 0 }, // TETRADIC (Rectangular) Right
-			{ angle: -2 * paletteStep }, // TETRADIC (Rectangular) Right
-			{ angle: -6 * paletteStep },  // TETRADIC (Rectangular) Right
-			{ angle: -8 * paletteStep },  // TETRADIC (Rectangular) Right
-
-		]
+function addPalleteEntry(origColor, hueResult, toneResult){
+	var h = origColor.hsv.h, s = origColor.hsv.s, v = origColor.hsv.v;
+	if( hueResult.angle ){
+		h = ((h + hueResult.angle) + 360) % 360
 	}
+	if( toneResult.sat ){
+		s = s * toneResult.sat;
+		if( s > 100 ) s = 100;
+	}
+	if( toneResult.val ){
+		v = v * toneResult.val;
+		if( v > 100 ) v = 100;
+	}
+	var rgbResult = hsv2rgb(h,s,v);
+	addSwatchEntry( RGBtoHex(rgbResult.r, rgbResult.g, rgbResult.b) );
 }
 
 function generatePalleteFromSwatchES(){
@@ -620,26 +835,60 @@ function generatePalleteFromSwatchES(){
 	var c = colorMetaForHex(palette_selection.title);
 
 	var palette_mode = document.getElementById('palette-gen-mode').value;
+	var palette_tone = document.getElementById('palette-gen-tone').value;
+
+
+	var swHld = document.getElementById('swatches');
+	var colorElms = swHld.getElementsByClassName('hex');
+	var lastColorElm = colorElms && colorElms.length ? colorElms[colorElms.length - 1] : null;
 
 
 	console.log('clicked!', palette_mode, c, c.hex);
 
 
+	if( lastColorElm && lastColorElm.value != '#'+c.hex){
+		addSwatchEntry( c.hex ); // if the final color is not our start color, just add it automagically
+	}
+
+	var toneList,t,tl,toneResult;
+
+	if( paletteGenerationTones[palette_tone] ){
+
+		toneList = paletteGenerationTones[palette_tone].results;
+
+		for( t=0,tl=toneList.length; t<tl; t++){
+			toneResult = toneList[t];
+			if( (toneResult.sat && toneResult.sat != 1.0) || (toneResult.val && toneResult.val != 1.0)  ){
+				addPalleteEntry(c, {}, toneResult);
+			}
+		}
+
+	
+	}else{
+		console.error("paletteGenerationTones", palette_tone, "Was UNDEFINED!");
+	}
+
+
+
 	if( paletteGenerationModes[palette_mode] ){
+
+
+		var toneList = paletteGenerationTones[palette_tone].results;
+		if( !toneList || !toneList.length ){ toneList = [{sat: 1.0}]; }
 
 
 		for( var r=0,rl=paletteGenerationModes[palette_mode].results.length; r<rl; r++){
 			var result = paletteGenerationModes[palette_mode].results[r];
-			var h = c.hsv.h, s = c.hsv.s, v = c.hsv.v;
-			if( result.angle ){
-				h = ((h + result.angle) + 360) % 360
+			for( t=0,tl=toneList.length; t<tl; t++){
+				toneResult = toneList[t];
+				addPalleteEntry(c, result, toneResult);
 			}
-			var rgbResult = hsv2rgb(h,s,v);
-			addSwatchEntry( RGBtoHex(rgbResult.r, rgbResult.g, rgbResult.b) );
 		}
 
 
 	}else{
+		console.error("paletteGenerationModes", palette_mode, "Was UNDEFINED!");
+		// to hsv and back to rgb.... pointelss!
 		var rgbResult = hsv2rgb( c.hsv.h, c.hsv.s, c.hsv.v);
 		addSwatchEntry( RGBtoHex(rgbResult.r, rgbResult.g, rgbResult.b) );
 	}
