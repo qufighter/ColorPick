@@ -532,17 +532,23 @@ function paletteForColorHex(ev){
 	addOrRemovePalleteGenerationFeatureIf(hex[0]);
 }
 
-function selectOptionsForObject(modesObj){
+//TODO move this out and into palleteGenData ?? palleteGenHelpers ??
+function selectOptionsForObject(modesObj, filterFunction){
+	var filterFunction = filterFunction || function(){return true;}
 	var options = [];
 	for( var palleteKey in modesObj ){
 		var palleteMeta = modesObj[palleteKey];
-		options.push(Cr.elm('option', {
-			title: palleteMeta.info,
-			order: palleteMeta.order,
-			value: palleteKey,
-			childNodes:[Cr.txt(palleteMeta.name)]
-		}))
+		if( filterFunction(palleteMeta) ){
+			options.push(Cr.elm('option', {
+				title: palleteMeta.info,
+				order: palleteMeta.order,
+				value: palleteKey,
+				childNodes:[Cr.txt(palleteMeta.name)]
+			}));
+		}
 	}
+
+	// TODO: recall previous selection???
 
 	options.sort(function(a,b){
 		return a.getAttribute('order') - b.getAttribute('order');
@@ -564,8 +570,28 @@ function addOrRemovePalleteGenerationFeatureIf(pColorInput){
 		}
 		if( colorInput ){
 
+			var c = colorMetaForHex(colorInput.value);
+
 			var options = selectOptionsForObject(palleteGenData.Modes);
-			var toneOptions = selectOptionsForObject(palleteGenData.Tones);
+			var toneOptions = selectOptionsForObject(palleteGenData.Tones, function(pMeta){
+
+				//console.log(c.hsv, pMeta);
+
+				// look at each entry in pMeta.results
+				//1: {sat: 1.3333333333333333, val: 0.6666666666666667}
+
+				// when applied to c.hsv .s and .v respectively (as performed by addPalleteEntry)
+				// TODO : split that function up so we can use it here?
+
+				// If the result exceedes some threshold as we apply the transformation (i.e all the transforms yield no distinct result)
+				// better: when 2 or more transform of this type yield the SAME result....
+				// we return false thus omitting this ineffective choice (the choice would genrate repeats (for any resultant hue angle))
+
+
+
+				return true;
+
+			});
 
 			Cr.elm('div', {
 				childNodes: [
