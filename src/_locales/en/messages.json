@@ -339,34 +339,34 @@
       "message": "Your Ad Here - Contact via vidsb.com to Sponsor ColorPick.",
       "description": "'ColorPick' refers to the extName key, see that description for details, if that key is not translated leave this part of the string untranslated"
    },
-   "emptyDesc": {
-      "message": ""
-   },
    "reloadRequired": {
       "message": "Sorry - the page must be reloaded for this feature of the ColorPick extension to work. This can occcur when the extension updates or is reloaded."
    },
    "deleteConfirm":{
       "message": "Are you sure?"
    },
-
-   "pallete_plus_saturation":{
+   "generate": {
+      "message": "Generate"
+   },
+   "generate_palette": {
+      "message": "Generate Palette"
+   },
+   "palette_plus_saturation":{
       "message": "+Saturation",
       "description": "Used in conjunction with half, third, etc to specify a modification to color saturation values in the positive (increasing) direction so that they become more vibrant"
    },
-   "pallete_minus_saturation":{
+   "palette_minus_saturation":{
       "message": "-Saturation",
       "description": "Used in conjunction with half, third, etc to specify a modification to color saturation values in the negative (decreasing) direction so that they become less vibrant"
    },
-
-   "pallete_plus_darkness":{
+   "palette_plus_darkness":{
       "message": "+Darkness",
       "description": "Used in conjunction with half, third, etc to specify a modification to color brightness values in the direction of increasing darkness (decreasing brightness)"
    },
-   "pallete_minus_darkness":{
+   "palette_minus_darkness":{
       "message": "-Darkness",
       "description": "Used in conjunction with half, third, etc to specify a modification to color brightness values in the direction of decresing darkness (increasing brightness)"
    },
-
    "half":{
       "message": "Half",
       "description": "As in 'one half' and to be concatenated with a color related word like tone, saturation or brightness"
@@ -383,64 +383,64 @@
       "message": "Fifth",
       "description": "As in 'one fifth' and to be concatenated with a color related word like tone, saturation or brightness"
    },
-   "pallete_complement":{
+   "palette_complement":{
       "message": "Complement",
-      "description": "see the message pallete_complement_info for details"
+      "description": "see the message palette_complement_info for details"
    },
-   "pallete_analogous":{
+   "palette_analogous":{
       "message": "Analogous",
-      "description": "see the message pallete_analogous_info for details"
+      "description": "see the message palette_analogous_info for details"
    },
-   "pallete_harmonious":{
+   "palette_harmonious":{
       "message": "Harmonious",
-      "description": "see the message pallete_harmonious_info for details"
+      "description": "see the message palette_harmonious_info for details"
    },
-   "pallete_contrasting":{
+   "palette_contrasting":{
       "message": "Contrasting",
-      "description": "see the message pallete_contrasting_info for details"
+      "description": "see the message palette_contrasting_info for details"
    },
-   "pallete_triadic":{
+   "palette_triadic":{
       "message": "Triadic",
-      "description": "see the message pallete_triadic_info for details"
+      "description": "see the message palette_triadic_info for details"
    },
-   "pallete_splilt_complementary":{
+   "palette_splilt_complementary":{
       "message": "Split Complementary",
-      "description": "see the message pallete_splilt_complementary_info for details"
+      "description": "see the message palette_splilt_complementary_info for details"
    },
-   "pallete_square":{
+   "palette_square":{
       "message": "Square",
-      "description": "see the message pallete_square_info for details"
+      "description": "see the message palette_square_info for details"
    },
-   "pallete_tetradic_left":{
+   "palette_tetradic_left":{
       "message": "Left Tetradic (Rectangular)",
-      "description": "see the message pallete_tetradic_info for details"
+      "description": "see the message palette_tetradic_info for details"
    },
-   "pallete_tetradic_right":{
+   "palette_tetradic_right":{
       "message": "Right Tetradic (Rectangular)",
-      "description": "see the message pallete_tetradic_info for details"
+      "description": "see the message palette_tetradic_info for details"
    },
-   "pallete_complement_info":{
+   "palette_complement_info":{
       "message": "The complement for a given color is 180 degrees away and it's opposite on the color wheel.  This is six 30\u00b0 increments away.  Please note slight precision inaccuracy is possible as we move into and out of the HSV color space, you can work around this by taking the complement of the complementary color."
    },
-   "pallete_analogous_info":{
+   "palette_analogous_info":{
       "message": "Analogous colors are 2 colors one 30\u00b0 increment away from the original color."
    },
-   "pallete_harmonious_info":{
+   "palette_harmonious_info":{
       "message": "Harmonious colors are 2 colors two 30\u00b0 increments away from the original color."
    },
-   "pallete_contrasting_info":{
+   "palette_contrasting_info":{
       "message": "Contrasting colors are 2 colors three 30\u00b0 increments away from the original color."
    },
-   "pallete_triadic_info":{
+   "palette_triadic_info":{
       "message": "Triadic colors are 2 colors four 30\u00b0 increments away from the base color, each four 30\u00b0 increment from the original color.  The two colors added are also 4 increments away from each other forming an equilateral triangle of color."
    },
-   "pallete_splilt_complementary_info":{
+   "palette_splilt_complementary_info":{
       "message": "Split complementary colors are 2 colors five 30\u00b0 increments away from the base color, each a single 30\u00b0 increment from the complementary color."
    },
-   "pallete_square_info":{
+   "palette_square_info":{
       "message": "Square colors are 3 colors each three 30\u00b0 increments away from the base color, and includes the complementary color.  This forms a perfect square."
    },
-   "pallete_tetradic_info":{
+   "palette_tetradic_info":{
       "message": "Tetradic (Rectangular) include the complementary color, and also two additional colors each two 30\u00b0 increments away from the base color or its complement in the same direction (clockwise or counterclockwise).  Depending on if Left or Right is selected the increments will be rectangular in one direction or the other."
    },
    "helpPage": {

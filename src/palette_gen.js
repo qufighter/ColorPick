@@ -2,20 +2,20 @@
 // contains helpers to generate the meta-data associated with all the possible options
 // we may consider moving some helpers here
 
-var palleteGenData = (function(){
+var paletteGenData = (function(){
 	var paletteStep = 360 / 12;
 	var paletteGenerationModes = {
 		complement: {
-			name: chrome.i18n.getMessage('pallete_complement'),
-			info: chrome.i18n.getMessage('pallete_complement_info'),
+			name: chrome.i18n.getMessage('palette_complement'),
+			info: chrome.i18n.getMessage('palette_complement_info'),
 			order: 0,
 			results: [
 				{ angle: 6 * paletteStep }
 			]
 		},
 		analogous: {
-			name: chrome.i18n.getMessage('pallete_analogous'),
-			info: chrome.i18n.getMessage('pallete_analogous_info'),
+			name: chrome.i18n.getMessage('palette_analogous'),
+			info: chrome.i18n.getMessage('palette_analogous_info'),
 			order: 1,
 			results: [
 				{ angle: paletteStep },
@@ -23,8 +23,8 @@ var palleteGenData = (function(){
 			]
 		},
 		harmonious: {
-			name: chrome.i18n.getMessage('pallete_harmonious'),
-			info: chrome.i18n.getMessage('pallete_harmonious_info'),
+			name: chrome.i18n.getMessage('palette_harmonious'),
+			info: chrome.i18n.getMessage('palette_harmonious_info'),
 			order: 2,
 			results: [
 				{ angle: 2 * paletteStep },
@@ -32,8 +32,8 @@ var palleteGenData = (function(){
 			]
 		},
 		contrasting: {
-			name: chrome.i18n.getMessage('pallete_contrasting'),
-			info: chrome.i18n.getMessage('pallete_contrasting_info'),
+			name: chrome.i18n.getMessage('palette_contrasting'),
+			info: chrome.i18n.getMessage('palette_contrasting_info'),
 			order: 3,
 			results: [
 				{ angle: 3 * paletteStep },
@@ -41,8 +41,8 @@ var palleteGenData = (function(){
 			]
 		},
 		triadic: {
-			name: chrome.i18n.getMessage('pallete_triadic'),
-			info: chrome.i18n.getMessage('pallete_triadic_info'),
+			name: chrome.i18n.getMessage('palette_triadic'),
+			info: chrome.i18n.getMessage('palette_triadic_info'),
 			order: 4,
 			results: [
 				{ angle: 4 * paletteStep },
@@ -50,8 +50,8 @@ var palleteGenData = (function(){
 			]
 		},
 		splilt_complementary: {
-			name: chrome.i18n.getMessage('pallete_splilt_complementary'),
-			info: chrome.i18n.getMessage('pallete_splilt_complementary_info'),
+			name: chrome.i18n.getMessage('palette_splilt_complementary'),
+			info: chrome.i18n.getMessage('palette_splilt_complementary_info'),
 			order: 5,
 			results: [
 				{ angle: 5 * paletteStep },
@@ -59,8 +59,8 @@ var palleteGenData = (function(){
 			]
 		},
 		square: {
-			name: chrome.i18n.getMessage('pallete_square'),
-			info: chrome.i18n.getMessage('pallete_square_info'),
+			name: chrome.i18n.getMessage('palette_square'),
+			info: chrome.i18n.getMessage('palette_square_info'),
 			order: 6,
 			results: [
 				{ angle: 3 * paletteStep },
@@ -69,8 +69,8 @@ var palleteGenData = (function(){
 			]
 		},
 		tetradic_l: {
-			name: chrome.i18n.getMessage('pallete_tetradic_left'),
-			info: chrome.i18n.getMessage('pallete_tetradic_info'),
+			name: chrome.i18n.getMessage('palette_tetradic_left'),
+			info: chrome.i18n.getMessage('palette_tetradic_info'),
 			order: 7,
 			results: [
 				{ angle: 2 * paletteStep },
@@ -79,8 +79,8 @@ var palleteGenData = (function(){
 			]
 		},
 		tetradic_r: {
-			name: chrome.i18n.getMessage('pallete_tetradic_right'),
-			info: chrome.i18n.getMessage('pallete_tetradic_info'),
+			name: chrome.i18n.getMessage('palette_tetradic_right'),
+			info: chrome.i18n.getMessage('palette_tetradic_info'),
 			order: 8,
 			results: [
 				{ angle: -2 * paletteStep },
@@ -106,12 +106,12 @@ var palleteGenData = (function(){
 
 	var toneModes = {
 		tone:{
-			tone_fade:{iname:'tone_fade', name: chrome.i18n.getMessage('pallete_minus_saturation'), key: 'sat', dir: -1},
-			tone_boost:{iname:'tone_boost', name: chrome.i18n.getMessage('pallete_plus_saturation'), key: 'sat', dir: 1}
+			tone_fade:{iname:'tone_fade', name: chrome.i18n.getMessage('palette_minus_saturation'), key: 'sat', dir: -1},
+			tone_boost:{iname:'tone_boost', name: chrome.i18n.getMessage('palette_plus_saturation'), key: 'sat', dir: 1}
 		},
 		bright:{
-			bright_fade:{iname:'bright_fade', name: chrome.i18n.getMessage('pallete_plus_darkness'), key: 'val', dir: -1},
-			bright_boost:{iname:'bright_boost', name: chrome.i18n.getMessage('pallete_minus_darkness'), key: 'val', dir: 1}
+			bright_fade:{iname:'bright_fade', name: chrome.i18n.getMessage('palette_plus_darkness'), key: 'val', dir: -1},
+			bright_boost:{iname:'bright_boost', name: chrome.i18n.getMessage('palette_minus_darkness'), key: 'val', dir: 1}
 		}
 	};
 
@@ -193,4 +193,4 @@ var palleteGenData = (function(){
 })();
 
 // future use?
-// var palleteGenHelpers = {}
+// var paletteGenHelpers = {}

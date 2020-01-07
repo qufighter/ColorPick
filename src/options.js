@@ -336,6 +336,10 @@ function test_rgb2hsv_to_hsv2rgb(){ // 16777216 total possible rgb colors
 	// the result colors are off by 2/10 of one percent overall
 }
 
+function rgbObjMismatch(a, b){
+	return a.r != b.r || a.g != b.g || a.b != b.b;
+}
+
 function clear_history(ev){
 	if(confirm(chrome.i18n.getMessage('deleteConfirm'))){
 		localStorage['colorPickHistory']='';
@@ -532,18 +536,18 @@ function paletteForColorHex(ev){
 	addOrRemovePalleteGenerationFeatureIf(hex[0]);
 }
 
-//TODO move this out and into palleteGenData ?? palleteGenHelpers ??
+//TODO move this out and into paletteGenData ?? paletteGenHelpers ??
 function selectOptionsForObject(modesObj, filterFunction){
 	var filterFunction = filterFunction || function(){return true;}
 	var options = [];
-	for( var palleteKey in modesObj ){
-		var palleteMeta = modesObj[palleteKey];
-		if( filterFunction(palleteMeta) ){
+	for( var paletteKey in modesObj ){
+		var paletteMeta = modesObj[paletteKey];
+		if( filterFunction(paletteMeta) ){
 			options.push(Cr.elm('option', {
-				title: palleteMeta.info,
-				order: palleteMeta.order,
-				value: palleteKey,
-				childNodes:[Cr.txt(palleteMeta.name)]
+				title: paletteMeta.info,
+				order: paletteMeta.order,
+				value: paletteKey,
+				childNodes:[Cr.txt(paletteMeta.name)]
 			}));
 		}
 	}
@@ -572,30 +576,24 @@ function addOrRemovePalleteGenerationFeatureIf(pColorInput){
 
 			var c = colorMetaForHex(colorInput.value);
 
-			var options = selectOptionsForObject(palleteGenData.Modes);
-			var toneOptions = selectOptionsForObject(palleteGenData.Tones, function(pMeta){
-
-				//console.log(c.hsv, pMeta);
-
-				// look at each entry in pMeta.results
-				//1: {sat: 1.3333333333333333, val: 0.6666666666666667}
-
-				// when applied to c.hsv .s and .v respectively (as performed by addPalleteEntry)
-				// TODO : split that function up so we can use it here?
-
-				// If the result exceedes some threshold as we apply the transformation (i.e all the transforms yield no distinct result)
-				// better: when 2 or more transform of this type yield the SAME result....
+			var options = selectOptionsForObject(paletteGenData.Modes);
+			var toneOptions = selectOptionsForObject(paletteGenData.Tones, function(pMeta){
+				// when 2 or more transform of this type yield the SAME result....
 				// we return false thus omitting this ineffective choice (the choice would genrate repeats (for any resultant hue angle))
-
-
-
+				var lastResult = {r:-1, g:-1, b:-1};
+				for( var r=0,rl=pMeta.results.length; r<rl; r++ ){
+					var rgbResult = rgbForPalleteTransform(c, {}, pMeta.results[r]);
+					if( !rgbObjMismatch(lastResult, rgbResult) ){
+						return false;
+					}
+					lastResult = rgbResult;
+				}
 				return true;
-
 			});
 
 			Cr.elm('div', {
 				childNodes: [
-					Cr.txt('Generate pallete for '),
+					Cr.txt(chrome.i18n.getMessage('generate_palette') + ' '),
 					Cr.elm('span', {id:'palette-gen-selection', style: 'border:1px solid black;display:inline-block;width:1em;background-color:' + colorInput.value, title: colorInput.value, childNodes:[Cr.txt(nbsp)]}),
 					Cr.txt(' '),
 					Cr.elm('select', {
@@ -625,7 +623,7 @@ function addOrRemovePalleteGenerationFeatureIf(pColorInput){
 						childNodes: toneOptions
 					}),
 					Cr.txt(' '),
-					Cr.elm('input', {type:'button', value:'generate', event: ['click', generatePalleteFromSwatchES]})
+					Cr.elm('input', {type:'button', value: chrome.i18n.getMessage('generate'), event: ['click', generatePalleteFromSwatchES]})
 				]
 			}, pgHld);
 			if( pgHld.scrollIntoViewIfNeeded ) pgHld.scrollIntoViewIfNeeded();
@@ -634,7 +632,7 @@ function addOrRemovePalleteGenerationFeatureIf(pColorInput){
 	}
 }
 
-function addPalleteEntry(origColor, hueResult, toneResult){
+function rgbForPalleteTransform(origColor, hueResult, toneResult){
 	var h = origColor.hsv.h, s = origColor.hsv.s, v = origColor.hsv.v;
 	if( hueResult.angle ){
 		h = ((h + hueResult.angle) + 360) % 360
@@ -647,7 +645,11 @@ function addPalleteEntry(origColor, hueResult, toneResult){
 		v = v * toneResult.val;
 		if( v > 100 ) v = 100;
 	}
-	var rgbResult = hsv2rgb(h,s,v);
+	return hsv2rgb(h,s,v);
+}
+
+function addPalleteEntry(origColor, hueResult, toneResult){
+	var rgbResult = rgbForPalleteTransform(origColor, hueResult, toneResult);
 	addSwatchEntry( RGBtoHex(rgbResult.r, rgbResult.g, rgbResult.b) );
 }
 
@@ -664,7 +666,7 @@ function generatePalleteFromSwatchES(){
 	var colorElms = swHld.getElementsByClassName('hex');
 	var lastColorElm = colorElms && colorElms.length ? colorElms[colorElms.length - 1] : null;
 
-	console.log('clicked generate pallete!', palette_mode, palette_tone, c);
+	console.log('clicked generate palette!', palette_mode, palette_tone, c);
 
 	if( lastColorElm && lastColorElm.value != '#'+c.hex){
 		addSwatchEntry( c.hex ); // if the final color is not our start color, just add it automagically
@@ -672,8 +674,8 @@ function generatePalleteFromSwatchES(){
 
 	var toneList,t,tl,toneResult;
 
-	if( palleteGenData.Tones[palette_tone] ){
-		toneList = palleteGenData.Tones[palette_tone].results;
+	if( paletteGenData.Tones[palette_tone] ){
+		toneList = paletteGenData.Tones[palette_tone].results;
 		for( t=0,tl=toneList.length; t<tl; t++){
 			toneResult = toneList[t];
 			if( (toneResult.sat && toneResult.sat != 1.0) || (toneResult.val && toneResult.val != 1.0)  ){ // We already guarantee we have swatch entry above, so we handle any tonal or brightness modulations to the origional here
@@ -681,17 +683,17 @@ function generatePalleteFromSwatchES(){
 			}
 		}
 	}else{
-		console.error("palleteGenData.Tones", palette_tone, "Was UNDEFINED!");
+		console.error("paletteGenData.Tones", palette_tone, "Was UNDEFINED!");
 	}
 
 
-	if( palleteGenData.Modes[palette_mode] ){
+	if( paletteGenData.Modes[palette_mode] ){
 
-		var toneList = palleteGenData.Tones[palette_tone].results;
+		var toneList = paletteGenData.Tones[palette_tone].results;
 		if( !toneList || !toneList.length ){ toneList = [{sat: 1.0}]; }
 
-		for( var r=0,rl=palleteGenData.Modes[palette_mode].results.length; r<rl; r++){
-			var result = palleteGenData.Modes[palette_mode].results[r];
+		for( var r=0,rl=paletteGenData.Modes[palette_mode].results.length; r<rl; r++){
+			var result = paletteGenData.Modes[palette_mode].results[r];
 			for( t=0,tl=toneList.length; t<tl; t++){
 				toneResult = toneList[t];
 				addPalleteEntry(c, result, toneResult);
@@ -699,7 +701,7 @@ function generatePalleteFromSwatchES(){
 		}
 
 	}else{
-		console.error("palleteGenData.Modes", palette_mode, "Was UNDEFINED!");
+		console.error("paletteGenData.Modes", palette_mode, "Was UNDEFINED!");
 		// to hsv and back to rgb.... pointelss!
 		var rgbResult = hsv2rgb( c.hsv.h, c.hsv.s, c.hsv.v);
 		addSwatchEntry( RGBtoHex(rgbResult.r, rgbResult.g, rgbResult.b) );
