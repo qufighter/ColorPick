@@ -348,6 +348,9 @@
    "generate": {
       "message": "Generate"
    },
+    "palette": {
+      "message": "Palette"
+   },
    "generate_palette": {
       "message": "Generate Palette"
    },

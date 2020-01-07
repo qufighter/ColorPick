@@ -33,6 +33,9 @@ function toggle_next_sibling_display(ev){
 	updateSwatchSelectionMargins(null);
 	return preventEventDefault(ev);
 }
+function show_next_sibling(n){
+	if(n.nextSibling.style.display!='block') toggle_next_sibling_display({target:n});
+}
 function load_syncd_options() {
 	loadSettingsFromChromeSyncStorage(function(){
 		restore_options();
@@ -400,8 +403,7 @@ function currentSwatches(){
 		swHld.appendChild(Cr.elm('div', {id: 'palette-help',childNodes:[
 			Cr.txt(chrome.i18n.getMessage('noSwatches'))
 		]}));
-		var n=document.getElementById('showhist');
-		if(n.nextSibling.style.display!='block') toggle_next_sibling_display({target:n});
+		show_next_sibling(document.getElementById('showhist'));
 	}else{
 		if(exi)exi.remove();
 	}
@@ -522,13 +524,14 @@ function addSwatchEntry(hex){
 			Cr.elm("a",{class:'palette-nav', events:['click',moveDn]},[Cr.txt('\u25BD')]),
 		//]),
 		Cr.elm('input',{type:'text',value:hex,class:'hex',event:['change', swatchChanged]}),
-		Cr.elm("a",{class:'palette-nav', events:['click',paletteForColorHex]},[Cr.txt('\u25B7')]),
+		Cr.elm("a",{class:'palette-nav', title: chrome.i18n.getMessage('generate_palette'), events:['click',paletteForColorHex]},[Cr.txt('\u25B7')]),
 		Cr.elm("img",{class:'close',draggable:false,align:'top',src:chrome.extension.getURL('img/close.png'),events:['click',removeSwatch]})
 	],swHld);
 	document.getElementById('clear-palette').style.display='';
 	var exi=document.getElementById('palette-help');
 	if(exi)exi.remove();
 	addOrRemovePalleteGenerationFeatureIf();
+	show_next_sibling(document.getElementById('showpalette'));
 }
 
 function paletteForColorHex(ev){
@@ -945,12 +948,18 @@ Cr.elm("div",{id:"mainbox"},[
 	]),
 	Cr.elm("br",{}),
 	Cr.elm("div",{id:"swatch-holder"},[
-		Cr.elm("a",{class:"swatchCtrl",event:['click',clearSwatches],style:'text-align:center;position:absolute;display:block;width:50%;margin-left:25%;display:none;',id:'clear-palette'},[Cr.txt(chrome.i18n.getMessage('clear').toLowerCase())]),
-		Cr.elm("a",{class:"swatchCtrl",event:['click',sortSwatches],style:''},[Cr.txt(chrome.i18n.getMessage('sort'))]),
-		Cr.elm("a",{class:"swatchCtrl",event:['click',dedupeSwatches]},[Cr.txt(chrome.i18n.getMessage('dedupe'))]),
-		Cr.elm("a",{class:"swatchCtrl",event:['click',printSwatches],style:'float:right;',target:'_blank'},[Cr.txt(chrome.i18n.getMessage('printSave'))]),
-		Cr.elm("div",{id:"swatches", style:'display:block;position:relative;'}),
-		Cr.elm("div",{id:"generate-palette-area"})
+		Cr.elm("a",{href:"#",id:"showpalette",class:"toggleOpts"},[
+			Cr.elm("img",{src:"img/expand.png"}),
+			Cr.txt(chrome.i18n.getMessage('palette'))
+		]),
+		Cr.elm("div",{id:"palette", class:'indented-when-narrow-area'},[
+			Cr.elm("a",{class:"swatchCtrl",event:['click',clearSwatches],style:'text-align:center;position:absolute;display:block;width:50%;margin-left:25%;display:none;',id:'clear-palette'},[Cr.txt(chrome.i18n.getMessage('clear').toLowerCase())]),
+			Cr.elm("a",{class:"swatchCtrl",event:['click',sortSwatches],style:''},[Cr.txt(chrome.i18n.getMessage('sort'))]),
+			Cr.elm("a",{class:"swatchCtrl",event:['click',dedupeSwatches]},[Cr.txt(chrome.i18n.getMessage('dedupe'))]),
+			Cr.elm("a",{class:"swatchCtrl",event:['click',printSwatches],style:'float:right;',target:'_blank'},[Cr.txt(chrome.i18n.getMessage('printSave'))]),
+			Cr.elm("div",{id:"swatches", style:'display:block;position:relative;'}),
+			Cr.elm("div",{id:"generate-palette-area"})
+		])
 	]),
 	Cr.elm("a",{href:"#",id:"showhist",class:"toggleOpts"},[
 		Cr.elm("img",{src:"img/expand.png"}),
@@ -1027,8 +1036,10 @@ Cr.elm("div",{id:"mainbox"},[
 	document.getElementById('shoadvanc').addEventListener('click', toggle_next_sibling_display);
 	document.getElementById('showopt').addEventListener('click', toggle_next_sibling_display);
 	document.getElementById('showhist').addEventListener('click', toggle_next_sibling_display);
+	document.getElementById('showpalette').addEventListener('click', toggle_next_sibling_display);
 
 	toggle_next_sibling_display({target:document.getElementById('showopt')});
+	toggle_next_sibling_display({target:document.getElementById('showpalette')});
 
 	document.getElementById('bload').addEventListener('click', load_syncd_options);
 	document.getElementById('cload').addEventListener('click', function(){
@@ -1036,6 +1047,8 @@ Cr.elm("div",{id:"mainbox"},[
 			console.log('storage cleared... clear localStorage too for a full reset');
 		});
 	});
+
+	window.addEventListener('resize', function(){updateSwatchSelectionMargins(null)});
 
 	document.body.style.opacity="1";
 }

@@ -20,12 +20,12 @@ label.changed:before{
 }
 .toggleOpts{padding:5px 5px 5px 5px;display:block;width:400px;color:black;font-size:16px;font-weight:bold;}
 .toggleOpts:hover{background-color:#DDD;border-top-right-radius: 8px;border-bottom-left-radius: 8px;;}
-#history{position:relative;margin-bottom:15px;display:none;background-color:white;box-shadow: 0px 0px 5px 2px white;}
+#history{position:relative;margin-bottom:15px;display:none;background-color:white;box-shadow: 0px 0px 5px 2px white;max-width:98%;}
 #historyInner{overflow-y:auto;overflow-x:hidden;}
 .clickSwatch{width:22px;height:22px;display:inline-block;cursor:copy;}
 .clickSwatch.last-selection{box-shadow: black 0px 0px 1px 1px inset;}
 .hist_drag_sizer{display:block;background-color:#CCC;opacity:0.5;position:absolute;}
-#swatch-holder{position:absolute;width:400px;left:480px;transition:margin-top ease-out 0.1s;margin-bottom:35px;}
+#swatch-holder{position:absolute;width:400px;left:480px;transition:margin-top ease-out 0.1s;}
 #swatches{border-top: 1px solid #EEE;border-bottom: 1px solid #EEE;clear: right;}
 .swatch-spacer{transition:margin ease-out 0.15s;}
 .swatch{padding:10px;transition:margin ease-in 0.15s;}
@@ -77,6 +77,9 @@ label.changed:before{
 .indented-area{
 	margin-left:14px;
 }
+.indented-when-narrow-area{
+	margin-left:0px;
+}
 .options-btn{
 	font-size: 16px;
 	font-weight: bold;
@@ -89,5 +92,11 @@ label.changed:before{
 		position:relative;
 		width:auto;left:0;
 		margin-top: 0px !important;
+	}
+	.indented-when-narrow-area{
+		margin-left:14px;
+	}
+	.toggleOpts{
+		width: auto;
 	}
 }
