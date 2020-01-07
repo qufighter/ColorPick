@@ -129,33 +129,24 @@ var palleteGenData = (function(){
 
 	function addCorrespondingTones(opsArr){
 		// console.log(opsArr);
-
-		var iter = 2;
-		var max = 6; // we do up to fifths...
-
+		var iter = 2; // start at halves
+		var max = 6; // up to fifths...
 		var o, ops;
-
 		while( iter < max ){
-
-			var resultKeyParts = [];
-			var resultNameParts = [];
+			var resultKeyParts = [iFractionNames[iter]];
+			var resultNameParts = [fractionNames[iter]];
 			var results = [];
-
 			var inc = 1.0 / iter;
 			var progs = []; // up to optsArr length...
 			for( o=0; o<opsArr.length; o++ ){
 				ops = opsArr[o];
-
-				resultKeyParts.push(iFractionNames[iter] + '_' +ops.iname);
-				resultNameParts.push(fractionNames[iter] + ' ' + ops.name);
-
-				progs.push(1.0); // we stat at 1.0 and either - or + by inc
+				resultKeyParts.push(ops.iname);
+				resultNameParts.push(ops.name);
+				progs.push(1.0); // we start at 1.0 and either - or + by inc
 			}
-
 			while( progs[0] > 0.1 && progs[0] < 1.9 ){
-				// either prog direction should expire simultaneously :)
+				// all progs[] various directions should expire simultaneously :)
 				var result = {};
-
 				for( o=0; o<opsArr.length; o++ ){
 					ops = opsArr[o];
 					result[ops.key] = progs[o];
@@ -164,18 +155,17 @@ var palleteGenData = (function(){
 				results.push(result);
 			}
 			iter++;
-
 			// console.log(resultKeyParts, resultNameParts, results);
 			paletteGenerationTones[resultKeyParts.join('_')] = {
 				name: resultNameParts.join(' '),
 				order: toneOrdering++,
 				results: results
-			}
+			};
 		}
 
 	}
 
-	var completedTypes = {}
+	var completedTypes = {};
 	for( var type in toneModes ){
 		for( var itype in toneModes[type] ){
 			//console.log( itype)
