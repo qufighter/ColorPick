@@ -173,6 +173,9 @@
    "hexHasHash": {
       "message": "Prefix hexadecimal value with #"
    },
+   "oldHistoryFirst": {
+      "message": "Reverse history (show oldest first)"
+   },
    "hasAgreedToLicense": {
       "message": "Has agreed to Terms of Use"
    },

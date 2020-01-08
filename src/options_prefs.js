@@ -29,6 +29,7 @@ pAdvOptions["CSS3ColorFormat"]={def:'(#1,#2,#3)',ind:1};
 pAdvOptions["supportColorInputs"]={def:isMac?false:true,ind:0,img:'img/icon16.png'};
 pAdvOptions["hexIsLowerCase"]={def:false,ind:0};
 pAdvOptions["hexHasHash"]={def:false,ind:0};
+pAdvOptions["oldHistoryFirst"]={def:false,ind:0};
 //pAdvOptions["iconIsPreview"]={def:false,ind:0,img:'img/opt_badge.png'};
 pAdvOptions["appleIcon"]={def:false,ind:0,img:'img/apple/icon16.png'};
 pAdvOptions["iconIsBitmap"]={def:false,ind:0,img:'img/icon_pixel.png'};

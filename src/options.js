@@ -53,6 +53,8 @@ function save_options() {
 //  var select = document.getElementById("color");
 //  var color = select.children[select.selectedIndex].value;
 //  localStorage["favorite_color"] = color;
+	var oldHistoryOrder = localStorage['oldHistoryFirst'];
+
   	var i;
 
   	for(i in pOptions){
@@ -108,6 +110,10 @@ function save_options() {
   
   saveToChromeSyncStorage();
   sendReloadPrefs();
+
+  if( oldHistoryOrder != localStorage['oldHistoryFirst'] ){
+	load_history();
+  }
 }
 
 var textForWas = chrome.i18n.getMessage('was');
@@ -734,6 +740,17 @@ function generatePalleteFromSwatchES(){
 	}
 }
 
+function addHistorySwatch(hex, help, where){
+		if(!hex)return;
+		Cr.elm('div', {
+			class: 'clickSwatch',
+			style: 'background-color:#'+hex+';',
+			name: '#'+hex,
+			title: '#'+hex+' '+help
+		}, [], where);
+
+}
+
 var lastHistorySelection = null;
 function load_history(){
 	if(!document.getElementById('history'))return;
@@ -749,16 +766,17 @@ function load_history(){
 	div_history.style.width = widthToUse;
 	var historyInner = Cr.elm('div',{id:'historyInner',style:'height:'+heightToUse});
 	var i;
-	for(i in hist){
-		if(!hist[i])continue;
-		Cr.elm('div', {
-			class: 'clickSwatch',
-			style: 'background-color:#'+hist[i]+';',
-			name: '#'+hist[i],
-			title: '#'+hist[i]+' '+chrome.i18n.getMessage('addToPalette')
-		}, [], historyInner);
-		var tc=hist[i];
+	var swatchHelp = chrome.i18n.getMessage('addToPalette');
+	if( localStorage['oldHistoryFirst'] != 'true' ){
+		for( var i=hist.length-1; i>-1; i-- ){
+			addHistorySwatch(hist[i], swatchHelp, historyInner);
+		}
+	}else{
+		for( var i=0; i<hist.length; i++ ){
+			addHistorySwatch(hist[i], swatchHelp, historyInner);
+		}
 	}
+
 	Cr.elm("a",{href:"#",style:"display:block;font-size:10px;text-align:right;",event:['click', clear_history]},[
 		Cr.txt(chrome.i18n.getMessage('clear'))
 	], historyInner);
