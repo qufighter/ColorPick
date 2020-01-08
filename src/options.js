@@ -540,15 +540,12 @@ function paletteForColorHex(ev){
 }
 
 //TODO move this out and into paletteGenData ?? paletteGenHelpers ??
-function selectOptionsForObject(modesObj, filterFunction){
+function selectOptionsForObject(modesObj, selectedValue, filterFunction){
 	var filterFunction = filterFunction || function(){return true;}
-
-	var sortedKeys = Object.keys(modesObj);
+	var sortedKeys = Object.keys(modesObj), options = [];
 	sortedKeys.sort(function(a,b){
 		return modesObj[a].order - modesObj[b].order;
-	})
-
-	var options = [];
+	});
 	for( var ik=0,lk=sortedKeys.length; ik<lk; ik++){
 		var paletteKey = sortedKeys[ik];
 		var paletteMeta = modesObj[paletteKey];
@@ -559,13 +556,12 @@ function selectOptionsForObject(modesObj, filterFunction){
 				value: paletteKey,
 				childNodes:[Cr.txt(paletteMeta.name)]
 			}));
+			if( selectedValue == paletteKey ){
+				options[options.length -1].setAttribute('selected', 'selected');
+
+			}
 		}
 	}
-
-
-	// TODO: recall previous selection???
-	
-
 	return options;
 }
 
@@ -583,9 +579,9 @@ function addOrRemovePalleteGenerationFeatureIf(pColorInput){
 		}
 		if( colorInput ){
 			var c = colorMetaForHex(colorInput.value);
-			var options = selectOptionsForObject(paletteGenData.Modes);
+			var options = selectOptionsForObject(paletteGenData.Modes, localStorage['lastPalleteMode']);
 			var eliminatedToneKeys={};
-			var toneOptions = selectOptionsForObject(paletteGenData.Tones, function(pMeta){
+			var toneOptions = selectOptionsForObject(paletteGenData.Tones, localStorage['lastPalleteTone'], function(pMeta){
 				// when 2 or more transform of this type yield the SAME result....
 				// we return false thus omitting this ineffective choice (the choice would genrate repeats (for any resultant hue angle))
 				// first though check if our key contains a portion of any eliminated key, meaning this category is redundant...
@@ -629,7 +625,11 @@ function addOrRemovePalleteGenerationFeatureIf(pColorInput){
 							['click', function(ev){
 								var s=ev.target.previousSibling;
 								var selOpt = s.querySelector("[value="+s.value+"]");
-								alert(selOpt.title || 'no additional info');
+								s.style.border="1px solid red";
+								setTimeout(function(){
+									alert(selOpt.title || 'no additional info');
+									s.style.border="";
+								}, 10)
 							}]
 						],
 						childNodes:[Cr.txt(' \u24D8 ')]
@@ -643,7 +643,14 @@ function addOrRemovePalleteGenerationFeatureIf(pColorInput){
 						style: 'cursor:pointer',
 						title: chrome.i18n.getMessage('palette_tone_gen_info'),
 						events:[
-							['click', function(ev){alert(ev.target.title);}]
+							['click', function(ev){
+								var s=ev.target.previousSibling;
+								s.style.border="1px solid red";
+								setTimeout(function(){
+									alert(ev.target.title);
+									s.style.border="";	
+								}, 10)
+							}]
 						],
 						childNodes:[Cr.txt(' \u24D8 ')]
 					}),
@@ -682,6 +689,8 @@ function generatePalleteFromSwatchES(){
 	var c = colorMetaForHex(palette_selection.title);
 	var palette_mode = document.getElementById('palette-gen-mode').value;
 	var palette_tone = document.getElementById('palette-gen-tone').value;
+	localStorage['lastPalleteMode'] = palette_mode;
+	localStorage['lastPalleteTone'] = palette_tone;
 	var swHld = document.getElementById('swatches');
 	var colorElms = swHld.getElementsByClassName('hex');
 	var lastColorElm = colorElms && colorElms.length ? colorElms[colorElms.length - 1] : null;
