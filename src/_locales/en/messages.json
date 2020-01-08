@@ -386,6 +386,9 @@
       "message": "Fifth",
       "description": "As in 'one fifth' and to be concatenated with a color related word like tone, saturation or brightness"
    },
+   "palette_tone_gen_info":{
+      "message": "Depending on the start color selected, optionally add several half tones (one) or another number of colors for each generated hue but different brightness or saturation.  Choices are dynamic depending on the color selected and what direction we may modify it without running out of changes."
+   },
    "palette_complement":{
       "message": "Complement",
       "description": "see the message palette_complement_info for details"

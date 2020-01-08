@@ -127,20 +127,20 @@ var paletteGenData = (function(){
 		}
 	};
 
-	function addCorrespondingTones(opsArr){
+	function addCorrespondingTones(opsArr, orderingOffset){
 		// console.log(opsArr);
 		var iter = 2; // start at halves
 		var max = 6; // up to fifths...
 		var o, ops;
 		while( iter < max ){
-			var resultKeyParts = [iFractionNames[iter]];
+			var resultKeyParts = [];
 			var resultNameParts = [fractionNames[iter]];
 			var results = [];
 			var inc = 1.0 / iter;
 			var progs = []; // up to optsArr length...
 			for( o=0; o<opsArr.length; o++ ){
 				ops = opsArr[o];
-				resultKeyParts.push(ops.iname);
+				resultKeyParts.push(iFractionNames[iter] + '_' +ops.iname);
 				resultNameParts.push(ops.name);
 				progs.push(1.0); // we start at 1.0 and either - or + by inc
 			}
@@ -156,9 +156,11 @@ var paletteGenData = (function(){
 			}
 			iter++;
 			// console.log(resultKeyParts, resultNameParts, results);
-			paletteGenerationTones[resultKeyParts.join('_')] = {
+			var key = resultKeyParts.join('_');
+			paletteGenerationTones[key] = {
 				name: resultNameParts.join(' '),
-				order: toneOrdering++,
+				key: key,
+				order: orderingOffset + toneOrdering++,
 				results: results
 			};
 		}
@@ -169,13 +171,13 @@ var paletteGenData = (function(){
 	for( var type in toneModes ){
 		for( var itype in toneModes[type] ){
 			//console.log( itype)
-			addCorrespondingTones([toneModes[type][itype]]);
+			addCorrespondingTones([toneModes[type][itype]], 0);
 
 			for( var rtype in toneModes ){
 				if( rtype == type || completedTypes[rtype] ) continue;
 				for( var ritype in toneModes[rtype] ){
 					//console.log( itype, ritype)
-					addCorrespondingTones([toneModes[type][itype], toneModes[rtype][ritype]]);
+					addCorrespondingTones([toneModes[type][itype], toneModes[rtype][ritype]], 250);
 				}
 			}
 		}
