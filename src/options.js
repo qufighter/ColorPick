@@ -604,7 +604,9 @@ function addOrRemovePalleteGenerationFeatureIf(pColorInput){
 				return true;
 			});
 
-			Cr.elm('div', {
+			var holder=Cr.elm('div', {
+				class: 'transitions',
+				style: 'background-color:#999',
 				childNodes: [
 					Cr.txt(chrome.i18n.getMessage('generate_palette') + ' '),
 					Cr.elm('span', {id:'palette-gen-selection', style: 'border:1px solid black;display:inline-block;width:1em;background-color:' + colorInput.value, title: colorInput.value, childNodes:[Cr.txt(nbsp)]}),
@@ -657,6 +659,7 @@ function addOrRemovePalleteGenerationFeatureIf(pColorInput){
 					Cr.elm('input', {type:'button', value: chrome.i18n.getMessage('generate'), event: ['click', generatePalleteFromSwatchES]})
 				]
 			}, pgHld);
+			setTimeout(function(){ holder.style.backgroundColor=''; }, 10);
 			if( pgHld.scrollIntoViewIfNeeded ) pgHld.scrollIntoViewIfNeeded();
 			else if( pgHld.scrollIntoView ) pgHld.scrollIntoView();
 		}
