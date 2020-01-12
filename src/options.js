@@ -941,7 +941,14 @@ chrome.runtime.onMessage.addListener(
     	sendResponse({});
     }
   });
-  
+
+function safeGetVersion(){
+	if( chrome.runtime.getManifest ){
+		return ((chrome.runtime.getManifest() || {}).version) || 'null-version';
+	}
+	return 'no-version';
+}
+
 function showRegistrationStatus(){
 	if(localStorage['reg_chk']=='true' || localStorage['usageStatistics']=='true'){
 		Cr.empty(document.getElementById('reg_status')).appendChild(Cr.txt(chrome.i18n.getMessage('registered')));
@@ -958,7 +965,7 @@ function showRegistrationStatus(){
 	if(localStorage['shareClors']=='true'){
 		cotd.style.display="block";
 		createDailyColorViewer(cotd);
-		document.getElementById('ifcotd').src='sorry.html';//http://vidzbigger.com/vcolors_ofday.php';
+		document.getElementById('ifcotd').src='https://vidsbee.com/ColorPick/Daily/vcolors_ofday.php?embed=extensionOptions&version='+safeGetVersion();
 	}else{
 		cotd.style.display="none";
 	}
@@ -969,7 +976,7 @@ function createDailyColorViewer(container){
 	Cr.elm('div',{},[
 		Cr.txt(chrome.i18n.getMessage('colorOfDay')),
 		Cr.elm("br",{}),
-		Cr.elm("iframe",{id:"ifcotd",src:"about:blank",scrolling:"no"})
+		Cr.elm("iframe",{id:"ifcotd",src:"",scrolling:"no"})
 	], container);
 }
 
