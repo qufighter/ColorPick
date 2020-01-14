@@ -3,6 +3,12 @@ if( isFirefox ){
 	_ext_homepage="https://addons.mozilla.org/en-US/firefox/addon/colorpick-eyedropper/";
 }
 var nbsp='\u00A0';
+var infoicon='\u24D8';
+
+if( isWindows ){
+	infoicon='\uD83D\uDEC8';
+};
+
 function getEventTargetA(ev){
 	ev = ev || event;
 	var targ=(typeof(ev.target)!='undefined') ? ev.target : ev.srcElement;
@@ -640,7 +646,7 @@ function addOrRemovePalleteGenerationFeatureIf(pColorInput){
 								}, 10)
 							}]
 						],
-						childNodes:[Cr.txt(' \u24D8 ')]
+						childNodes:[Cr.txt(' '+infoicon+' ')]
 					}),
 					Cr.elm('select', {
 						id: 'palette-gen-tone',
@@ -660,7 +666,7 @@ function addOrRemovePalleteGenerationFeatureIf(pColorInput){
 								}, 10)
 							}]
 						],
-						childNodes:[Cr.txt(' \u24D8 ')]
+						childNodes:[Cr.txt(' '+infoicon+' ')]
 					}),
 					Cr.elm('input', {type:'button', value: chrome.i18n.getMessage('generate'), event: ['click', generatePalleteFromSwatchES]})
 				]
