@@ -179,7 +179,7 @@ function setDisplay(){//Cr.elm
 	}
 	keepOnScreen();
 }
-function picked(){
+function picked(ev){
 	if(isLocked){
 		lasthex = hex;
 		isLocked=false;
@@ -196,6 +196,7 @@ function picked(){
 	}
 	updateTip();
 	chrome.runtime.sendMessage({setPickState:true,isPicking:!isLocked}, function(r){});
+	mmf(ev);
 }
 function exitAndDetach(){
 	disableColorPicker();
