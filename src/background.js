@@ -1,3 +1,4 @@
+var options={};
 
 function fromPrefs(){
 	//remove defunct options
@@ -10,16 +11,18 @@ function fromPrefs(){
 
 	for(var i in pOptions){
 		if(typeof(pOptions[i].def)=='boolean')
-			window[i] = ((localStorage[i]=='true')?true:((localStorage[i]=='false')?false:pOptions[i].def));
+			options[i] = ((localStorage[i]=='true')?true:((localStorage[i]=='false')?false:pOptions[i].def));
 		else
-			window[i] = ((localStorage[i])?localStorage[i]:pOptions[i].def);
+			options[i] = ((localStorage[i])?localStorage[i]:pOptions[i].def);
+		window[i] = options[i] // todo refactor out
 	}
 
 	for(var i in pAdvOptions){
 		if(typeof(pAdvOptions[i].def)=='boolean')
-			window[i] = ((localStorage[i]=='true')?true:((localStorage[i]=='false')?false:pAdvOptions[i].def));
+			options[i] = ((localStorage[i]=='true')?true:((localStorage[i]=='false')?false:pAdvOptions[i].def));
 		else
-			window[i] = ((localStorage[i])?localStorage[i]:pAdvOptions[i].def);
+			options[i] = ((localStorage[i])?localStorage[i]:pAdvOptions[i].def);
+		window[i] = options[i] // todo refactor out
 	}
 
 	if(typeof(localStorage["usageStatistics"])=='undefined'){
@@ -35,6 +38,12 @@ function fromPrefs(){
 	}
 	
 	defaultIcon(iconWasCustom);
+
+	if( chrome.runtime.setUninstallURL && !options.disableUninstallSurvey ){
+		chrome.runtime.setUninstallURL("https://www.vidsbee.com/Contact/?browserinfo=Your web browser has removed the ColorPick Eyedropper tool.%0ATo help improve this tool, please take a moment to describe why you uninstalled ColorPick,%0Aor if you don't have time please close this window.%0AThank you for your support!  See below for more info:%0A%0AColorPick has an option to disable this survey. Many responses received are caused by user error or misplaced blame. One day I may make a better survey. Thanks for your time.%0A%0AAppVersion:ExtenstionRegPage-"+safeGetVersion());
+	}else{
+		chrome.runtime.setUninstallURL('');
+	}
 }
 
 function defaultIcon(force){
@@ -229,8 +238,4 @@ function safeGetVersion(){
 		return ((chrome.runtime.getManifest() || {}).version) || 'null-version';
 	}
 	return 'no-version';
-}
-
-if( chrome.runtime.setUninstallURL ){
-	chrome.runtime.setUninstallURL("https://www.vidsbee.com/Contact/?browserinfo=Please take a moment to briefly describe why you uninstalled Color Pick.%0A%0AThank you for your support!%0A%0AAppVersion:ExtenstionRegPage-"+safeGetVersion());
 }

@@ -48,6 +48,7 @@ pOptions["hasAgreedToLicense"]={def:false,ind:0,css:'display:none;'};
 pOptions["disableRewriting"]={def:false,ind:0};
 pOptions["usageStatistics"]={def:false,ind:0};
 pOptions["shareClors"]={def:false,ind:0};
+pOptions["disableUninstallSurvey"]={def:false,ind:0};
 pSyncItems["reg_chk"]={def:false};
 pSyncItems["reg_hash"]={def:""};
 pSyncItems["reg_name"]={def:""};

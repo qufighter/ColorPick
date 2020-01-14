@@ -192,6 +192,9 @@
       "message": "Select with ColorPick Eyedropper",
       "description": "'ColorPick Eyedropper' refers to the extName key, see that description for details, if that key is not translated leave this part of the string untranslated"
    },
+   "disableUninstallSurvey": {
+      "message": "Disable extension removal survey after uninstall"
+   },
    "disableRewriting": {
       "message": "Disable affiliation of non-affiliate links"
    },
