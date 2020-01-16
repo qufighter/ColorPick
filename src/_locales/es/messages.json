@@ -186,8 +186,7 @@
         "message": "Permitir webgl para vista previa pixelada"
     },
     "extName": {
-        "message": "ColorPick Eyedropper",
-        "description": "The extension name may translate easily from 'Color Pick Eyedropper' however it is preferred to leave it english unless your locale has a matching translation for eyedropper, color, and pick.  If you can omit the space between Color and Pick in your language then please do so.  Eyedropper referrs to what the tool would be called in image editing software such as photoshop in your locale.  Definitions follow: color - the property possessed by an object of producing different sensations on the eye as a result of the way the object reflects or emits light.  pick -  choose (someone or something) from a number of alternatives, typically after careful thought.  eyedropper - a short glass tube with a rubber bulb at one end and a tiny hole at the other, for measuring out drops of medicine or other liquids, (also eyedropper tool) (in image-editing software) a function enabling the user to copy color from any part of an image."
+        "message": "ColorPick Eyedropper"
     },
     "extDescription": {
         "message": "A zoomed eyedropper & color chooser tool that allows you to select color values from webpages and more."
