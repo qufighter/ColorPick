@@ -387,7 +387,7 @@ function moveDn(e){
 
 function removeSwatch(e){
 	e.target.parentNode.parentNode.removeChild(e.target.parentNode);
-	addOrRemovePalleteGenerationFeatureIf();
+	// addOrRemovePalleteGenerationFeatureIf();
 }
 
 function colorMetaForHex(hex, associatedNode){
