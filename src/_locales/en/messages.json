@@ -313,6 +313,9 @@
    "clear": {
       "message": "Clear"
    },
+   "add_all": {
+      "message": "Add All"
+   },
    "copycolorval": {
       "message": "Copy the color value"
    },
@@ -350,6 +353,9 @@
    },
    "deleteConfirm":{
       "message": "Are you sure?"
+   },
+   "addAllConfirm":{
+      "message": "This will add %history_count% entries to the Palette which already has %palette_count% entries.  Are you sure?"
    },
    "generate": {
       "message": "Generate"

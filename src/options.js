@@ -356,7 +356,7 @@ function rgbObjMismatch(a, b){
 }
 
 function clear_history(ev){
-	if(confirm(chrome.i18n.getMessage('deleteConfirm'))){
+	if(confirm( chrome.i18n.getMessage('clear') + ' ' + chrome.i18n.getMessage('history') + '\n' + chrome.i18n.getMessage('deleteConfirm'))){
 		localStorage['colorPickHistory']='';
 		load_history();
 		sendReloadPrefs();
@@ -438,7 +438,7 @@ function sortSwatches(){
 function clearSwatches(){
 	var swHld = document.getElementById('swatches');
 	var colorElms = swHld.getElementsByClassName('hex');
-	if( colorElms.length > 0 && !confirm(chrome.i18n.getMessage('deleteConfirm')) ){
+	if( colorElms.length > 0 && !confirm(chrome.i18n.getMessage('clear') + ' ' + chrome.i18n.getMessage('palette') + '\n' + chrome.i18n.getMessage('deleteConfirm')) ){
 		return;
 	}
 	Cr.empty(swHld);
@@ -757,6 +757,21 @@ function addHistorySwatch(hex, help, where){
 
 }
 
+function add_all_history(){
+	var exiHisInner=document.getElementById('historyInner');
+	if( exiHisInner ){
+		var histories = exiHisInner.getElementsByClassName('clickSwatch'), tc;
+		var swHld = document.getElementById('swatches');
+		var paletteElms = swHld.getElementsByClassName('hex');
+		if( histories.length > 1 && (paletteElms.length < 2 || confirm(chrome.i18n.getMessage('addAllConfirm').replace('%history_count%', histories.length).replace('%palette_count%', paletteElms.length))) ){
+			for( var h=0,hl=histories.length;h<hl;h++ ){
+				tc = histories[h].getAttribute('name');
+				if( tc ) addPalleteSwatch(tc);
+			}
+		}
+	}
+}
+
 function updateHistorySelection(newSelection){
 	if( lastHistorySelection ) lastHistorySelection.classList.remove('last-selection');
 	lastHistorySelection = newSelection;
@@ -789,9 +804,20 @@ function load_history(){
 		}
 	}
 
-	Cr.elm("a",{href:"#",style:"display:block;font-size:10px;text-align:right;",event:['click', clear_history]},[
-		Cr.txt(chrome.i18n.getMessage('clear'))
-	], historyInner);
+	Cr.elm('div', {
+		style: 'text-align:left;',
+		childNodes:[
+			hist.length > 1 ? Cr.elm("a",{href:"#",style:"font-size:10px;",event:['click', clear_history]},[
+				Cr.txt(chrome.i18n.getMessage('clear'))
+			]) : 0,
+			Cr.txt(' '+nbsp+' '),
+			hist.length > 2 ? Cr.elm("a",{href:"#",style:"font-size:10px;float:right;",event:['click', add_all_history]},[
+				Cr.txt(chrome.i18n.getMessage('add_all'))
+			]) : 0
+		]
+	}, historyInner);
+
+
 	div_history.appendChild(historyInner);
 	historyInner.scrollTop = scrollToUse;
 	historyInner.addEventListener('click',function(ev){
