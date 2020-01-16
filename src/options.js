@@ -325,18 +325,18 @@ function test_rgb2hsv_to_hsv2rgb(){ // 16777216 total possible rgb colors
 					if( thisErrPct > 5 ){
 						wayMismatched++;
 						// // most of the ones > 15 off are also > 128 off... we should look at some of the more extreme cases more closely ! (this issue was fixed, 360~==0)
-						// Cr.elm('div',{},[
-						// 	Cr.elm('div', {style:'display:inline-block;background-color:rgb('+r    +','+g    +','+b    +');width:150px;height:50px;'}),
-						// 	Cr.elm('div', {style:'display:inline-block;background-color:rgb('+rgb.r+','+rgb.g+','+rgb.b+');width:150px;height:50px;'}),
-						// 	Cr.txt(' R: '),
-						// 	Cr.txt(Math.abs(rgb.r - r)),
-						// 	Cr.txt(' G: '),
-						// 	Cr.txt(Math.abs(rgb.g - g)),
-						// 	Cr.txt(' B: '),
-						// 	Cr.txt(Math.abs(rgb.b - b)),
-						// 	Cr.txt(' H: '),
-						// 	Cr.txt(hsv.h),
-						// ], document.body);
+						Cr.elm('div',{},[
+							Cr.elm('div', {style:'display:inline-block;background-color:rgb('+r    +','+g    +','+b    +');width:150px;height:50px;'}),
+							Cr.elm('div', {style:'display:inline-block;background-color:rgb('+rgb.r+','+rgb.g+','+rgb.b+');width:150px;height:50px;'}),
+							Cr.txt(' R: '),
+							Cr.txt((rgb.r - r)),
+							Cr.txt(' G: '),
+							Cr.txt((rgb.g - g)),
+							Cr.txt(' B: '),
+							Cr.txt((rgb.b - b)),
+							Cr.txt(' H: '),
+							Cr.txt(hsv.h),
+						], document.body);
 					}
 					mismatched++;
 				}
@@ -345,6 +345,7 @@ function test_rgb2hsv_to_hsv2rgb(){ // 16777216 total possible rgb colors
 	}
 	var total = matched + mismatched;
 	// errPct = (errPct / (mismatched * 255 * 3) );
+	console.log('ints offset', errPct);
 	errPct = (errPct / (total * 255 * 3) );
 	console.log(" tested ", total, " and found ", matched, "matched and", mismatched, " mismatched and ", wayMismatched, " wayMismatched with error percentage (0-1) computed as ", errPct, " or " , errPct * 100, '% innaccurate');
 	// the result colors are off by 3/10 of one percent when they are off
