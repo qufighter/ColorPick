@@ -87,3 +87,11 @@ function navToReg(ev){
 function navToOptions(ev){
 	navTo(ev, 'options.html');
 }
+
+function navToHistory(ev){
+	navTo(ev, 'options.html?history');
+}
+
+function navToPallete(ev, addColor){ // probably unused
+	navTo(ev, 'options.html?palette' + (addColor ? '='+addColor : ''));
+}

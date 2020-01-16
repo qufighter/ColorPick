@@ -525,7 +525,7 @@ function swatchDroppedEntry(ev){
 	dragMeta.reset();
 }
 
-function addSwatchEntry(hex){
+function addPalleteSwatch(hex){
 	if( hex.length == 6 ){ hex = '#'+hex; }
 	hex = hex.toUpperCase();
 	var swHld = document.getElementById('swatches');
@@ -696,7 +696,7 @@ function rgbForPalleteTransform(origColor, hueResult, toneResult){
 
 function addPalleteEntry(origColor, hueResult, toneResult){
 	var rgbResult = rgbForPalleteTransform(origColor, hueResult, toneResult);
-	addSwatchEntry( RGBtoHex(rgbResult.r, rgbResult.g, rgbResult.b) );
+	addPalleteSwatch( RGBtoHex(rgbResult.r, rgbResult.g, rgbResult.b) );
 }
 
 function generatePalleteFromSwatchES(){
@@ -712,7 +712,7 @@ function generatePalleteFromSwatchES(){
 	// console.log('clicked generate palette!', palette_mode, palette_tone, c);
 
 	if( lastColorElm && lastColorElm.value != '#'+c.hex){
-		addSwatchEntry( c.hex ); // if the final color is not our start color, just add it automagically
+		addPalleteSwatch( c.hex ); // if the final color is not our start color, just add it automagically
 	}
 	var toneList,t,tl,toneResult;
 
@@ -742,7 +742,7 @@ function generatePalleteFromSwatchES(){
 		console.error("paletteGenData.Modes", palette_mode, "Was UNDEFINED!");
 		// to hsv and back to rgb.... pointelss!
 		var rgbResult = hsv2rgb( c.hsv.h, c.hsv.s, c.hsv.v);
-		addSwatchEntry( RGBtoHex(rgbResult.r, rgbResult.g, rgbResult.b) );
+		addPalleteSwatch( RGBtoHex(rgbResult.r, rgbResult.g, rgbResult.b) );
 	}
 }
 
@@ -755,6 +755,12 @@ function addHistorySwatch(hex, help, where){
 			title: '#'+hex+' '+help
 		}, [], where);
 
+}
+
+function updateHistorySelection(newSelection){
+	if( lastHistorySelection ) lastHistorySelection.classList.remove('last-selection');
+	lastHistorySelection = newSelection;
+	lastHistorySelection.classList.add('last-selection');
 }
 
 var lastHistorySelection = null;
@@ -791,11 +797,8 @@ function load_history(){
 	historyInner.addEventListener('click',function(ev){
 		var tc=ev.target.getAttribute('name');
 		if(tc){
-			addSwatchEntry(tc);
-			if( lastHistorySelection ) lastHistorySelection.classList.remove('last-selection');
-			lastHistorySelection = ev.target;
-			lastHistorySelection.classList.add('last-selection');
-			//prompt(chrome.i18n.getMessage('copycolorval')+':',tc,tc);
+			addPalleteSwatch(tc);
+			updateHistorySelection(ev.target);
 		}
 	},false);
 	
@@ -1105,6 +1108,28 @@ Cr.elm("div",{id:"mainbox"},[
 	window.addEventListener('resize', function(){updateSwatchSelectionMargins(null)});
 
 	document.body.style.opacity="1";
+
+	if( window.location.search ){
+		var navHexSelection = window.location.search.match(/\?(history|palette)[=]?([\dA-f]{0,6})/);
+		// test single arg ?history and also arg+val ?history=######
+		if( navHexSelection ){
+			var hex = (navHexSelection[2] || '').toUpperCase();
+			if( navHexSelection[1] == 'history' ){
+				show_next_sibling(document.getElementById('showhist'));
+				var exiHisInner=document.getElementById('historyInner');
+				if( exiHisInner ){
+					var cur=exiHisInner.querySelector('.clickSwatch[name="#'+hex+'"]');
+					if( cur ){
+						updateHistorySelection(cur);
+						addPalleteSwatch(hex);
+					}
+				}
+			}else if( navHexSelection[1] == 'palette' ){
+				show_next_sibling(document.getElementById('showpalette'));
+				if( hex && hex.length == 6 ) addPalleteSwatch(hex);
+			}
+		}
+	}
 }
 
 document.addEventListener('DOMContentLoaded', function () {

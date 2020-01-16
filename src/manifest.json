@@ -4,11 +4,11 @@
    "name": "__MSG_extName__",
    "browser_action": {
       "default_icon": {
-        "16": "img/icon16.png",
-        "32": "img/icon32.png",
-        "19": "img/icon19.png",
-        "38": "img/icon38.png",
-        "48": "img/icon48.png"
+        "16": "img/icons/no-shadow/icon16.png",
+        "32": "img/icons/no-shadow/icon32.png",
+        "19": "img/icons/no-shadow/icon19.png",
+        "38": "img/icons/no-shadow/icon38.png",
+        "48": "img/icons/no-shadow/icon48.png"
       },
       "default_title": "__MSG_extName__",
       "default_popup": "popup.html"
@@ -42,6 +42,8 @@
    "web_accessible_resources": [
      "img/icon16.png",
      "img/icon64.png",
+     "img/icons/palette/icon32.png",
+     "img/icons/history/icon32.png",
      "img/game/bunny.webp",
      "img/game/rabbit.webp",
      "img/crosshair.png",

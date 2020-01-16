@@ -48,7 +48,7 @@ function fromPrefs(){
 
 function defaultIcon(force){
 	if( iconIsBitmap || appleIcon || force ){
-		var iconPath='img/';
+		var iconPath='img/icons/no-shadow/';
 		if(appleIcon)iconPath+='apple/';
 		if(resetIcon)chrome.browserAction.setIcon({path:{19:chrome.extension.getURL(iconPath+'icon19.png'),38:chrome.extension.getURL(iconPath+'icon38.png')}});
 		return true;
@@ -171,11 +171,7 @@ function(request, sender, sendResponse) {
 				if(chrome.runtime.lastError)console.log('historypush error: '+chrome.runtime.lastError.message);
 			});
 			if(autocopyhex&&autocopyhex!='false'){
-				var n=document.createElement('input');document.body.appendChild(n);
-				var fmt = curentHex;
-				if( request.rgb && autocopyhex=='rgb' ) fmt='rgb'+formatColorValues(request.rgb.r,request.rgb.g,request.rgb.b);
-				if( request.hsv && autocopyhex=='hsl' ) fmt='hsl'+formatColorValues(request.hsv.h,request.hsv.s,request.hsv.v,0,1,1);
-				n.value=fmt;n.select();document.execCommand('copy');n.parentNode.removeChild(n);
+				copyColor(request);
 			}
 			if( curentHex ){
 				chrome.tabs.sendMessage(tabid,{hexValueWasSelected:curentHex.toLowerCase()},function(response){});
@@ -209,6 +205,14 @@ function(request, sender, sendResponse) {
     	sendResponse({});
   
 });
+
+function copyColor(request){
+	var n=document.createElement('input');document.body.appendChild(n);
+	var fmt = request.hex;
+	if( request.rgb && autocopyhex=='rgb' ) fmt='rgb'+formatColorValues(request.rgb.r,request.rgb.g,request.rgb.b);
+	if( request.hsv && autocopyhex=='hsl' ) fmt='hsl'+formatColorValues(request.hsv.h,request.hsv.s,request.hsv.v,0,1,1);
+	n.value=fmt;n.select();document.execCommand('copy');n.parentNode.removeChild(n);
+}
 
 chrome.runtime.onUpdateAvailable.addListener(function(details){
 	updateAvailable=true;

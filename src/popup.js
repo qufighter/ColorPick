@@ -793,7 +793,7 @@ Cr.elm("div",{},[
 	document.getElementById('popout').addEventListener('click', popOut);
 	
 	document.getElementById('hexpre').addEventListener('click', init_color_chooser);
-	document.getElementById('ohexpre').addEventListener('click', init_color_chooser);
+	document.getElementById('ohexpre').addEventListener('click', navToHistory);
 
 	window.addEventListener('mousewheel',mwheel);
 	window.addEventListener('keyup',wk);
