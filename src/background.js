@@ -40,7 +40,7 @@ function fromPrefs(){
 	defaultIcon(iconWasCustom);
 
 	if( chrome.runtime.setUninstallURL && !options.disableUninstallSurvey ){
-		chrome.runtime.setUninstallURL("https://www.vidsbee.com/Contact/?browserinfo=Your web browser has removed the ColorPick Eyedropper tool.%0ATo help improve this tool, please take a moment to describe why you uninstalled ColorPick,%0Aor if you don't have time please close this window.%0AThank you for your support!  See below for more info:%0A%0AColorPick has an option to disable this survey. Many responses received are caused by user error or misplaced blame. One day I may make a better survey. Thanks for your time.%0A%0AAppVersion:ExtenstionRegPage-"+safeGetVersion());
+		chrome.runtime.setUninstallURL("https://www.vidsbee.com/Contact/?uninstallSurvey=ColorPick&browserinfo=Your web browser has removed the ColorPick Eyedropper tool.%0ATo help improve this tool, please take a moment to describe why you uninstalled ColorPick,%0Aor if you don't have time please close this window.%0AThank you for your support!  See below for more info:%0A%0AColorPick has an option to disable this survey. Many responses received are caused by user error or misplaced blame. One day I may make a better survey. Thanks for your time.%0A%0AAppVersion:ExtenstionUninstallPage-"+safeGetVersion());
 	}else{
 		chrome.runtime.setUninstallURL('');
 	}

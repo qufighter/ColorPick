@@ -15,6 +15,6 @@ function nextIconImage(g_moveCtr){
 }
 	
 function initGame(){
-	console.log("hello from color pick game!");
+
 }
 initGame();
