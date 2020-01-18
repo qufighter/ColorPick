@@ -1125,21 +1125,20 @@ function init(){
 	showRegistrationStatus();
 }
 
-chrome.runtime.onMessage.addListener(
-  function(request, sender, sendResponse) {
-    if(request.historypush){
-    	if( request.fromoptions ){
-    		console.log('detecting history push from options...');
-    		return sendResponse({});
-    	}
-    	if(typeof(fetchMainPrefs)=='function')fetchMainPrefs();
-    	else load_history(); // while there is the idea we can just push it on the left or right edge... since history may be changed by any number of different options windows.... at some point this needs to be sync'd (the deletions of history items)
-    	sendResponse({});
-    }else if(request.reloadprefs){
-    	restore_options();
-    	sendResponse({});
-    }
-  });
+chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+	if(request.historypush){
+		if( request.fromoptions ){
+			console.log('detecting history push from options...');
+			return sendResponse({});
+		}
+		if(typeof(fetchMainPrefs)=='function')fetchMainPrefs();
+		else load_history(); // while there is the idea we can just push it on the left or right edge... since history may be changed by any number of different options windows.... at some point this needs to be sync'd (the deletions of history items)
+		sendResponse({});
+	}else if(request.reloadprefs){
+		restore_options();
+		sendResponse({});
+	}
+});
 
 function safeGetVersion(){
 	if( chrome.runtime.getManifest ){
