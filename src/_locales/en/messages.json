@@ -246,6 +246,9 @@
       "message": "Borders to use (css value)",
       "description": "'css' refers to web technology"
    },
+   "confirmEmptyPalleteWhenLeaving": {
+      "message": "Confirm closing this tab with palette entires"
+   },
    "hideWatermark": {
       "message": "Hide ColorPick watermark on webpage corner (registered only)",
       "description": "'ColorPick' refers to the extName key, see that description for details, if that key is not translated leave this part of the string untranslated"

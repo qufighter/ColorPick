@@ -1186,6 +1186,14 @@ function createDailyColorViewer(container){
 	], container);
 }
 
+function confirmBeforeLeaving(){
+	if( localStorage['confirmEmptyPalleteWhenLeaving'] == 'true' ){
+		if( currentSwatches().length ){
+			return "Don't leave just yet if you haven't saved your pallete!";
+		}
+	}
+}
+
 function createDOM(){
 Cr.elm("div",{id:"mainbox"},[
 	Cr.elm("h3",{},[
@@ -1327,6 +1335,8 @@ Cr.elm("div",{id:"mainbox"},[
 			}
 		}
 	}
+
+	window.onbeforeunload = confirmBeforeLeaving;
 }
 
 document.addEventListener('DOMContentLoaded', function () {
