@@ -389,6 +389,7 @@ function persist_history_state(){
 		}
 	}
 	localStorage['colorPickHistory']=toSave.join('#');
+	chrome.runtime.sendMessage({historypush:true, fromoptions:true}, function(response){});
 }
 
 function printSwatches(e){
@@ -858,22 +859,24 @@ function historySwatchDroppedEntry(ev){
 }
 
 function hasUndo(){
-	return history_undo_item;
+	return history_undo_stack.length;
 }
 
 function addUndo(meta){
-	history_undo_item = meta;
+	history_undo_stack.push(meta);
 	document.getElementById('hist-del-undo-btn').style.display='';
 }
 
 function applyUndo(ev){
 	ev.stopPropagation();ev.preventDefault();
 	if( hasUndo() ){
+		var history_undo_item = history_undo_stack.pop();
 		history_undo_item.parent.insertBefore(history_undo_item.removed, history_undo_item.before);
 		if( history_undo_item.processUndo ){
 			history_undo_item.processUndo();
 		}
-		history_undo_item = null;
+	}
+	if( !hasUndo() ){
 		document.getElementById('hist-del-undo-btn').style.display='none';
 	}
 }
@@ -908,8 +911,7 @@ function add_all_history(){
 	}
 }
 
-var history_undo_item = null;
-var history_undo_stack = []; // or one undo only! so much memory usage here....  this would be or ought to be cleared each time load_history() is called though, undo won't work (always)
+var history_undo_stack = []; // a dom node gc nightmare, but nice solution
 var lastHistorySelection = null;
 function updateHistorySelection(newSelection){
 	if( lastHistorySelection ) lastHistorySelection.classList.remove('last-selection');
@@ -942,7 +944,7 @@ function load_history(){
 			addHistorySwatch(hist[i], swatchHelp, historyInner);
 		}
 	}
-
+	history_undo_stack = []; // since the nodes we base undo restoration on are largely re-created, we should clear undo when this occurs....
 	Cr.elm('div', {
 		style: 'text-align:center;padding-top:15px;',
 		childNodes:[
@@ -1126,8 +1128,12 @@ function init(){
 chrome.runtime.onMessage.addListener(
   function(request, sender, sendResponse) {
     if(request.historypush){
+    	if( request.fromoptions ){
+    		console.log('detecting history push from options...');
+    		return sendResponse({});
+    	}
     	if(typeof(fetchMainPrefs)=='function')fetchMainPrefs();
-    	else load_history();
+    	else load_history(); // while there is the idea we can just push it on the left or right edge... since history may be changed by any number of different options windows.... at some point this needs to be sync'd (the deletions of history items)
     	sendResponse({});
     }else if(request.reloadprefs){
     	restore_options();
