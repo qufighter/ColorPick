@@ -358,10 +358,37 @@ function rgbObjMismatch(a, b){
 
 function clear_history(ev){
 	if(confirm( chrome.i18n.getMessage('clear') + ' ' + chrome.i18n.getMessage('history') + '\n' + chrome.i18n.getMessage('deleteConfirm'))){
-		localStorage['colorPickHistory']='';
-		load_history();
+		// first we will cache this history for "undo"
+		var exiHisInner=document.getElementById('historyInner');
+		if( exiHisInner ){
+			addUndo({ // in the process of fragment creation, history is cleared
+				removed: Cr.frag(Array.prototype.slice.call(exiHisInner.getElementsByClassName('clickSwatch'))),
+				parent: exiHisInner,
+				before: exiHisInner.firstChild, // the remaining node or null
+				processUndo: persist_history_state
+			});
+		}
+		localStorage['colorPickHistory']=''; // cheap persist_history_state
 		sendReloadPrefs();
 	}
+}
+
+function persist_history_state(){
+	var exiHisInner=document.getElementById('historyInner');
+	var histories = exiHisInner.getElementsByClassName('clickSwatch');
+	var toSave = [];
+	if( histories.length ){
+		if( localStorage['oldHistoryFirst'] != 'true' ){
+			for( var h=histories.length-1; h>-1; h-- ){
+				toSave.push(histories[h].getAttribute('name'));
+			}
+		}else{
+			for( var h=0,hl=histories.length;h<hl;h++ ){
+				toSave.push(histories[h].getAttribute('name'));
+			}
+		}
+	}
+	localStorage['colorPickHistory']=toSave.join('#');
 }
 
 function printSwatches(e){
@@ -467,19 +494,35 @@ var dragMeta = {
 	active: false,
 	sourceObj: null,
 	lastDest: null,
-	resetDest: function(){
+	sourceResetFn: null,
+	setSource: function(src, startCb, endCb){
+		this.sourceObj = src;
+		if( startCb ) startCb(this);
+		this.sourceResetFn = endCb || null;
+	},
+	resetDest: function(destResetFn){
 		if( this.lastDest ){
-			this.lastDest.style.marginBottom = 0;
+			if( destResetFn ){
+				destResetFn(this, this.lastDest);
+			}
 			this.lastDest = null;
 		}
 	},
-	setDest: function(destElm){
+	setDest: function(destElm, destChangeFn){
 		this.resetDest();
 		this.lastDest = destElm;
-		this.lastDest.style.marginBottom = this.sourceObj.clientHeight + 'px';
+		if( destChangeFn ){
+			destChangeFn(this, destElm);
+		}
 	},
-	reset: function(){
-		this.resetDest();
+	resetActive: function(){
+		if( this.sourceResetFn ){
+			this.sourceResetFn(this);
+			this.sourceResetFn = null;
+		}
+	},
+	reset: function(destResetFn){
+		this.resetDest(destResetFn);
 		this.active = false;
 	},
 	insertAfter: function(element, afterElm){ // todo: this belongs somewhere else
@@ -491,28 +534,47 @@ var dragMeta = {
 	}
 }
 
+function draggedOverPalleteSwatch(dragMeta, dest){
+	dest.style.marginBottom = dragMeta.sourceObj.clientHeight + 'px';
+}
+
+function draggedOutPalleteSwatch(dragMeta, dest){
+	dest.style.marginBottom = 0;
+}
+
 function swatchDragStart(ev){
 	dragMeta.active = true;
-	dragMeta.sourceObj = ev.target.closest('.swatch');
-	dragMeta.sourceObj.style.marginLeft='-10px';
-	dragMeta.sourceObj.style.marginRight='10px';
+	dragMeta.setSource(ev.target.closest('.swatch'),
+		function(dragMeta){ // begin
+			dragMeta.sourceObj.style.marginLeft='-10px';
+			dragMeta.sourceObj.style.marginRight='10px';
+		},
+		function(dragMeta){ // end
+			dragMeta.sourceObj.style.marginLeft=0;
+			dragMeta.sourceObj.style.marginRight=0;
+		}
+	);
 }
 
 function swatchDragOverEntry(ev){
-	dragMeta.setDest(ev.target.closest('.swatch'));
+	dragMeta.setDest(ev.target.closest('.swatch'), draggedOverPalleteSwatch);
 	ev.preventDefault();
 	ev.dataTransfer.dropEffect = "move"
 }
 
 function swatchDragOutEntry(ev){
-	dragMeta.resetDest();
+	dragMeta.resetDest(draggedOutPalleteSwatch);
 }
 
 function swatchDroppedEntry(ev){
 	if( dragMeta.active ){
-		dragMeta.sourceObj.style.marginLeft=0;
-		dragMeta.sourceObj.style.marginRight=0;
+		dragMeta.resetActive();
 		if( dragMeta.lastDest && ev.type == 'drop' ){
+			if( dragMeta.sourceObj.closest('.clickSwatch') ){
+				// dragging from history to pallete :)
+				updateHistorySelection(dragMeta.sourceObj);
+				dragMeta.sourceObj = createPalleteSwatch(dragMeta.sourceObj.getAttribute('name'), true);
+			}
 			var spacer = Cr.elm('div',{class:"swatch-spacer", style:"margin-bottom:" + dragMeta.sourceObj.clientHeight + 'px;'});
 			dragMeta.insertAfter(spacer, dragMeta.sourceObj);
 			setTimeout(function(){
@@ -523,14 +585,14 @@ function swatchDroppedEntry(ev){
 			ev.preventDefault();
 		}
 	}
-	dragMeta.reset();
+	dragMeta.reset(draggedOutPalleteSwatch);
 }
 
-function addPalleteSwatch(hex){
+function createPalleteSwatch(hex, append){
+	var swHld = document.getElementById('swatches');
 	if( hex.length == 6 ){ hex = '#'+hex; }
 	hex = hex.toUpperCase();
-	var swHld = document.getElementById('swatches');
-	Cr.elm('div',{class:'swatch',draggable:true,style:'background-color:'+hex+';',events:[['dragover', swatchDragOverEntry],['dragleave', swatchDragOutEntry],['drop', swatchDroppedEntry],['dragend', swatchDroppedEntry],['dragstart', swatchDragStart]]},[
+	return Cr.elm('div',{class:'swatch',draggable:true,style:'background-color:'+hex+';',events:[['dragover', swatchDragOverEntry],['dragleave', swatchDragOutEntry],['drop', swatchDroppedEntry],['dragend', swatchDroppedEntry],['dragstart', swatchDragStart]]},[
 		//Cr.elm('span',{style:'position:absolute;left:-40px;'},[ // for some reason breaks the events
 			Cr.elm("a",{class:'palette-nav', style:'cursor:ns-resize;', },[Cr.txt('\u25CF ')]),
 			Cr.elm("a",{class:'palette-nav', events:['click',moveUp]},[Cr.txt('\u25B3')]),
@@ -539,12 +601,18 @@ function addPalleteSwatch(hex){
 		Cr.elm('input',{type:'text',value:hex,class:'hex',event:['change', swatchChanged]}),
 		Cr.elm("a",{class:'palette-nav', title: chrome.i18n.getMessage('generate_palette'), events:['click',paletteForColorHex]},[Cr.txt('\u25B7')]),
 		Cr.elm("img",{class:'close',draggable:false,align:'top',src:chrome.extension.getURL('img/close.png'),events:['click',removeSwatch]})
-	],swHld);
+	], append ? swHld : null);
+
+}
+
+function addPalleteSwatch(hex){
+	var newSwatch = createPalleteSwatch(hex, true);
 	document.getElementById('clear-palette').style.display='';
 	var exi=document.getElementById('palette-help');
 	if(exi)exi.remove();
 	addOrRemovePalleteGenerationFeatureIf();
 	show_next_sibling(document.getElementById('showpalette'));
+	return newSwatch;
 }
 
 function paletteForColorHex(ev){
@@ -747,15 +815,94 @@ function generatePalleteFromSwatchES(){
 	}
 }
 
+function historySwatchDragStart(ev){
+	dragMeta.active = true;
+	dragMeta.setSource(ev.target.closest('.clickSwatch'), null, null);
+}
+
+function historySwatchDragOverEntry(ev){
+	dragMeta.setDest(ev.target, /*dest modify fn*/);
+	ev.preventDefault();
+	ev.dataTransfer.dropEffect = "copy"
+}
+
+function historySwatchDragOutEntry(ev){
+	dragMeta.resetDest( /*dest reset fn*/);
+}
+
+function historySwatchDroppedEntry(ev){
+	if( dragMeta.active ){
+		dragMeta.resetActive();
+		if( dragMeta.lastDest && ev.type == 'drop' ){
+			if( dragMeta.lastDest.closest('.drop-target').getAttribute('name') == 'trash' ){
+				var source = dragMeta.sourceObj.className;
+				var persistenceHandler = null;
+				if( source.indexOf('clickSwatch') > -1 ){
+					persistenceHandler = persist_history_state;
+				}
+				addUndo({
+					removed: dragMeta.sourceObj,
+					parent: dragMeta.sourceObj.parentNode,
+					before: dragMeta.sourceObj.nextSibling,
+					processUndo: persistenceHandler
+				});
+
+				dragMeta.sourceObj.remove();
+				if( persistenceHandler ){
+					persistenceHandler();
+				}
+			}
+			ev.preventDefault();
+		}
+	}
+	dragMeta.reset();
+}
+
+function hasUndo(){
+	return history_undo_item;
+}
+
+function addUndo(meta){
+	history_undo_item = meta;
+	document.getElementById('hist-del-undo-btn').style.display='';
+}
+
+function applyUndo(ev){
+	ev.stopPropagation();ev.preventDefault();
+	if( hasUndo() ){
+		history_undo_item.parent.insertBefore(history_undo_item.removed, history_undo_item.before);
+
+		// THAT handles hte nodes, but we also have ot apply state chagnes,
+		// i.e sync to localStorage['colorPickHistory or relevant area....  possilby the item meta can have this fn to call...
+
+		if( history_undo_item.processUndo ){
+			history_undo_item.processUndo();
+		}
+
+		// nice to have: option to warn if loosing pallete, or auto save???
+
+
+
+		history_undo_item = null;
+		document.getElementById('hist-del-undo-btn').style.display='none';
+	}
+}
+
 function addHistorySwatch(hex, help, where){
 		if(!hex)return;
 		Cr.elm('div', {
+			draggable:true,
+			events:[
+				// ['dragover', historySwatchDragOverEntry],
+				// ['dragleave', historySwatchDragOutEntry],
+				['dragend', historySwatchDroppedEntry],
+				['dragstart', historySwatchDragStart]
+			],
 			class: 'clickSwatch',
 			style: 'background-color:#'+hex+';',
 			name: '#'+hex,
 			title: '#'+hex+' '+help
 		}, [], where);
-
 }
 
 function add_all_history(){
@@ -773,13 +920,16 @@ function add_all_history(){
 	}
 }
 
+var history_undo_item = null;
+var history_undo_stack = []; // or one undo only! so much memory usage here....  this would be or ought to be cleared each time load_history() is called though, undo won't work (always)
+var lastHistorySelection = null;
 function updateHistorySelection(newSelection){
 	if( lastHistorySelection ) lastHistorySelection.classList.remove('last-selection');
 	lastHistorySelection = newSelection;
 	lastHistorySelection.classList.add('last-selection');
 }
 
-var lastHistorySelection = null;
+
 function load_history(){
 	if(!document.getElementById('history'))return;
 	if(typeof(localStorage["colorPickHistory"])=='undefined')localStorage['colorPickHistory']="";
@@ -806,12 +956,32 @@ function load_history(){
 	}
 
 	Cr.elm('div', {
-		style: 'text-align:left;',
+		style: 'text-align:center;padding-top:15px;',
 		childNodes:[
-			hist.length > 1 ? Cr.elm("a",{href:"#",style:"font-size:10px;",event:['click', clear_history]},[
+			hist.length > 1 ? Cr.elm("a",{href:"#",style:"font-size:10px;float:left;",event:['click', clear_history]},[
 				Cr.txt(chrome.i18n.getMessage('clear'))
 			]) : 0,
-			Cr.txt(' '+nbsp+' '),
+			hist.length > 1 ? Cr.elm("a",{
+				href:"#",
+				style:"font-size:10px;display:inline-block;position:relative;",
+				class: 'drop-target',
+				name: 'trash',
+				events:[
+					['click', function(){alert('drag history items here to remove.')}],
+					['dragover', historySwatchDragOverEntry],
+					['dragleave', historySwatchDragOutEntry],
+					['drop', historySwatchDroppedEntry],
+				]
+			},[
+				Cr.elm('img',{style:'height:1.5em;',src:chrome.extension.getURL('img/trash.svg')}),
+				Cr.elm('a', {
+					id:'hist-del-undo-btn',
+					style:'position:absolute;left:100%;top:0px;padding-left:5px;display:none;', // undo won't work (always) if we re-create this history area!!!!! so no point in this: '+(hasUndo()?'':'none'
+					events:[['click', applyUndo]],
+					childNodes:[Cr.txt('Undo')]
+				})
+			]) : 0,
+
 			hist.length > 2 ? Cr.elm("a",{href:"#",style:"font-size:10px;float:right;",event:['click', add_all_history]},[
 				Cr.txt(chrome.i18n.getMessage('add_all'))
 			]) : 0
