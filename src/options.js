@@ -567,7 +567,11 @@ function swatchDragStart(ev){
 function swatchDragOverEntry(ev){
 	dragMeta.setDest(ev.target.closest('.swatch'), draggedOverPalleteSwatch);
 	ev.preventDefault();
-	ev.dataTransfer.dropEffect = "move"
+	if( dragMeta.sourceObj.closest('.clickSwatch') ){
+		ev.dataTransfer.dropEffect = "copy"
+	}else{
+		ev.dataTransfer.dropEffect = "move"
+	}
 }
 
 function swatchDragOutEntry(ev){
@@ -842,27 +846,33 @@ function historySwatchDroppedEntry(ev){
 		dragMeta.resetActive();
 		if( dragMeta.lastDest && ev.type == 'drop' ){
 			if( dragMeta.lastDest.closest('.drop-target').getAttribute('name') == 'trash' ){
-				var source = dragMeta.sourceObj.className;
-				var persistenceHandler = null;
-				if( source.indexOf('clickSwatch') > -1 ){
-					persistenceHandler = persist_history_state;
-				}
-				addUndo({
-					removed: dragMeta.sourceObj,
-					parent: dragMeta.sourceObj.parentNode,
-					before: dragMeta.sourceObj.nextSibling,
-					processUndo: persistenceHandler
-				});
-
-				dragMeta.sourceObj.remove();
-				if( persistenceHandler ){
-					persistenceHandler();
-				}
+				deleteHistoryElementWithUndo(dragMeta.sourceObj);
 			}
 			ev.preventDefault();
 		}
 	}
 	dragMeta.reset();
+}
+
+function deleteHistoryElementWithUndo(removeObj){
+	// this is for any drop on history trash, or alt click of history items
+	// so these are not ALL history swatches that may be dropped here
+	var source = removeObj.className;
+	var persistenceHandler = null;
+	if( source.indexOf('clickSwatch') > -1 ){
+		persistenceHandler = persist_history_state;
+	}
+	addUndo({
+		removed: removeObj,
+		parent: removeObj.parentNode,
+		before: removeObj.nextSibling,
+		processUndo: persistenceHandler
+	});
+
+	removeObj.remove();
+	if( persistenceHandler ){
+		persistenceHandler();
+	}
 }
 
 function hasUndo(){
@@ -990,8 +1000,12 @@ function load_history(){
 	historyInner.addEventListener('click',function(ev){
 		var tc=ev.target.getAttribute('name');
 		if(tc){
-			addPalleteSwatch(tc);
-			updateHistorySelection(ev.target);
+			if( ev.altKey ){
+				deleteHistoryElementWithUndo(ev.target.closest('.clickSwatch'));
+			}else{
+				addPalleteSwatch(tc);
+				updateHistorySelection(ev.target);
+			}
 		}
 	},false);
 	
@@ -1192,6 +1206,21 @@ function confirmBeforeLeaving(){
 	}
 }
 
+var hasKeyClass = false;
+function doc_keydown(ev){
+	if( ev.altKey ){
+		document.body.classList.add('alt-key');
+		hasKeyClass=true;
+	}
+}
+
+function doc_keyup(ev){
+	if( hasKeyClass ){
+		document.body.classList.remove('alt-key');
+	}
+	hasKeyClass = false;
+}
+
 function createDOM(){
 Cr.elm("div",{id:"mainbox"},[
 	Cr.elm("h3",{},[
@@ -1309,6 +1338,9 @@ Cr.elm("div",{id:"mainbox"},[
 	});
 
 	window.addEventListener('resize', function(){updateSwatchSelectionMargins(null)});
+
+	document.body.addEventListener('keydown', doc_keydown);
+	document.body.addEventListener('keyup', doc_keyup);
 
 	document.body.style.opacity="1";
 
