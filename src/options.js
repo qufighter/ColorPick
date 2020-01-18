@@ -9,6 +9,8 @@ if( isWindows ){
 	infoicon='\uD83D\uDEC8';
 };
 
+var instanceId = (new Date().getTime()) + '_' + Math.floor(Math.random() * 65535);
+
 function getEventTargetA(ev){
 	ev = ev || event;
 	var targ=(typeof(ev.target)!='undefined') ? ev.target : ev.srcElement;
@@ -369,8 +371,13 @@ function clear_history(ev){
 			});
 		}
 		localStorage['colorPickHistory']=''; // cheap persist_history_state
+		inform_history_update();
 		sendReloadPrefs();
 	}
+}
+
+function inform_history_update(){
+	chrome.runtime.sendMessage({historypush:true, fromoptions:instanceId}, function(response){});
 }
 
 function persist_history_state(){
@@ -389,7 +396,7 @@ function persist_history_state(){
 		}
 	}
 	localStorage['colorPickHistory']=toSave.join('#');
-	chrome.runtime.sendMessage({historypush:true, fromoptions:true}, function(response){});
+	inform_history_update();
 }
 
 function printSwatches(e){
@@ -1127,9 +1134,8 @@ function init(){
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 	if(request.historypush){
-		if( request.fromoptions ){
-			console.log('detecting history push from options...');
-			return sendResponse({});
+		if( request.fromoptions && request.fromoptions == instanceId ){
+			return sendResponse({}); // we never reach here normally, since sendMessage skips our own listener very nicely, but just in case we do not want to blast away the undo history for the active tab... there is a "better" way but involves fetching our sender's tab ID
 		}
 		if(typeof(fetchMainPrefs)=='function')fetchMainPrefs();
 		else load_history(); // while there is the idea we can just push it on the left or right edge... since history may be changed by any number of different options windows.... at some point this needs to be sync'd (the deletions of history items)
