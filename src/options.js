@@ -602,7 +602,6 @@ function createPalleteSwatch(hex, append){
 		Cr.elm("a",{class:'palette-nav', title: chrome.i18n.getMessage('generate_palette'), events:['click',paletteForColorHex]},[Cr.txt('\u25B7')]),
 		Cr.elm("img",{class:'close',draggable:false,align:'top',src:chrome.extension.getURL('img/close.png'),events:['click',removeSwatch]})
 	], append ? swHld : null);
-
 }
 
 function addPalleteSwatch(hex){
@@ -871,18 +870,9 @@ function applyUndo(ev){
 	ev.stopPropagation();ev.preventDefault();
 	if( hasUndo() ){
 		history_undo_item.parent.insertBefore(history_undo_item.removed, history_undo_item.before);
-
-		// THAT handles hte nodes, but we also have ot apply state chagnes,
-		// i.e sync to localStorage['colorPickHistory or relevant area....  possilby the item meta can have this fn to call...
-
 		if( history_undo_item.processUndo ){
 			history_undo_item.processUndo();
 		}
-
-		// nice to have: option to warn if loosing palette, or auto save???
-
-
-
 		history_undo_item = null;
 		document.getElementById('hist-del-undo-btn').style.display='none';
 	}
@@ -893,8 +883,6 @@ function addHistorySwatch(hex, help, where){
 		Cr.elm('div', {
 			draggable:true,
 			events:[
-				// ['dragover', historySwatchDragOverEntry],
-				// ['dragleave', historySwatchDragOutEntry],
 				['dragend', historySwatchDroppedEntry],
 				['dragstart', historySwatchDragStart]
 			],
@@ -981,7 +969,6 @@ function load_history(){
 					childNodes:[Cr.txt(chrome.i18n.getMessage('undo'))]
 				})
 			]) : 0,
-
 			hist.length > 2 ? Cr.elm("a",{href:"#",style:"font-size:10px;float:right;",event:['click', add_all_history]},[
 				Cr.txt(chrome.i18n.getMessage('add_all'))
 			]) : 0
