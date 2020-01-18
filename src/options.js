@@ -571,7 +571,7 @@ function swatchDroppedEntry(ev){
 		dragMeta.resetActive();
 		if( dragMeta.lastDest && ev.type == 'drop' ){
 			if( dragMeta.sourceObj.closest('.clickSwatch') ){
-				// dragging from history to pallete :)
+				// dragging from history to palette :)
 				updateHistorySelection(dragMeta.sourceObj);
 				dragMeta.sourceObj = createPalleteSwatch(dragMeta.sourceObj.getAttribute('name'), true);
 			}
@@ -879,7 +879,7 @@ function applyUndo(ev){
 			history_undo_item.processUndo();
 		}
 
-		// nice to have: option to warn if loosing pallete, or auto save???
+		// nice to have: option to warn if loosing palette, or auto save???
 
 
 
@@ -1189,7 +1189,7 @@ function createDailyColorViewer(container){
 function confirmBeforeLeaving(){
 	if( localStorage['confirmEmptyPalleteWhenLeaving'] == 'true' ){
 		if( currentSwatches().length ){
-			return "Don't leave just yet if you haven't saved your pallete!";
+			return "Don't leave just yet if you haven't saved your palette!";
 		}
 	}
 }
