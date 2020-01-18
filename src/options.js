@@ -967,7 +967,7 @@ function load_history(){
 				class: 'drop-target',
 				name: 'trash',
 				events:[
-					['click', function(){alert('drag history items here to remove.')}],
+					['click', function(){alert(chrome.i18n.getMessage('trash_can'))}],
 					['dragover', historySwatchDragOverEntry],
 					['dragleave', historySwatchDragOutEntry],
 					['drop', historySwatchDroppedEntry],
@@ -978,7 +978,7 @@ function load_history(){
 					id:'hist-del-undo-btn',
 					style:'position:absolute;left:100%;top:0px;padding-left:5px;display:none;', // undo won't work (always) if we re-create this history area!!!!! so no point in this: '+(hasUndo()?'':'none'
 					events:[['click', applyUndo]],
-					childNodes:[Cr.txt('Undo')]
+					childNodes:[Cr.txt(chrome.i18n.getMessage('undo'))]
 				})
 			]) : 0,
 
