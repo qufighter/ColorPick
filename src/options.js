@@ -1005,6 +1005,7 @@ function load_history(){
 			}else{
 				addPalleteSwatch(tc);
 				updateHistorySelection(ev.target);
+				doc_keyup(ev); // in case of stuck alt key (switch tabs while holding alt)... could handle this on mouse over??
 			}
 		}
 	},false);
