@@ -805,6 +805,8 @@ Cr.elm("div",{},[
 		bgPageOrPortError();
 	}, 4500);
 
+	//console.log('pending: option for automatically entering wasm "touch" mode? or seperate extension?', window.navigator.maxTouchPoints);
+
 	chrome.runtime.sendMessage({isBgAlive:true},function(r){
 		if(chrome.runtime.lastError){
 			console.warn('Error during check of isBgAlive: '+chrome.runtime.lastError.message);

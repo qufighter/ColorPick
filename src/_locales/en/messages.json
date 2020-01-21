@@ -301,6 +301,9 @@
    "trash_can":{
       "message": "Drag items here to remove them."
    },
+   "trash_alt_click":{
+      "message": "Alternatively you may alt-click some items to remove them."
+   },
    "undo":{
       "message": "Undo"
    },

@@ -974,7 +974,7 @@ function load_history(){
 				class: 'drop-target',
 				name: 'trash',
 				events:[
-					['click', function(){alert(chrome.i18n.getMessage('trash_can'))}],
+					['click', function(){alert(chrome.i18n.getMessage('trash_can') + "\n\n" + chrome.i18n.getMessage('trash_alt_click'))}],
 					['dragover', historySwatchDragOverEntry],
 					['dragleave', historySwatchDragOutEntry],
 					['drop', historySwatchDroppedEntry],
