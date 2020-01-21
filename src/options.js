@@ -1005,11 +1005,12 @@ function load_history(){
 			}else{
 				addPalleteSwatch(tc);
 				updateHistorySelection(ev.target);
-				doc_keyup(ev); // in case of stuck alt key (switch tabs while holding alt)... could handle this on mouse over??
+				doc_keyup(ev); // in case of stuck alt key (switch tabs while holding alt)... could handle this on mouseover??
 			}
 		}
 	},false);
-	
+	historyInner.addEventListener('mouseover',doc_keyup);
+
 	Cr.elm('div', {
 		style: 'right:-11px;top:0px;cursor:ew-resize;width:7px;height:100%;',
 		class: 'hist_drag_sizer',
@@ -1216,10 +1217,12 @@ function doc_keydown(ev){
 }
 
 function doc_keyup(ev){
-	if( hasKeyClass ){
-		document.body.classList.remove('alt-key');
+	if( !ev.altKey ){
+		if( hasKeyClass ){
+			document.body.classList.remove('alt-key');
+		}
+		hasKeyClass = false;
 	}
-	hasKeyClass = false;
 }
 
 function createDOM(){
