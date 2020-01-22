@@ -155,7 +155,7 @@ var goodHexCounter=0;
 function setDisplay(){//Cr.elm
 	if( !n ) return;
 	emptyNode(n);
-	var iconStyles = 'width:20px;height:20px;min-width:20px;min-height:20px;vertical-align:bottom;box-sizing:unset;box-shadow:none;background:unset;padding:8px;';
+	var iconStyles = 'width:20px;height:20px;min-width:20px;min-height:20px;vertical-align:bottom;box-sizing:unset;box-shadow:none;background:unset;padding:8px;cursor:pointer;';
 	Cr.elm('div',{},[
 		(opts.EnableHex && !opts.hexHasHash)?Cr.elm('span',{style:'vertical-align:bottom;padding:8px 4px;display:inline-block;'},[Cr.txt('#')]):0,
 		Cr.elm('input',{type:'text',readonly:true,size:8,style:'max-width:75px;font-size:10pt;vertical-align:bottom;padding:8px;border:'+opts.borderValue,id:'cphexvl',value:(opts.hexHasHash?'#':'')+hex,event:['mouseover',selectTargElm]}),
