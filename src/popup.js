@@ -2,6 +2,8 @@
 var tabid=0;
 var isScriptAlive=false,scriptAliveTimeout=1,reExecutedNeedlessly=false;
 var cpw=165,cph=303;
+var nbsp='\u00A0';
+var lastHex='';
 //pref variables should be created dynamicaly
 var borderValue='1px solid grey',EnableRGB=true,EnableHSL=true,useCSSValues=true,usePrevColorBG=false,showPreviousClr=true,pickEveryTime=(isWindows?true:false),bbackgroundColor='white',hexHasHash=false,hexIsLowerCase=false;
 var cpScaleOffset=(isWindows?16:0);
@@ -125,7 +127,6 @@ function rgb2hsv () {
     };
 }
 
-
 function updateCurrentColor(r,g,b,justFields,omitId){
 	var hex=RGBtoHex(r,g,b);
 	document.getElementById('hex-prefix').style.display=(hexHasHash?'none':'inline');
@@ -138,6 +139,8 @@ function updateCurrentColor(r,g,b,justFields,omitId){
 	document.getElementById('ch').value=hsl.h;
 	document.getElementById('cs').value=hsl.s;
 	document.getElementById('cv').value=hsl.v;
+	cc_lastRGB.r=r,cc_lastRGB.g=g,cc_lastRGB.b=b;
+	document.getElementById('cc_current_preview').style.backgroundColor='rgb('+cc_lastRGB.r+','+cc_lastRGB.g+','+cc_lastRGB.b+')';
 	if(omitId!='crgb'){
 		document.getElementById('crgb').value='rgb'+formatColorValues(r,g,b);
 	}
@@ -154,6 +157,10 @@ function getPageZoomFactor(){
 	return scal;
 }
 
+function showLastPickingHex(){
+	document.getElementById('ohexpre').style.backgroundColor='#'+lastHex;
+}
+
 chrome.runtime.onMessage.addListener(
 	function(request, sender, sendResponse) {
 		var validTab = ((sender.tab && sender.tab.id == tabid) || request.tabi==tabid || tabid==0);
@@ -162,7 +169,8 @@ chrome.runtime.onMessage.addListener(
       keyInputMode=false;
       gotAnUpdate=true;
       setPreviewSRC(request.previewURI,false);
-      document.getElementById('ohexpre').style.backgroundColor='#'+request.lhex;
+      lastHex = request.lhex; // under some conditions, we may not update this here...
+      if( isPicking ) showLastPickingHex();
       updateCurrentColor(request.cr,request.cg,request.cb);
       sendResponse({});
 		}else if(request.setPickState && validTab){
@@ -187,6 +195,7 @@ function resnap(){
 	chrome.tabs.sendMessage(tabid,{newImage:true},function(r){});
 }
 function setButtonState(picking){
+	if( !picking && picking != isPicking ) showLastPickingHex();
 	isPicking=picking;
 	if(isPicking){
 		document.getElementById('epick').className='btnActive'+(pickEveryTime?' autocast':'');
@@ -330,17 +339,15 @@ function iin(){
 					if(tabURL.indexOf('https://chrome.google.com')==0 ||tabURL.indexOf('chrome')==0 ||tabURL.indexOf('about')==0 ){
 							setPreviewSRC(chrome.extension.getURL('img/error'+0+'.png'),true);
 							init_color_chooser();
-					}else if(tabURL.indexOf('http://vidzbigger.com/anypage.php')!=0){
-							if(tabURL.indexOf('file://')==0){
-								setPreviewSRC(chrome.extension.getURL('img/error'+2+'.png'),true);
-							}else{
-								setTimeout(function(){
-									if(!gotAnUpdate && !otherError){
-										setPreviewSRC(chrome.extension.getURL('img/error'+1+'.png'),true);
-										showLoadingTimer();
-									}
-								},2000);
+					}else if(tabURL.indexOf('file://')==0){
+						setPreviewSRC(chrome.extension.getURL('img/error'+2+'.png'),true);
+					}else{
+						setTimeout(function(){
+							if(!gotAnUpdate && !otherError){
+								setPreviewSRC(chrome.extension.getURL('img/error'+1+'.png'),true);
+								showLoadingTimer();
 							}
+						},2000);
 					}
 					setupInjectScripts();
 			});
@@ -594,6 +601,7 @@ function sizeWindow(x,y){
 	window.resizeTo(x,y);
 }
 //COLOR CHOOSER FUNCTIONS *******************************
+var cc_lastRGB={r:0,g:0,b:0};
 var i1,i2,i3,ctx,cp_x=0,cp_y=0;
 var cp_loads=0,cp_totalLoads=3,cp_chooser_booted=false;
 var huedrag=false,clrdrag=false;
@@ -669,6 +677,8 @@ function init_color_chooser(){
 	document.body.style.width='470px';
 	sizeWindow(470*scal,window.outterHeight);
 	if(cp_chooser_booted)return;
+	//One Time Init...
+	document.getElementById('ch_ctrl_add').addEventListener('click', colorChooserAdd);
 	document.getElementById('gradi_box').addEventListener('mousedown', dragClr);
 	document.getElementById('slider_hue').addEventListener('mousedown', dragHue);
 	document.body.addEventListener('mousemove', dragingClr);
@@ -684,6 +694,13 @@ function init_color_chooser(){
 	i2.src='img/cp_rb.png';
 	i3.src='img/cp_cr.gif';
 }
+function colorChooserAdd(){
+	var hex=RGBtoHex(cc_lastRGB.r,cc_lastRGB.g,cc_lastRGB.b);
+	var hsl=rgb2hsl(cc_lastRGB.r,cc_lastRGB.g,cc_lastRGB.b);
+	chrome.runtime.sendMessage({setColor:true,hex:hex,rgb:cc_lastRGB,hsv:hsl}, function(response){});
+	document.getElementById('ohexpre').style.backgroundColor='#'+hex;
+	lastHex = hex;
+}
 //END COLOR CHOOSER FUNCTIONS ***************************
 function createDOM() {
 Cr.elm("div",{},[
@@ -694,7 +711,13 @@ Cr.elm("div",{},[
 		Cr.elm("div",{id:"slider_hue"},[
 			Cr.elm("img",{id:"hue_pos",src:"img/cp_ar.gif",style:"top:-4px"}),
 			Cr.elm("img",{id:"hue_grad",src:"img/cp_rb.png"})
-		])
+		]),
+		Cr.elm("div",{id:"ch_ctrls_box"},[
+			Cr.elm("a",{href:"#",id:"ch_ctrl_add"},[
+				Cr.elm('span',{style:'width:16px;display:inline-block;', id:'cc_current_preview'},[Cr.txt(nbsp)]),
+				Cr.txt(' '+chrome.i18n.getMessage('addToHistory'))
+			])
+		]),
 	]),
 	Cr.elm("a",{href:"#",title:chrome.i18n.getMessage('closeAndExit')+' [esc 2x]',id:"eclose"},[
 		Cr.elm("img",{align:'top',src:chrome.extension.getURL('img/close.png')})

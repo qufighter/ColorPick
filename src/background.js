@@ -153,29 +153,30 @@ function(request, sender, sendResponse) {
 			sendResponse({});
 		}else if (request.movePixel){
 			chrome.tabs.sendMessage(tabid,request,function(r){});
-		}else if (request.setColor){
+		}else if (request.setColor){ //hsv values here are really hsl in all cases (popup or user js)
 			if(request.hex) curentHex=request.hex;
-			if(showPreviousClr){lastLastHex=lastHex;lastHex=curentHex;}
-			else lastHex='none';
-			//user clicked, optionally store color to database... (db full... does not work)
-			if(shareClors){
-				var xhr = new XMLHttpRequest();
-				xhr.onreadystatechange=function(){if(xhr.readyState == 4){ }};
-				xhr.open('GET', 'https://vidsbee.com/ColorPick/Daily/vcolors.php?colorhex='+curentHex, true);
-				xhr.send();
+			if( lastHex != curentHex ){
+				//optionally store color to database...
+				if(shareClors){
+					var xhr = new XMLHttpRequest();
+					xhr.onreadystatechange=function(){if(xhr.readyState == 4){ }};
+					xhr.open('GET', 'https://vidsbee.com/ColorPick/Daily/vcolors.php?colorhex='+curentHex, true);
+					xhr.send();
+				}
+				//store colors
+				localStorage['colorPickHistory']=(localStorage['colorPickHistory']||'')+"#"+curentHex;
+				//logs error when options is not showing... not sure of best way to prevent
+				chrome.runtime.sendMessage({historypush: true}, function(response) {
+					if(chrome.runtime.lastError)console.log('historypush error: '+chrome.runtime.lastError.message);
+				});
 			}
-			//store colors
-			localStorage['colorPickHistory']=(localStorage['colorPickHistory']||'')+"#"+curentHex;
-			//logs error when options is not showing... not sure of best way to prevent
-			chrome.runtime.sendMessage({historypush: true}, function(response) {
-				if(chrome.runtime.lastError)console.log('historypush error: '+chrome.runtime.lastError.message);
-			});
 			if(autocopyhex&&autocopyhex!='false'){
 				copyColor(request);
 			}
 			if( curentHex ){
 				chrome.tabs.sendMessage(tabid,{hexValueWasSelected:curentHex.toLowerCase()},function(response){});
 			}
+			lastLastHex=lastHex;lastHex=curentHex;
 			sendResponse({});
 		}else if (request.browserIconMsg){
 			chrome.browserAction.setIcon({path:(request.path)});
