@@ -140,7 +140,7 @@ function updateCurrentColor(r,g,b,justFields,omitId){
 	document.getElementById('cs').value=hsl.s;
 	document.getElementById('cv').value=hsl.v;
 	cc_lastRGB.r=r,cc_lastRGB.g=g,cc_lastRGB.b=b;
-	document.getElementById('cc_current_preview').style.backgroundColor='rgb('+cc_lastRGB.r+','+cc_lastRGB.g+','+cc_lastRGB.b+')';
+	document.getElementById('cc_current_preview').style.backgroundColor='#'+hex;
 	if(omitId!='crgb'){
 		document.getElementById('crgb').value='rgb'+formatColorValues(r,g,b);
 	}
