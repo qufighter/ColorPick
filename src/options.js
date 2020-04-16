@@ -395,7 +395,7 @@ function persist_history_state(){
 			}
 		}
 	}
-	localStorage['colorPickHistory']=toSave.join('#');
+	localStorage['colorPickHistory']=toSave.join('#');//.split('##').join('#');
 	inform_history_update();
 }
 

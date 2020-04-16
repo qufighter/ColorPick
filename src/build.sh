@@ -39,7 +39,7 @@ rm -fr build/fin*
 echo "determining version number"
 vers=`cat manifest.json | awk -f build.awk`
 
-echo $vers
+echo "manifest version detected: "$vers
 
 cd build
 

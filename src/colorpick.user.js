@@ -1,49 +1,45 @@
 var elmid1='color_pick_click_box',elmid2='ChromeExtension:Color-Pick.com';
 if(typeof(exitAndDetach)=='function')exitAndDetach();
-function _ge(n){return document.getElementById(n);}
 var n=null,c=null,waterm=null,watermlo=null,watermct=null,wmMoveCtr=0,lastMoveInc=0,gameScr=false,hex='F00BAF',lasthex='',rgb=null;hsv=null;scal=1,ex=0,ey=0,isEnabled=false,isLocked=false,msg_bg_unavail=chrome.i18n.getMessage('bgPageUnavailable');
 var isUpdating=false,lastTimeout=0,lx=0,ly=0,histories=0,nbsp='\u00A0',popupsShowing=0,connectListener=false;
 var opts={};
 var cvs = document.createElement('canvas');
 var ctx = cvs.getContext('2d'),x_cvs_scale=1,y_cvs_scale=1;
-function RGBtoHex(R,G,B) {return applyHexCase(toHex(R)+toHex(G)+toHex(B));}
-function applyHexCase(hex){return opts.hexIsLowerCase ? hex.toLowerCase() : hex;}
-function toHex(N) {//http://www.javascripter.net/faq/rgbtohex.htm
- if (N==null) return "00";
- N=parseInt(N); if (N==0 || isNaN(N)) return "00";
- N=Math.max(0,N); N=Math.min(N,255); N=Math.round(N);
- return "0123456789ABCDEF".charAt((N-N%16)/16)
-      + "0123456789ABCDEF".charAt(N%16);
-}
-function rgb2hsl(r, g, b){//http://mjijackson.com/2008/02/rgb-to-hsl-and-rgb-to-hsv-color-model-conversion-algorithms-in-javascript
-    r /= 255, g /= 255, b /= 255;
-    var max = Math.max(r, g, b), min = Math.min(r, g, b);
-    var h, s, l = (max + min) / 2;
-    if(max == min){
-        h = s = 0; // achromatic
-    }else{
-        var d = max - min;
-        s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
-        switch(max){
-            case r: h = (g - b) / d + (g < b ? 6 : 0); break;
-            case g: h = (b - r) / d + 2; break;
-            case b: h = (r - g) / d + 4; break;
-        }
-        h /= 6;
-    }
-    return {
-      h: Math.round(h * 360),
-      s: Math.round(s * 100),
-      v: Math.round(l * 100)
-    };
-}
-function emptyNode(node){
-	Cr.empty(node);
-}
 var snapLoader=Cr.elm('img',{events:[['load',snapshotLoaded]]});
 var dirtyImage=Cr.elm('img');
 var imagesRcvdCounter=0;
 var imagesLoadedCounter=0;
+function _ge(n){return document.getElementById(n);}
+function RGBtoHex(R,G,B) {return applyHexCase(toHex(R)+toHex(G)+toHex(B));}
+function applyHexCase(hex){return opts.hexIsLowerCase ? hex.toLowerCase() : hex;}
+function toHex(N) {//http://www.javascripter.net/faq/rgbtohex.htm
+	if (N==null) return "00";
+	N=parseInt(N); if (N==0 || isNaN(N)) return "00";
+	N=Math.max(0,N); N=Math.min(N,255); N=Math.round(N);
+	return "0123456789ABCDEF".charAt((N-N%16)/16)
+		 + "0123456789ABCDEF".charAt(N%16);
+}
+function rgb2hsl(r, g, b){//http://mjijackson.com/2008/02/rgb-to-hsl-and-rgb-to-hsv-color-model-conversion-algorithms-in-javascript
+	r /= 255, g /= 255, b /= 255;
+	var max = Math.max(r, g, b), min = Math.min(r, g, b);
+	var h, s, l = (max + min) / 2;
+	if(max == min){
+		h = s = 0; // achromatic
+	}else{
+		var d = max - min;
+		s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+		switch(max){
+			case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+			case g: h = (b - r) / d + 2; break;
+			case b: h = (r - g) / d + 4; break;
+		}
+		h /= 6;
+	}
+	return {
+		h: Math.round(h * 360), s: Math.round(s * 100), v: Math.round(l * 100)
+	};
+}
+function emptyNode(node){Cr.empty(node);}
 function snapshotLoaded(){
 		clearTimeout(snapshotLoadedTimeout);
 		imagesLoadedCounter++;
@@ -68,6 +64,16 @@ function reqLis(request, sender, sendResponse) {
   var resp={result:true};
   if (request.testAlive){
 		//disableColorPicker();
+  }else if( request.getActivatedStatus ){
+	// request origin: background page at request of "ColorPick Eyedropper Tablet Edition"
+	resp.isEnabled = isEnabled; // isPicking auto set
+	if( isEnabled ){
+		resp.x = ex;
+		resp.y = ey;
+		resp.tab = request.tab;
+		resp.win = request.win;
+		resp.imageDataUri = snapLoader.src;
+	}
   }else if (request.enableColorPicker){
 		histories = request.historyLen || 0;
 		resp.wasAlreadyEnabled=enableColorPicker();
@@ -93,6 +99,8 @@ function reqLis(request, sender, sendResponse) {
   	picked();
   }else if (request.movePixel){
 		ex+=(request._x),ey+=(request._y);
+		if( ex < 0 ){ ex = 0; }else if( ex >= c.width ){ ex = c.width - 1; }
+		if( ey < 0 ){ ey = 0; }else if( ey >= c.height ){ ey = c.height - 1; }
 		lx=Math.round(ex / x_cvs_scale),ly=Math.round(ey / y_cvs_scale);
 		updateColorPreview();
 	}else if (request.reloadPrefs){
@@ -111,10 +119,12 @@ function decrementPopupsShowing(){
 chrome.runtime.onConnect.addListener(function(port){
 	if(port.name == "popupshown"){
 		popupsShowing++;
-		port.onDisconnect.addListener(function(msg) {
-			setTimeout(decrementPopupsShowing, 250);
-		});
 	}
+	port.onDisconnect.addListener(function(_port) {
+		if( _port.name == "popupshown" ){
+			setTimeout(decrementPopupsShowing, 250);
+		}
+	});
 });
 
 function setPixelPreview(hxe,lhex){

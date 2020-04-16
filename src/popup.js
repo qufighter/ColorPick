@@ -3,7 +3,7 @@ var tabid=0;
 var isScriptAlive=false,scriptAliveTimeout=1,reExecutedNeedlessly=false;
 var cpw=165,cph=303;
 var nbsp='\u00A0';
-var lastHex='';
+var lastHex='FFF';
 //pref variables should be created dynamicaly
 var borderValue='1px solid grey',EnableRGB=true,EnableHSL=true,useCSSValues=true,usePrevColorBG=false,showPreviousClr=true,pickEveryTime=(isWindows?true:false),bbackgroundColor='white',hexHasHash=false,hexIsLowerCase=false;
 var cpScaleOffset=(isWindows?16:0);

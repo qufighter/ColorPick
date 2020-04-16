@@ -1,6 +1,6 @@
 #!/bin/awk
-# This script extracts the version number from manifest.json
-# author qufigher < http://vidzbigger.com >
+# Extracts the version number from manifest.json
+# See also build.sh ColorPick < http://vidsbee.com >
 
 BEGIN{
   FS=":"

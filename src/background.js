@@ -121,6 +121,48 @@ function getFauxSnap(dataUrl,w,h){
 	return cvs.toDataURL();
 }
 
+chrome.runtime.onMessageExternal.addListener(function(request, sender, sendResponse) {
+	//console.log('external message onMessageExternal', request, sender);
+	if(sender.tab && sender.tab.id >= 0){
+		extTabId = sender.tab.id; // we often do not need the tab of the fullscreen.html / chrome-ext
+		extWinId = sender.tab.windowId;
+	}
+	var extTabId = request.active_tab;
+	var extWinId = request.active_window;
+	if (sender.id === extensionsKnown.color_pick_tablet){
+
+		if(request.movePixel){
+			chrome.tabs.sendMessage(extTabId, {movePixel:true,_x:request.x,_y:request.y,tabi:extTabId}, function(r) {});
+			sendResponse({});
+		}else if(request.getActivatedStatusFromBg){
+			//console.log('chrome.tabs.sendMessage(',extTabId, {getActivatedStatus:true, tab:extTabId, win:extWinId});
+			chrome.tabs.sendMessage(extTabId, {getActivatedStatus:true, tab:extTabId, win:extWinId}, function(tab_response) {
+				if( chrome.runtime.lastError || !tab_response ){
+					chrome.runtime.sendMessage(extensionsKnown.color_pick_tablet, {extInactive:true, tab:extTabId, win:extWinId}, function(r) {});
+				}else{
+					chrome.runtime.sendMessage(extensionsKnown.color_pick_tablet, tab_response, function(r) {});
+				}
+				//console.log('recieved a response from the tab....', tab_response);
+			});
+			sendResponse({askedTheTab:true});
+		}else if(request.bulkAppendHistories){
+			localStorage['colorPickHistory']=(localStorage['colorPickHistory']||'')+bulkAppendHistories;
+			sendResponse({});
+		}else if(request.getAllHistories){
+			sendResponse({allExtHistories: localStorage['colorPickHistory'] || ''});
+		}else if(request.historyPush && request.hex && request.rgb && request.hsv ){
+			processSetColor({setColor:true,hex:request.hex,rgb:request.rgb,hsv:request.hsv});
+			sendResponse({});
+		}else if(request.goToOrVisitTab){
+			goToOrOpenTab(request.goToOrVisitTab);
+			sendResponse({});
+		}
+	}else{
+		sendResponse({});
+	}
+});
+
+
 chrome.runtime.onMessage.addListener(
 function(request, sender, sendResponse) {
 		if(sender.tab && sender.tab.id >= 0){
@@ -154,29 +196,7 @@ function(request, sender, sendResponse) {
 		}else if (request.movePixel){
 			chrome.tabs.sendMessage(tabid,request,function(r){});
 		}else if (request.setColor){ //hsv values here are really hsl in all cases (popup or user js)
-			if(request.hex) curentHex=request.hex;
-			if( lastHex != curentHex ){
-				//optionally store color to database...
-				if(shareClors){
-					var xhr = new XMLHttpRequest();
-					xhr.onreadystatechange=function(){if(xhr.readyState == 4){ }};
-					xhr.open('GET', 'https://vidsbee.com/ColorPick/Daily/vcolors.php?colorhex='+curentHex, true);
-					xhr.send();
-				}
-				//store colors
-				localStorage['colorPickHistory']=(localStorage['colorPickHistory']||'')+"#"+curentHex;
-				//logs error when options is not showing... not sure of best way to prevent
-				chrome.runtime.sendMessage({historypush: true}, function(response) {
-					if(chrome.runtime.lastError)console.log('historypush error: '+chrome.runtime.lastError.message);
-				});
-			}
-			if(autocopyhex&&autocopyhex!='false'){
-				copyColor(request);
-			}
-			if( curentHex ){
-				chrome.tabs.sendMessage(tabid,{hexValueWasSelected:curentHex.toLowerCase()},function(response){});
-			}
-			lastLastHex=lastHex;lastHex=curentHex;
+			processSetColor(request);
 			sendResponse({});
 		}else if (request.browserIconMsg){
 			chrome.browserAction.setIcon({path:(request.path)});
@@ -206,6 +226,33 @@ function(request, sender, sendResponse) {
     	sendResponse({});
   
 });
+
+
+function processSetColor(request){
+	if(request.hex) curentHex=request.hex;
+	if( lastHex != curentHex ){
+		//optionally store color to database...
+		if(shareClors){
+			var xhr = new XMLHttpRequest();
+			xhr.onreadystatechange=function(){if(xhr.readyState == 4){ }};
+			xhr.open('GET', 'https://vidsbee.com/ColorPick/Daily/vcolors.php?colorhex='+curentHex, true);
+			xhr.send();
+		}
+		//store colors
+		localStorage['colorPickHistory']=(localStorage['colorPickHistory']||'')+"#"+curentHex;
+		//logs error when options is not showing... not sure of best way to prevent
+		chrome.runtime.sendMessage({historypush: true}, function(response) {
+			if(chrome.runtime.lastError)console.log('historypush error: '+chrome.runtime.lastError.message);
+		});
+	}
+	if(autocopyhex&&autocopyhex!='false'){
+		copyColor(request);
+	}
+	if( curentHex ){
+		chrome.tabs.sendMessage(tabid,{hexValueWasSelected:curentHex.toLowerCase()},function(response){});
+	}
+	lastLastHex=lastHex;lastHex=curentHex;
+}
 
 function copyColor(request){
 	var n=document.createElement('input');document.body.appendChild(n);

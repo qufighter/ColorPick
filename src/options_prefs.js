@@ -8,6 +8,15 @@ var pOptions={};
 var pAdvOptions={};
 var pSyncItems={};
 
+var extensionsKnown = {
+	color_pick_tablet: (isChrome ? 'hobaclohjecibademehpakdcphmbodmb' : null)
+};
+
+if( chrome.runtime.id != 'ohcpnigalekghcmgcdcenkpelffpdolg' ){ // development / test settings:
+	extensionsKnown.color_pick_tablet = 'kjgakcoopjnkaobapohfkipbkpnajocc';
+}
+
+
 //WARNIGN you have to set defaults two places for now...
 pOptions["pickEveryTime"]={def:isWindows?true:false,ind:0,img:'img/icons/no-shadow/icon16.png'}; //default also set in popup.html
 pOptions["pixelatedPreview"]={def:true,ind:0};
