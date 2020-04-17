@@ -90,6 +90,7 @@ var isCurrentEnableReady=false,isRunning=false,updateAvailable=false;
 
 // during snapshot, we care to verify the tab didn't change.
 var lastActiveTabTime=0;
+var timeRequiredToBeOnTabSinceChange=500;
 chrome.tabs.onActivated.addListener(function(activeInfo){
 	lastActiveTabTime=(new Date()).getTime();
 });
@@ -176,20 +177,34 @@ function(request, sender, sendResponse) {
 			//todo need desired size for getFauxSnap... we can match aspect ratio vertically
 			lsnaptabid=tabid;
 			var cbf=function(dataUrl){
-
 				var currentTime = (new Date()).getTime();
 				var snapDuration = currentTime - lastActiveTabTime; // measure duration since last tab activation....
 
-				if( snapDuration > 1000 && dataUrl ){ // tab has to have been active for at least this long.... (keep in mind we wait 255ms before calling this)
+				if( snapDuration > timeRequiredToBeOnTabSinceChange && dataUrl ){ // tab has to have been active for at least this long.... (keep in mind we wait 255ms before calling this)
 					chrome.tabs.sendMessage(lsnaptabid, {setPickerImage:true,pickerImage:dataUrl}, function(response) {});
 				}else{
 					// tab must have changed too recently - too risky to send this snapshot back... (might be wrong tab)
 					chrome.tabs.sendMessage(lsnaptabid, {setPickerImage:true,pickerImage:getFauxSnap(dataUrl,request.w,request.h),isErrorTryAgain:true}, function(response) {});
 				}
 			}
+			if( request.newImage == 'for-popup' ){
+				cbf=function(dataUrl){
+					var currentTime = (new Date()).getTime();
+					var snapDuration = currentTime - lastActiveTabTime; // measure duration since last tab activation....
+					if( snapDuration > timeRequiredToBeOnTabSinceChange && dataUrl ){ // tab has to have been active for at least this long.... (keep in mind we wait 255ms before calling this)
+						chrome.runtime.sendMessage({setTabImage:lsnaptabid,pickerImage:dataUrl}, function(response) {});
+					}else{
+						chrome.runtime.sendMessage({didReqTabImage:lsnaptabid,tooFast:true}, function(response) {});
+					}
+				}// define handler instead?
+			}
 			if(winid < 1)winid=null;
 			if(usePNG)chrome.tabs.captureVisibleTab(winid, {format:'png'}, cbf);
 			else chrome.tabs.captureVisibleTab(winid, {format:'jpeg',quality:100}, cbf);
+			sendResponse({});
+		}else if (request.activateOnTab){
+			lastActiveTabTime=(new Date()).getTime() - timeRequiredToBeOnTabSinceChange;
+			chrome.tabs.sendMessage(tabid, {enableColorPicker:true},function(r){});
 			sendResponse({});
 		}else if (request.isBgAlive){
 			sendResponse({});
@@ -242,7 +257,7 @@ function processSetColor(request){
 		localStorage['colorPickHistory']=(localStorage['colorPickHistory']||'')+"#"+curentHex;
 		//logs error when options is not showing... not sure of best way to prevent
 		chrome.runtime.sendMessage({historypush: true}, function(response) {
-			if(chrome.runtime.lastError)console.log('historypush error: '+chrome.runtime.lastError.message);
+			if(chrome.runtime.lastError)console.log('historypush error (options screen not open?): '+chrome.runtime.lastError.message);
 		});
 	}
 	if(autocopyhex&&autocopyhex!='false'){

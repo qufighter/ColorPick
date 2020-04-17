@@ -27,21 +27,41 @@ function getEventTarget(ev){
 	return targ;
 }
 
+var screenshotAlternativeRecieved = 0;
 var realSrcRecieved = false;
 function setPreviewSRC(duri, hidearrows){
 	if( realSrcRecieved && hidearrows ){
 		return;
 	}
+	if( screenshotAlternativeRecieved && duri.indexOf('img/error') > 0 ){
+		return;
+	}
 	if( !hidearrows && !realSrcRecieved ){
 		var timer = document.getElementById('timer_msg');
 		if( timer ) timer.remove();
+		if( screenshotAlternativeRecieved ){
+			document.getElementById('alt-snap-mode-link').remove();
+			screenshotAlternativeRecieved = 0;
+		}
 	}
 	realSrcRecieved = realSrcRecieved || !hidearrows;
 	var im=new Image();
 	im.onload=function(){
 		var pcvs=document.getElementById('pre').getContext('2d');
 		pcvs.clearRect(0,0,150,150);
-		pcvs.drawImage(im,0,0);
+
+		var iw=im.naturalWidth;
+		var ih=im.naturalHeight;
+		var ratio = iw / ih;
+		if( iw > ih ){
+			var dh = 150 / ratio;
+			pcvs.drawImage(im,0,(150-dh)*0.5,150,dh);
+		}else{
+			var dw = 150 * ratio;
+			pcvs.drawImage(im,(150-dw)*0.5,0,dw,150);
+		}
+
+
 	};
 	im.src=duri;
 	if(hidearrows){
@@ -179,16 +199,15 @@ chrome.runtime.onMessage.addListener(
 			close_stop_picking();
 		}else if(request.reportingIn){
 			isCurrentEnableReady=true;
-    }else if(request.setFullsizeImage){
-    	//unused??
-      setFullsizeImage(request);
-//    }else if (request.movePixel){
-//      movePixel(request);
-//    }else if (request.getPixel){
-//      movePixel(getPixel);
-    }else{
-     sendResponse({});
-    }
+	}else if(request.setTabImage){
+		sendResponse({});
+		tabScreenshotRecieved(request);
+	}else if(request.didReqTabImage && request.tooFast){
+		sendResponse({});
+		errorShowScreenshotInstead();
+	}else{
+		sendResponse({});
+	}
   });
 
 function resnap(){
@@ -339,13 +358,17 @@ function iin(){
 					if(tabURL.indexOf('https://chrome.google.com')==0 ||tabURL.indexOf('chrome')==0 ||tabURL.indexOf('about')==0 ){
 							setPreviewSRC(chrome.extension.getURL('img/error'+0+'.png'),true);
 							init_color_chooser();
+							errorShowScreenshotInstead();
 					}else if(tabURL.indexOf('file://')==0){
 						setPreviewSRC(chrome.extension.getURL('img/error'+2+'.png'),true);
+						showLoadingTimer();
+						errorShowScreenshotInstead();
 					}else{
 						setTimeout(function(){
 							if(!gotAnUpdate && !otherError){
 								setPreviewSRC(chrome.extension.getURL('img/error'+1+'.png'),true);
 								showLoadingTimer();
+								errorShowScreenshotInstead();
 							}
 						},2000);
 					}
@@ -355,6 +378,33 @@ function iin(){
 	}
 	//}
 }
+
+var errorScreenshotAttempts=0;
+function errorShowScreenshotInstead(){
+	errorScreenshotAttempts++;
+	if( errorScreenshotAttempts > 25 ){console.log("max err alternative screeshot attempts reached;"); return;}
+	chrome.runtime.sendMessage({newImage:'for-popup',tabi:tabid},function(r){});
+}
+function tabScreenshotRecieved(request){
+	if( realSrcRecieved ) return;
+
+	var dataUri = request.pickerImage;
+
+	setPreviewSRC(dataUri,true);
+	Cr.elm("a",{
+		id:'alt-snap-mode-link',
+		target:'_blank',
+		href:chrome.extension.getURL('pick.html#tab='+request.setTabImage),
+		event:['click', function(){
+			localStorage.lastImageSnap=dataUri; // our new tab will delete this entry
+		}],
+		childNodes:[
+			Cr.txt('Not Working? Click here.')
+		]
+	},document.getElementById('preview'));
+	screenshotAlternativeRecieved = 1;
+}
+
 
 function showLoadingTimer(){
 	var timer = document.getElementById('timer_msg');
@@ -436,8 +486,8 @@ function finishSetup(){
 		bgPageOrPortError();
 		return;
 	}
-	var history = localStorage['colorPickHistory'] || '';
-	chrome.tabs.sendMessage(tabid,{enableColorPicker:true, historyLen:history.length},function(response){
+	var colorHistory = localStorage['colorPickHistory'] || '';
+	chrome.tabs.sendMessage(tabid,{enableColorPicker:true, historyLen:colorHistory.length},function(response){
 
 		if(response.hex)
 			updateCurrentColor(response.cr,response.cg,response.cb);

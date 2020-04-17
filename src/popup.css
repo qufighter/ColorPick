@@ -20,6 +20,8 @@ a.mvarrow{position:absolute;color:black;text-shadow:0px 0px 5px white;display:no
 #ctrls a{margin-right:2px;display:inline-block;vertical-align: top;}
 #unreg_msg{display:none;position:absolute;bottom:0;left:0;width:75;text-align:left;color:blue;font-weight:bold;text-shadow:white 1px 1px 1px;padding:5px 3px;}
 #timer_msg{position:absolute;bottom:0;right:0;width:75;text-align:left;color:red;font-weight:bold;text-shadow:white 1px 1px 1px;padding:5px 3px;}
+#alt-snap-mode-link{position:absolute;top: 0;left: 0;width: 80%;height: 80%;display: block;text-align: center;margin: 0;padding: 10%;text-shadow:white 1px 1px 1px;}
+#alt-snap-mode-link:visited{color:blue;}
 .btnActive{border:1px solid #FFB923;}
 .autocast{background:#FFE2A0 -webkit-linear-gradient(-45deg, #fefcea 45%,#ffdc8c 49%,#fefcea 95%);}
 .btnInactive{border:1px solid #F66;background-image:url(img/lock.png);background-position:center center;background-repeat:no-repeat;}

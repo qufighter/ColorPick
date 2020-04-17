@@ -48,7 +48,9 @@ pAdvOptions["usePrevColorBG"]={def:false,ind:1};
 pAdvOptions["showPreviousClr"]={def:true,ind:0};
 pAdvOptions["borderValue"]={def:'1px solid grey',ind:0};
 pAdvOptions["confirmEmptyPalleteWhenLeaving"]={def:false,ind:0};
+pAdvOptions["cacheSnapshots"]={def:false,ind:0};
 pAdvOptions["hideWatermark"]={def:false,ind:0};
+
 //pOptions["localflScalePix"]={def:false,ind:1,name:'Local Flash Scale Pixel? (read help)'};
 //pAdvOptions["showActualPickTarget"]={def:true,ind:0,name:'ShowActualPickTarget - Freeze Screen when Picking.  Also useful when ColorAccuracyOverPrecision checked, you see the image you\'re picking from instead of the webpage.'};
 //pAdvOptions["clrAccuracyOverPrecision"]={def:false,ind:0,name:'ColorAccuracyOverPrecision - Never scale screenshot.  Improves color accuracy sometimes (rarely) but decreases location accuracy.  Negative: possibly inaccessible page locations.'};

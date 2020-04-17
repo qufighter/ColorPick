@@ -88,11 +88,15 @@ function reqLis(request, sender, sendResponse) {
 		}
   }else if (request.setPickerImage){
 		imagesRcvdCounter++;
-		snapLoader.src=request.pickerImage;
 		if( request.isErrorTryAgain ){
 			/// do we let them have time to read it?? or not???
 			// if we are "locked" or not.... ?
+			isMakingNew = false; // this or above...
+			newImage();
+		}else{
+			snapLoader.src=request.pickerImage;
 		}
+
   }else if (request.newImage){
   	ssf();
   }else if (request.doPick){
