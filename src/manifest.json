@@ -50,7 +50,7 @@
      "img/close.png"
    ],
    "permissions": [
-      "activeTab", "tabs", "storage", "<all_urls>", "alarms"
+      "activeTab", "tabs", "<all_urls>", "storage", "alarms"
    ],
    "browser_specific_settings": {"gecko": {"id": "jid1-kCS67LPIOiGf2Q@jetpack"}},
    "content_security_policy": "script-src 'self'; object-src 'self'",
