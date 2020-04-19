@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', function(){
 	if( last ){
 		document.getElementById('default_err').remove();
 		document.getElementById('pick').addEventListener('load',function(){
-			window.scrollBy(0,14);
+			window.scrollBy(32,0)
 		});
 		document.getElementById('pick').src = last;
 		localStorage.removeItem('lastImageSnap');

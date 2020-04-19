@@ -263,7 +263,7 @@
       "message": "Snap Mode - backup mode handles various errors."
    },
    "cacheSnapshots": {
-      "message": "Store snapshots to session storage (multiple tabs may be refreshed)"
+      "message": "Store snapshots to session storage"
    },
    "options": {
       "message": "Options"

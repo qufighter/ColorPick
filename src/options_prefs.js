@@ -29,7 +29,8 @@ pOptions["showPreviewInContent"]={def:true,ind:0};
 // pOptions["contSprevZoomd"]={def:true,ind:1};
 pOptions["ShowRGBHSL"]={def:true,ind:1};
 pOptions["autocopyhex"]={def:'false',ind:0,select:{'false':chrome.i18n.getMessage('off'),'true':'hexadecimal','rgb':'rgb','hsl':'hsl'}};
-
+pOptions["snapMode"]={def:true,ind:0};
+pOptions["cacheSnapshots"]={def:false,ind:1};
 
 //pAdvOptions["customCalibration"]={def:false,ind:0,name:'Enable the defunct calibration link above.'};
 pAdvOptions["usePNG"]={def:true,ind:0};
@@ -48,8 +49,6 @@ pAdvOptions["usePrevColorBG"]={def:false,ind:1};
 pAdvOptions["showPreviousClr"]={def:true,ind:0};
 pAdvOptions["borderValue"]={def:'1px solid grey',ind:0};
 pAdvOptions["confirmEmptyPalleteWhenLeaving"]={def:false,ind:0};
-pAdvOptions["snapMode"]={def:true,ind:0};
-pAdvOptions["cacheSnapshots"]={def:false,ind:1};
 pAdvOptions["hideWatermark"]={def:false,ind:0};
 
 //pOptions["localflScalePix"]={def:false,ind:1,name:'Local Flash Scale Pixel? (read help)'};

@@ -1,5 +1,7 @@
 /*jshint sub:true*/
 var tabid=0;
+var snapModeDelay = 250, errorScreenshotAttempts=0;
+var screenshotAlternativeRecieved = 0, realSrcRecieved = false;
 var isScriptAlive=false,scriptAliveTimeout=1,reExecutedNeedlessly=false;
 var cpw=165,cph=303;
 var nbsp='\u00A0';
@@ -26,9 +28,6 @@ function getEventTarget(ev){
 	}
 	return targ;
 }
-
-var screenshotAlternativeRecieved = 0;
-var realSrcRecieved = false;
 function setPreviewSRC(duri, hidearrows){
 	if( realSrcRecieved && hidearrows ){
 		return;
@@ -60,8 +59,6 @@ function setPreviewSRC(duri, hidearrows){
 			var dw = 150 * ratio;
 			pcvs.drawImage(im,(150-dw)*0.5,0,dw,150);
 		}
-
-
 	};
 	im.src=duri;
 	if(hidearrows){
@@ -356,19 +353,13 @@ function iin(){
 					tabid=tab.id;
 					var tabURL=tab.url;
 					if(tabURL.indexOf('https://chrome.google.com')==0 ||tabURL.indexOf('chrome')==0 ||tabURL.indexOf('about')==0 ){
-							setPreviewSRC(chrome.extension.getURL('img/error'+0+'.png'),true);
-							init_color_chooser();
-							errorShowScreenshotInstead();
+						showErrorScreen('page_url');
 					}else if(tabURL.indexOf('file://')==0){
-						setPreviewSRC(chrome.extension.getURL('img/error'+2+'.png'),true);
-						showLoadingTimer();
-						errorShowScreenshotInstead();
+						showErrorScreen('page_is_file');
 					}else{
 						setTimeout(function(){
 							if(!gotAnUpdate && !otherError){
-								setPreviewSRC(chrome.extension.getURL('img/error'+1+'.png'),true);
-								showLoadingTimer();
-								errorShowScreenshotInstead();
+								showErrorScreen('page_slow');
 							}
 						},2000);
 					}
@@ -379,16 +370,57 @@ function iin(){
 	//}
 }
 
-var errorScreenshotAttempts=0;
-function errorShowScreenshotInstead(){
-	errorScreenshotAttempts++;
+var errorTypes={
+	current: null,
+	conent_port:{
+		image: '0.1',
+		chooser: true
+	},
+	page_url:{
+		image: '0',
+		chooser: true,
+		ignore: {'conent_port': 1}
+	},
+	page_slow:{
+		image: '1',
+		timer: true,
+	},
+	page_is_file:{
+		image: '2',
+		timer: true
+	}
+}
+function showErrorScreen(errorType){
+	var err = errorTypes[errorType];
+	if( !err ) err = errorTypes.page_slow;
+	var lastErr = errorTypes[errorTypes.current];
+	if( lastErr && lastErr.ignore[errorType] ){ // to ignore subsequent errors of specified types
+		console.log('error of type '+errorType+' ignored after occurance of error type ' +errorTypes.current );
+		return;
+	}
+	errorTypes.current = errorType;
+	// todo: delay/fade this error in??  maybe some types ???
+	setPreviewSRC(chrome.extension.getURL('img/error'+err.image+'.png'), true);
+	if( err.chooser && !cp_chooser_booted ){ init_color_chooser(); }
+	if( err.timer ){ showLoadingTimer(); }
+	errorShowScreenshotInstead();
+}
 
+function errorShowScreenshotInstead(){
 	if( localStorage['snapMode'] === 'false' ){
 		console.warn(chrome.i18n.getMessage('snapMode') + 'snap mode disabled');
 		return;
 	}
+	setTimeout(beginSnapMode, snapModeDelay);
+}
+function beginSnapMode(){
+	errorScreenshotAttempts++;
 
-	if( errorScreenshotAttempts > 25 ){console.log("max err alternative screeshot attempts reached;"); return;}
+	if( gotAnUpdate || realSrcRecieved || localStorage['snapMode'] === 'false' ){
+		return;
+	}
+
+	if( errorScreenshotAttempts > 5 ){console.log("max err alternative screeshot attempts reached;"); return;}
 	//chrome.runtime.sendMessage({newImage:'for-popup',tabi:tabid},function(r){});
 	chrome.tabs.captureVisibleTab(null, {format:'png'}, function(dataUrl){
 		tabScreenshotRecieved(dataUrl, {setTabImage:tabid})
@@ -438,8 +470,7 @@ function setupInjectScripts(){
 			if(chrome.runtime.lastError)console.log('Content scripts inactive, was the extension reloaded?: '+chrome.runtime.lastError.message);
 			if(response&&response.result){
 				if(scriptAliveTimeout==0){
-					setPreviewSRC(chrome.extension.getURL('img/error'+1+'.png'),true);
-					showLoadingTimer();
+					showErrorScreen('page_slow');
 					reExecutedNeedlessly=true;
 				}else{
 					isScriptAlive=true;
@@ -456,12 +487,12 @@ function scriptsInjectedResult(){
 	clearTimeout(scriptAliveTimeout);
 	scriptAliveTimeout = 0;
 	if(!isScriptAlive){
-		chrome.extension.getURL('img/error'+1+'.png');
+		//chrome.extension.getURL('img/error'+1+'.png'); // showErrorScreen('page_slow');
 		// if they wait anyway, it could work....
 		chrome.tabs.executeScript(tabid, {file: "Cr.js"}, function(){
 			if(chrome.runtime.lastError){
 				console.log(chrome.runtime.lastError.message);
-				//setPreviewSRC(chrome.extension.getURL('img/error'+1+'.png'),true);
+				showErrorScreen('conent_port');
 				return;
 			}
 			chrome.tabs.executeScript(tabid, {file: "options_prefs.js"}, function(){
@@ -477,8 +508,7 @@ function scriptsInjectedResult(){
 
 function bgPageOrPortError(){
 	otherError=true;
-	setPreviewSRC(chrome.extension.getURL('img/error0.1.png'),true);
-	init_color_chooser();
+	showErrorScreen('conent_port');
 }
 
 function finishSetup(){
