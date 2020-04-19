@@ -48,7 +48,8 @@ pAdvOptions["usePrevColorBG"]={def:false,ind:1};
 pAdvOptions["showPreviousClr"]={def:true,ind:0};
 pAdvOptions["borderValue"]={def:'1px solid grey',ind:0};
 pAdvOptions["confirmEmptyPalleteWhenLeaving"]={def:false,ind:0};
-pAdvOptions["cacheSnapshots"]={def:false,ind:0};
+pAdvOptions["snapMode"]={def:true,ind:0};
+pAdvOptions["cacheSnapshots"]={def:false,ind:1};
 pAdvOptions["hideWatermark"]={def:false,ind:0};
 
 //pOptions["localflScalePix"]={def:false,ind:1,name:'Local Flash Scale Pixel? (read help)'};

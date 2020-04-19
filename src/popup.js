@@ -382,6 +382,12 @@ function iin(){
 var errorScreenshotAttempts=0;
 function errorShowScreenshotInstead(){
 	errorScreenshotAttempts++;
+
+	if( localStorage['snapMode'] === 'false' ){
+		console.warn(chrome.i18n.getMessage('snapMode') + 'snap mode disabled');
+		return;
+	}
+
 	if( errorScreenshotAttempts > 25 ){console.log("max err alternative screeshot attempts reached;"); return;}
 	//chrome.runtime.sendMessage({newImage:'for-popup',tabi:tabid},function(r){});
 	chrome.tabs.captureVisibleTab(null, {format:'png'}, function(dataUrl){
@@ -400,7 +406,7 @@ function tabScreenshotRecieved(dataUri, request){
 			localStorage.lastImageSnap=dataUri; // our new tab will delete this entry
 		}],
 		childNodes:[
-			Cr.txt('Not Working? Click here.')
+			Cr.txt(chrome.i18n.getMessage('snapMode_prompt'))
 		]
 	},document.getElementById('preview'));
 	screenshotAlternativeRecieved = 1;
@@ -807,7 +813,7 @@ Cr.elm("div",{},[
 			Cr.elm("br",{})
 		])
 	]),
-	Cr.elm("div",{id:"preview"},[
+	Cr.elm("div",{id:"preview",title:chrome.i18n.getMessage('zoomPreviewDefaultTip')},[
 		Cr.elm("a",{id:"unreg_msg",target:"_blank",href:"register.html",event:['click',navToReg],title:chrome.i18n.getMessage('buyRegisterTip')},[/*Cr.txt(chrome.i18n.getMessage('registerBanner'))*/]),
 		Cr.elm("span",{id:"timer_msg"},[]),
 		Cr.elm("a",{href:'#',id:'arr_u',class:'hilight mvarrow',name:38,event:['click',moveArrowBtn]},[Cr.txt(String.fromCharCode(9650))]),

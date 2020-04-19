@@ -131,6 +131,9 @@
    "maxZoom": {
       "message": "Max Zoomed"
    },
+   "zoomPreviewDefaultTip":{
+      "message": "Drag or use the arrows to pan this view, once it loads.  In the event of a problem loading; alternative modes such as snap mode or tablet mode may be available depending on settings."
+      },
    "pickEveryTime": {
       "message": "Start picking colors each time popup is clicked",
       "description": "'Start picking' in this usage refers to entering color selection mode.  If this feature is disabled the previous mode will be retained instead (locked (selected) or unlocked (picking)).  'popup' refers to the extension's popup menu triggered when clicking the icon."
@@ -252,6 +255,15 @@
    "hideWatermark": {
       "message": "Hide ColorPick watermark on webpage corner (registered only)",
       "description": "'ColorPick' refers to the extName key, see that description for details, if that key is not translated leave this part of the string untranslated"
+   },
+   "snapMode_prompt": {
+      "message": "Not Working? Click to try Snap Mode."
+   },
+   "snapMode": {
+      "message": "Snap Mode - backup mode handles various errors."
+   },
+   "cacheSnapshots": {
+      "message": "Store snapshots to session storage (multiple tabs may be refreshed)"
    },
    "options": {
       "message": "Options"
@@ -475,9 +487,6 @@
    },
    "palette_tetradic_info":{
       "message": "Tetradic (Rectangular) include the complementary color, and also two additional colors each two 30\u00b0 increments away from the base color or its complement in the same direction (clockwise or counterclockwise).  Depending on if Left or Right is selected the increments will be rectangular in one direction or the other."
-   },
-   "cacheSnapshots": {
-      "message": "Store snapshots to session storage (multiple tabs may be refreshed)"
    },
    "helpPage": {
       "message": "todo"
