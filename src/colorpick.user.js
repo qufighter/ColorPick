@@ -61,6 +61,7 @@ function snapshotLoaded(){
 		},10);
 }
 function reqLis(request, sender, sendResponse) {
+  // typically we only get tab messages, however on pick.html we may get other messages !
   var resp={result:true};
   if (request.testAlive){
 		//disableColorPicker();
@@ -97,7 +98,7 @@ function reqLis(request, sender, sendResponse) {
 			snapLoader.src=request.pickerImage;
 		}
 
-  }else if (request.newImage){
+  }else if (request.tabRefreshSnap){
   	ssf();
   }else if (request.doPick){
   	picked();

@@ -163,6 +163,33 @@ chrome.runtime.onMessageExternal.addListener(function(request, sender, sendRespo
 	}
 });
 
+function doCaptueForTab(request,tabId,winId){
+	var cbf=function(dataUrl){
+		var currentTime = (new Date()).getTime();
+		var snapDuration = currentTime - lastActiveTabTime; // measure duration since last tab activation....
+
+		if( snapDuration > timeRequiredToBeOnTabSinceChange && dataUrl ){ // tab has to have been active for at least this long.... (keep in mind we wait 255ms before calling this)
+			chrome.tabs.sendMessage(tabId, {setPickerImage:true,pickerImage:dataUrl}, function(response) {});
+		}else{
+			// tab must have changed too recently - too risky to send this snapshot back... (might be wrong tab)
+			chrome.tabs.sendMessage(tabId, {setPickerImage:true,pickerImage:getFauxSnap(dataUrl,request.w,request.h),isErrorTryAgain:true}, function(response) {});
+		}
+	}
+	if( request.newImage == 'for-popup' ){
+		cbf=function(dataUrl){
+			var currentTime = (new Date()).getTime();
+			var snapDuration = currentTime - lastActiveTabTime; // measure duration since last tab activation....
+			if( snapDuration > timeRequiredToBeOnTabSinceChange && dataUrl ){ // tab has to have been active for at least this long.... (keep in mind we wait 255ms before calling this)
+				chrome.runtime.sendMessage({setTabImage:tabId,pickerImage:dataUrl}, function(response) {});
+			}else{
+				chrome.runtime.sendMessage({didReqTabImage:tabId,tooFast:true}, function(response) {});
+			}
+		}// define handler instead?
+	}
+	if(winId < 1)winId=null;
+	if(usePNG)chrome.tabs.captureVisibleTab(winId, {format:'png'}, cbf);
+	else chrome.tabs.captureVisibleTab(winId, {format:'jpeg',quality:100}, cbf);
+}
 
 chrome.runtime.onMessage.addListener(
 function(request, sender, sendResponse) {
@@ -176,31 +203,7 @@ function(request, sender, sendResponse) {
 		if (request.newImage){
 			//todo need desired size for getFauxSnap... we can match aspect ratio vertically
 			lsnaptabid=tabid;
-			var cbf=function(dataUrl){
-				var currentTime = (new Date()).getTime();
-				var snapDuration = currentTime - lastActiveTabTime; // measure duration since last tab activation....
-
-				if( snapDuration > timeRequiredToBeOnTabSinceChange && dataUrl ){ // tab has to have been active for at least this long.... (keep in mind we wait 255ms before calling this)
-					chrome.tabs.sendMessage(lsnaptabid, {setPickerImage:true,pickerImage:dataUrl}, function(response) {});
-				}else{
-					// tab must have changed too recently - too risky to send this snapshot back... (might be wrong tab)
-					chrome.tabs.sendMessage(lsnaptabid, {setPickerImage:true,pickerImage:getFauxSnap(dataUrl,request.w,request.h),isErrorTryAgain:true}, function(response) {});
-				}
-			}
-			if( request.newImage == 'for-popup' ){
-				cbf=function(dataUrl){
-					var currentTime = (new Date()).getTime();
-					var snapDuration = currentTime - lastActiveTabTime; // measure duration since last tab activation....
-					if( snapDuration > timeRequiredToBeOnTabSinceChange && dataUrl ){ // tab has to have been active for at least this long.... (keep in mind we wait 255ms before calling this)
-						chrome.runtime.sendMessage({setTabImage:lsnaptabid,pickerImage:dataUrl}, function(response) {});
-					}else{
-						chrome.runtime.sendMessage({didReqTabImage:lsnaptabid,tooFast:true}, function(response) {});
-					}
-				}// define handler instead?
-			}
-			if(winid < 1)winid=null;
-			if(usePNG)chrome.tabs.captureVisibleTab(winid, {format:'png'}, cbf);
-			else chrome.tabs.captureVisibleTab(winid, {format:'jpeg',quality:100}, cbf);
+			doCaptueForTab(request,lsnaptabid,winid);
 			sendResponse({});
 		}else if (request.activateOnTab){
 			lastActiveTabTime=(new Date()).getTime() - timeRequiredToBeOnTabSinceChange;

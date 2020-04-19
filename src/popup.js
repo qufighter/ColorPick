@@ -201,7 +201,7 @@ chrome.runtime.onMessage.addListener(
 			isCurrentEnableReady=true;
 	}else if(request.setTabImage){
 		sendResponse({});
-		tabScreenshotRecieved(request);
+		tabScreenshotRecieved(request.pickerImage, request);
 	}else if(request.didReqTabImage && request.tooFast){
 		sendResponse({});
 		errorShowScreenshotInstead();
@@ -211,7 +211,7 @@ chrome.runtime.onMessage.addListener(
   });
 
 function resnap(){
-	chrome.tabs.sendMessage(tabid,{newImage:true},function(r){});
+	chrome.tabs.sendMessage(tabid,{tabRefreshSnap:true,newImage:true},function(r){});
 }
 function setButtonState(picking){
 	if( !picking && picking != isPicking ) showLastPickingHex();
@@ -383,12 +383,13 @@ var errorScreenshotAttempts=0;
 function errorShowScreenshotInstead(){
 	errorScreenshotAttempts++;
 	if( errorScreenshotAttempts > 25 ){console.log("max err alternative screeshot attempts reached;"); return;}
-	chrome.runtime.sendMessage({newImage:'for-popup',tabi:tabid},function(r){});
+	//chrome.runtime.sendMessage({newImage:'for-popup',tabi:tabid},function(r){});
+	chrome.tabs.captureVisibleTab(null, {format:'png'}, function(dataUrl){
+		tabScreenshotRecieved(dataUrl, {setTabImage:tabid})
+	});
 }
-function tabScreenshotRecieved(request){
+function tabScreenshotRecieved(dataUri, request){
 	if( realSrcRecieved ) return;
-
-	var dataUri = request.pickerImage;
 
 	setPreviewSRC(dataUri,true);
 	Cr.elm("a",{
