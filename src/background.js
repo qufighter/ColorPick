@@ -207,7 +207,7 @@ function(request, sender, sendResponse) {
 			sendResponse({});
 		}else if (request.activateOnTab){
 			lastActiveTabTime=(new Date()).getTime() - timeRequiredToBeOnTabSinceChange;
-			chrome.tabs.sendMessage(tabid, {enableColorPicker:true},function(r){});
+			chrome.tabs.sendMessage(tabid, {enableColorPicker:true, forSnapMode: request.forSnapMode},function(r){});
 			sendResponse({});
 		}else if (request.isBgAlive){
 			sendResponse({});

@@ -30,6 +30,7 @@ pOptions["showPreviewInContent"]={def:true,ind:0};
 pOptions["ShowRGBHSL"]={def:true,ind:1};
 pOptions["autocopyhex"]={def:'false',ind:0,select:{'false':chrome.i18n.getMessage('off'),'true':'hexadecimal','rgb':'rgb','hsl':'hsl'}};
 pOptions["snapMode"]={def:true,ind:0};
+pOptions["snapModeCloseTab"]={def:true,ind:1};
 pOptions["cacheSnapshots"]={def:false,ind:1};
 
 //pAdvOptions["customCalibration"]={def:false,ind:0,name:'Enable the defunct calibration link above.'};

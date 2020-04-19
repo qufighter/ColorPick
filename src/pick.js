@@ -3,7 +3,7 @@ var ItIsTheExtensionColorPickButInsideAnExtensionPageNo = true;
 document.addEventListener('DOMContentLoaded', function(){
 
 	var last = localStorage.lastImageSnap;
-	if( !last && localStorage.cacheSnapshots ){
+	if( !last && localStorage.cacheSnapshots == 'true' ){
 		last = sessionStorage['session-pick-cache-'+window.location.hash.replace(/^#/,'')];
 	}
 	if( last ){
@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function(){
 		document.getElementById('pick').src = last;
 		localStorage.removeItem('lastImageSnap');
 
-		if( localStorage.cacheSnapshots ){
+		if( localStorage.cacheSnapshots == 'true' ){
 			sessionStorage['session-pick-cache-'+window.location.hash.replace(/^#/,'')] = last;
 			sessionStorage['session-pick-about'] = "the setting to control this ColorPick feature is " + chrome.i18n.getMessage('cacheSnapshots');
 		}
@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', function(){
 		chrome.windows.getCurrent(function(window){
 			chrome.tabs.query({windowId: window.id, active: true}, function(tabs){
 				var tabid=tabs[0].id;
-				chrome.runtime.sendMessage({activateOnTab:true, tabi: tabid},function(response){});
+				chrome.runtime.sendMessage({activateOnTab:true, tabi: tabid, forSnapMode: true},function(response){});
 			});
 		});
 	}else{

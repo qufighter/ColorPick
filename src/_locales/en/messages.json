@@ -262,6 +262,9 @@
    "snapMode": {
       "message": "Snap Mode - backup mode handles various errors."
    },
+   "snapModeCloseTab": {
+      "message": "Close tab when exiting pick mode."
+   },
    "cacheSnapshots": {
       "message": "Store snapshots to session storage"
    },

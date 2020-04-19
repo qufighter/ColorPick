@@ -9,6 +9,7 @@ var snapLoader=Cr.elm('img',{events:[['load',snapshotLoaded]]});
 var dirtyImage=Cr.elm('img');
 var imagesRcvdCounter=0;
 var imagesLoadedCounter=0;
+var lastActivationMode=0;
 function _ge(n){return document.getElementById(n);}
 function RGBtoHex(R,G,B) {return applyHexCase(toHex(R)+toHex(G)+toHex(B));}
 function applyHexCase(hex){return opts.hexIsLowerCase ? hex.toLowerCase() : hex;}
@@ -86,6 +87,12 @@ function reqLis(request, sender, sendResponse) {
 				resp.cr=rgb.r;
 				resp.cg=rgb.g;
 				resp.cb=rgb.b;
+		}else{
+			if(request.forSnapMode){
+				lastActivationMode = 1;
+			}else{
+				lastActivationMode = 0;
+			}
 		}
   }else if (request.setPickerImage){
 		imagesRcvdCounter++;
@@ -110,7 +117,11 @@ function reqLis(request, sender, sendResponse) {
 		updateColorPreview();
 	}else if (request.reloadPrefs){
 		loadPrefs(function(){updateColorPreview();});
-  }else if (request.disableColorPicker)disableColorPicker();
+  }else if (request.disableColorPicker){
+	if( !sender || !sender.tab ){ // if this was sent from a tab, it is from another content script, ignore
+		disableColorPicker();
+	}
+  };
   resp.isPicking=!isLocked;
   sendResponse(resp);
 }
@@ -225,6 +236,10 @@ function dissableColorPickerFromHere(){
 	chrome.runtime.sendMessage({disableColorPicker:true},function(r){
 		clearTimeout(disableTimeout);
 	});
+	if( lastActivationMode > 0 ){
+		if( opts.snapModeCloseTab ){ window.close(); }
+		lastActivationMode = 0;
+	}
 }
 function disableColorPicker(){
 	isEnabled=false,isLocked=false;

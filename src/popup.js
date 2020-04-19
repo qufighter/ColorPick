@@ -415,11 +415,9 @@ function errorShowScreenshotInstead(){
 }
 function beginSnapMode(){
 	errorScreenshotAttempts++;
-
 	if( gotAnUpdate || realSrcRecieved || localStorage['snapMode'] === 'false' ){
 		return;
 	}
-
 	if( errorScreenshotAttempts > 5 ){console.log("max err alternative screeshot attempts reached;"); return;}
 	//chrome.runtime.sendMessage({newImage:'for-popup',tabi:tabid},function(r){});
 	chrome.tabs.captureVisibleTab(null, {format:'png'}, function(dataUrl){
