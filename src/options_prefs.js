@@ -13,7 +13,10 @@ var extensionsKnown = {
 };
 
 if( chrome.runtime.id != 'ohcpnigalekghcmgcdcenkpelffpdolg' ){ // development / test settings:
-	extensionsKnown.color_pick_tablet = 'kjgakcoopjnkaobapohfkipbkpnajocc';
+	if( chrome.runtime.id == 'cjfjdjekdbgjbapfnemckbacdmhaocgg'){
+		extensionsKnown.color_pick_tablet = 'amlacjdajlinpfncappopgkheaooknbe';
+	}else
+		extensionsKnown.color_pick_tablet = 'kjgakcoopjnkaobapohfkipbkpnajocc';
 }
 
 
