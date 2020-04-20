@@ -818,15 +818,20 @@ Cr.elm("div",{},[
 			])
 		]),
 	]),
-	Cr.elm("a",{href:"#",title:chrome.i18n.getMessage('closeAndExit')+' [esc 2x]',id:"eclose"},[
-		Cr.elm("img",{align:'top',src:chrome.extension.getURL('img/close.png')})
-	]),
-	Cr.elm("span",{id:'hexrow'},[
-		Cr.elm('span',{id:'hex-prefix'},[Cr.txt("#")]),
-		Cr.elm("input",{type:"text",spellcheck:"false",id:"hex",size:"8",class:(hexHasHash?'hex-hashed':'') })
+
+
+	Cr.elm("div",{class:"lbrow",id:"hex-and-close"},[
+		Cr.elm("div",{class:"lb"},[
+			Cr.elm("a",{href:"#",title:chrome.i18n.getMessage('closeAndExit')+' [esc 2x]',id:"eclose"},[
+				Cr.elm("img",{align:'top',src:chrome.extension.getURL('img/close.png')})
+			]),
+			Cr.elm('span',{id:'hex-prefix'},[Cr.txt("#")])
+		]),
+		Cr.elm("span",{id:'hexrow'},[
+			Cr.elm("input",{type:"text",spellcheck:"false",id:"hex",class:'fullwidth'+(hexHasHash?' hex-hashed':'') })
+		]),
 	]),
 	//Cr.elm("a",{id:"hidemin",href:"#",class:'hilight',event:['click',just_close_preview],title:chrome.i18n.getMessage('hideMinimize')},[Cr.txt("_-")]),
-	Cr.elm("br",{}),
 	Cr.elm("div",{id:"defaultmode"},[
 		Cr.elm("div",{class:"lbrow",id:"defrgb"},[
 			Cr.elm("div",{class:"lb"},[Cr.txt("rgb:")]),
