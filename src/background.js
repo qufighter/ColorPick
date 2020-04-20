@@ -124,10 +124,6 @@ function getFauxSnap(dataUrl,w,h){
 
 chrome.runtime.onMessageExternal.addListener(function(request, sender, sendResponse) {
 	//console.log('external message onMessageExternal', request, sender);
-	if(sender.tab && sender.tab.id >= 0){
-		extTabId = sender.tab.id; // we often do not need the tab of the fullscreen.html / chrome-ext
-		extWinId = sender.tab.windowId;
-	}
 	var extTabId = request.active_tab;
 	var extWinId = request.active_window;
 	if (sender.id === extensionsKnown.color_pick_tablet){
@@ -175,17 +171,17 @@ function doCaptueForTab(request,tabId,winId){
 			chrome.tabs.sendMessage(tabId, {setPickerImage:true,pickerImage:getFauxSnap(dataUrl,request.w,request.h),isErrorTryAgain:true}, function(response) {});
 		}
 	}
-	if( request.newImage == 'for-popup' ){
-		cbf=function(dataUrl){
-			var currentTime = (new Date()).getTime();
-			var snapDuration = currentTime - lastActiveTabTime; // measure duration since last tab activation....
-			if( snapDuration > timeRequiredToBeOnTabSinceChange && dataUrl ){ // tab has to have been active for at least this long.... (keep in mind we wait 255ms before calling this)
-				chrome.runtime.sendMessage({setTabImage:tabId,pickerImage:dataUrl}, function(response) {});
-			}else{
-				chrome.runtime.sendMessage({didReqTabImage:tabId,tooFast:true}, function(response) {});
-			}
-		}// define handler instead?
-	}
+	// if( request.newImage == 'for-popup' ){
+	// 	cbf=function(dataUrl){
+	// 		var currentTime = (new Date()).getTime();
+	// 		var snapDuration = currentTime - lastActiveTabTime; // measure duration since last tab activation....
+	// 		if( snapDuration > timeRequiredToBeOnTabSinceChange && dataUrl ){ // tab has to have been active for at least this long.... (keep in mind we wait 255ms before calling this)
+	// 			chrome.runtime.sendMessage({setTabImage:tabId,pickerImage:dataUrl}, function(response) {});
+	// 		}else{
+	// 			chrome.runtime.sendMessage({didReqTabImage:tabId,tooFast:true}, function(response) {});
+	// 		}
+	// 	}// define handler instead?
+	// }
 	if(winId < 1)winId=null;
 	if(usePNG)chrome.tabs.captureVisibleTab(winId, {format:'png'}, cbf);
 	else chrome.tabs.captureVisibleTab(winId, {format:'jpeg',quality:100}, cbf);
@@ -199,6 +195,9 @@ function(request, sender, sendResponse) {
 		}
 		if(request.tabi){
 			tabid=request.tabi;
+		}
+		if(request.tabw){
+			winid=request.tabw - 0;
 		}
 		if (request.newImage){
 			//todo need desired size for getFauxSnap... we can match aspect ratio vertically

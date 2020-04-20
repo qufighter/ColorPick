@@ -1,11 +1,12 @@
 /*jshint sub:true*/
-var tabid=0;
-var snapModeDelay = 250, errorScreenshotAttempts=0;
+var tabid=0,winid=0;
+var snapModeDelay = 500, errorScreenshotAttempts=0;
 var screenshotAlternativeRecieved = 0, realSrcRecieved = false;
 var isScriptAlive=false,scriptAliveTimeout=1,reExecutedNeedlessly=false;
 var cpw=165,cph=303;
 var nbsp='\u00A0';
 var lastHex='FFF';
+var isPopout=false;
 //pref variables should be created dynamicaly
 var borderValue='1px solid grey',EnableRGB=true,EnableHSL=true,useCSSValues=true,usePrevColorBG=false,showPreviousClr=true,pickEveryTime=(isWindows?true:false),bbackgroundColor='white',hexHasHash=false,hexIsLowerCase=false;
 var cpScaleOffset=(isWindows?16:0);
@@ -146,7 +147,7 @@ function rgb2hsv () {
 
 function updateCurrentColor(r,g,b,justFields,omitId){
 	var hex=RGBtoHex(r,g,b);
-	document.getElementById('hex-prefix').style.display=(hexHasHash?'none':'inline');
+	document.getElementById('hex-prefix').style.visibility=(hexHasHash?'hidden':'normal');
 	document.getElementById('hexpre').style.backgroundColor='#'+hex;
 	if(omitId!='hex')document.getElementById('hex').value=(hexHasHash?'#':'')+hex;
 	if(omitId!='cr')document.getElementById('cr').value=r;
@@ -338,11 +339,14 @@ function iin(){
 
 	//if( !globalPopout ){
 		if( window.location.href.indexOf('isPopup=')>-1 ){
+			isPopout=true;
 			var wlh=window.location.href;
 			var st = wlh.indexOf('isPopup=') + 8;
 			var en = wlh.indexOf('&',st);
 			if( en < 0 ) en = wlh.length;
-			tabid=wlh.substr(st,en-st)-0;
+			var values = wlh.substr(st,en-st).split(',');
+			tabid=values[0]-0;
+			winid=values[1]-0;
 			document.getElementById('popout').style.display='none';
 			if(window.innerWidth > 200)init_color_chooser();
 			setupInjectScripts();
@@ -351,6 +355,7 @@ function iin(){
 				chrome.tabs.query({windowId: window.id, active: true}, function(tabs){
 					var tab = tabs[0];
 					tabid=tab.id;
+					winid=window.id-0;
 					var tabURL=tab.url;
 					if(tabURL.indexOf('https://chrome.google.com')==0 ||tabURL.indexOf('chrome')==0 ||tabURL.indexOf('about')==0 ){
 						showErrorScreen('page_url');
@@ -419,10 +424,17 @@ function beginSnapMode(){
 		return;
 	}
 	if( errorScreenshotAttempts > 5 ){console.log("max err alternative screeshot attempts reached;"); return;}
-	//chrome.runtime.sendMessage({newImage:'for-popup',tabi:tabid},function(r){});
-	chrome.tabs.captureVisibleTab(null, {format:'png'}, function(dataUrl){
-		tabScreenshotRecieved(dataUrl, {setTabImage:tabid})
-	});
+	if( isPopout ){
+		// chrome.runtime.sendMessage({newImage:'for-popup',tabi:tabid,tabw:winid},function(r){});
+		chrome.tabs.captureVisibleTab(winid, {format:'png'}, function(dataUrl){
+			tabScreenshotRecieved(dataUrl, {setTabImage:tabid})
+		});
+	}else{
+		chrome.tabs.captureVisibleTab(null, {format:'png'}, function(dataUrl){
+			tabScreenshotRecieved(dataUrl, {setTabImage:tabid})
+		});
+	}
+
 }
 function tabScreenshotRecieved(dataUri, request){
 	if( realSrcRecieved ) return;
@@ -612,7 +624,9 @@ var win2 = 0;
 function popupimage(mylink, windowname)
 {
 	var w=Math.round(window.outerWidth*1.114),h=Math.round(window.outerHeight*1.15);
-	chrome.windows.create({url:mylink.href,width:w,height:h,type:"panel"},function(win){});
+
+	console.log(w,h);
+	chrome.windows.create({url:mylink.href,width:w,height:h,type:"popup",focused:true},function(win){});
 	return false;
 	
 //	if (! window.focus)return true;
@@ -631,7 +645,7 @@ function popupimage(mylink, windowname)
 //	return false;
 }
 function popOut(){
- popupimage({href:chrome.extension.getURL('popup.html')+'?isPopup='+tabid}, chrome.i18n.getMessage('extName') + " : Chrome Extension");
+ popupimage({href:chrome.extension.getURL('popup.html')+'?isPopup='+tabid+','+winid}, chrome.i18n.getMessage('extName') + " : Chrome Extension");
 }
 
 function close_stop_picking(){
@@ -683,7 +697,7 @@ function animIn(){
 	if(lhei < 150)setTimeout(animIn,33);
 }
 function sizeWindow(x,y){
-	window.resizeTo(x,y);
+	//window.resizeTo(x,y); // broken! works from console
 }
 //COLOR CHOOSER FUNCTIONS *******************************
 var cc_lastRGB={r:0,g:0,b:0};
@@ -755,13 +769,13 @@ function init_color_chooser(){
 	if(document.getElementById('chooser').style.display=='block'){
 		document.getElementById('chooser').style.display='none';
 		document.body.style.width='auto';
-		sizeWindow(160*scal,window.outterHeight);
+		// if(isPopout) sizeWindow(160*scal,window.outterHeight);
 		return;
 	}
 	document.getElementById('chooser').style.display='block';
 	document.body.style.width='470px';
-	sizeWindow(470*scal,window.outterHeight);
 	if(cp_chooser_booted)return;
+	if(isPopout) sizeWindow(470*scal,window.outterHeight);
 	//One Time Init...
 	document.getElementById('ch_ctrl_add').addEventListener('click', colorChooserAdd);
 	document.getElementById('gradi_box').addEventListener('mousedown', dragClr);
@@ -809,35 +823,35 @@ Cr.elm("div",{},[
 	]),
 	Cr.elm("span",{id:'hexrow'},[
 		Cr.elm('span',{id:'hex-prefix'},[Cr.txt("#")]),
-		Cr.elm("input",{type:"text",spellcheck:"false",id:"hex",size:"8"})
+		Cr.elm("input",{type:"text",spellcheck:"false",id:"hex",size:"8",class:(hexHasHash?'hex-hashed':'') })
 	]),
-	Cr.elm("a",{id:"hidemin",href:"#",class:'hilight',title:chrome.i18n.getMessage('hideMinimize')},[Cr.txt("_-")]),
+	//Cr.elm("a",{id:"hidemin",href:"#",class:'hilight',event:['click',just_close_preview],title:chrome.i18n.getMessage('hideMinimize')},[Cr.txt("_-")]),
 	Cr.elm("br",{}),
 	Cr.elm("div",{id:"defaultmode"},[
 		Cr.elm("div",{class:"lbrow",id:"defrgb"},[
 			Cr.elm("div",{class:"lb"},[Cr.txt("rgb:")]),
-			Cr.elm("input",{type:"text",spellcheck:"false",id:"cr",style:"width:35px"}),
-			Cr.elm("input",{type:"text",spellcheck:"false",id:"cg",style:"width:35px"}),
-			Cr.elm("input",{type:"text",spellcheck:"false",id:"cb",style:"width:35px"}),
+			Cr.elm("input",{type:"text",spellcheck:"false",id:"cr",class:"thirdw"}),
+			Cr.elm("input",{type:"text",spellcheck:"false",id:"cg",class:"thirdw"}),
+			Cr.elm("input",{type:"text",spellcheck:"false",id:"cb",class:"thirdw"}),
 			Cr.elm("br",{})
 		]),
 		Cr.elm("div",{class:"lbrow",id:"defhsl"},[
 			Cr.elm("div",{class:"lb"},[Cr.txt("hsl:")]),
-			Cr.elm("input",{type:"text",spellcheck:"false",id:"ch",style:"width:35px"}),
-			Cr.elm("input",{type:"text",spellcheck:"false",id:"cs",style:"width:35px"}),
-			Cr.elm("input",{type:"text",spellcheck:"false",id:"cv",style:"width:35px"}),
+			Cr.elm("input",{type:"text",spellcheck:"false",id:"ch",class:"thirdw"}),
+			Cr.elm("input",{type:"text",spellcheck:"false",id:"cs",class:"thirdw"}),
+			Cr.elm("input",{type:"text",spellcheck:"false",id:"cv",class:"thirdw"}),
 			Cr.elm("br",{})
 		])
 	]),
 	Cr.elm("div",{id:"cssmode"},[
 		Cr.elm("div",{class:"lbrow",id:"cssrgb"},[
-			Cr.elm("div",{class:"lb"},[Cr.txt("rgb:")]),
-			Cr.elm("input",{type:"text",spellcheck:"false",id:"crgb",style:"width:105px"}),
+			Cr.elm("div",{class:"lb"},[]),
+			Cr.elm("input",{type:"text",spellcheck:"false",id:"crgb",class:"fullwidth"}),
 			Cr.elm("br",{})
 		]),
 		Cr.elm("div",{class:"lbrow",id:"csshsl"},[
-			Cr.elm("div",{class:"lb"},[Cr.txt("hsl:")]),
-			Cr.elm("input",{type:"text",spellcheck:"false",id:"chsl",style:"width:105px"}),
+			Cr.elm("div",{class:"lb"},[]),
+			Cr.elm("input",{type:"text",spellcheck:"false",id:"chsl",class:"fullwidth"}),
 			Cr.elm("br",{})
 		])
 	]),
@@ -879,7 +893,6 @@ Cr.elm("div",{},[
 ],document.body);
 
   document.getElementById('eclose').addEventListener('click', close_stop_picking);
-  document.getElementById('hidemin').addEventListener('click', just_close_preview);
   document.getElementById('pre').addEventListener('dblclick', toglPick);
   document.getElementById('pre').addEventListener('mousedown', initdrag);
   document.getElementById('pre').addEventListener('mouseout', finalizedrag);
