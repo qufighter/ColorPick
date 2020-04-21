@@ -265,6 +265,9 @@
    "snapModeCloseTab": {
       "message": "Close tab when exiting pick mode"
    },
+   "tabletModePrompt": {
+      "message": "Zoom to Tablet Edition"
+   },
    "cacheSnapshots": {
       "message": "Store snapshots to session storage"
    },

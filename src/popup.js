@@ -60,6 +60,7 @@ function setPreviewSRC(duri, hidearrows){
 			var dw = 150 * ratio;
 			pcvs.drawImage(im,(150-dw)*0.5,0,dw,150);
 		}
+		possiblyShowLinkToTabletEdition();
 	};
 	im.src=duri;
 	if(hidearrows){
@@ -801,6 +802,18 @@ function colorChooserAdd(){
 	lastHex = hex;
 }
 //END COLOR CHOOSER FUNCTIONS ***************************
+function possiblyShowLinkToTabletEdition(){
+	if( realSrcRecieved ){ // also ? (window.navigator.maxTouchPoints || 0) > 0 ?
+		var teBtn = document.getElementById('launch-tablet-edition-btn');
+		if( teBtn && teBtn.style.display != 'block'){
+			chrome.runtime.sendMessage(extensionsKnown.color_pick_tablet, {testAvailable:true}, function(r) {
+				if( !chrome.runtime.lastError && r ){
+					teBtn.style.display="block";
+				}
+			});
+		}
+	}
+}
 function createDOM() {
 Cr.elm("div",{},[
 	Cr.elm("div",{id:"chooser"},[
@@ -869,6 +882,25 @@ Cr.elm("div",{},[
 		Cr.elm("a",{href:'#',id:'arr_r',class:'hilight mvarrow',name:39,event:['click',moveArrowBtn]},[Cr.txt(String.fromCharCode(9654))]),
 		Cr.elm("canvas",{id:"pre",width:"150",height:"150",style:"margin-bottom:3px;"})
 	]),
+	Cr.elm('a',{id:'launch-tablet-edition-btn',style:'display:none;',event:['click', function(){
+
+		chrome.tabs.sendMessage(tabid,{getActivatedStatus:true, tab:tabid, win:winid},function(tab_response){
+			// TODO: show loading
+
+			var fw_tab_resp = Object.assign({alsoLaunch: true}, tab_response);
+
+			console.log('got respone from tab...', fw_tab_resp);
+
+
+			chrome.runtime.sendMessage(extensionsKnown.color_pick_tablet, fw_tab_resp, function(r) {
+
+				console.log('good to launch?', r);
+
+			});
+
+
+		});
+	}],childNodes:[Cr.txt(chrome.i18n.getMessage('tabletModePrompt'))]}),
 	Cr.elm("div",{id:"pres"},[
 		Cr.elm("div",{id:"ohexpre"}),
 		Cr.elm("div",{id:"hexpre",title:chrome.i18n.getMessage('showColorChooser')})

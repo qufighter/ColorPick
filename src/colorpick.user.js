@@ -67,7 +67,7 @@ function reqLis(request, sender, sendResponse) {
   if (request.testAlive){
 		//disableColorPicker();
   }else if( request.getActivatedStatus ){
-	// request origin: background page at request of "ColorPick Eyedropper Tablet Edition"
+	// request origin: background page at request of "ColorPick Eyedropper Tablet Edition" OR our own popup
 	resp.isEnabled = isEnabled; // isPicking auto set
 	if( isEnabled ){
 		resp.x = ex;
