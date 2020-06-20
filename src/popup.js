@@ -415,7 +415,7 @@ function showErrorScreen(errorType){
 	var err = errorTypes[errorType];
 	if( !err ) err = errorTypes.page_slow;
 	var lastErr = errorTypes[errorTypes.current];
-	console.log('showing error', err, 'last error', lastErr);
+	// console.log('showing error', errorType, err, 'last error', errorTypes.current, lastErr);
 	if( lastErr && lastErr.ignore && lastErr.ignore[errorType] ){ // to ignore subsequent errors of specified types
 		console.log('error of type '+errorType+' ignored after occurance of error type ' +errorTypes.current );
 		return;
@@ -905,20 +905,12 @@ Cr.elm("div",{},[
 	Cr.elm('a',{id:'launch-tablet-edition-btn',class:'promt-row',style:'display:none;',event:['click', function(){
 
 		chrome.tabs.sendMessage(tabid,{getActivatedStatus:true, tab:tabid, win:winid},function(tab_response){
-			// TODO: show loading
-
+			// TODO: show loading ?? (response is pretty quick!)
 			var fw_tab_resp = Object.assign({alsoLaunch: true}, tab_response);
-
-			console.log('got respone from tab...', fw_tab_resp);
-
-
+			//console.log('got respone from tab...', fw_tab_resp);
 			chrome.runtime.sendMessage(extensionsKnown.color_pick_tablet, fw_tab_resp, function(r) {
-
-				console.log('good to launch?', r);
-
+				//console.log('good to launch?', r);
 			});
-
-
 		});
 	}],childNodes:[Cr.txt('\uD83D\uDD0D '),Cr.txt(chrome.i18n.getMessage('tabletModePrompt')),Cr.txt(' \uD83D\uDD0E')]}),
 	Cr.elm('a',{
