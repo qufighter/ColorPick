@@ -917,7 +917,7 @@ Cr.elm("div",{},[
 		id:'get-tablet-edition-btn',
 		class:'promt-row',
 		style:'display:none;',
-		href: 'https://chrome.google.com/webstore/detail/color-pick-tablet-edition/hobaclohjecibademehpakdcphmbodmb',
+		href: extensionsKnown.color_pick_tablet_url,
 		target: '_blank',
 		childNodes:[
 			Cr.txt('\uD83D\uDD0D '),Cr.txt(chrome.i18n.getMessage('tabletModePitch')),Cr.txt(' \uD83D\uDD0E')

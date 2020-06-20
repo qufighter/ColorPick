@@ -9,7 +9,8 @@ var pAdvOptions={};
 var pSyncItems={};
 
 var extensionsKnown = {
-	color_pick_tablet: (isChrome ? 'hobaclohjecibademehpakdcphmbodmb' : null)
+	color_pick_tablet: (isChrome ? 'hobaclohjecibademehpakdcphmbodmb' : null),
+	color_pick_tablet_url: (isChrome ? 'https://chrome.google.com/webstore/detail/color-pick-tablet-edition/hobaclohjecibademehpakdcphmbodmb' : null)
 };
 
 if( chrome.runtime.id != 'ohcpnigalekghcmgcdcenkpelffpdolg' ){ // development / test settings:

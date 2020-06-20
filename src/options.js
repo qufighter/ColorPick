@@ -1304,11 +1304,13 @@ Cr.elm("div",{id:"mainbox"},[
 		Cr.txt('\uD83D\uDCF1 '),
 		Cr.txt(chrome.i18n.getMessage('mobileapp'))
 	]),
-	Cr.txt(" | "),
-	Cr.elm("a",{target:"_blank",href:"https://chrome.google.com/webstore/detail/color-pick-tablet-edition/hobaclohjecibademehpakdcphmbodmb"},[
-		Cr.txt('\uD83D\uDD0D '),
-		Cr.txt(chrome.i18n.getMessage('tabletModePitch'))
-	]),
+	extensionsKnown.color_pick_tablet_url ? Cr.elm('span',{childNodes:[
+		Cr.txt(" | "),
+		Cr.elm("a",{target:"_blank",href:extensionsKnown.color_pick_tablet_url},[
+			Cr.txt('\uD83D\uDD0D '),
+			Cr.txt(chrome.i18n.getMessage('tabletModePitch'))
+		])
+	]}) : 0,
 	Cr.txt(" | "),
 	Cr.elm("a",{target:"_blank",href:"help.html",event:['click', navToHelp]},[
 		Cr.elm('span',{style:'color:#444;'},[Cr.txt('\uFFFD ')]),
