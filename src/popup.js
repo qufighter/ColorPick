@@ -1,6 +1,6 @@
 /*jshint sub:true*/
 var tabid=0,winid=0;
-var snapModeDelay = 500, errorScreenshotAttempts=0;
+var snapModeDelay = 3, errorScreenshotAttempts=0, snapModeBlockedHere=false, snapModeTimeout = 0;
 var screenshotAlternativeRecieved = 0, realSrcRecieved = false;
 var isScriptAlive=false,scriptAliveTimeout=1,reExecutedNeedlessly=false;
 var cpw=165,cph=303;
@@ -29,6 +29,7 @@ function getEventTarget(ev){
 	}
 	return targ;
 }
+var im=new Image();
 function setPreviewSRC(duri, hidearrows){
 	if( realSrcRecieved && hidearrows ){
 		return;
@@ -45,8 +46,8 @@ function setPreviewSRC(duri, hidearrows){
 		}
 	}
 	realSrcRecieved = realSrcRecieved || !hidearrows;
-	var im=new Image();
 	im.onload=function(){
+		//console.log("img loaded....", duri,  (new Date()).getTime())
 		var pcvs=document.getElementById('pre').getContext('2d');
 		pcvs.clearRect(0,0,150,150);
 
@@ -62,6 +63,7 @@ function setPreviewSRC(duri, hidearrows){
 		}
 		possiblyShowLinkToTabletEdition();
 	};
+	//console.log('loading... ' , duri, (new Date()).getTime());
 	im.src=duri;
 	if(hidearrows){
 		document.getElementById('arr_u').style.display='none',
@@ -295,6 +297,9 @@ function mwheel(ev){
 	sendReloadPrefs();
 	return preventEventDefault(ev);
 }
+function configureSnapModeBlocked(tabURL){
+	snapModeBlockedHere = localStorage.snapModeBlock && (tabURL || '').match(new RegExp(localStorage.snapModeBlock, 'i'));
+}
 function iin(){
 	if(typeof(localStorage["borderValue"])!='undefined')borderValue = localStorage["borderValue"];
 	if(typeof(localStorage["useCSSValues"])!='undefined')useCSSValues = ((localStorage["useCSSValues"]=='true')?true:false);
@@ -351,6 +356,9 @@ function iin(){
 			document.getElementById('popout').style.display='none';
 			if(window.innerWidth > 200)init_color_chooser();
 			setupInjectScripts();
+			chrome.tabs.get(tabid, function(tab){
+				configureSnapModeBlocked(tab.url);
+			});
 		}else{
 			chrome.windows.getCurrent(function(window){
 				chrome.tabs.query({windowId: window.id, active: true}, function(tabs){
@@ -358,6 +366,7 @@ function iin(){
 					tabid=tab.id;
 					winid=window.id-0;
 					var tabURL=tab.url;
+					configureSnapModeBlocked(tabURL);
 					if(tabURL.indexOf('https://chrome.google.com')==0 ||tabURL.indexOf('chrome')==0 ||tabURL.indexOf('about')==0 ){
 						showErrorScreen('page_url');
 					}else if(tabURL.indexOf('file://')==0){
@@ -382,6 +391,12 @@ var errorTypes={
 		image: '0.1',
 		chooser: true
 	},
+	snap_mode_block:{
+		image: '0.2',
+		chooser: false, // really true; page_url error already enabled the chooser, enabling it again toggles it off!
+		no_snap: true,
+		ignore: {'conent_port': 1}
+	},
 	page_url:{
 		image: '0',
 		chooser: true,
@@ -400,7 +415,8 @@ function showErrorScreen(errorType){
 	var err = errorTypes[errorType];
 	if( !err ) err = errorTypes.page_slow;
 	var lastErr = errorTypes[errorTypes.current];
-	if( lastErr && lastErr.ignore[errorType] ){ // to ignore subsequent errors of specified types
+	console.log('showing error', err, 'last error', lastErr);
+	if( lastErr && lastErr.ignore && lastErr.ignore[errorType] ){ // to ignore subsequent errors of specified types
 		console.log('error of type '+errorType+' ignored after occurance of error type ' +errorTypes.current );
 		return;
 	}
@@ -409,15 +425,22 @@ function showErrorScreen(errorType){
 	setPreviewSRC(chrome.extension.getURL('img/error'+err.image+'.png'), true);
 	if( err.chooser && !cp_chooser_booted ){ init_color_chooser(); }
 	if( err.timer ){ showLoadingTimer(); }
-	errorShowScreenshotInstead();
+	if( !err.no_snap )errorShowScreenshotInstead();
 }
 
 function errorShowScreenshotInstead(){
 	if( localStorage['snapMode'] === 'false' ){
-		console.warn(chrome.i18n.getMessage('snapMode') + 'snap mode disabled');
+		console.warn(chrome.i18n.getMessage('snapMode') + ' - snap mode disabled');
 		return;
 	}
-	setTimeout(beginSnapMode, snapModeDelay);
+	if( snapModeBlockedHere ){
+		console.warn(chrome.i18n.getMessage('snapMode') + ' - snap mode blocked....');
+		showErrorScreen('snap_mode_block');
+		document.getElementById('optsb').href='options.html?reveal=snapModeBlock'
+		return;
+	}
+	clearTimeout(snapModeTimeout);
+	snapModeTimeout = setTimeout(beginSnapMode, snapModeDelay);
 }
 function beginSnapMode(){
 	errorScreenshotAttempts++;
@@ -425,17 +448,9 @@ function beginSnapMode(){
 		return;
 	}
 	if( errorScreenshotAttempts > 5 ){console.log("max err alternative screeshot attempts reached;"); return;}
-	if( isPopout ){
-		// chrome.runtime.sendMessage({newImage:'for-popup',tabi:tabid,tabw:winid},function(r){});
-		chrome.tabs.captureVisibleTab(winid, {format:'png'}, function(dataUrl){
-			tabScreenshotRecieved(dataUrl, {setTabImage:tabid})
-		});
-	}else{
-		chrome.tabs.captureVisibleTab(null, {format:'png'}, function(dataUrl){
-			tabScreenshotRecieved(dataUrl, {setTabImage:tabid})
-		});
-	}
-
+	chrome.tabs.captureVisibleTab( isPopout ? winid : null, {format:'png'}, function(dataUrl){
+		tabScreenshotRecieved(dataUrl, {setTabImage:tabid})
+	});
 }
 function tabScreenshotRecieved(dataUri, request){
 	if( realSrcRecieved ) return;

@@ -262,6 +262,10 @@
    "snapMode": {
       "message": "Snap Mode - backup mode handles various errors"
    },
+   "snapModeBlock": {
+      "message": "Blocked Pages [RegEx,i]",
+      "description": "(RegEx i) refers to regular expression pattern matching object for JavaScript programing."
+   },
    "snapModeCloseTab": {
       "message": "Close tab when exiting pick mode"
    },

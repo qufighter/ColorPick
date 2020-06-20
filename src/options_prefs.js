@@ -33,6 +33,7 @@ pOptions["showPreviewInContent"]={def:true,ind:0};
 pOptions["ShowRGBHSL"]={def:true,ind:1};
 pOptions["autocopyhex"]={def:'false',ind:0,select:{'false':chrome.i18n.getMessage('off'),'true':'hexadecimal','rgb':'rgb','hsl':'hsl'}};
 pOptions["snapMode"]={def:true,ind:0};
+pOptions["snapModeBlock"]={def:'chrome://newtab',ind:1};
 pOptions["snapModeCloseTab"]={def:true,ind:1};
 pOptions["cacheSnapshots"]={def:false,ind:1};
 
@@ -101,7 +102,11 @@ function navToReg(ev){
 }
 
 function navToOptions(ev){
-	navTo(ev, 'options.html');
+	if( ev.target && ev.target.closest('a') && ev.target.closest('a').href.match('options.html?') ){
+		navTo(ev, ev.target.closest('a').href.match(/options.html\?([\w=&]+)/)[0]); // send query params if present on link
+	}else{
+		navTo(ev, 'options.html');
+	}
 }
 
 function navToHistory(ev){

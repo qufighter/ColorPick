@@ -177,14 +177,14 @@ function restore_options() {
 		if(typeof(pOptions[i].def)=='boolean')
 			document.getElementById(i).checked = ((localStorage[i]=='true')?true:((localStorage[i]=='false')?false:pOptions[i].def));
 		else
-			document.getElementById(i).value = ((localStorage[i])?localStorage[i]:pOptions[i].def);
+			document.getElementById(i).value = ((localStorage[i] || localStorage[i] === '')?localStorage[i]:pOptions[i].def);
 	}
 	
 	for(i in pAdvOptions){
 		if(typeof(pAdvOptions[i].def)=='boolean')
 			document.getElementById(i).checked = ((localStorage[i]=='true')?true:((localStorage[i]=='false')?false:pAdvOptions[i].def));
 		else
-			document.getElementById(i).value = ((localStorage[i])?localStorage[i]:pAdvOptions[i].def);
+			document.getElementById(i).value = ((localStorage[i] || localStorage[i] === '')?localStorage[i]:pAdvOptions[i].def);
 	}
 
 //  var favorite = localStorage["favorite_color"];
@@ -752,10 +752,14 @@ function addOrRemovePalleteGenerationFeatureIf(pColorInput){
 				]
 			}, pgHld);
 			setTimeout(function(){ holder.style.backgroundColor=''; }, 10);
-			if( pgHld.scrollIntoViewIfNeeded ) pgHld.scrollIntoViewIfNeeded();
-			else if( pgHld.scrollIntoView ) pgHld.scrollIntoView();
+			scrollIntoView(pgHld);
 		}
 	}
+}
+
+function scrollIntoView(elm){
+	if( elm.scrollIntoViewIfNeeded ) elm.scrollIntoViewIfNeeded();
+	else if( elm.scrollIntoView ) elm.scrollIntoView();
 }
 
 function rgbForPalleteTransform(origColor, hueResult, toneResult){
@@ -1116,12 +1120,13 @@ function createOptions(piOptions, elemAppend){
 			cb.setAttribute('id',i);cb.setAttribute('size',(piOptions[i].def + '').length);
 			if(piOptions[i].ind>0)l.appendChild(document.createTextNode(fourSpaces));
 			l.appendChild(cb);
-			l.appendChild(document.createTextNode(piOptions[i].name));
+			l.appendChild(document.createTextNode(' '+piOptions[i].name));
 			
 			elemAppend.appendChild(l);
 			//document.getElementById('bsave').parentNode.insertBefore(l,document.getElementById('bsave'));
 			//document.getElementById(i).value = ((localStorage[i])?localStorage[i]:piOptions[i].def);
 		}
+		l.id = "label_" + i;
 	}
 }
 
@@ -1368,6 +1373,21 @@ Cr.elm("div",{id:"mainbox"},[
 				if( hex && hex.length == 6 ) addPalleteSwatch(hex);
 			}
 		}
+
+		var reveal = window.location.search.match(/\?reveal[=]?(\w+)/);
+		if( reveal.length > 1 ){
+			var found = document.getElementById('label_'+reveal[1]);
+			if( found ){
+				found.style.border = '1px solid blue';
+				if( !found.offsetHeight){
+					show_next_sibling(document.getElementById('shoadvanc'));
+				}
+				setTimeout(function(){
+					scrollIntoView(found);
+				},250)
+			}
+		}
+
 	}
 
 	window.onbeforeunload = confirmBeforeLeaving;
