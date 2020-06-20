@@ -805,10 +805,15 @@ function colorChooserAdd(){
 function possiblyShowLinkToTabletEdition(){
 	if( realSrcRecieved ){ // also ? (window.navigator.maxTouchPoints || 0) > 0 ?
 		var teBtn = document.getElementById('launch-tablet-edition-btn');
-		if( teBtn && teBtn.style.display != 'block'){
+		var gteBtn = document.getElementById('get-tablet-edition-btn');
+		if( teBtn && teBtn.style.display != 'block' && extensionsKnown.color_pick_tablet){
 			chrome.runtime.sendMessage(extensionsKnown.color_pick_tablet, {testAvailable:true}, function(r) {
 				if( !chrome.runtime.lastError && r ){
 					teBtn.style.display="block";
+				}else{
+					if( gteBtn && window.navigator.maxTouchPoints > 0 ){ // prompt: go install tablet edition already!
+						gteBtn.style.display="block";
+					}
 				}
 			});
 		}
@@ -901,6 +906,16 @@ Cr.elm("div",{},[
 
 		});
 	}],childNodes:[Cr.txt('\uD83D\uDD0D '),Cr.txt(chrome.i18n.getMessage('tabletModePrompt')),Cr.txt(' \uD83D\uDD0E')]}),
+	Cr.elm('a',{
+		id:'get-tablet-edition-btn',
+		class:'promt-row',
+		style:'display:none;',
+		href: 'https://chrome.google.com/webstore/detail/color-pick-tablet-edition/hobaclohjecibademehpakdcphmbodmb',
+		target: '_blank',
+		childNodes:[
+			Cr.txt('\uD83D\uDD0D '),Cr.txt(chrome.i18n.getMessage('tabletModePitch')),Cr.txt(' \uD83D\uDD0E')
+		]
+	}),
 	Cr.elm("div",{id:"pres"},[
 		Cr.elm("div",{id:"ohexpre"}),
 		Cr.elm("div",{id:"hexpre",title:chrome.i18n.getMessage('showColorChooser')})

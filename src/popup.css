@@ -1,4 +1,4 @@
-body{position:relative;width:150px;font-family:arial,sans-serif;font-size:12px;padding:0px 4px 0px 4px;margin:0px;overflow-y:auto;overflow-x:hidden;}
+body{position:relative;width:150px;font-family:arial,sans-serif;font-size:12px;padding:0px 4px 0px 4px;margin:0px;overflow-y:auto;overflow-x:hidden;min-height:300px;}
 a{text-decoration:none;position:relative;margin:2px;padding:3px;}
 a.hilight:hover{color:#338;background-color:#AAF;}
 #eclose{margin:5px 0; padding: 3px 3px 3px 0px;}
