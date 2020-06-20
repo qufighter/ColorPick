@@ -285,7 +285,7 @@ function moveArrowBtn(ev){
 	wk({keyCode:t.name });
 }
 function mwheel(ev){
-	console.log(ev);
+	//console.log(ev);
 	var newFishEye=(typeof(localStorage["fishEye"])!='undefined'?(localStorage["fishEye"]-0):pOptions["fishEye"].def);
 	if(ev.wheelDelta > 0){
 		newFishEye++;
@@ -641,7 +641,7 @@ function popupimage(mylink, windowname)
 {
 	var w=Math.round(window.outerWidth*1.114),h=Math.round(window.outerHeight*1.15);
 
-	console.log(w,h);
+	//console.log(w,h);
 	chrome.windows.create({url:mylink.href,width:w,height:h,type:"popup",focused:true},function(win){});
 	return false;
 	
