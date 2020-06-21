@@ -12,6 +12,8 @@ var borderValue='1px solid grey',EnableRGB=true,EnableHSL=true,useCSSValues=true
 var cpScaleOffset=(isWindows?16:0);
 var isPicking=false,keyInputMode=false;
 var CSS3ColorFormat=(localStorage['CSS3ColorFormat']||pAdvOptions["CSS3ColorFormat"].def);
+var snapModeBlock=(localStorage['snapModeBlock']||pOptions["snapModeBlock"].def);
+
 var gotAnUpdate = false;EnableHex=true;otherError=false;
 var fishEye = (localStorage['fishEye']||pOptions["fishEye"].def)-0;
 var startTime = (new Date()).getTime();
@@ -298,7 +300,7 @@ function mwheel(ev){
 	return preventEventDefault(ev);
 }
 function configureSnapModeBlocked(tabURL){
-	snapModeBlockedHere = localStorage.snapModeBlock && (tabURL || '').match(new RegExp(localStorage.snapModeBlock, 'i'));
+	snapModeBlockedHere = snapModeBlock && (tabURL || '').match(new RegExp(snapModeBlock, 'i'));
 }
 function iin(){
 	if(typeof(localStorage["borderValue"])!='undefined')borderValue = localStorage["borderValue"];
@@ -313,6 +315,7 @@ function iin(){
 	if(typeof(localStorage["showPreviousClr"])!='undefined')showPreviousClr = ((localStorage["showPreviousClr"]=='true')?true:false);
 	if(typeof(localStorage["hexIsLowerCase"])!='undefined')hexIsLowerCase = ((localStorage["hexIsLowerCase"]=='true')?true:false);
 	if(typeof(localStorage["hexHasHash"])!='undefined')hexHasHash = ((localStorage["hexHasHash"]=='true')?true:false);
+
 
 	setPreviewSRC(chrome.extension.getURL('img/default.png'),true);
 
@@ -461,6 +464,7 @@ function tabScreenshotRecieved(dataUri, request){
 		target:'_blank',
 		href:chrome.extension.getURL('pick.html#tab='+request.setTabImage),
 		event:['click', function(){
+			console.log('passing data to snap mode via localStorage...') // todo fix this
 			localStorage.lastImageSnap=dataUri; // our new tab will delete this entry
 		}],
 		childNodes:[
