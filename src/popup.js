@@ -440,11 +440,18 @@ function errorShowScreenshotInstead(){
 		console.warn(chrome.i18n.getMessage('snapMode') + ' - snap mode blocked....');
 		showErrorScreen('snap_mode_block');
 		document.getElementById('optsb').href='options.html?reveal=snapModeBlock'
+		document.getElementById('pre').addEventListener('click', beginSnapModeOnce);
+		document.getElementById('pre').style.cursor="pointer";
 		return;
 	}
 	clearTimeout(snapModeTimeout);
 	snapModeTimeout = setTimeout(beginSnapMode, snapModeDelay);
 }
+function beginSnapModeOnce(){
+	document.getElementById('pre').removeEventListener('click', beginSnapModeOnce);
+	beginSnapMode();
+}
+
 function beginSnapMode(){
 	errorScreenshotAttempts++;
 	if( gotAnUpdate || realSrcRecieved || localStorage['snapMode'] === 'false' ){
