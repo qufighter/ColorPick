@@ -436,6 +436,7 @@ function showErrorScreen(errorType){
 function errorShowScreenshotInstead(){
 	if( localStorage['snapMode'] === 'false' ){
 		console.warn(chrome.i18n.getMessage('snapMode') + ' - snap mode disabled');
+		document.getElementById('optsb').href='options.html?reveal=snapMode'
 		return;
 	}
 	if( snapModeBlockedHere ){
