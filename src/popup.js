@@ -931,7 +931,7 @@ Cr.elm("div",{},[
 		id:'get-tablet-edition-btn',
 		class:'promt-row',
 		style:'display:none;',
-		href: extensionsKnown.color_pick_tablet_url,
+		href: extensionsKnown.color_pick_tablet_url + '?from_popup=true',
 		target: '_blank',
 		childNodes:[
 			Cr.txt('\uD83D\uDD0D '),Cr.txt(chrome.i18n.getMessage('tabletModePitch')),Cr.txt(' \uD83D\uDD0E')
