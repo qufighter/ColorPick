@@ -398,12 +398,12 @@ var errorTypes={
 		image: '0.2',
 		chooser: false, // really true; page_url error already enabled the chooser, enabling it again toggles it off!
 		no_snap: true,
-		ignore: {'conent_port': 1}
+		ignore: {'conent_port': 1, 'page_slow': 1}
 	},
 	page_url:{
 		image: '0',
 		chooser: true,
-		ignore: {'conent_port': 1}
+		ignore: {'conent_port': 1, 'page_slow': 1}
 	},
 	page_slow:{
 		image: '1',
@@ -411,7 +411,9 @@ var errorTypes={
 	},
 	page_is_file:{
 		image: '2',
-		timer: true
+		timer: true,
+		no_snap: true,
+		ignore: {'conent_port': 1, 'page_slow': 1}
 	}
 }
 function showErrorScreen(errorType){
