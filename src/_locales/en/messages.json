@@ -132,7 +132,7 @@
       "message": "Max Zoomed"
    },
    "zoomPreviewDefaultTip":{
-      "message": "Drag or use the arrows to pan this view, once it loads.  In the event of a problem loading; alternative modes such as snap mode or tablet mode may be available depending on settings."
+      "message": "Drag or use the arrows to pan this view, once it loads.  In the event of a problem loading; alternative modes such as snap mode or tablet mode may be available depending on settings.  If snap mode has been blocked, unblock from settings or click to enable snap mode here."
       },
    "pickEveryTime": {
       "message": "Start picking colors each time popup is clicked",
