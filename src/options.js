@@ -1117,7 +1117,7 @@ function createOptions(piOptions, elemAppend){
 			l=document.createElement('label');
 			cb=document.createElement('input');
 			cb.setAttribute('type','text');
-			cb.setAttribute('id',i);cb.setAttribute('size',(piOptions[i].def + '').length);
+			cb.setAttribute('id',i);cb.setAttribute('size',(piOptions[i].size || (piOptions[i].def + '').length));
 			if(piOptions[i].ind>0)l.appendChild(document.createTextNode(fourSpaces));
 			l.appendChild(cb);
 			l.appendChild(document.createTextNode(' '+piOptions[i].name));

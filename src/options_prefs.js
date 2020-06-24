@@ -34,7 +34,7 @@ pOptions["showPreviewInContent"]={def:true,ind:0};
 pOptions["ShowRGBHSL"]={def:true,ind:1};
 pOptions["autocopyhex"]={def:'false',ind:0,select:{'false':chrome.i18n.getMessage('off'),'true':'hexadecimal','rgb':'rgb','hsl':'hsl'}};
 pOptions["snapMode"]={def:true,ind:0};
-pOptions["snapModeBlock"]={def:'chrome://newtab',ind:1};
+pOptions["snapModeBlock"]={def:'chrome://(newtab|extensions|settings)|chrome://about',ind:1,size:15};
 pOptions["snapModeCloseTab"]={def:true,ind:1};
 pOptions["cacheSnapshots"]={def:false,ind:1};
 
