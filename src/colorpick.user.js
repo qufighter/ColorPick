@@ -669,7 +669,7 @@ function handleRendering(quick){
 	tictx.drawImage(dirtyImage,0,0,1,1,0,0,1,1); // taint the canvas to prevent malicious website (or framework) from stealing zoomed view while color pick runs. To verify, select the canvas element and $0.toDataURL() to see an exception
 	tictx.drawImage(icvs,0,0);
 
-	if(opts.showPreviewInContent && popupsShowing < 1){
+	if(opts.showPreviewInContent){
 		setPixelPreview(hex,lasthex);
 	}
 
