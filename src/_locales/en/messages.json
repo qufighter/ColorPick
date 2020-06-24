@@ -381,7 +381,7 @@
       "message": "Chase this message for tips and more."
    },
    "tips_4": {
-      "message": "Did you know? ColorPick Eyedropper is available for iPhone and Android!",
+      "message": "Did you know? ColorPick Eyedropper is available for iPhone and Android!  Also you may find the 'Tablet Edition' Extension; see Options.",
       "description": "'ColorPick Eyedropper' refers to the extName key, see that description for details, if that key is not translated leave this part of the string untranslated"
    },
    "tips_5": {
