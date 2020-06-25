@@ -1304,6 +1304,11 @@ Cr.elm("div",{id:"mainbox"},[
 		Cr.txt('\uD83D\uDCF1 '),
 		Cr.txt(chrome.i18n.getMessage('mobileapp'))
 	]),
+	Cr.txt(" | "),
+	Cr.elm("a",{target:"_blank",href:"help.html",event:['click', navToHelp]},[
+		Cr.elm('span',{style:'color:#444;'},[Cr.txt('\uFFFD ')]),
+		Cr.txt(chrome.i18n.getMessage('help'))
+	]),
 	extensionsKnown.color_pick_tablet_url ? Cr.elm('span',{childNodes:[
 		Cr.txt(" | "),
 		Cr.elm("a",{target:"_blank",href:extensionsKnown.color_pick_tablet_url},[
@@ -1311,11 +1316,6 @@ Cr.elm("div",{id:"mainbox"},[
 			Cr.txt(chrome.i18n.getMessage('tabletModePitch'))
 		])
 	]}) : 0,
-	Cr.txt(" | "),
-	Cr.elm("a",{target:"_blank",href:"help.html",event:['click', navToHelp]},[
-		Cr.elm('span',{style:'color:#444;'},[Cr.txt('\uFFFD ')]),
-		Cr.txt(chrome.i18n.getMessage('help'))
-	]),
 	Cr.elm("br",{}),
 	Cr.ent(chrome.i18n.getMessage('extName')+" &copy;"),
 	Cr.elm("a",{target:"_blank",href:"http://vidsbee.com/ColorPick/"},[
