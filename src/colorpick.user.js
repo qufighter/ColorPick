@@ -102,7 +102,7 @@ function reqLis(request, sender, sendResponse) {
 			isMakingNew = false; // this or above...
 			newImage();
 		}else{
-			snapLoader.src=request.pickerImage;
+			if( request.to - 0 === snapshotLoadedTimeout - 0) snapLoader.src=request.pickerImage;
 		}
 
   }else if (request.tabRefreshSnap){
@@ -525,7 +525,7 @@ function newImage(){
 
 	setTimeout(function(){
 		try{
-			chrome.runtime.sendMessage({newImage:true,w:x,h:y}, function(response){
+			chrome.runtime.sendMessage({newImage:true,w:x,h:y,to:snapshotLoadedTimeout-0}, function(response){
 				imageRequestReachedBg++;
 			});
 		}catch(e){

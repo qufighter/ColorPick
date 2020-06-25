@@ -165,10 +165,10 @@ function doCaptueForTab(request,tabId,winId){
 		var snapDuration = currentTime - lastActiveTabTime; // measure duration since last tab activation....
 
 		if( snapDuration > timeRequiredToBeOnTabSinceChange && dataUrl ){ // tab has to have been active for at least this long.... (keep in mind we wait 255ms before calling this)
-			chrome.tabs.sendMessage(tabId, {setPickerImage:true,pickerImage:dataUrl}, function(response) {});
+			chrome.tabs.sendMessage(tabId, {setPickerImage:true,pickerImage:dataUrl,to:request.to}, function(response) {});
 		}else{
 			// tab must have changed too recently - too risky to send this snapshot back... (might be wrong tab)
-			chrome.tabs.sendMessage(tabId, {setPickerImage:true,pickerImage:getFauxSnap(dataUrl,request.w,request.h),isErrorTryAgain:true}, function(response) {});
+			chrome.tabs.sendMessage(tabId, {setPickerImage:true,pickerImage:getFauxSnap(dataUrl,request.w,request.h),to:request.to,isErrorTryAgain:true}, function(response) {});
 		}
 	}
 	// if( request.newImage == 'for-popup' ){
