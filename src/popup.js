@@ -12,7 +12,7 @@ var borderValue='1px solid grey',EnableRGB=true,EnableHSL=true,useCSSValues=true
 var cpScaleOffset=(isWindows?16:0);
 var isPicking=false,keyInputMode=false;
 var CSS3ColorFormat=(localStorage['CSS3ColorFormat']||pAdvOptions["CSS3ColorFormat"].def);
-var snapModeBlock=(localStorage['snapModeBlock']||pOptions["snapModeBlock"].def);
+var snapModeBlock=(localStorage['snapModeBlock']||pAdvOptions["snapModeBlock"].def);
 
 var gotAnUpdate = false;EnableHex=true;otherError=false;
 var fishEye = (localStorage['fishEye']||pOptions["fishEye"].def)-0;

@@ -1,4 +1,5 @@
 // these functions are NOT included in user.js (content scripts)
+var loadedOptions = {}
 
 function sendReloadPrefs(cb){
 	var cbf=cb;
@@ -44,7 +45,10 @@ function loadSettingsFromChromeSyncStorage(cbf){
 				localStorage[i] = obj[i];
 			}
 		}
-		sendReloadPrefs();
+		loadPrefsFromLocalStorage(loadedOptions, function(){});
+		sendReloadPrefs(); // can maybe remove the call to sendReload here and call when needed instead?
 		if(typeof(cbf)=='function')cbf();
 	});
 }
+
+loadPrefsFromLocalStorage(loadedOptions, function(){});

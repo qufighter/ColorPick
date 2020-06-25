@@ -116,7 +116,7 @@ function reqLis(request, sender, sendResponse) {
 		lx=Math.round(ex / x_cvs_scale),ly=Math.round(ey / y_cvs_scale);
 		updateColorPreview();
 	}else if (request.reloadPrefs){
-		loadPrefs(function(){updateColorPreview();});
+		loadPrefsFromStorage(opts, function(){updateColorPreview();});
   }else if (request.disableColorPicker){
 	if( !sender || !sender.tab ){ // if this was sent from a tab, it is from another content script, ignore
 		disableColorPicker();
@@ -295,26 +295,8 @@ function ssf(ev){
 	},10);
 }
 
-function loadPref(i, obj, pOptions){
-	if(typeof(pOptions[i].def)=='boolean')
-		opts[i] = ((obj[i]=='true')?true:((obj[i]=='false')?false:pOptions[i].def));
-	else
-		opts[i] = ((obj[i])?obj[i]:pOptions[i].def);
-}
-
-function loadPrefs(cbf){
-	storage.get(null, function(obj) {
-		if(chrome.runtime.lastError)console.log(chrome.runtime.lastError.message);
-		obj = obj || {};
-		var i;
-		for(i in pOptions){loadPref(i, obj, pOptions);}
-		for(i in pAdvOptions){loadPref(i, obj, pAdvOptions);}
-		for(i in pSyncItems){loadPref(i, obj, pSyncItems);}
-		if(typeof(cbf)=='function')cbf();
-	});
-}
 function initialInit(){
-	loadPrefs(function(){
+	loadPrefsFromStorage(opts, function(){
 		prefsLoadedCompleteInit()
 	});
 	if( !connectListener ){

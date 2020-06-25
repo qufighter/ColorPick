@@ -33,16 +33,19 @@ pOptions["showPreviewInContent"]={def:true,ind:0};
 // pOptions["contSprevZoomd"]={def:true,ind:1};
 pOptions["ShowRGBHSL"]={def:true,ind:1};
 pOptions["autocopyhex"]={def:'false',ind:0,select:{'false':chrome.i18n.getMessage('off'),'true':'hexadecimal','rgb':'rgb','hsl':'hsl'}};
-pOptions["snapMode"]={def:true,ind:0};
-pOptions["snapModeBlock"]={def:'chrome://(newtab|extensions|settings|downloads|bookmarks)|chrome://about',ind:1,size:15};
-pOptions["snapModeCloseTab"]={def:true,ind:1};
-pOptions["cacheSnapshots"]={def:false,ind:1};
+
 
 //pAdvOptions["customCalibration"]={def:false,ind:0,name:'Enable the defunct calibration link above.'};
 pAdvOptions["usePNG"]={def:true,ind:0};
 pAdvOptions["useCSSValues"]={def:true,ind:0};
 pAdvOptions["CSS3ColorFormat"]={def:'(#1,#2,#3)',ind:1};
 pAdvOptions["supportColorInputs"]={def:isMac?false:true,ind:0,img:'img/icon16.png'};
+
+pAdvOptions["snapMode"]={def:true,ind:0};
+pAdvOptions["snapModeBlock"]={def:'chrome://(newtab|extensions|settings|downloads|bookmarks)|chrome://about',ind:1,size:15};
+pAdvOptions["snapModeCloseTab"]={def:true,ind:1};
+pAdvOptions["cacheSnapshots"]={def:false,ind:1};
+
 pAdvOptions["hexIsLowerCase"]={def:false,ind:0};
 pAdvOptions["hexHasHash"]={def:false,ind:0};
 pAdvOptions["oldHistoryFirst"]={def:false,ind:0};
@@ -116,4 +119,28 @@ function navToHistory(ev){
 
 function navToPallete(ev, addColor){ // probably unused
 	navTo(ev, 'options.html?palette' + (addColor ? '='+addColor : ''));
+}
+
+function iloadPref(results, i, obj, pOptions){
+	if(typeof(pOptions[i].def)=='boolean')
+		results[i] = ((obj[i]=='true')?true:((obj[i]=='false')?false:pOptions[i].def));
+	else{
+		results[i] = ((obj[i])?obj[i]:pOptions[i].def);
+	}
+}
+
+function loadPrefsFromStorage(results, cbf){
+	storage.get(null, function(obj) {
+		if(chrome.runtime.lastError)console.log(chrome.runtime.lastError.message);
+		loadPrefsFromLocalStorage(results, cbf, obj || {})
+		if(typeof(cbf)=='function')cbf();
+	});
+}
+
+function loadPrefsFromLocalStorage(results, cbf, override){
+	var i;
+	for(i in pOptions){iloadPref(results, i, override || localStorage, pOptions);}
+	for(i in pAdvOptions){iloadPref(results, i, override || localStorage, pAdvOptions);}
+	for(i in pSyncItems){iloadPref(results, i, override || localStorage, pSyncItems);}
+	if(typeof(cbf)=='function')cbf();
 }
