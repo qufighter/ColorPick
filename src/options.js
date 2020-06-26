@@ -63,6 +63,9 @@ function save_options() {
 //  localStorage["favorite_color"] = color;
 	var oldHistoryOrder = localStorage['oldHistoryFirst'];
 
+	var smb = document.getElementById('snapModeBlock');
+	smb.value = smb.value.replace(/^\||\|$/g,''); // leading/trailing bars match everything and result in blocked everywhere...
+
   	var i;
 
   	for(i in pOptions){
