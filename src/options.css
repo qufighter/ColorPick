@@ -4,6 +4,9 @@ body{
 	background: -webkit-linear-gradient(-5deg, #CCC 0%,#FFF 120px);
 	background-repeat: no-repeat;
 }
+body.touchy a{
+	line-height: 2.5em;
+}
 #logo{float:left;margin-right:10px;}
 #exthometxt{color:black;}
 h3{margin:4px;}
@@ -92,7 +95,8 @@ label.changed:before{
 @media only screen and (max-width : 896px){
 	#swatch-holder{
 		position:relative;
-		width:auto;left:0;
+		width:auto !important;
+		left:0 !important;
 		margin-top: 0px !important;
 	}
 	.indented-when-narrow-area{

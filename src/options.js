@@ -1059,10 +1059,20 @@ function mmv(ev){
 
 function updateSwatchSelectionMargins(his){
 	his = his || document.getElementById('history');
+	var swhld = document.getElementById('swatch-holder');
+	var left_base = 480;
 	if( his.clientWidth > 400 && his.style.display!='none' ){
-		document.getElementById('swatch-holder').style.marginTop = his.clientHeight + 50;
+		if( 400 + (left_base + (his.clientWidth - 399)) > window.innerWidth ){
+			swhld.style.marginTop = his.clientHeight + 50;
+			swhld.style.left = left_base + 'px';
+			swhld.style.width = '48%';
+		}else{
+			swhld.style.left = (left_base + (his.clientWidth - 399)) + 'px';//his.clientHeight + 50;
+			swhld.style.marginTop = 0;
+			swhld.style.width = '';
+		}
 	}else{
-		document.getElementById('swatch-holder').style.marginTop = 0;
+		swhld.style.marginTop = 0;
 	}
 }
 
@@ -1310,31 +1320,9 @@ Cr.elm("div",{id:"mainbox"},[
 		Cr.txt(chrome.i18n.getMessage('terms'))
 	]),
 	Cr.txt(" | "),
-	Cr.elm("a",{target:"_blank",href:"desktop_app.html",event:['click', navToDesktop]},[
-		Cr.txt('\uD83D\uDDA5 '),
-		Cr.txt(chrome.i18n.getMessage('desktopapp'))
-	]),
-	Cr.txt(" | "),
-	Cr.elm("a",{target:"_blank",href:"mobile_app.html",event:['click', navToMobile]},[
-		Cr.txt('\uD83D\uDCF1 '),
-		Cr.txt(chrome.i18n.getMessage('mobileapp'))
-	]),
-	Cr.txt(" | "),
 	Cr.elm("a",{target:"_blank",href:"help.html",event:['click', navToHelp]},[
 		Cr.elm('span',{style:'color:#444;'},[Cr.txt('\uFFFD ')]),
 		Cr.txt(chrome.i18n.getMessage('help'))
-	]),
-	extensionsKnown.color_pick_tablet_url ? Cr.elm('span',{childNodes:[
-		Cr.txt(" | "),
-		Cr.elm("a",{target:"_blank",href:extensionsKnown.color_pick_tablet_url},[
-			Cr.txt('\uD83D\uDD0D '),
-			Cr.txt(chrome.i18n.getMessage('tabletModePitch'))
-		])
-	]}) : 0,
-	Cr.elm("br",{}),
-	Cr.ent(chrome.i18n.getMessage('extName')+" &copy;"),
-	Cr.elm("a",{target:"_blank",href:"http://vidsbee.com/ColorPick/"},[
-		Cr.txt("Vidsbee.com")
 	]),
 	Cr.txt(" | "),
 	Cr.elm("a",{href:"credits.html"},[
@@ -1344,7 +1332,45 @@ Cr.elm("div",{id:"mainbox"},[
 	Cr.elm("a",{href:"sponsors.html"},[
 		Cr.txt(chrome.i18n.getMessage('sponsors'))
 	]),
-	Cr.elm('div',{'id':'rate_position'})
+	Cr.elm("br"),
+	Cr.elm("a",{target:"_blank",href:"desktop_app.html",event:['click', navToDesktop]},[
+		Cr.txt('\uD83D\uDDA5 '),
+		Cr.txt(chrome.i18n.getMessage('desktopapp'))
+	]),
+	Cr.txt(" | "),
+	Cr.elm("a",{target:"_blank",href:"mobile_app.html",event:['click', navToMobile]},[
+		Cr.txt('\uD83D\uDCF1 '),
+		Cr.txt(chrome.i18n.getMessage('mobileapp'))
+	]),
+
+	extensionsKnown.color_pick_tablet_url ? Cr.elm('span',{id:'tablet-edition-install-link',childNodes:[
+		Cr.txt(" | "),
+		Cr.elm("a",{target:"_blank",href:extensionsKnown.color_pick_tablet_url},[
+			Cr.txt('\uD83D\uDD0D '),
+			Cr.txt(chrome.i18n.getMessage('tabletModePitch'))
+		])
+	]}) : 0,
+	extensionsKnown.color_pick_tablet ? Cr.elm('span',{
+		id:'tablet-edition-installed',
+		event:['click', function(ev){
+			chrome.runtime.sendMessage(extensionsKnown.color_pick_tablet, {launchOptions:true}, function(r) {});
+			ev.preventDefault();
+		}],
+		style:'display:none;',
+		childNodes:[
+			Cr.txt(" | "),
+			Cr.elm("a",{target:"_blank",href:'chrome-extension://'+extensionsKnown.color_pick_tablet+'/options.html'},[
+				Cr.txt('\uD83D\uDD0D '),
+				Cr.txt(chrome.i18n.getMessage('tabletModePrompt'))
+			])
+	]}) : 0,
+	Cr.elm("br",{}),
+	Cr.elm('span',{'id':'rate_position'}),
+	Cr.ent(' '+chrome.i18n.getMessage('extName')+" &copy;"),
+	Cr.elm("a",{target:"_blank",href:"http://vidsbee.com/ColorPick/"},[
+		Cr.txt("Vidsbee.com")
+	])
+
 ],document.body);
 
 	createAndAttachRatings(document.getElementById('rate_position'));
@@ -1374,6 +1400,15 @@ Cr.elm("div",{id:"mainbox"},[
 	document.body.addEventListener('keyup', doc_keyup);
 
 	document.body.style.opacity="1";
+
+	if( extensionsKnown.color_pick_tablet ){
+		chrome.runtime.sendMessage(extensionsKnown.color_pick_tablet, {testAvailable:true}, function(r) {
+			if( !chrome.runtime.lastError && r ){
+				document.getElementById('tablet-edition-install-link').style.display="none";
+				document.getElementById('tablet-edition-installed').style.display="inline";
+			}
+		});
+	}
 
 	if( window.location.search ){
 		var navHexSelection = window.location.search.match(/\?(history|palette)[=]?([\dA-f]{0,6})/);
@@ -1413,6 +1448,10 @@ Cr.elm("div",{id:"mainbox"},[
 	}
 
 	window.onbeforeunload = confirmBeforeLeaving;
+
+	if( window.navigator.maxTouchPoints > 0 ){
+		document.body.classList.add('touchy');
+	}
 }
 
 document.addEventListener('DOMContentLoaded', function () {
