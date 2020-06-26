@@ -2,9 +2,35 @@ var ItIsTheExtensionColorPickButInsideAnExtensionPageNo = true;
 
 document.addEventListener('DOMContentLoaded', function(){
 
+	var winloc = window.location.hash.replace(/^#/,'');
+	var winlocParts = winloc.split('#');
+
+	winloc = winlocParts[0];
+
+	if( winlocParts[1] == 'extSelf' ){
+		Cr.elm('div',{
+			style: Cr.css({
+				position: 'absolute',
+				width: '100%',
+				color: 'grey',
+				top: 0
+			}),
+			childNodes:[
+				Cr.elm('h1', {
+					style: 'margin:0;',
+					childNodes:[Cr.txt(chrome.i18n.getMessage('colorProfileWarning1'))]
+				}),
+				Cr.elm('h3', {
+					style: 'margin:0;',
+					childNodes:[Cr.txt(chrome.i18n.getMessage('colorProfileWarning2'))]
+				})
+			]
+		}, document.body);
+	}
+
 	var last = localStorage.lastImageSnap;
 	if( !last && localStorage.cacheSnapshots == 'true' ){
-		last = sessionStorage['session-pick-cache-'+window.location.hash.replace(/^#/,'')];
+		last = sessionStorage['session-pick-cache-'+winloc];
 	}
 	if( last ){
 		document.getElementById('default_err').remove();
@@ -15,7 +41,7 @@ document.addEventListener('DOMContentLoaded', function(){
 		localStorage.removeItem('lastImageSnap');
 
 		if( localStorage.cacheSnapshots == 'true' ){
-			sessionStorage['session-pick-cache-'+window.location.hash.replace(/^#/,'')] = last;
+			sessionStorage['session-pick-cache-'+winloc] = last;
 			sessionStorage['session-pick-about'] = "the setting to control this ColorPick feature is " + chrome.i18n.getMessage('cacheSnapshots');
 		}
 

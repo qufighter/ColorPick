@@ -1,6 +1,6 @@
 /*jshint sub:true*/
 var tabid=0,winid=0;
-var snapModeDelay = 3, errorScreenshotAttempts=0, snapModeBlockedHere=false, snapModeTimeout = 0;
+var snapModeDelay = 3, errorScreenshotAttempts=0, snapModeBlockedHere=false, snapModeTimeout = 0, snapExtPage = false;
 var screenshotAlternativeRecieved = 0, realSrcRecieved = false;
 var isScriptAlive=false,scriptAliveTimeout=1,reExecutedNeedlessly=false;
 var cpw=165,cph=303;
@@ -301,6 +301,7 @@ function mwheel(ev){
 }
 function configureSnapModeBlocked(tabURL){
 	snapModeBlockedHere = snapModeBlock && (tabURL || '').match(new RegExp(snapModeBlock, 'i'));
+	snapExtPage = (tabURL || '').match(chrome.runtime.id);
 }
 function iin(){
 	if(typeof(localStorage["borderValue"])!='undefined')borderValue = localStorage["borderValue"];
@@ -472,7 +473,7 @@ function tabScreenshotRecieved(dataUri, request){
 	Cr.elm("a",{
 		id:'alt-snap-mode-link',
 		target:'_blank',
-		href:chrome.extension.getURL('pick.html#tab='+request.setTabImage),
+		href:chrome.extension.getURL('pick.html#tab='+request.setTabImage)+(snapExtPage?'#extSelf':''),
 		event:['click', function(){
 			console.log('passing data to snap mode via localStorage...') // todo fix this
 			localStorage.lastImageSnap=dataUri; // our new tab will delete this entry

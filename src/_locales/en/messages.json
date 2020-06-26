@@ -278,6 +278,12 @@
    "cacheSnapshots": {
       "message": "Store snapshots to session storage"
    },
+   "colorProfileWarning1": {
+      "message": "You may observe inexact results for non sRGB color profile."
+   },
+   "colorProfileWarning2": {
+      "message": "Your browser may allow you to 'Force color profile' or your system may allow you to configure the default."
+   },
    "options": {
       "message": "Options"
    },
