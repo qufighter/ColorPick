@@ -501,7 +501,10 @@ function showLoadingTimer(){
 }
 
 function setupInjectScripts(){
-	//finishSetup();return;
+	if( snapModeBlockedHere ){
+		showErrorScreen('page_url');
+		return;
+	}
 	isScriptAlive=false;
 	scriptAliveTimeout=1;
 	reExecutedNeedlessly=false;
