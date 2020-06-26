@@ -1219,6 +1219,12 @@ function doc_keydown(ev){
 		document.body.classList.add('alt-key');
 		hasKeyClass=true;
 	}
+	if( ev.metaKey ){
+		if( ev.keyCode == 83){ // s for save
+			save_options(ev);
+			ev.preventDefault();
+		}
+	}
 }
 
 function doc_keyup(ev){
