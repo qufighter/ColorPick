@@ -61,4 +61,25 @@ document.addEventListener('DOMContentLoaded', function(){
 		}, document.getElementById('default_err').firstChild)
 	}
 
+	window.location.title=chrome.i18n.getMessage('snapModeDesc') + ' - ' + chrome.i18n.getMessage('extName');
+
+	Cr.elm('div',{
+		class: 'default_err',
+		style: Cr.css({
+			position: 'fixed',
+			width: '100%',
+			color: 'grey',
+			bottom: '0.5em',
+			'z-index': -1
+		}),
+		childNodes:[
+			Cr.elm('h3', {
+				class: 'txt',
+				style: 'margin:0;',
+				childNodes:[Cr.txt(chrome.i18n.getMessage('snapModeDesc'))]
+			})
+		]
+	}, document.body);
+
+
 });

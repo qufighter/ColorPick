@@ -10,7 +10,7 @@ body{
 body>img{
 	padding:64px;
 }
-#default_err .txt{
+.default_err .txt{
 	text-shadow:1px 1px 1px white;
 	background-color:white;
 	box-shadow:0px 0px 7px 7px white;

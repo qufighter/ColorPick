@@ -1080,7 +1080,7 @@ function updateSwatchSelectionMargins(his){
 var fourSpaces='\u00a0\u00a0\u00a0\u00a0';
 function createOptions(piOptions, elemAppend){
 	//needs some compression 
-	var i, z, l, cb;
+	var i, im, z, l, cb;
 	for( i in piOptions){
 		if(!piOptions[i].name)piOptions[i].name=chrome.i18n.getMessage(i);
 		if(piOptions[i].select){
@@ -1113,12 +1113,12 @@ function createOptions(piOptions, elemAppend){
 			l.appendChild(document.createTextNode(piOptions[i].name));
 			if(piOptions[i].img){
 				var t=piOptions[i].img;
-				i=document.createElement('img');
-				i.setAttribute('src',t);
-				i.setAttribute('align','top');
-				i.setAttribute('width',16);
+				im=document.createElement('img');
+				im.setAttribute('src',t);
+				im.setAttribute('align','top');
+				im.setAttribute('width',16);
 				l.appendChild(document.createTextNode(' '));
-				l.appendChild(i);
+				l.appendChild(im);
 			}
 			if(piOptions[i] && piOptions[i].css){
 				l.setAttribute('style',piOptions[i].css);
