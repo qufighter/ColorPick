@@ -1353,7 +1353,7 @@ Cr.elm("div",{id:"mainbox"},[
 	extensionsKnown.color_pick_tablet ? Cr.elm('span',{
 		id:'tablet-edition-installed',
 		event:['click', function(ev){
-			chrome.runtime.sendMessage(extensionsKnown.color_pick_tablet, {launchOptions:true}, function(r) {});
+			goToOrOpenTab("chrome-extension://"+extensionsKnown.color_pick_tablet+"/options.html")
 			ev.preventDefault();
 		}],
 		style:'display:none;',

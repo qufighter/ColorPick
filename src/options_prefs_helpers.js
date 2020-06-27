@@ -37,6 +37,28 @@ function saveToChromeSyncStorage(){
 	chromeStorageSaveALocalStor(tosave);
 }
 
+function goToOrOpenTab(tabUrl, completedCallback){
+  if( !tabUrl.match(/^chrome/) ) tabUrl = chrome.extension.getURL(tabUrl); // typically "options.html"
+  completedCallback = completedCallback || function(){};
+  chrome.tabs.query({
+    url: tabUrl,
+    currentWindow: true
+  }, function(tabs){
+    if( tabs.length > 0 ){
+      chrome.tabs.update(tabs[0].id,{active:true}, completedCallback)
+      //chrome.tabs.highlight({tabs:[tabs[0].index], windowId:tabs[0].windowId}, completedCallback);
+    }else{
+      chrome.tabs.create({
+        url: tabUrl,
+        active: true
+      }, function(t){
+        chrome.tabs.update(t.id,{active:true}, completedCallback)
+        // chrome.tabs.highlight({tabs:[t.index]}, completedCallback)
+      });
+    }
+  });
+}
+
 function loadSettingsFromChromeSyncStorage(cbf){
 	
 	storage.get(null, function(obj) {

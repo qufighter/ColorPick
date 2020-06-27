@@ -106,7 +106,7 @@ function navToReg(ev){
 }
 
 function navToOptions(ev){
-	if( ev.target && ev.target.closest('a') && ev.target.closest('a').href.match('options.html?') ){
+	if( ev.target && ev.target.closest('a') && ev.target.closest('a').href.match(/options.html\?/) ){
 		navTo(ev, ev.target.closest('a').href.match(/options.html\?([\w=&]+)/)[0]); // send query params if present on link
 	}else{
 		navTo(ev, 'options.html');
