@@ -1366,7 +1366,7 @@ Cr.elm("div",{id:"mainbox"},[
 	]}) : 0,
 	Cr.elm("br",{}),
 	Cr.elm('span',{'id':'rate_position'}),
-	Cr.ent(' '+chrome.i18n.getMessage('extName')+" &copy;"),
+	Cr.txt(' '+chrome.i18n.getMessage('extName')+" "+String.fromCharCode(169)),
 	Cr.elm("a",{target:"_blank",href:"http://vidsbee.com/ColorPick/"},[
 		Cr.txt("Vidsbee.com")
 	])

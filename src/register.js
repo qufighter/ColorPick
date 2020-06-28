@@ -371,7 +371,7 @@ Cr.elm("div",{id:"mainbox"},[
 		Cr.elm("br"),
 		Cr.txt(" "),
 		Cr.elm("span",{class:"subh",style:"left:42px;"},[
-			Cr.ent("&copy; Vidsbee.com by Sam Larison")
+			Cr.txt(String.fromCharCode(169)+" Vidsbee.com by Sam Larison")
 		])
 	]),
 	Cr.txt("ColorPick is an Amazing Eyedropper tool that allows precise selection of color values through it's one-of-a-kind zoomed preview!"),
