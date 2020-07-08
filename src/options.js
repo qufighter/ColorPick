@@ -1232,9 +1232,11 @@ function doc_keydown(ev){
 		document.body.classList.add('alt-key');
 		hasKeyClass=true;
 	}
-	if( ev.metaKey ){
+	if( ev.ctrlKey || ev.metaKey ){
+		// todo: non platform agnostic
 		if( ev.keyCode == 83){ // s for save
 			ev.preventDefault();
+			ev.stopPropagation();
 			var ps = document.getElementById('print-swatches');
 			if( ps.offsetHeight && document.getElementById('clear-palette').style.display!='none' ){
 				printSwatches(ev);

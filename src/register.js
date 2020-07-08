@@ -367,7 +367,7 @@ function createDOM(){
 Cr.elm("div",{id:"mainbox"},[
 	Cr.elm("h2",{},[
 		Cr.elm("img",{src:"img/icon32.png",style:'width:32px;height:32px;vertical-align:text-bottom;'}),
-		Cr.txt(" ColorPick for Google Chrome"),
+		Cr.txt(" ColorPick for " + (isChrome?'Google Chrome':(isFirefox?'Firefox':"Your web browser.")) ),
 		Cr.elm("br"),
 		Cr.txt(" "),
 		Cr.elm("span",{class:"subh",style:"left:42px;"},[
@@ -415,7 +415,7 @@ Cr.elm("div",{id:"mainbox"},[
 		Cr.elm("small",{style:"display:none;"},[
 			Cr.txt("License applies wherever else you sign in or enter the same license."),
 			Cr.elm("br"),
-			Cr.txt("Upgrade your license; add & manage authorized hosts from the "),
+			Cr.txt("Upgrade the stand alone license; add & manage authorized hosts from the "),
 			Cr.elm("a",{target:"_blank",href:"http://vidsbee.com/ColorPick/Upgrade/",id:"examine"},[
 				Cr.txt("License Manager")
 			])
@@ -443,7 +443,7 @@ Cr.elm("div",{id:"mainbox"},[
 		Cr.elm("img",{src:"img/expand.png",class:'expand-triangle'})
 	]),
 	Cr.elm("small",{style:"display:none;",class:"toInline"},[
-		Cr.txt("Your color-pick license not only works here;"),
+		Cr.txt("The stand alone color-pick license not only works here;"),
 		Cr.elm("br"),
 		Cr.txt("The same license also registers the color-pick desktop applications"),
 		Cr.elm("br"),

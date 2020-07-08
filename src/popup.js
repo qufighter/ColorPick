@@ -11,8 +11,8 @@ var isPopout=false;
 var borderValue='1px solid grey',EnableRGB=true,EnableHSL=true,useCSSValues=true,usePrevColorBG=false,showPreviousClr=true,pickEveryTime=(isWindows?true:false),bbackgroundColor='white',hexHasHash=false,hexIsLowerCase=false;
 var cpScaleOffset=(isWindows?16:0);
 var isPicking=false,keyInputMode=false;
-var CSS3ColorFormat=(localStorage['CSS3ColorFormat']||pAdvOptions["CSS3ColorFormat"].def);
-var snapModeBlock=(localStorage['snapModeBlock']||pAdvOptions["snapModeBlock"].def);
+var CSS3ColorFormat=loadedOptions.CSS3ColorFormat;
+var snapModeBlock=loadedOptions.snapModeBlock;
 
 var gotAnUpdate = false;EnableHex=true;otherError=false;
 var fishEye = (localStorage['fishEye']||pOptions["fishEye"].def)-0;
@@ -679,7 +679,7 @@ function popupimage(mylink, windowname)
 //	return false;
 }
 function popOut(){
- popupimage({href:chrome.extension.getURL('popup.html')+'?isPopup='+tabid+','+winid}, chrome.i18n.getMessage('extName') + " : Chrome Extension");
+ popupimage({href:chrome.extension.getURL('popup.html')+'?isPopup='+tabid+','+winid}, chrome.i18n.getMessage('extName') + " : Extension");
 }
 
 function close_stop_picking(){

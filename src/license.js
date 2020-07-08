@@ -110,7 +110,7 @@ Cr.elm("div",{id:"container"},[
 		Cr.txt("This agreement may be reviewed at any time from the options screen."),
 		Cr.elm("br"),
 		Cr.elm("br"),
-		Cr.txt("Registration includes a valid license for ColorPick Chrome Extension & desktop App on Windows & OSX."),
+		Cr.txt("Registration includes a valid license for ColorPick Extension & desktop App on Windows & OSX."),
 		Cr.elm("br"),
 		Cr.elm("br"),
 		Cr.txt("Color Picker costs 99"+String.fromCharCode(162)+" to register one authorized host address to use any version (sans mobile versions, licensed separately) of the program without any limitations."),

@@ -510,6 +510,9 @@
    "palette_tetradic_info":{
       "message": "Tetradic (Rectangular) include the complementary color, and also two additional colors each two 30\u00b0 increments away from the base color or its complement in the same direction (clockwise or counterclockwise).  Depending on if Left or Right is selected the increments will be rectangular in one direction or the other."
    },
+   "auto_install_key":{
+      "message": "Click here to Automatically Install this License into your Color Pick Extension"
+   },
    "helpPage": {
       "message": "todo"
    }

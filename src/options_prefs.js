@@ -38,7 +38,7 @@ pOptions["autocopyhex"]={def:'false',ind:0,select:{'false':chrome.i18n.getMessag
 //pAdvOptions["customCalibration"]={def:false,ind:0,name:'Enable the defunct calibration link above.'};
 pAdvOptions["usePNG"]={def:true,ind:0};
 pAdvOptions["useCSSValues"]={def:true,ind:0};
-pAdvOptions["CSS3ColorFormat"]={def:'(#1,#2,#3)',ind:1};
+pAdvOptions["CSS3ColorFormat"]={def:'(#1,#2,#3)',ind:1,ifEmptyReset:true};
 pAdvOptions["supportColorInputs"]={def:isMac?false:true,ind:0,img:'img/icon16.png'};
 
 pAdvOptions["snapMode"]={def:true,ind:0};
@@ -52,7 +52,7 @@ pAdvOptions["oldHistoryFirst"]={def:false,ind:0};
 //pAdvOptions["iconIsPreview"]={def:false,ind:0,img:'img/opt_badge.png'};
 pAdvOptions["appleIcon"]={def:false,ind:0,img:'img/apple/icon16.png'};
 pAdvOptions["iconIsBitmap"]={def:false,ind:0,img:'img/icon_pixel.png'};
-pAdvOptions["resetIcon"]={def:true,ind:1,name:'Back to normal icon when done'};
+pAdvOptions["resetIcon"]={def:true,ind:1};
 pAdvOptions["bbackgroundColor"]={def:'#FFF',ind:0};
 pAdvOptions["usePrevColorBG"]={def:false,ind:1};
 pAdvOptions["showPreviousClr"]={def:true,ind:0};
@@ -125,7 +125,7 @@ function iloadPref(results, i, obj, pOptions){
 	if(typeof(pOptions[i].def)=='boolean')
 		results[i] = ((obj[i]=='true')?true:((obj[i]=='false')?false:pOptions[i].def));
 	else{
-		results[i] = ((obj[i])?obj[i]:pOptions[i].def);
+		results[i] = ((obj[i])?obj[i]:((obj[i]==='' && !pOptions[i].ifEmptyReset)?obj[i]:pOptions[i].def));
 	}
 }
 

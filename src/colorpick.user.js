@@ -273,10 +273,12 @@ function wk(ev){
 function mmf(ev){
 	if(!isEnabled)return;
 	if(!isLocked){
-		lx=(ev.pageX-pageXOffset),ly=(ev.pageY-pageYOffset);
-		ex = Math.round(lx * x_cvs_scale),
-		ey = Math.round(ly * y_cvs_scale);
-		updateColorPreview();
+		if( ev ){
+			lx=(ev.pageX-pageXOffset),ly=(ev.pageY-pageYOffset);
+			ex = Math.round(lx * x_cvs_scale),
+			ey = Math.round(ly * y_cvs_scale);
+			updateColorPreview();
+		}
 	}
 }
 
