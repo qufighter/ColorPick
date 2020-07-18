@@ -492,11 +492,11 @@ function showLoadingTimer(){
 		Cr.empty(timer);
 		var curTime = (new Date()).getTime();
 		var elapsedS = Math.floor((curTime - startTime) / 1000);
-		if( elapsedS <= 8 ){
+		if( elapsedS <= 8 && !screenshotAlternativeRecieved ){
 			timer.appendChild(Cr.txt(':'+elapsedS));
 			setTimeout(showLoadingTimer, 250);
 		}else{
-			timer.appendChild(Cr.txt('sorry, reload'));
+			timer.appendChild(screenshotAlternativeRecieved?Cr.txt(''):Cr.txt('sorry, reload'));
 		}
 	}
 }
