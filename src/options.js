@@ -4,6 +4,7 @@ if( isFirefox ){
 }
 var nbsp='\u00A0';
 var infoicon='\u24D8';
+var dirMap;
 
 if( isWindows ){
 	infoicon='\uD83D\uDEC8';
@@ -1019,7 +1020,7 @@ function load_history(){
 	historyInner.addEventListener('mouseover',doc_keyup);
 
 	Cr.elm('div', {
-		style: 'right:-11px;top:0px;cursor:ew-resize;width:7px;height:100%;',
+		style: dirMap.end+':-11px;top:0px;cursor:ew-resize;width:7px;height:100%;',
 		class: 'hist_drag_sizer',
 		event: ['mousedown', dragHist]
 	}, [], div_history);
@@ -1031,7 +1032,7 @@ function load_history(){
 	}, [], div_history);
 
 	Cr.elm('div', {
-		style: 'bottom:-11px;right:-11px;cursor:nwse-resize;width:7px;height:7px;',
+		style: 'bottom:-11px;'+dirMap.end+':-11px;cursor:'+dirMap.endResize+'-resize;width:7px;height:7px;',
 		class: 'hist_drag_sizer',
 		event: ['mousedown', dragHistBth]
 	}, [], div_history);
@@ -1047,7 +1048,7 @@ function mmv(ev){
 	var his=document.getElementById('history');
 	var hisInner=document.getElementById('historyInner');
 	if(histReSize){
-		his.style.width = ev.pageX - 28;
+		his.style.width = dirMap.eventPageX(ev.pageX) - 28;
 	}
 	if(histReSizeVrt){
 		hisInner.style.height = ev.pageY - his.offsetTop - 7;
@@ -1064,10 +1065,10 @@ function updateSwatchSelectionMargins(his){
 	if( his.clientWidth > 400 && his.style.display!='none' ){
 		if( 400 + (left_base + (his.clientWidth - 399)) > window.innerWidth ){
 			swhld.style.marginTop = his.clientHeight + 50;
-			swhld.style.left = left_base + 'px';
+			swhld.style[dirMap.start] = left_base + 'px';
 			swhld.style.width = '48%';
 		}else{
-			swhld.style.left = (left_base + (his.clientWidth - 399)) + 'px';//his.clientHeight + 50;
+			swhld.style[dirMap.start] = (left_base + (his.clientWidth - 399)) + 'px';//his.clientHeight + 50;
 			swhld.style.marginTop = 0;
 			swhld.style.width = '';
 		}
@@ -1278,10 +1279,10 @@ Cr.elm("div",{id:"mainbox"},[
 			Cr.txt(chrome.i18n.getMessage('palette'))
 		]),
 		Cr.elm("div",{id:"palette", class:'indented-when-narrow-area'},[
-			Cr.elm("a",{class:"swatchCtrl",event:['click',clearSwatches],style:'text-align:center;position:absolute;display:block;width:50%;margin-left:25%;display:none;',id:'clear-palette'},[Cr.txt(chrome.i18n.getMessage('clear').toLowerCase())]),
+			Cr.elm("a",{class:"swatchCtrl",event:['click',clearSwatches],style:'text-align:center;position:absolute;display:block;width:50%;margin-'+dirMap.start+':25%;display:none;',id:'clear-palette'},[Cr.txt(chrome.i18n.getMessage('clear').toLowerCase())]),
 			Cr.elm("a",{class:"swatchCtrl",event:['click',sortSwatches],style:''},[Cr.txt(chrome.i18n.getMessage('sort'))]),
 			Cr.elm("a",{class:"swatchCtrl",event:['click',dedupeSwatches]},[Cr.txt(chrome.i18n.getMessage('dedupe'))]),
-			Cr.elm("a",{class:"swatchCtrl",event:['click',printSwatches],style:'float:right;',target:'_blank',id:'print-swatches'},[Cr.txt(chrome.i18n.getMessage('printSave'))]),
+			Cr.elm("a",{class:"swatchCtrl",event:['click',printSwatches],style:'float:'+dirMap.end+';',target:'_blank',id:'print-swatches'},[Cr.txt(chrome.i18n.getMessage('printSave'))]),
 			Cr.elm("div",{id:"swatches", style:'display:block;position:relative;'}),
 			Cr.elm("div",{id:"generate-palette-area"})
 		])
@@ -1457,5 +1458,6 @@ Cr.elm("div",{id:"mainbox"},[
 }
 
 document.addEventListener('DOMContentLoaded', function () {
+	dirMap=detectDirection();
 	createDOM();
 });

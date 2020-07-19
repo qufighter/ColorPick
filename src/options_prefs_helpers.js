@@ -59,6 +59,31 @@ function goToOrOpenTab(tabUrl, completedCallback){
   });
 }
 
+// https://stackoverflow.com/a/15726116
+function getDirection(el) {
+    var dir;
+    if (el.currentStyle)
+        dir = el.currentStyle['direction'];
+    else if (window.getComputedStyle)
+        dir = getComputedStyle(el, null).getPropertyValue('direction');
+    return dir;
+}
+
+function detectDirection(){
+	document.body.setAttribute('detected-dir', getDirection(document.body));
+	document.body.classList.add(document.body.getAttribute('detected-dir'));
+	return getDirMap();
+}
+
+function getDirMap(dir){
+	var ltrtl={
+		ltr:{start:'left',end:'right',endResize:'nwse',eventPageX:function(x){return x;}},
+		rtl:{start:'right',end:'left',endResize:'nesw',eventPageX:function(x){return window.innerWidth-x;}}
+	};
+	var dirMap = ltrtl[dir || document.body.getAttribute('detected-dir')] || ltrtl.ltr;
+	return dirMap;
+}
+
 function loadSettingsFromChromeSyncStorage(cbf){
 	
 	storage.get(null, function(obj) {
