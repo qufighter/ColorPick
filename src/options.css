@@ -6,6 +6,7 @@ body{
 }
 body.rtl{
 	background: -webkit-linear-gradient(5deg, #FFF 90%,#CCC 100%);
+	background-repeat: no-repeat;
 }
 body.touchy a{
 	line-height: 2.5em;
