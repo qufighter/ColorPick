@@ -1,5 +1,3 @@
-var ItIsTheExtensionColorPickButInsideAnExtensionPageNo = true;
-
 document.addEventListener('DOMContentLoaded', function(){
 
 	var winloc = window.location.hash.replace(/^#/,'');
@@ -80,6 +78,4 @@ document.addEventListener('DOMContentLoaded', function(){
 			})
 		]
 	}, document.body);
-
-
 });

@@ -191,7 +191,8 @@ function(request, sender, sendResponse) {
 		}else if (request.isBgAlive){
 			sendResponse({});
 		}else if (request.movePixel){
-			chrome.tabs.sendMessage(tabid,request,function(r){});
+			chrome.tabs.sendMessage(tabid,Object.assign({from_bg: true}, request),function(r){});
+			sendResponse({});
 		}else if (request.setColor){ //hsv values here are really hsl in all cases (popup or user js)
 			processSetColor(request);
 			sendResponse({});
