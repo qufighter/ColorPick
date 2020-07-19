@@ -70,9 +70,10 @@ function getDirection(el) {
 }
 
 function detectDirection(){
-	document.body.setAttribute('detected-dir', getDirection(document.body));
-	document.body.classList.add(document.body.getAttribute('detected-dir'));
-	return getDirMap();
+	var dir = getDirection(document.body);
+	document.body.setAttribute('detected-dir', dir);
+	document.body.classList.add(dir);
+	return getDirMap(dir);
 }
 
 function getDirMap(dir){
