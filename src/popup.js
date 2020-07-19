@@ -1,5 +1,5 @@
 /*jshint sub:true*/
-var tabid=0,winid=0;
+var tabid=0,winid=0,dirMap;
 var snapModeDelay = 3, errorScreenshotAttempts=0, snapModeBlockedHere=false, snapModeTimeout = 0, snapExtPage = false;
 var screenshotAlternativeRecieved = 0, realSrcRecieved = false;
 var isScriptAlive=false,scriptAliveTimeout=1,reExecutedNeedlessly=false;
@@ -718,7 +718,7 @@ function checkForLicense(){
 	f.setAttribute('height',lhei);
 	f.setAttribute('frameborder','yes');
 	f.setAttribute('scrolling','no');
-	f.setAttribute('style','position:absolute;top:40px;left:3px;z-index:999;box-shadow: 0px 0px 6px #000;opacity:0.9;');
+	f.setAttribute('style','position:absolute;top:40px;'+dirMap.start+':3px;z-index:999;box-shadow: 0px 0px 6px #000;opacity:0.9;');
 	
 	if(document.body.firstChild.id=='license_frame')document.body.removeChild(document.body.firstChild);
 	document.body.insertBefore(f,document.body.firstChild);
@@ -853,6 +853,7 @@ function possiblyShowLinkToTabletEdition(){
 	}
 }
 function createDOM() {
+dirMap=detectDirection();
 Cr.elm("div",{},[
 	Cr.elm("div",{id:"chooser"},[
 		Cr.elm("div",{id:"gradi_box"},[
