@@ -681,8 +681,17 @@ function popupimage(mylink, windowname)
 //	win2.blur();
 //	return false;
 }
-function popOut(){
- popupimage({href:chrome.extension.getURL('popup.html')+'?isPopup='+tabid+','+winid}, chrome.i18n.getMessage('extName') + " : Extension");
+
+function popOutMouseDown(ev){
+ getEventTargetA(ev).href=popOutUrl()+'#';
+}
+function popOut(ev){
+ popupimage({href:popOutUrl()}, chrome.i18n.getMessage('extName') + " : Extension");
+ ev.preventDefault();
+}
+
+function popOutUrl(){
+	return chrome.extension.getURL('popup.html')+'?isPopup='+tabid+','+winid
 }
 
 function close_stop_picking(ev){
@@ -1007,6 +1016,7 @@ Cr.elm("div",{},[
 	document.getElementById('epick').addEventListener('contextmenu', preventEventDefault);
 	document.getElementById('resnap').addEventListener('click', resnap);
 	document.getElementById('popout').addEventListener('click', popOut);
+	document.getElementById('popout').addEventListener('mousedown', popOutMouseDown);
 	
 	document.getElementById('hexpre').addEventListener('click', init_color_chooser);
 	document.getElementById('ohexpre').addEventListener('click', navToHistory);
