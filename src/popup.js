@@ -1,5 +1,5 @@
 /*jshint sub:true*/
-var tabid=0,winid=0,dirMap;
+var tabid=0,winid=0,popupWinId=0,dirMap;
 var snapModeDelay = 3, errorScreenshotAttempts=0, snapModeBlockedHere=false, snapModeTimeout = 0, snapExtPage = false;
 var screenshotAlternativeRecieved = 0, realSrcRecieved = false;
 var isScriptAlive=false,scriptAliveTimeout=1,reExecutedNeedlessly=false;
@@ -366,12 +366,17 @@ function iin(){
 			chrome.tabs.get(tabid, function(tab){
 				configureSnapModeBlocked(tab.url);
 			});
+			chrome.windows.getCurrent({windowTypes:['popup']},function(win){
+				if( win.type=='popup' ){ // shouldn't this check be redundant? is not
+					popupWinId=win.id
+				}
+			});
 		}else{
-			chrome.windows.getCurrent(function(window){
-				chrome.tabs.query({windowId: window.id, active: true}, function(tabs){
+			chrome.windows.getCurrent(function(win){
+				chrome.tabs.query({windowId: win.id, active: true}, function(tabs){
 					var tab = tabs[0];
 					tabid=tab.id;
-					winid=window.id-0;
+					winid=win.id-0;
 					var tabURL=tab.url;
 					configureSnapModeBlocked(tabURL);
 					if(tabURL.indexOf('https://chrome.google.com')==0 ||tabURL.indexOf('chrome')==0 ||tabURL.indexOf('about')==0 ){
@@ -663,7 +668,17 @@ function popupimage(mylink, windowname)
 	var w=Math.round(window.outerWidth*1.114),h=Math.round(window.outerHeight*1.15);
 
 	//console.log(w,h);
-	chrome.windows.create({url:mylink.href,width:w,height:h,type:"popup",focused:true},function(win){});
+	chrome.windows.create({url:mylink.href,width:w,height:h,type:"popup",focused:true},function(win){
+		// offset the new window so it is tougher to loose it
+		var newx=0, newy=0;
+		if( win.left && win.top ){
+			newx = win.left - 170;
+			newy = win.top - 30;
+			if( newx < 0 ) newx=0;
+			if( newy < 0 ) newy=0;
+			chrome.windows.update(win.id,{left:newx,top:newy},function(wi2){});
+		}
+	});
 	return false;
 	
 //	if (! window.focus)return true;
@@ -829,12 +844,18 @@ function init_color_chooser(){
 		document.getElementById('chooser').style.display='none';
 		document.body.style.width='auto';
 		// if(isPopout) sizeWindow(160*scal,window.outterHeight);
+		if( popupWinId ){
+			chrome.windows.update(popupWinId,{width:Math.round(180*scal)},function(win){});
+		}
 		return;
 	}
 	document.getElementById('chooser').style.display='block';
 	document.body.style.width='470px';
+	if( popupWinId ){
+		chrome.windows.update(popupWinId,{width:Math.round(490*scal)},function(win){});
+	}
 	if(cp_chooser_booted)return;
-	if(isPopout) sizeWindow(470*scal,window.outterHeight);
+	//if(isPopout) sizeWindow(470*scal,window.outterHeight);
 	//One Time Init...
 	document.getElementById('ch_ctrl_add').addEventListener('click', colorChooserAdd);
 	document.getElementById('gradi_box').addEventListener('mousedown', dragClr);
