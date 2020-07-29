@@ -33,7 +33,7 @@ function getEventTarget(ev){
 	return targ;
 }
 var im=new Image();
-function setPreviewSRC(duri, hidearrows){
+function setPreviewSRC(duri, hidearrows, extraRenderTexts){
 	if( realSrcRecieved && hidearrows ){
 		return;
 	}
@@ -63,6 +63,11 @@ function setPreviewSRC(duri, hidearrows){
 		}else{
 			var dw = 150 * ratio;
 			pcvs.drawImage(im,(150-dw)*0.5,0,dw,150);
+		}
+		if( extraRenderTexts && extraRenderTexts.length ){
+			for(var i=0; i<extraRenderTexts.length; i++ ){
+				renderRenderText(pcvs, extraRenderTexts[i])
+			}
 		}
 		possiblyShowLinkToTabletEdition();
 	};
@@ -400,17 +405,158 @@ function iin(){
 	//}
 }
 
+function renderRenderText(cvs, rt){
+
+	if( rt.w && rt.h ){
+		// PLEASE FOR THE LLOVE OF GOD DRAW THE DAMN BOX PROVIDED don't forget 
+		// font rendering is so funny, your specifying the darn baseline.... so when fitting text to this box, we need to account for this when determining our X and Y values !!!!
+		//	fit the box... we measure the box elsewhere.... x=0 is not an option.  We're not haxing this with textBaseline top, we support all textBaseline values but measure text!!!!
+		// yes it seems easy to just hax the provided xy values but its not as useful since u can measure once or trial and error like N times
+		// if you like haxing values and know the fixed text width.... then don't bother... for translations, etc, use the box mode :)
+	}
+
+	var message=(rt.t9n ? chrome.i18n.getMessage(rt.t9n) : (rt.message || 'n0n'));
+	cvs.font = rt.font || '12px sans-serif';
+	cvs.fillStyle = rt.fillStyle || 'rgb(0,0,0)';
+	cvs.textAlign = rt.textAlign || 'start';
+
+	if( rt.w && rt.h ){
+
+
+		// if our text all fit, we are done, otherwise.... shrink to fit
+
+		//tokenize if autoBreak.... 
+		//if( rt.autoBreak ){}
+
+		var split = ' ';
+
+		var tokens = rt.autoBreak ? message.split(split) : [message];
+		// see notes; alt tokenization possibilities
+
+		console.log(tokens);
+
+		// outer loop defines try text size... 
+
+		var foundTextFit = false;
+
+		while(!foundTextFit){
+
+			var x=0,y=0;// itsan offset
+			var toRenderTxtsFound = [];
+			var i,l; // to track if we reach end...
+
+			var spaceW = ctx.measureText(split).width;
+
+
+			for( i=0,l=tokens.length; i<l; i++ ){
+
+				var txti = ctx.measureText(tokens[i]);
+
+
+				x += txti.width + spaceW; // maths
+				if( x > rt.w ){
+
+					// see if we can go to new line....
+					x=0+txti.width + spaceW
+					y+=15//*lineHeight ? 
+				}
+
+				if( y > rt.h ){
+					// break out of loop and determine if we can fit
+
+					console.log('breaking out of height...')
+					break;
+				}
+
+				toRenderTxtsFound.push({x:x-(txti.width + spaceW),y:y,m:tokens[i]});
+
+			}
+
+			if( i == l ){
+				// we truly reached loop end!
+				// also presumably toRenderTxtsFound.length.... is.
+				foundTextFit=true;
+				console.log(toRenderTxtsFound);
+				for( i=0,l=toRenderTxtsFound.length; i<l; i++ ){
+					var toR=toRenderTxtsFound[i];
+					cvs.fillText(toR.m, rt.x + toR.x, rt.y + toR.y);
+				}
+			}else{
+				// text didn't fit...  tiem to shrink...
+				var decimal = parseFloat(cvs.font);
+				cvs.font = cvs.font.replace(''+decimal, ''+(decimal - 0.1));
+				console.log('shrunk font to: ', cvs.font)
+			}
+
+		}
+		// several "modes" - we have directional rendering... obviously...
+		// but we could also have a mode to "shrink to fit" where we try again and shrink the font size if it will nto fit!!! (in the entire area)
+
+
+
+		// finally once all the text fits, we render according to where the final breaks were, which should define a token along with x,y render position value
+	
+		// since we really generate jus ta list of render texts we can also do special things like per letter spacing with some additional options but it does make measuring more expensive as there is a per letter tokenization, and auto adjustment of this spacing (to fit) makes more sense (eg justifed text does something like this too, but allows letter spacing less)
+	}else{
+
+		// console.log(message);
+		cvs.fillText(message, rt.x, rt.y, (rt.fitWidth ? rt.w : undefined));
+	}
+	//autoBreak:true !!!
+
+// plan: measure text and fit within prvided area defined by .x,y,w,h without stretching with .fitWidth, define othe rprops like 
+// plan to allow this mode to be disabled too....??
+// text rendering within the provided region should respect rtl/ltr document seting automatically....
+/// centering text will be an optional feature potentially.... wehich we will apparently need to account for as well...??? to to so inside the box
+// centering is pretty rtl safe though 
+
+// thx to helps from mdn
+// TextMetrics.width Read only
+// Is a double giving the calculated width of a segment of inline text in CSS pixels. It takes into account the current font of the context.
+// TextMetrics.actualBoundingBoxLeft Read only
+// Is a double giving the distance from the alignment point given by the CanvasRenderingContext2D.textAlign property to the left side of the bounding rectangle of the given text, in CSS pixels. The distance is measured parallel to the baseline.
+// TextMetrics.actualBoundingBoxRight Read only
+// Is a double giving the distance from the alignment point given by the CanvasRenderingContext2D.textAlign property to the right side of the bounding rectangle of the given text, in CSS pixels. The distance is measured parallel to the baseline.
+// TextMetrics.fontBoundingBoxAscent Read only
+// Is a double giving the distance from the horizontal line indicated by the CanvasRenderingContext2D.textBaseline attribute to the top of the highest bounding rectangle of all the fonts used to render the text, in CSS pixels.
+// TextMetrics.fontBoundingBoxDescent Read only
+// Is a double giving the distance from the horizontal line indicated by the CanvasRenderingContext2D.textBaseline attribute to the bottom of the bounding rectangle of all the fonts used to render the text, in CSS pixels.
+
+  // var ctx = document.getElementById('canvas').getContext('2d');
+  // var text = ctx.measureText('foo'); // TextMetrics object
+  // text.width; // 16;
+
+  // width is the same as textMetrics.actualBoundingBoxRight - textMetrics.actualBoundingBoxLeft (ON LTR ???)
+
+
+}
+
 var errorTypes={
 	current: null,
-	conent_port:{
-		image: '0.1',
+	conent_port:
+{		image: '0.1',
 		chooser: true
 	},
 	snap_mode_block:{
 		image: '0.2',
 		chooser: false, // really true; page_url error already enabled the chooser, enabling it again toggles it off!
 		no_snap: true,
-		ignore: {'conent_port': 1, 'page_slow': 1}
+		ignore: {'conent_port': 1, 'page_slow': 1},
+		render_texts: [
+			// {x:75,y:15,t9n:'snapModeUnblock',textAlign:'center',fillStyle:'rgb(255,0,0)',font:'15px sans-serif'},
+			// {x:75,y:60,t9n:'orClick',textAlign:'center',fillStyle:'rgb(255,0,0)',font:'15px sans-serif'},
+
+			{x:5,y:15,w:140,h:75,t9n:'snapModeUnblock',autoBreak:1,textAlign:'start',fillStyle:'rgb(255,0,0)',font:'15px sans-serif'},
+			{x:5,y:60,w:140,h:75,t9n:'orClick',textAlign:'start',fillStyle:'rgb(255,0,0)',font:'15px sans-serif'},
+
+
+			{x:54,y:72,t9n:'snapMode',textAlign:'left',fillStyle:'rgb(255,0,0)',font:'7px sans-serif'},
+			{x:123,y:89,t9n:'snapModeBlock',textAlign:'left',fillStyle:'rgb(255,0,0)',font:'7px sans-serif'},
+			{x:64,y:108,t9n:'snapModeCloseTab',textAlign:'left',fillStyle:'rgb(255,0,0)',font:'7px sans-serif'},
+			{x:64,y:126,t9n:'snapModeCloseTab',textAlign:'left',fillStyle:'rgb(255,0,0)',font:'7px sans-serif'}
+			// {x:0,y:50,w:150,h:19,message:'9e9',textAlign:'center',fillStyle:'rgb(255,0,0)',font:'24px sans-serif'}
+
+		]
 	},
 	page_url:{
 		image: '0',
@@ -439,7 +585,7 @@ function showErrorScreen(errorType){
 	}
 	errorTypes.current = errorType;
 	// todo: delay/fade this error in??  maybe some types ???
-	setPreviewSRC(chrome.extension.getURL('img/error'+err.image+'.png'), true);
+	setPreviewSRC(chrome.extension.getURL('img/error'+err.image+'.png'), true, err.render_texts);
 	if( err.chooser && !cp_chooser_booted ){ init_color_chooser(); }
 	if( err.timer ){ showLoadingTimer(); }
 	if( !err.no_snap )errorShowScreenshotInstead();

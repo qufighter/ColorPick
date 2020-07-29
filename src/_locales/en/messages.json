@@ -284,6 +284,12 @@
    "snapModeCloseTab": {
       "message": "Close tab when exiting pick mode"
    },
+   "snapModeUnblock":{
+      "message": "Unblock Snap Mode"
+   },
+   "orClick":{
+      "message": "or Click"
+   },
    "tabletModePrompt": {
       "message": "Zoom to Tablet Edition"
    },
