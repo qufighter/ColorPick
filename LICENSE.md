@@ -1,6 +1,6 @@
 DRAFT LICENSE this is subject to change and community feedback.  I think this license is fair but if you want something else you may inquire.  If you have a usage and I haven't inquired I wouldn't expect one but you never know.  Not stealing ColorPick is almost easier than stealing it!
 
-Do not modify this file with the exception of filling in __blanks__.  This file must be included in some form with any source code distribution.
+Do not modify this file with the exception of filling in ____blanks____.  This file must be included in some form with any source code distribution.
 
 ### BSD-old 4 CLAUSE
 
