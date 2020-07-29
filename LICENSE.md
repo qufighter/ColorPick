@@ -21,8 +21,8 @@ FIN
 2) That you follow the license provided, and make your work open source, and under one of these licenses, while the color pick software included holds this very license. ( https://github.com/qufighter/ColorPick/LICENSE.md )
 
 ### CC SA or GPL
-	for commercial purpose to be end user licensed as described above, 
-	or exclusively non commercial purpose with these license requirements intact for those who would choose to license this software themselves.
+for commercial purpose to be end user licensed as described above, 
+or exclusively non commercial purpose with these license requirements intact for those who would choose to license this software themselves.
 
 If you choose to use a single license and track registrations in your own system, you can upgrade your license quarterly using the following system:
 	http://vidsbee.com/ColorPick/Upgrade/
@@ -80,13 +80,13 @@ You are not required to re-brand the extension but you must not misrepresent tha
 Prior to distributing or selling your software, where this license is included, declare which license you have chosen here:
 
 
-__________________________________
-(choose one)
-BSD-Old
-CC SA
-GPL3
-closed source license A
-closed source license B
+	__________________________________
+	(choose one)
+	BSD-Old
+	CC SA
+	GPL3
+	closed source license A
+	closed source license B
 
 
 So that any works based on yours may react with the appropriate licensing decision tree, but none may omit this license.  Thank You!
