@@ -459,7 +459,7 @@ renderRenderText: function(ctx, rt){
 		var tokens = rt.autoBreak ? message.split(split) : [message];
 		// see notes; alt tokenization possibilities
 
-		console.log(tokens);
+		//console.log(tokens);
 
 		// outer loop defines try text size... 
 
@@ -482,8 +482,8 @@ renderRenderText: function(ctx, rt){
 			for( i=0,l=tokens.length; i<l; i++ ){
 
 				var txti = ctx.measureText(tokens[i]);
-				console.log(txti)
-				console.log(txti.actualBoundingBoxAscent, txti.actualBoundingBoxDescent)
+				//console.log(txti)
+				//console.log(txti.actualBoundingBoxAscent, txti.actualBoundingBoxDescent)
 
 				tlh = this.getLineHeightObjForLine(maxLineHeights, lineCount);
 
@@ -569,7 +569,7 @@ renderRenderText: function(ctx, rt){
 				}
 
 
-				console.log(toRenderTxtsFound);
+				//console.log(toRenderTxtsFound);
 				var baselinePosition = 0;
 				var lineDesc = 0; // descendant
 				for( i=0,l=toRenderTxtsFound.length; i<l; i++ ){
@@ -668,7 +668,7 @@ var errorTypes={
 			// {x:75,y:15,t9n:'snapModeUnblock',textAlign:'center',fillStyle:'rgb(255,0,0)',font:'15px sans-serif'},
 			// {x:75,y:60,t9n:'orClick',textAlign:'center',fillStyle:'rgb(255,0,0)',font:'15px sans-serif'},
 
-			{x:25,y:1,w:100,h:30,t9n:'snapModeUnblock',autoBreak:1,textAlign:'start',fillStyle:'rgb(255,0,0)',font:'25px sans-serif',lineExtraSpace:3},
+			{x:25,y:1,w:100,h:30,t9n:'snapModeUnblock',autoBreak:1,textAlign:'start',fillStyle:'rgb(255,0,0)',font:'17.25px sans-serif',lineExtraSpace:3},
 			{x:30,y:30,w:100,h:25,t9n:'orClick',textAlign:'center',fillStyle:'rgb(0,0,200)',font:'15px sans-serif'},
 
 
