@@ -505,7 +505,7 @@ renderRenderText: function(ctx, rt){
 				if( y > rt.h ){ // luv to break early <3  (cpuTime > time) iHeart robot (only robot;)
 					// break out of loop and determine if we can fit
 
-					console.log('breaking out of height...', y, rt.h)
+					//console.log('breaking out of height...', y, rt.h)
 					break;
 				}
 
@@ -519,7 +519,7 @@ renderRenderText: function(ctx, rt){
 
 				if( y + (tlh.asc+tlh.desc) > rt.h ){
 
-					console.log('BBBBbreaking out of height...', y, rt.h) // the next line will be huge, so huge, that we may as well not reach the end of it and never realize we broke out
+					//console.log('BBBBbreaking out of height...', y, rt.h) // the next line will be huge, so huge, that we may as well not reach the end of it and never realize we broke out
 					break;
 				}
 
