@@ -271,6 +271,9 @@
    "snapMode_prompt": {
       "message": "Not Working? Click to try Snap Mode."
    },
+   "snapModeShort": {
+      "message": "Snap Mode"
+   },
    "snapMode": {
       "message": "Snap Mode - backup mode handles various errors"
    },
@@ -388,6 +391,9 @@
    },
    "watermark_help": {
       "message": "Watermark may be disabled from advanced options once you have registered the extension."
+   },
+   "disabled": {
+      "message": "disabled"
    },
    "tips_0": {
       "message": "Register ColorPick for the option to hide this message.",

@@ -526,6 +526,10 @@ renderRenderText: function(ctx, rt){
 
 				tlh.linesWidth= x;// - (txti.width + spaceW)
 
+				if( tlh.linesWidth > rt.w ){
+					break; // just not going to fit!
+				}
+
 				toRenderTxtsFound.push({x:x-(txti.width + spaceW),y:y,w:(txti.width + spaceW),l:lineCount,m:tokens[i]});
 
 			}
@@ -683,7 +687,11 @@ var errorTypes={
 	page_url:{
 		image: '0',
 		chooser: true,
-		ignore: {'conent_port': 1, 'page_slow': 1}
+		ignore: {'conent_port': 1, 'page_slow': 1},
+		render_texts: [
+			{x:20,y:35,w:110,h:80,t9n:'snapModeShort',autoBreak:1,textAlign:'center',fillStyle:'rgb(0,143,3)',font:'90.75px monospace',lineExtraSpace:3},
+			{x:25,y:110,w:100,h:25,t9n:'disabled',textAlign:'center',fillStyle:'rgb(0,143,3)',font:'40px monospace'}
+		]
 	},
 	page_slow:{
 		image: '1',
