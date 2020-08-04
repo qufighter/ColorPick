@@ -672,10 +672,10 @@ var errorTypes={
 			{x:30,y:30,w:100,h:25,t9n:'orClick',textAlign:'center',fillStyle:'rgb(0,0,200)',font:'15px sans-serif'},
 
 
-			{x:54,y:72,t9n:'snapMode',textAlign:'left',fillStyle:'rgb(255,0,0)',font:'7px sans-serif'},
-			{x:123,y:89,t9n:'snapModeBlock',textAlign:'left',fillStyle:'rgb(255,0,0)',font:'7px sans-serif'},
-			{x:64,y:108,t9n:'snapModeCloseTab',textAlign:'left',fillStyle:'rgb(255,0,0)',font:'7px sans-serif'},
-			{x:64,y:126,t9n:'snapModeCloseTab',textAlign:'left',fillStyle:'rgb(255,0,0)',font:'7px sans-serif'}
+			{x:54,y:72,t9n:'snapMode',textAlign:'left',fillStyle:'rgb(0,0,0)',font:'7px sans-serif'},
+			{x:123,y:89,t9n:'snapModeBlock',textAlign:'left',fillStyle:'rgb(0,0,0)',font:'7px sans-serif'},
+			{x:64,y:108,t9n:'snapModeCloseTab',textAlign:'left',fillStyle:'rgb(0,0,0)',font:'7px sans-serif'},
+			{x:64,y:126,t9n:'snapModeCloseTab',textAlign:'left',fillStyle:'rgb(0,0,0)',font:'7px sans-serif'}
 			// {x:0,y:50,w:150,h:19,message:'9e9',textAlign:'center',fillStyle:'rgb(255,0,0)',font:'24px sans-serif'}
 
 		]
