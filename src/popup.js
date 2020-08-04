@@ -66,7 +66,7 @@ function setPreviewSRC(duri, hidearrows, extraRenderTexts){
 		}
 		if( extraRenderTexts && extraRenderTexts.length ){
 			for(var i=0; i<extraRenderTexts.length; i++ ){
-				renderRenderText(pcvs, extraRenderTexts[i])
+				textRender.renderRenderText(pcvs, extraRenderTexts[i])
 			}
 		}
 		possiblyShowLinkToTabletEdition();
@@ -405,22 +405,48 @@ function iin(){
 	//}
 }
 
-function renderRenderText(cvs, rt){
+var textRender = {
 
-	if( rt.w && rt.h ){
-		// PLEASE FOR THE LLOVE OF GOD DRAW THE DAMN BOX PROVIDED don't forget 
-		// font rendering is so funny, your specifying the darn baseline.... so when fitting text to this box, we need to account for this when determining our X and Y values !!!!
-		//	fit the box... we measure the box elsewhere.... x=0 is not an option.  We're not haxing this with textBaseline top, we support all textBaseline values but measure text!!!!
-		// yes it seems easy to just hax the provided xy values but its not as useful since u can measure once or trial and error like N times
-		// if you like haxing values and know the fixed text width.... then don't bother... for translations, etc, use the box mode :)
+	dirMap: {},//{start:getComputedStyle(document.body, null).getPropertyValue('direction')=='ltr'?'left':'right'}, // you may override dirMap property value for better compatability.  Unavailable until document is ready.
+	debugMode: true,
+	textShrinkStep: 0.25,
+	maxShrinkTries: 50000, // todo: never reach me
+	messageProvider: function(f){return f;}, // plan :portability
+
+	getLineHeightObjForLine:function(arr,lineCount){
+		if( !arr[lineCount] ){
+			arr.push({asc:0,desc:0,linesWidth:0,consumed:false}); // culddey b negitiv: signs point to ues
+		}
+		return arr[lineCount];
+	},
+
+renderRenderText: function(ctx, rt){
+
+	if( this.debugMode && rt.w && rt.h ){
+		ctx.strokeStyle = '#FF9f9f';
+		ctx.fillStyle = '#ffffff';
+		ctx.globalAlpha  =  0.5;
+		ctx.fillRect(rt.x,rt.y,rt.w,rt.h);
+		ctx.strokeRect(rt.x,rt.y,rt.w,rt.h);
+		ctx.strokeStyle = '';
+		ctx.fillStyle = '';
+		ctx.globalAlpha  = 1.0;
+		// DRAW ALL BASELINES TOO (later though, and its own loop, and first, pls)
 	}
 
-	var message=(rt.t9n ? chrome.i18n.getMessage(rt.t9n) : (rt.message || 'n0n'));
-	cvs.font = rt.font || '12px sans-serif';
-	cvs.fillStyle = rt.fillStyle || 'rgb(0,0,0)';
-	cvs.textAlign = rt.textAlign || 'start';
+
+	var message=(rt.t9n ? this.messageProvider(rt.t9n) : (rt.message || 'n0n'));
+	ctx.font = rt.font || '12px sans-serif';
+	ctx.fillStyle = rt.fillStyle || 'rgb(0,0,0)';
+	ctx.textAlign = rt.textAlign || 'start';
 
 	if( rt.w && rt.h ){
+
+		rt.lineExtraSpace = rt.lineExtraSpace || 0; // naming: ugh but no collision ever :D
+
+		// EST CODE// so the ascent of A is different... this is going to make it tough.... we need whole lines now, foget toRenderTxtsFound ( or not) 
+		//message = 'a '+ message; // is done/handled (by maxLineHeights) delete me
+
 
 
 		// if our text all fit, we are done, otherwise.... shrink to fit
@@ -438,55 +464,146 @@ function renderRenderText(cvs, rt){
 		// outer loop defines try text size... 
 
 		var foundTextFit = false;
+		var tries = 0;
 
 		while(!foundTextFit){
-
+			tries++;
 			var x=0,y=0;// itsan offset
 			var toRenderTxtsFound = [];
+			var maxLineHeights = [];
 			var i,l; // to track if we reach end...
-
+			var lineCount = 0;
+			var tlh; // this line height
 			var spaceW = ctx.measureText(split).width;
+
+
 
 
 			for( i=0,l=tokens.length; i<l; i++ ){
 
 				var txti = ctx.measureText(tokens[i]);
+				console.log(txti)
+				console.log(txti.actualBoundingBoxAscent, txti.actualBoundingBoxDescent)
 
+				tlh = this.getLineHeightObjForLine(maxLineHeights, lineCount);
 
 				x += txti.width + spaceW; // maths
 				if( x > rt.w ){
 
+
+					tlh.linesWidth= x - (txti.width + spaceW);// redundant to do this here probably!!!!
+
 					// see if we can go to new line....
 					x=0+txti.width + spaceW
-					y+=15//*lineHeight ? 
+					y+=tlh.asc + tlh.desc + rt.lineExtraSpace;  //*lineHeight ?   // forget about toRenderTxtsFound.y.. its always wrong
+
+					
+					lineCount++;
 				}
 
-				if( y > rt.h ){
+
+				if( y > rt.h ){ // luv to break early <3  (cpuTime > time) iHeart robot (only robot;)
 					// break out of loop and determine if we can fit
 
-					console.log('breaking out of height...')
+					console.log('breaking out of height...', y, rt.h)
 					break;
 				}
 
-				toRenderTxtsFound.push({x:x-(txti.width + spaceW),y:y,m:tokens[i]});
+				tlh = this.getLineHeightObjForLine(maxLineHeights, lineCount);
+				if( txti.actualBoundingBoxAscent > tlh.asc ){
+					tlh.asc = txti.actualBoundingBoxAscent;
+				}
+				if( txti.actualBoundingBoxDescent > tlh.desc ){
+					tlh.desc = txti.actualBoundingBoxDescent;
+				}
+
+				if( y + (tlh.asc+tlh.desc) > rt.h ){
+
+					console.log('BBBBbreaking out of height...', y, rt.h) // the next line will be huge, so huge, that we may as well not reach the end of it and never realize we broke out
+					break;
+				}
+
+
+				tlh.linesWidth= x;// - (txti.width + spaceW)
+
+				toRenderTxtsFound.push({x:x-(txti.width + spaceW),y:y,w:(txti.width + spaceW),l:lineCount,m:tokens[i]});
 
 			}
 
-			if( i == l ){
+
+			if( i == l || tries > this.maxShrinkTries ){
 				// we truly reached loop end!
 				// also presumably toRenderTxtsFound.length.... is.
-				foundTextFit=true;
+				foundTextFit=true; // lies, break loop anyway, no infinite loop here...!
+				var dir = 1.0;
+				var rtx = rt.x;
+				var rtx2 = 0;
+				// UHOH we are using x/y here... and we might textAlign end....
+				// so get funky with it....
+				if( rt.textAlign == 'center'){
+					rtx += rt.w * 0.5;
+					rtx2 = 1;// calc below w/ toR.w + lineM.linesWidth
+
+					// rtx2=1
+					// centering multiple tokens... todo
+				}
+				if( rt.textAlign == 'end'){
+					//rt.x = -(rt.x + rt.w); // its punk rock, just hope they don't use zero...
+					// the hax theuy arent working.  don't logic in loopz though...
+
+					// SO depnding on actual direction, and word tokenzatoin... we may need to... re-arrange some things
+					/// riight now textAlign end on LTR is printing word tokens RTL and it should print word tokens LTR....
+					// bonus points if we can distinguish word from letter tokens when using the per letter spacing though..... !!!!!!!
+
+					if( dirMap.start != 'right' ){
+						rtx2 = 1;// calc below w/ toR.w, lineM.linesWidth
+					}
+				}
+				// is afraid maybe not understand RTL...., is the word token still ltr or is it wrote as rtl but we can tokenize it ltr??? our per letter spacing is gonna fx this up
+				// https://en.wikipedia.org/wiki/Bidirectional_text	
+				if( rt.textAlign == 'start'){
+					if( dirMap.start == 'right' ){//is rtl document context
+						rtx += rt.w;
+						dir = -1.0;
+					}
+				}
+
+
 				console.log(toRenderTxtsFound);
+				var baselinePosition = 0;
+				var lineDesc = 0; // descendant
 				for( i=0,l=toRenderTxtsFound.length; i<l; i++ ){
 					var toR=toRenderTxtsFound[i];
-					cvs.fillText(toR.m, rt.x + toR.x, rt.y + toR.y);
+					var lineM = maxLineHeights[toR.l];
+
+					if( rtx2 ){  // ltr textAlign end/right
+						if( rt.textAlign == 'center'){
+							rtx2 = -lineM.linesWidth * 0.5 +  (toR.w * 0.5);
+						}else{
+							rtx2 = rt.w - lineM.linesWidth + toR.w;
+						}
+						//console.log('rtx', rtx, rtx2, rt.w ,lineM.linesWidth);
+					}
+
+					if( !lineM.consumed ){
+						baselinePosition += lineM.asc;
+						if( toR.l > 0 ){
+							baselinePosition += lineDesc + rt.lineExtraSpace;
+						}
+						lineDesc = lineM.desc;
+						lineM.consumed = true;
+					}
+					//console.log('here again: ', toR, toR.x, dir * toR.x, '>' , rtx + rtx2 + (dir*toR.x))
+					ctx.fillText(toR.m, rtx + rtx2 + (dir*toR.x), rt.y + baselinePosition /*toR.y*/);
 				}
 			}else{
 				// text didn't fit...  tiem to shrink...
-				var decimal = parseFloat(cvs.font);
-				cvs.font = cvs.font.replace(''+decimal, ''+(decimal - 0.1));
-				console.log('shrunk font to: ', cvs.font)
+				var decimal = parseFloat(ctx.font);
+				ctx.font = ctx.font.replace(''+decimal, ''+(decimal - this.textShrinkStep));
+				console.log('shrunk font to: ', ctx.font)
 			}
+
+
 
 		}
 		// several "modes" - we have directional rendering... obviously...
@@ -500,7 +617,7 @@ function renderRenderText(cvs, rt){
 	}else{
 
 		// console.log(message);
-		cvs.fillText(message, rt.x, rt.y, (rt.fitWidth ? rt.w : undefined));
+		ctx.fillText(message, rt.x, rt.y, (rt.fitWidth ? rt.w : undefined));
 	}
 	//autoBreak:true !!!
 
@@ -528,8 +645,13 @@ function renderRenderText(cvs, rt){
 
   // width is the same as textMetrics.actualBoundingBoxRight - textMetrics.actualBoundingBoxLeft (ON LTR ???)
 
-
+ // also form MDN< chrome has txti.actualBoundingBoxAscent, txti.actualBoundingBoxDescent which are not those, what are those!
 }
+
+}//textRender
+textRender.messageProvider=chrome.i18n.getMessage;
+textRender.dirMap = dirMap;
+textRender.debugMode = false;
 
 var errorTypes={
 	current: null,
@@ -546,8 +668,8 @@ var errorTypes={
 			// {x:75,y:15,t9n:'snapModeUnblock',textAlign:'center',fillStyle:'rgb(255,0,0)',font:'15px sans-serif'},
 			// {x:75,y:60,t9n:'orClick',textAlign:'center',fillStyle:'rgb(255,0,0)',font:'15px sans-serif'},
 
-			{x:5,y:15,w:140,h:75,t9n:'snapModeUnblock',autoBreak:1,textAlign:'start',fillStyle:'rgb(255,0,0)',font:'15px sans-serif'},
-			{x:5,y:60,w:140,h:75,t9n:'orClick',textAlign:'start',fillStyle:'rgb(255,0,0)',font:'15px sans-serif'},
+			{x:25,y:1,w:100,h:30,t9n:'snapModeUnblock',autoBreak:1,textAlign:'start',fillStyle:'rgb(255,0,0)',font:'25px sans-serif',lineExtraSpace:3},
+			{x:30,y:30,w:100,h:25,t9n:'orClick',textAlign:'center',fillStyle:'rgb(0,0,200)',font:'15px sans-serif'},
 
 
 			{x:54,y:72,t9n:'snapMode',textAlign:'left',fillStyle:'rgb(255,0,0)',font:'7px sans-serif'},
