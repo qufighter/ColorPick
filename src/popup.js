@@ -445,7 +445,7 @@ renderRenderText: function(ctx, rt){
 	ctx.shadowOffsetY = rt.shadowOffsetY || 0;
 	ctx.strokeStyle = (rt.stroke ? rt.stroke.strokeStyle : 0) || rt.strokeStyle || ''; // also triggers text stroke before fill...
 
-	var fillStroke = (rt.stroke && rt.stroke.fillStroke ? rt.stroke.fillStroke : (rt.strokeStyle ? 'after' : false) );
+	var fillStroke = (rt.stroke && rt.stroke.fillStroke ? rt.stroke.fillStroke : (ctx.strokeStyle ? 'after' : false) );
 
 	if( rt.w && rt.h ){
 
@@ -677,7 +677,7 @@ renderRenderText: function(ctx, rt){
 }//textRender
 textRender.messageProvider=chrome.i18n.getMessage;
 textRender.dirMap = dirMap;
-textRender.debugMode = false;
+textRender.debugMode = 0;
 
 var errorTypes={
 	current: null,
@@ -694,7 +694,7 @@ var errorTypes={
 			// {x:75,y:15,t9n:'snapModeUnblock',textAlign:'center',fillStyle:'rgb(255,0,0)',font:'15px sans-serif'},
 			// {x:75,y:60,t9n:'orClick',textAlign:'center',fillStyle:'rgb(255,0,0)',font:'15px sans-serif'},
 
-			{x:25,y:1,w:100,h:30,t9n:'snapModeUnblock',autoBreak:1,textAlign:'start',fillStyle:'rgb(255,0,0)',font:'17.25px sans-serif',lineExtraSpace:3},
+			{x:25,y:2,w:100,h:28,t9n:'snapModeUnblock',autoBreak:1,textAlign:'start',fillStyle:'rgb(255,0,0)',font:'15px sans-serif',lineExtraSpace:2},
 			{x:30,y:30,w:100,h:25,t9n:'orClick',textAlign:'center',fillStyle:'rgb(0,0,200)',font:'15px sans-serif'},
 
 
