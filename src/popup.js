@@ -443,9 +443,8 @@ renderRenderText: function(ctx, rt){
 	ctx.shadowColor = rt.shadowColor || 'black';
 	ctx.shadowOffsetX = rt.shadowOffsetX || 0;
 	ctx.shadowOffsetY = rt.shadowOffsetY || 0;
-	ctx.strokeStyle = (rt.stroke ? rt.stroke.strokeStyle : 0) || rt.strokeStyle || ''; // also triggers text stroke before fill...
-
-	var fillStroke = (rt.stroke && rt.stroke.fillStroke ? rt.stroke.fillStroke : (ctx.strokeStyle ? 'after' : false) );
+	ctx.strokeStyle = (rt.stroke ? rt.stroke.strokeStyle : 0) || rt.strokeStyle || ''; // also triggers text stroke before fill... //maths
+	var fillStroke = (rt.stroke && rt.stroke.fillStroke ? rt.stroke.fillStroke : (((rt.stroke ? rt.stroke.strokeStyle : 0) || rt.strokeStyle) ? 'after' : false) );
 
 	if( rt.w && rt.h ){
 
