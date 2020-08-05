@@ -439,6 +439,13 @@ renderRenderText: function(ctx, rt){
 	ctx.font = rt.font || '12px sans-serif';
 	ctx.fillStyle = rt.fillStyle || 'rgb(0,0,0)';
 	ctx.textAlign = rt.textAlign || 'start';
+	ctx.shadowBlur = rt.shadowBlur || 0;
+	ctx.shadowColor = rt.shadowColor || 'black';
+	ctx.shadowOffsetX = rt.shadowOffsetX || 0;
+	ctx.shadowOffsetY = rt.shadowOffsetY || 0;
+	ctx.strokeStyle = (rt.stroke ? rt.stroke.strokeStyle : 0) || rt.strokeStyle || ''; // also triggers text stroke before fill...
+
+	var fillStroke = (rt.stroke && rt.stroke.fillStroke ? rt.stroke.fillStroke : (rt.strokeStyle ? 'after' : false) );
 
 	if( rt.w && rt.h ){
 
@@ -597,8 +604,9 @@ renderRenderText: function(ctx, rt){
 						lineDesc = lineM.desc;
 						lineM.consumed = true;
 					}
-					//console.log('here again: ', toR, toR.x, dir * toR.x, '>' , rtx + rtx2 + (dir*toR.x))
-					ctx.fillText(toR.m, rtx + rtx2 + (dir*toR.x), rt.y + baselinePosition /*toR.y*/);
+
+					this.completeTextRendering(ctx, fillStroke, toR.m, rtx + rtx2 + (dir*toR.x), rt.y + baselinePosition, undefined)
+
 				}
 			}else{
 				// text didn't fit...  tiem to shrink...
@@ -620,8 +628,10 @@ renderRenderText: function(ctx, rt){
 		// since we really generate jus ta list of render texts we can also do special things like per letter spacing with some additional options but it does make measuring more expensive as there is a per letter tokenization, and auto adjustment of this spacing (to fit) makes more sense (eg justifed text does something like this too, but allows letter spacing less)
 	}else{
 
-		// console.log(message);
-		ctx.fillText(message, rt.x, rt.y, (rt.fitWidth ? rt.w : undefined));
+
+		this.completeTextRendering(ctx, fillStroke, message, rt.x, rt.y, (rt.fitWidth ? rt.w : undefined))
+
+
 	}
 	//autoBreak:true !!!
 
@@ -650,7 +660,19 @@ renderRenderText: function(ctx, rt){
   // width is the same as textMetrics.actualBoundingBoxRight - textMetrics.actualBoundingBoxLeft (ON LTR ???)
 
  // also form MDN< chrome has txti.actualBoundingBoxAscent, txti.actualBoundingBoxDescent which are not those, what are those!
-}
+},
+
+	completeTextRendering: function(ctx, fillStroke, text, x, y, fitWid){
+		if( fillStroke == 'after' || fillStroke == 'none' ){
+			ctx.strokeText(text, x, y, fitWid);
+		}
+		if( fillStroke != 'none' ){
+			ctx.fillText(text, x, y, fitWid);
+		}
+		if( fillStroke == 'before' ){
+			ctx.strokeText(text, x, y, fitWid);
+		}
+	}
 
 }//textRender
 textRender.messageProvider=chrome.i18n.getMessage;
@@ -679,7 +701,7 @@ var errorTypes={
 			{x:54,y:72,t9n:'snapMode',textAlign:'left',fillStyle:'rgb(0,0,0)',font:'7px sans-serif'},
 			{x:123,y:89,t9n:'snapModeBlock',textAlign:'left',fillStyle:'rgb(0,0,0)',font:'7px sans-serif'},
 			{x:64,y:108,t9n:'snapModeCloseTab',textAlign:'left',fillStyle:'rgb(0,0,0)',font:'7px sans-serif'},
-			{x:64,y:126,t9n:'snapModeCloseTab',textAlign:'left',fillStyle:'rgb(0,0,0)',font:'7px sans-serif'}
+			{x:64,y:126,t9n:'cacheSnapshots',textAlign:'left',fillStyle:'rgb(0,0,0)',font:'7px sans-serif'}
 			// {x:0,y:50,w:150,h:19,message:'9e9',textAlign:'center',fillStyle:'rgb(255,0,0)',font:'24px sans-serif'}
 
 		]
@@ -689,8 +711,8 @@ var errorTypes={
 		chooser: true,
 		ignore: {'conent_port': 1, 'page_slow': 1},
 		render_texts: [
-			{x:20,y:35,w:110,h:80,t9n:'snapModeShort',autoBreak:1,textAlign:'center',fillStyle:'rgb(0,143,3)',font:'90.75px monospace',lineExtraSpace:3},
-			{x:25,y:110,w:100,h:25,t9n:'disabled',textAlign:'center',fillStyle:'rgb(0,143,3)',font:'40px monospace'}
+			{x:20,y:35,w:110,h:80,t9n:'snapModeShort',stroke:{fillStroke:'after',strokeStyle:'white'},autoBreak:1,textAlign:'center',fillStyle:'rgb(0,143,3)',font:'40px monospace',lineExtraSpace:3},
+			{x:25,y:110,w:100,h:25,t9n:'disabled',strokeStyle:'white',textAlign:'center',fillStyle:'rgb(0,143,3)',font:'20px monospace'}
 		]
 	},
 	page_slow:{
