@@ -388,6 +388,9 @@ Cr.elm("div",{id:"mainbox"},[
 		Cr.elm("h3",{},[
 			Cr.txt("Register Chrome Extension only (Exclusive license)")
 		]),
+		Cr.elm("a",{style:'display:block;padding-bottom:12px;',title:'Sorry this method of registration appears to be going the way of the dinosaur.  Now no one will help you donate except paypal.',href:'https://developer.chrome.com/webstore/cws-payments-deprecation',target:'_blank'},[
+			Cr.txt("Deprecation Notice")
+		]),
 		Cr.elm('div',{id:'chrome-inapp', childNodes:[
 			Cr.elm("img",{src:"img/loading.gif",id:"indicator",title:"Checking in-app registration status.",event:['click', showInappFailure]}),
 		]})
