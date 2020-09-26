@@ -508,6 +508,7 @@ function updateColorPreview(ev){
 
 var isMakingNew=false,lastNewTimeout=0,snapshotLoadedTimeout;
 var imageRequestReachedBg=0;
+var snapModeDetected = window.location.href.indexOf(chrome.extension.getURL('pick.html')) === 0;
 function newImage(){
 	if(!isEnabled)return;
 	if(isMakingNew || !document.body.style){
@@ -526,7 +527,7 @@ function newImage(){
 	snapshotLoadedTimeout = setTimeout(function(){
 		disableColorPicker();
 		console.warn("Sorry - ColorPick experienced issues while waiting for the snapshot - Reload the page in order to pick colors here.  Here is how many newImage requests reached bg page:", imageRequestReachedBg, 'imagesRcvdCounter', imagesRcvdCounter, 'imagesLoadedCounter', imagesLoadedCounter, snapLoader, msg_bg_unavail);
-	}, 6000); // max 3 second wait for image, attempt to prevent endless spin
+	}, (opts.snapWaitTimeout || 6000) * (snapModeDetected?2:1) ); // max 6 second wait for image, attempt to prevent endless spin, double that time in snap mode
 
 	setTimeout(function(){
 		try{

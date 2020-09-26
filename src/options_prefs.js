@@ -57,6 +57,10 @@ pAdvOptions["bbackgroundColor"]={def:'#FFF',ind:0};
 pAdvOptions["usePrevColorBG"]={def:false,ind:1};
 pAdvOptions["showPreviousClr"]={def:true,ind:0};
 pAdvOptions["borderValue"]={def:'1px solid grey',ind:0};
+
+pAdvOptions["popupWaitTimeout"]={def:4000,ind:0};
+pAdvOptions["snapWaitTimeout"]={def:6000,ind:0};
+
 pAdvOptions["confirmEmptyPalleteWhenLeaving"]={def:false,ind:0};
 pAdvOptions["hideWatermark"]={def:false,ind:0};
 
@@ -122,9 +126,11 @@ function navToPallete(ev, addColor){ // probably unused
 }
 
 function iloadPref(results, i, obj, pOptions){
-	if(typeof(pOptions[i].def)=='boolean')
+	if(typeof(pOptions[i].def)=='boolean'){
 		results[i] = ((obj[i]=='true')?true:((obj[i]=='false')?false:pOptions[i].def));
-	else{
+	}else if(typeof(pOptions[i].def)=='number'){
+		results[i] = (!obj[i] || isNaN(obj[i] - 0)) ? pOptions[i].def : obj[i] - 0;
+	}else{
 		results[i] = ((obj[i])?obj[i]:((obj[i]==='' && !pOptions[i].ifEmptyReset)?obj[i]:pOptions[i].def));
 	}
 }

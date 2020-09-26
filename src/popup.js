@@ -13,6 +13,7 @@ var cpScaleOffset=(isWindows?16:0);
 var isPicking=false,keyInputMode=false;
 var CSS3ColorFormat=loadedOptions.CSS3ColorFormat;
 var snapModeBlock=loadedOptions.snapModeBlock;
+var popupWaitTimeout=4000;
 
 var gotAnUpdate = false;EnableHex=true;otherError=false;
 var fishEye = (localStorage['fishEye']||pOptions["fishEye"].def)-0;
@@ -319,6 +320,9 @@ function iin(){
 	if(typeof(localStorage["showPreviousClr"])!='undefined')showPreviousClr = ((localStorage["showPreviousClr"]=='true')?true:false);
 	if(typeof(localStorage["hexIsLowerCase"])!='undefined')hexIsLowerCase = ((localStorage["hexIsLowerCase"]=='true')?true:false);
 	if(typeof(localStorage["hexHasHash"])!='undefined')hexHasHash = ((localStorage["hexHasHash"]=='true')?true:false);
+	if(typeof(localStorage["popupWaitTimeout"])!='undefined')popupWaitTimeout = localStorage["popupWaitTimeout"]-0;
+
+	if( !(popupWaitTimeout > 0) ) popupWaitTimeout = 4000;
 
 
 	setPreviewSRC(chrome.extension.getURL('img/default.png'),true);
@@ -530,7 +534,7 @@ function setupInjectScripts(){
 				}
 			}
 		});
-		scriptAliveTimeout=setTimeout(scriptsInjectedResult,4000);
+		scriptAliveTimeout=setTimeout(scriptsInjectedResult,popupWaitTimeout||4000);
 	}catch(e){
 		scriptsInjectedResult();//I don't think we ever get here
 	}
