@@ -542,6 +542,9 @@ renderRenderText: function(ctx, rt){
 
 
 			if( i == l || tries > this.maxShrinkTries ){
+				if( this.debugMode ){
+					console.log('shrunk font to: ', ctx.font, 'for', "'"+message+"'")
+				}
 				// we truly reached loop end!
 				// also presumably toRenderTxtsFound.length.... is.
 				foundTextFit=true; // lies, break loop anyway, no infinite loop here...!
@@ -557,7 +560,7 @@ renderRenderText: function(ctx, rt){
 					// rtx2=1
 					// centering multiple tokens... todo
 				}
-				if( rt.textAlign == 'end'){
+				if( rt.textAlign == 'end' || (rt.textAlign == 'left' && dirMap.start == 'right') ){
 					//rt.x = -(rt.x + rt.w); // its punk rock, just hope they don't use zero...
 					// the hax theuy arent working.  don't logic in loopz though...
 
@@ -571,8 +574,11 @@ renderRenderText: function(ctx, rt){
 				}
 				// is afraid maybe not understand RTL...., is the word token still ltr or is it wrote as rtl but we can tokenize it ltr??? our per letter spacing is gonna fx this up
 				// https://en.wikipedia.org/wiki/Bidirectional_text	
-				if( rt.textAlign == 'start'){
-					if( dirMap.start == 'right' ){//is rtl document context
+				if( rt.textAlign == 'start' || (rt.textAlign == 'right')){
+					if( (dirMap.start != 'right' && rt.textAlign == 'right') ){
+						rtx2 = 1;// calc below w/ toR.w, lineM.linesWidth
+					}
+					if( dirMap.start == 'right' ){//is rtl document context or text align right
 						rtx += rt.w;
 						dir = -1.0;
 					}
@@ -611,7 +617,7 @@ renderRenderText: function(ctx, rt){
 				// text didn't fit...  tiem to shrink...
 				var decimal = parseFloat(ctx.font);
 				ctx.font = ctx.font.replace(''+decimal, ''+(decimal - this.textShrinkStep));
-				console.log('shrunk font to: ', ctx.font)
+				//console.log('shrunk font to: ', ctx.font)
 			}
 
 
@@ -693,7 +699,7 @@ var errorTypes={
 			// {x:75,y:15,t9n:'snapModeUnblock',textAlign:'center',fillStyle:'rgb(255,0,0)',font:'15px sans-serif'},
 			// {x:75,y:60,t9n:'orClick',textAlign:'center',fillStyle:'rgb(255,0,0)',font:'15px sans-serif'},
 
-			{x:25,y:2,w:100,h:28,t9n:'snapModeUnblock',autoBreak:1,shadowColor:'red',shadowBlur:5,shadowOffsetX:3,shadowOffsetY:3,textAlign:'start',fillStyle:'rgb(255,0,0)',font:'15px sans-serif',lineExtraSpace:2},
+			{x:25,y:2,w:100,h:28,t9n:'snapModeUnblock',autoBreak:1,shadowColor:'white',shadowBlur:5,shadowOffsetX:3,shadowOffsetY:3,textAlign:'start',fillStyle:'rgb(255,0,0)',font:'15px sans-serif',lineExtraSpace:2},
 			{x:30,y:30,w:100,h:25,t9n:'orClick',textAlign:'center',fillStyle:'rgb(0,0,200)',font:'15px sans-serif'},
 
 // ctx.shadowBlur = 
@@ -726,7 +732,13 @@ var errorTypes={
 		image: '2',
 		timer: true,
 		no_snap: true,
-		ignore: {'conent_port': 1, 'page_slow': 1}
+		ignore: {'conent_port': 1, 'page_slow': 1},
+		render_texts: [
+			{x:40,y:5,w:105,h:70,t9n:'enableFileAccess',textAlign:'left',autoBreak:1,shadowColor:'white',shadowBlur:5,shadowOffsetX:3,shadowOffsetY:3,fillStyle:'rgb(0,0,0)',font:'25px sans-serif',lineExtraSpace:2},
+			{x:40,y:75,w:105,h:15,t9n:'thenRefresh',textAlign:'right',fillStyle:'rgb(0,0,200)',font:'12.5px sans-serif'},
+			{x:40,y:90,w:105,h:15,t9n:'detailsInHelp',textAlign:'right',fillStyle:'rgb(0,0,0)',font:'12.5px sans-serif'}
+
+		]
 	}
 }
 function showErrorScreen(errorType){

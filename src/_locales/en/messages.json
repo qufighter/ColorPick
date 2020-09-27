@@ -293,6 +293,15 @@
    "orClick":{
       "message": "or Click"
    },
+   "enableFileAccess":{
+      "message": "Enable File URL Access to Pick Colors on Local Pages"
+   },
+   "thenRefresh":{
+      "message": "then refresh page"
+   },
+   "detailsInHelp":{
+      "message": "(details in help)"
+   },
    "tabletModePrompt": {
       "message": "Zoom to Tablet Edition"
    },
