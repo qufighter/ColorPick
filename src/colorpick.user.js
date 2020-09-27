@@ -10,6 +10,9 @@ var dirtyImage=Cr.elm('img');
 var imagesRcvdCounter=0;
 var imagesLoadedCounter=0;
 var lastActivationMode=0;
+var isMakingNew=false,lastNewTimeout=0,snapshotLoadedTimeout=0;
+var imageRequestReachedBg=0;
+var snapModeDetected = window.location.href.indexOf(chrome.extension.getURL('pick.html')) === 0;
 function _ge(n){return document.getElementById(n);}
 function RGBtoHex(R,G,B) {return applyHexCase(toHex(R)+toHex(G)+toHex(B));}
 function applyHexCase(hex){return opts.hexIsLowerCase ? hex.toLowerCase() : hex;}
@@ -44,6 +47,7 @@ function emptyNode(node){Cr.empty(node);}
 function snapshotLoaded(){
 		clearTimeout(snapshotLoadedTimeout);
 		imagesLoadedCounter++;
+		if(!c) return;
 		c.height=innerHeight;
 		c.width=innerWidth;
 		var cctx=c.getContext("2d");
@@ -102,10 +106,15 @@ function reqLis(request, sender, sendResponse) {
 		if( request.isErrorTryAgain ){
 			/// do we let them have time to read it?? or not???
 			// if we are "locked" or not.... ?
-			isMakingNew = false; // this or above...
+			isMakingNew = false;
 			newImage();
 		}else{
-			if( request.to - 0 === snapshotLoadedTimeout - 0) snapLoader.src=request.pickerImage;
+			if( request.to - 0 === snapshotLoadedTimeout - 0 && lastNewTimeout == 0 ){
+				snapLoader.src=request.pickerImage;
+			}else{
+				isMakingNew = false;
+				newImage();
+			}
 		}
 
   }else if (request.tabRefreshSnap){
@@ -252,6 +261,7 @@ function disableColorPicker(){
 	removeEventListener('keyup',wk);
 	removeExistingNodes();
 	clearTimeout(lastNewTimeout);
+	lastNewTimeout=0;
 }
 function removeExistingNodes(){
 	if(document.body){
@@ -283,21 +293,6 @@ function mmf(ev){
 			updateColorPreview();
 		}
 	}
-}
-
-function ssf(ev){
-	if(!isEnabled)return;
-	hideCtrls();//redundent?
-	if( !c.parentNode ){
-		// this indicates our context has been invalidated by another instance of the script, possibly ext has been reloaded
-		console.log("Sorry - ColorPick experienced a problem in scrollFunction and has been disabled - Reload the page in order to pick colors here.", msg_bg_unavail);
-		exitAndDetach();
-		return;
-	}
-	clearTimeout(lastNewTimeout);
-	lastNewTimeout=setTimeout(function(){
-		newImage();//some delay required OR it won't update
-	},10);
 }
 
 function initialInit(){
@@ -506,13 +501,24 @@ function updateColorPreview(ev){
 	//handleRendering();
 }
 
-var isMakingNew=false,lastNewTimeout=0,snapshotLoadedTimeout;
-var imageRequestReachedBg=0;
-var snapModeDetected = window.location.href.indexOf(chrome.extension.getURL('pick.html')) === 0;
+
+function ssf(ev){
+	if(!isEnabled)return;
+	if( !c.parentNode ){
+		// this indicates our context has been invalidated by another instance of the script, possibly ext has been reloaded
+		console.log("Sorry - ColorPick experienced a problem in scrollFunction and has been disabled - Reload the page in order to pick colors here.", msg_bg_unavail);
+		exitAndDetach();
+		return;
+	}
+	newImage();
+}
+
+
 function newImage(){
 	if(!isEnabled)return;
+	clearTimeout(lastNewTimeout);
+	lastNewTimeout=0;
 	if(isMakingNew || !document.body.style){
-		clearTimeout(lastNewTimeout);
 		lastNewTimeout=setTimeout(function(){newImage();},500);
 		return;
 	}
@@ -538,7 +544,7 @@ function newImage(){
 			console.log("Sorry - ColorPick experienced a problem in newImage and has been disabled - Reload the page in order to pick colors here.", e, msg_bg_unavail);
 			exitAndDetach();
 		}
-	},10); // todo: this delay may be redundant, consider removing delay in ssf
+	},(opts.controlsHiddenDelay || 10));
 }
 
 var lastPreviewURI;

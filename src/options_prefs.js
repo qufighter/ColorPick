@@ -60,6 +60,7 @@ pAdvOptions["borderValue"]={def:'1px solid grey',ind:0};
 
 pAdvOptions["popupWaitTimeout"]={def:4000,ind:0};
 pAdvOptions["snapWaitTimeout"]={def:6000,ind:0};
+pAdvOptions["controlsHiddenDelay"]={def:10,ind:1,select:{1:'1',10:'10 '+chrome.i18n.getMessage('default'),20:20,35:35,50:50,100:100,255:255}};
 
 pAdvOptions["confirmEmptyPalleteWhenLeaving"]={def:false,ind:0};
 pAdvOptions["hideWatermark"]={def:false,ind:0};

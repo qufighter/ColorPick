@@ -250,10 +250,13 @@
       "description": "'css' refers to web technology"
    },
    "popupWaitTimeout": {
-      "message": "Popup wait time, in milliseconds."
+      "message": "Popup wait time, in milliseconds"
    },
    "snapWaitTimeout": {
-      "message": "Snapshot wait time, in milliseconds."
+      "message": "Snapshot wait time, in milliseconds"
+   },
+   "controlsHiddenDelay": {
+      "message": "ms Delay while extension controls are hidden"
    },
    "confirmEmptyPalleteWhenLeaving": {
       "message": "Confirm closing this tab with palette entires"
