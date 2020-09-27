@@ -693,9 +693,13 @@ var errorTypes={
 			// {x:75,y:15,t9n:'snapModeUnblock',textAlign:'center',fillStyle:'rgb(255,0,0)',font:'15px sans-serif'},
 			// {x:75,y:60,t9n:'orClick',textAlign:'center',fillStyle:'rgb(255,0,0)',font:'15px sans-serif'},
 
-			{x:25,y:2,w:100,h:28,t9n:'snapModeUnblock',autoBreak:1,textAlign:'start',fillStyle:'rgb(255,0,0)',font:'15px sans-serif',lineExtraSpace:2},
+			{x:25,y:2,w:100,h:28,t9n:'snapModeUnblock',autoBreak:1,shadowColor:'red',shadowBlur:5,shadowOffsetX:3,shadowOffsetY:3,textAlign:'start',fillStyle:'rgb(255,0,0)',font:'15px sans-serif',lineExtraSpace:2},
 			{x:30,y:30,w:100,h:25,t9n:'orClick',textAlign:'center',fillStyle:'rgb(0,0,200)',font:'15px sans-serif'},
 
+// ctx.shadowBlur = 
+// ctx.shadowColor =
+// ctx.shadowOffsetX
+// ctx.shadowOffsetY
 
 			{x:54,y:72,t9n:'snapMode',textAlign:'left',fillStyle:'rgb(0,0,0)',font:'7px sans-serif'},
 			{x:123,y:89,t9n:'snapModeBlock',textAlign:'left',fillStyle:'rgb(0,0,0)',font:'7px sans-serif'},
