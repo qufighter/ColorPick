@@ -734,9 +734,9 @@ var errorTypes={
 		no_snap: true,
 		ignore: {'conent_port': 1, 'page_slow': 1},
 		render_texts: [
-			{x:40,y:5,w:105,h:70,t9n:'enableFileAccess',textAlign:'left',autoBreak:1,shadowColor:'white',shadowBlur:5,shadowOffsetX:3,shadowOffsetY:3,fillStyle:'rgb(0,0,0)',font:'25px sans-serif',lineExtraSpace:2},
-			{x:40,y:75,w:105,h:15,t9n:'thenRefresh',textAlign:'right',fillStyle:'rgb(0,0,200)',font:'12.5px sans-serif'},
-			{x:40,y:90,w:105,h:15,t9n:'detailsInHelp',textAlign:'right',fillStyle:'rgb(0,0,0)',font:'12.5px sans-serif'}
+			{x:40,y:5,w:105,h:71,t9n:'enableFileAccess',textAlign:'right',autoBreak:1,shadowColor:'white',shadowBlur:5,shadowOffsetX:3,shadowOffsetY:3,fillStyle:'rgb(0,0,0)',font:'25px sans-serif',lineExtraSpace:2},
+			{x:40,y:76,w:105,h:15,t9n:'thenRefresh',textAlign:'right',fillStyle:'rgb(0,0,200)',font:'12.5px sans-serif'},
+			{x:40,y:91,w:105,h:15,t9n:'detailsInHelp',textAlign:'right',fillStyle:'rgb(0,0,0)',font:'12.5px sans-serif'}
 
 		]
 	}
