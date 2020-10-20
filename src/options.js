@@ -889,6 +889,7 @@ function hasUndo(){
 function addUndo(meta){
 	history_undo_stack.push(meta);
 	document.getElementById('hist-del-undo-btn').style.display='';
+	document.getElementById('hist-del-undo-btn2').style.display='';
 }
 
 function applyUndo(ev){
@@ -902,6 +903,7 @@ function applyUndo(ev){
 	}
 	if( !hasUndo() ){
 		document.getElementById('hist-del-undo-btn').style.display='none';
+		document.getElementById('hist-del-undo-btn2').style.display='none';
 	}
 }
 
@@ -1279,9 +1281,22 @@ Cr.elm("div",{id:"mainbox"},[
 			Cr.txt(chrome.i18n.getMessage('palette'))
 		]),
 		Cr.elm("div",{id:"palette", class:'indented-when-narrow-area'},[
-			Cr.elm("a",{class:"swatchCtrl",event:['click',clearSwatches],style:'text-align:center;position:absolute;display:block;width:50%;margin-'+dirMap.start+':25%;display:none;',id:'clear-palette'},[Cr.txt(chrome.i18n.getMessage('clear').toLowerCase())]),
+
+			Cr.elm('div',{
+				id:'clear-palette',
+				style:'text-align:center;position:absolute;display:block;width:20%;margin-'+dirMap.start+':40%;display:none;',
+				childNodes:[
+					Cr.elm("a",{class:"swatchCtrl",event:['click',clearSwatches]},[Cr.txt(chrome.i18n.getMessage('clear').toLowerCase())]),
+			]}),
 			Cr.elm("a",{class:"swatchCtrl",event:['click',sortSwatches],style:''},[Cr.txt(chrome.i18n.getMessage('sort'))]),
 			Cr.elm("a",{class:"swatchCtrl",event:['click',dedupeSwatches]},[Cr.txt(chrome.i18n.getMessage('dedupe'))]),
+			Cr.elm('a', {
+					id:'hist-del-undo-btn2',
+					class:"swatchCtrl",
+					style:'display:none;',
+					events:[['click', applyUndo]],
+					childNodes:[Cr.txt(chrome.i18n.getMessage('undo').toLowerCase())]
+				}),
 			Cr.elm("a",{class:"swatchCtrl",event:['click',printSwatches],style:'float:'+dirMap.end+';',target:'_blank',id:'print-swatches'},[Cr.txt(chrome.i18n.getMessage('printSave'))]),
 			Cr.elm("div",{id:"swatches", style:'display:block;position:relative;'}),
 			Cr.elm("div",{id:"generate-palette-area"})
