@@ -42,21 +42,18 @@ document.addEventListener('DOMContentLoaded', function(){
 			sessionStorage['session-pick-cache-'+winloc] = last;
 			sessionStorage['session-pick-about'] = "the setting to control this ColorPick feature is " + chrome.i18n.getMessage('cacheSnapshots');
 		}
-
-		// trigger extension??? popup ??
-		chrome.windows.getCurrent(function(window){
-			chrome.tabs.query({windowId: window.id, active: true}, function(tabs){
-				var tabid=tabs[0].id;
-				chrome.runtime.sendMessage({activateOnTab:true, tabi: tabid, forSnapMode: true},function(response){});
-			});
-		});
+		triggerExtPopup()
 	}else{
 		Cr.elm('div',{
 			style: 'font-weight:bold',
 			childNodes:[
 				Cr.txt(chrome.i18n.getMessage('cacheSnapshots'))
 			]
-		}, document.getElementById('default_err').firstChild)
+		}, document.getElementById('default_err').firstChild);
+
+		document.getElementById('pick').addEventListener('dragstart', function(){
+			triggerExtPopup();
+		})
 	}
 
 	window.location.title=chrome.i18n.getMessage('snapModeDesc') + ' - ' + chrome.i18n.getMessage('extName');
@@ -79,3 +76,12 @@ document.addEventListener('DOMContentLoaded', function(){
 		]
 	}, document.body);
 });
+
+function triggerExtPopup(){
+	chrome.windows.getCurrent(function(window){
+		chrome.tabs.query({windowId: window.id, active: true}, function(tabs){
+			var tabid=tabs[0].id;
+			chrome.runtime.sendMessage({activateOnTab:true, tabi: tabid, forSnapMode: true},function(response){});
+		});
+	});
+}
