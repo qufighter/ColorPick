@@ -51,9 +51,11 @@ document.addEventListener('DOMContentLoaded', function(){
 			]
 		}, document.getElementById('default_err').firstChild);
 
-		document.getElementById('pick').addEventListener('dragstart', function(){
+		document.getElementById('pick').addEventListener('dragstart', function(ev){
 			triggerExtPopup();
 		})
+		document.body.addEventListener('dragover', timeoutUpdatePosition);
+		document.body.addEventListener('dragend', dragEnd);
 	}
 
 	window.location.title=chrome.i18n.getMessage('snapModeDesc') + ' - ' + chrome.i18n.getMessage('extName');
@@ -76,6 +78,28 @@ document.addEventListener('DOMContentLoaded', function(){
 		]
 	}, document.body);
 });
+
+var lastX = 0, lastY=0;
+function timeoutUpdatePosition(ev){
+	ev.preventDefault();
+	ev.dataTransfer.dropEffect = 'move';
+	//crosshairCss();
+	if( ev.pageY != lastY || ev.pageX != lastX ){
+		doPerformupdate(ev);
+	}
+	lastX = ev.pageX;
+	lastY = ev.pageY;
+}
+
+function doPerformupdate(ev){
+	//mmf(ev);
+	mmf({pageX: ev.pageX - 150, pageY: ev.pageY+150});
+}
+
+function dragEnd(ev){
+	ev.preventDefault();
+	picked(ev);
+}
 
 function triggerExtPopup(){
 	chrome.windows.getCurrent(function(window){
