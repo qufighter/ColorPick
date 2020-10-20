@@ -1051,6 +1051,7 @@ function mmv(ev){
 	}
 	if(histReSizeVrt){
 		hisInner.style.height = ev.pageY - his.offsetTop - 7;
+		hisInner.style.maxHeight = 'none';
 	}
 	if( histReSizeVrt || histReSize ){
 		updateSwatchSelectionMargins(his);
