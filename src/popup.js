@@ -480,7 +480,7 @@ function beginSnapMode(){
 }
 function tabScreenshotRecieved(dataUri, request){
 	if( realSrcRecieved ) return;
-
+	if( screenshotAlternativeRecieved ) return;
 	setPreviewSRC(dataUri,true);
 	Cr.elm("a",{
 		id:'alt-snap-mode-link',
