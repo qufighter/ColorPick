@@ -533,7 +533,7 @@ function newImage(){
 	snapshotLoadedTimeout = setTimeout(function(){
 		disableColorPicker();
 		console.warn("Sorry - ColorPick experienced issues while waiting for the snapshot - Reload the page in order to pick colors here.  Here is how many newImage requests reached bg page:", imageRequestReachedBg, 'imagesRcvdCounter', imagesRcvdCounter, 'imagesLoadedCounter', imagesLoadedCounter, snapLoader, msg_bg_unavail);
-	}, (opts.snapWaitTimeout || 6000) * (snapModeDetected?2:1) ); // max 6 second wait for image, attempt to prevent endless spin, double that time in snap mode
+	}, (opts.snapWaitTimeout || 15000) * (snapModeDetected?2:1) ); // max 6 second wait for image, attempt to prevent endless spin, double that time in snap mode
 
 	setTimeout(function(){
 		try{
