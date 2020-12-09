@@ -6,6 +6,9 @@ var interactiveMode = false;
 if( isFirefox ){
 	ln_sprt = 'https://addons.mozilla.org/en-US/firefox/addon/colorpick-eyedropper/';
 	ln_rate = 'https://addons.mozilla.org/en-US/firefox/addon/colorpick-eyedropper/reviews/';
+}else if( isEdge ){
+	ln_sprt = 'https://microsoftedge.microsoft.com/addons/detail/colorpick-eyedropper/pieiiifgcmhldgbniafejdimnjnjcgfo';
+	ln_rate = 'https://microsoftedge.microsoft.com/addons/detail/colorpick-eyedropper/pieiiifgcmhldgbniafejdimnjnjcgfo';
 }
 
 function createRatings(){

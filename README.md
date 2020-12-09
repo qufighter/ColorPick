@@ -8,6 +8,9 @@ https://chrome.google.com/extensions/detail/ohcpnigalekghcmgcdcenkpelffpdolg
 Firefox Version
 https://addons.mozilla.org/en-US/firefox/addon/colorpick-eyedropper/
 
+Edge Version
+https://microsoftedge.microsoft.com/addons/detail/colorpick-eyedropper/pieiiifgcmhldgbniafejdimnjnjcgfo
+
 ## HTML5 API
 
 Do you want to leverage this extension's eyedropper feature on a website you operate?

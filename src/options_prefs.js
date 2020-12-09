@@ -4,6 +4,10 @@ var isWindows=plat3=='win';
 var isMac=plat3=='mac';
 var isFirefox = window.navigator.userAgent.indexOf('Firefox') > -1;
 var isChrome = window.navigator.userAgent.indexOf('Chrome/') > -1;
+var isEdge = window.navigator.userAgent.indexOf('Edge') > -1;
+if( isEdge ){
+	isChrome = false;
+}
 var pOptions={};
 var pAdvOptions={};
 var pSyncItems={};

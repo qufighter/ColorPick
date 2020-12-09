@@ -3,8 +3,11 @@ var nl='\u000A', tab='\u0009', nbsp='\u00A0';
 var CSS3ColorFormat = '(#1, #2, #3)';
 var _ext_homepage="https://chrome.google.com/webstore/detail/color-picker/ohcpnigalekghcmgcdcenkpelffpdolg";
 var isFirefox = window.navigator.userAgent.indexOf('Firefox') > -1;
+var isEdge = window.navigator.userAgent.indexOf('Edge') > -1;
 if( isFirefox ){
 	_ext_homepage="https://addons.mozilla.org/en-US/firefox/addon/colorpick-eyedropper/";
+}else if(isEdge){
+	_ext_homepage="https://microsoftedge.microsoft.com/addons/detail/colorpick-eyedropper/pieiiifgcmhldgbniafejdimnjnjcgfo";
 }
 var uncrawlable=false;
 

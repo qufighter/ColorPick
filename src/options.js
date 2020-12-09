@@ -1,6 +1,8 @@
 var _ext_homepage="https://chrome.google.com/webstore/detail/color-picker/ohcpnigalekghcmgcdcenkpelffpdolg";
 if( isFirefox ){
 	_ext_homepage="https://addons.mozilla.org/en-US/firefox/addon/colorpick-eyedropper/";
+}else if( isEdge ){
+	_ext_homepage="https://microsoftedge.microsoft.com/addons/detail/colorpick-eyedropper/pieiiifgcmhldgbniafejdimnjnjcgfo";
 }
 var nbsp='\u00A0';
 var infoicon='\u24D8';
