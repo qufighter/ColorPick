@@ -16,7 +16,7 @@ var pickHtmlUrl = chrome.extension.getURL('pick.html');
 var snapModeDetected = window.location.href.indexOf(pickHtmlUrl) === 0;
 var msg_bg_unavail_snap=msg_bg_unavail;
 var msg_error='Error';
-var opts_url = pickHtmlUrl.replace('pick.html', 'options.html');
+var opts_url = pickHtmlUrl;
 var msg_ext_name = 'ColorPick Eyedropper';
 var ext_icon = pickHtmlUrl;
 var ext_close = pickHtmlUrl;
