@@ -1,6 +1,6 @@
 var elmid1='color_pick_click_box',elmid2='ChromeExtension:Color-Pick.com';
 if(typeof(exitAndDetach)=='function')exitAndDetach();
-var n=null,c=null,waterm=null,watermlo=null,watermct=null,wmMoveCtr=0,lastMoveInc=0,gameScr=false,hex='F00BAF',lasthex='',rgb=null;hsv=null;scal=1,ex=0,ey=0,isEnabled=false,isLocked=false,msg_bg_unavail=chrome.i18n.getMessage('bgPageUnavailable');
+var n=null,c=null,waterm=null,watermlo=null,watermct=null,wmMoveCtr=0,lastMoveInc=0,gameScr=false,hex='F00BAF',lasthex='',rgb=null;hsv=null;scal=1,ex=0,ey=0,isEnabled=false,isLocked=false,msg_bg_unavail=chrome.i18n.getMessage('bgPageUnavailable'),msg_bg_unavail_snap=chrome.i18n.getMessage('bgPageUnavailableSnap'),msg_error=chrome.i18n.getMessage('error'),opts_url=chrome.extension.getURL('options.html');
 var isUpdating=false,lastTimeout=0,lx=0,ly=0,histories=0,nbsp='\u00A0',popupsShowing=0,connectListener=false;
 var opts={};
 var cvs = document.createElement('canvas');
@@ -156,7 +156,7 @@ chrome.runtime.onConnect.addListener(function(port){
 });
 
 function setPixelPreview(hxe,lhex){
-	if(isLocked)return;
+	if(isLocked || !isEnabled)return;
 	hex=hxe?hxe:hex;
 	if(!_ge('previewArea') || (rgb && !_ge('cprgbvl'))){
 		emptyNode(n);
@@ -230,7 +230,7 @@ function picked(ev){
 			chrome.runtime.sendMessage({setColor:true,hex:hex,rgb:rgb,hsv:hsv}, function(response){});
 		}catch(e){
 			console.log("Sorry - ColorPick experienced a problem during setColor and has been disabled - Reload the page in order to pick colors here.", msg_bg_unavail, e);
-			exitAndDetach();
+			exitAndDetachWithMessage();
 		}
 		isLocked=true;
 		setDisplay();
@@ -239,9 +239,69 @@ function picked(ev){
 	chrome.runtime.sendMessage({setPickState:true,isPicking:!isLocked}, function(r){});
 	mmf(ev);
 }
+
+function moveNosnapNotice(ev){
+	var error_container = c=_ge('colorpick-nosnap-notice');
+	var cur_bot = parseInt(error_container.style.bottom);
+	if( ev.buttons == 1 && ev.which == 1){
+		error_container.style.bottom = (cur_bot - ev.movementY) + 'px';
+	}else{
+		if( cur_bot < -10 ){
+			error_container.style.bottom = (-error_container.clientHeight)+'px';
+			setTimeout(function(){
+				error_container.remove();
+			}, 500)
+		}else{
+			error_container.style.bottom = 0;
+		}
+	}
+}
+
+function exitAndDetachWithMessage(){
+
+	exitAndDetach();
+
+	var detachedl=Cr.elm('img',{src:chrome.extension.getURL('img/icon64.png'), width:64, align:"top", style:'vertical-align:top;display:inline-block;'});
+	var detachedct=Cr.elm('div',{id:'detached-content',style:'margin:14px',childNodes:[
+		Cr.elm('div',{style:'color:red;font-weight:bold;',childNodes:[Cr.txt(msg_error)]}),
+		Cr.elm('div',{childNodes:[Cr.txt(snapModeDetected ? msg_bg_unavail_snap : msg_bg_unavail)]}),
+		Cr.elm('a', {href:opts_url+'?reveal=snapWaitTimeout', target: '_blank', event:['click',function(ev){
+			try{
+				chrome.runtime.sendMessage({goToOrVisitTab:'options.html?reveal=snapWaitTimeout'}, function(r){});
+				ev.preventDefault();
+			}catch(e){ }
+		},true], childNodes:[Cr.txt("Options...")]})
+	]});
+
+	var detached = Cr.elm('div',{
+		id:'colorpick-nosnap-notice',
+		style:"position:fixed;bottom:0;right:25%;left:25%;cursor:default;z-index:2147483645;transition:0.5s ease-out;user-select:none;background:white;box-shadow:#000 0px 0px 10px 1px;font-family:sans-serif;color:#494949;font-size:14px;text-align:left;",
+		events:[['mousemove', moveNosnapNotice],['mouseup', moveNosnapNotice]],
+		childNodes:[
+			Cr.elm('img',{src:chrome.extension.getURL('img/close.png'),style:'float:right;',events:['click', function(){detached.remove();}]}),
+			Cr.elm('div',{
+				style:"font-family:'Helvetica Neue','Lucida Grande',sans-serif;font-size:16px;color:black;font-weight:300;text-shadow:white 1px 1px 2px;line-height:24px;padding:5px;text-align:left;opacity:0.9;float:left;",
+				childNodes:[
+					detachedl,
+					Cr.elm('div',{
+						style:"display:inline-block;width:85px;margin:8px 0 0 5px;",
+						childNodes:[
+							Cr.txt(chrome.i18n.getMessage('extName'))
+						]
+					})
+				]
+			}),
+			detachedct
+		]
+	},document.body);
+
+
+}
 function exitAndDetach(){
 	disableColorPicker();
-	chrome.runtime.onMessage.removeListener(reqLis);
+	if( !snapModeDetected ){ // cannot re-runs scripts in snap env
+		chrome.runtime.onMessage.removeListener(reqLis);
+	}
 }
 function dissableColorPickerFromHere(){
 	var disableTimeout=setTimeout(disableColorPicker,500);
@@ -255,13 +315,16 @@ function dissableColorPickerFromHere(){
 }
 function disableColorPicker(){
 	isEnabled=false,isLocked=false;
+	isUpdating = false;isMakingNew = false;
 	document.removeEventListener('mousemove',mmf);
 	removeEventListener('scroll',ssf);
 	removeEventListener('resize',ssf);
 	removeEventListener('keyup',wk);
 	removeExistingNodes();
 	clearTimeout(lastNewTimeout);
+	clearTimeout(snapshotLoadedTimeout);
 	lastNewTimeout=0;
+
 }
 function removeExistingNodes(){
 	if(document.body){
@@ -271,6 +334,8 @@ function removeExistingNodes(){
 		if(waterm)document.body.removeChild(waterm);
 		c=null,n=null,waterm=null,watermlo=null,watermct=null;
 		if( document.body.style ) document.body.style.cursor='default';
+		var error_container = c=_ge('colorpick-nosnap-notice');
+		if( error_container ) error_container.remove();
 	}
 }
 function wk(ev){
@@ -302,7 +367,7 @@ function initialInit(){
 	if( !connectListener ){
 		chrome.runtime.connect().onDisconnect.addListener(function() {
 			console.log("Sorry - ColorPick detected the extension has been reloaded.  This instance of the content script is now defunct. You may have to refresh the page to use ColorPick here!", msg_bg_unavail)
-			exitAndDetach();
+			exitAndDetach(); // no WithMessage here, the error dialoge won't have clickable options link
 		})
 		connectListener=true;
 	}
@@ -312,8 +377,12 @@ function crosshairCss(){
 }
 
 function prefsLoadedCompleteInit(){
+	if( n && c ){
+		console.log('ColorPick: erroneously called prefsLoadedCompleteInit 2x');
+		return;
+	}
 	removeExistingNodes();
-	c=Cr.elm('canvas',{id:elmid1,style:'position:fixed;max-width:none!important;max-height:none!important;top:0px!important;left:0px!important;margin:0px!important;padding:0px!important;overflow:hidden;z-index:2147483646;cursor:'+crosshairCss(),events:[['click',picked,true],['mousedown',function(ev){if(ev.which!=2)ev.preventDefault();}]]},[],document.body);
+	c=Cr.elm('canvas',{id:elmid1,height:innerHeight,width:innerWidth,style:'position:fixed;width:auto!important;height:auto!important;max-width:none!important;max-height:none!important;top:0px!important;left:0px!important;margin:0px!important;padding:0px!important;overflow:hidden;z-index:2147483646;cursor:'+crosshairCss(),events:[['click',picked,true],['mousedown',function(ev){if(ev.which!=2)ev.preventDefault();}]]},[],document.body);
 	n=Cr.elm('div',{id:elmid2,style:'position:fixed;min-width:30px;max-width:300px;min-height:30px;box-shadow:2px 2px 2px #999;transition:box-shadow 0.5s ease-out; border:'+opts.borderValue+';z-index:2147483646;cursor:default;padding:4px;'},[Cr.txt(' ')],document.body);
 	if( opts.reg_chk!=true || !opts.hideWatermark ){
 		waterml=Cr.elm('img',{src:chrome.extension.getURL('img/icon64.png'), width:64, align:"top", style:'vertical-align:top;display:inline-block;'});
@@ -462,6 +531,7 @@ function remainingInit(){
 		setTimeout(remainingInit, 250);
 		return false;
 	}
+
 	if(!isEnabled){
 		hideCtrls();
 		if(isLocked)picked();//unlocks for next pick
@@ -507,7 +577,7 @@ function ssf(ev){
 	if( !c.parentNode ){
 		// this indicates our context has been invalidated by another instance of the script, possibly ext has been reloaded
 		console.log("Sorry - ColorPick experienced a problem in scrollFunction and has been disabled - Reload the page in order to pick colors here.", msg_bg_unavail);
-		exitAndDetach();
+		exitAndDetachWithMessage();
 		return;
 	}
 	newImage();
@@ -531,8 +601,8 @@ function newImage(){
 
 	clearTimeout(snapshotLoadedTimeout);
 	snapshotLoadedTimeout = setTimeout(function(){
-		disableColorPicker();
-		console.warn("Sorry - ColorPick experienced issues while waiting for the snapshot - Reload the page in order to pick colors here.  Here is how many newImage requests reached bg page:", imageRequestReachedBg, 'imagesRcvdCounter', imagesRcvdCounter, 'imagesLoadedCounter', imagesLoadedCounter, snapLoader, msg_bg_unavail);
+		console.warn("Sorry - ColorPick experienced issues while waiting for the snapshot - Reload the page in order to pick colors here.  Here is how many newImage requests reached bg page:", imageRequestReachedBg, 'imagesRcvdCounter', imagesRcvdCounter, 'imagesLoadedCounter', imagesLoadedCounter, msg_bg_unavail);
+		exitAndDetachWithMessage();
 	}, (opts.snapWaitTimeout || 15000) * (snapModeDetected?2:1) ); // max 6 second wait for image, attempt to prevent endless spin, double that time in snap mode
 
 	setTimeout(function(){
@@ -542,7 +612,7 @@ function newImage(){
 			});
 		}catch(e){
 			console.log("Sorry - ColorPick experienced a problem in newImage and has been disabled - Reload the page in order to pick colors here.", e, msg_bg_unavail);
-			exitAndDetach();
+			exitAndDetachWithMessage();
 		}
 	},(opts.controlsHiddenDelay || 10));
 }

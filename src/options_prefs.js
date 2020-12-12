@@ -144,7 +144,6 @@ function loadPrefsFromStorage(results, cbf){
 	storage.get(null, function(obj) {
 		if(chrome.runtime.lastError)console.log(chrome.runtime.lastError.message);
 		loadPrefsFromLocalStorage(results, cbf, obj || {})
-		if(typeof(cbf)=='function')cbf();
 	});
 }
 

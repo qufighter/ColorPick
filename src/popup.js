@@ -322,7 +322,7 @@ function iin(){
 	if(typeof(localStorage["hexHasHash"])!='undefined')hexHasHash = ((localStorage["hexHasHash"]=='true')?true:false);
 	if(typeof(localStorage["popupWaitTimeout"])!='undefined')popupWaitTimeout = localStorage["popupWaitTimeout"]-0;
 
-	if( !(popupWaitTimeout > 0) ) popupWaitTimeout = 10000;
+	if( !(popupWaitTimeout > 10) ) popupWaitTimeout = 10000;
 
 
 	setPreviewSRC(chrome.extension.getURL('img/default.png'),true);
