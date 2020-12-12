@@ -1,6 +1,6 @@
 var elmid1='color_pick_click_box',elmid2='ChromeExtension:Color-Pick.com';
 if(typeof(exitAndDetach)=='function')exitAndDetach();
-var n=null,c=null,waterm=null,watermlo=null,watermct=null,wmMoveCtr=0,lastMoveInc=0,gameScr=false,hex='F00BAF',lasthex='',rgb=null;hsv=null;scal=1,ex=0,ey=0,isEnabled=false,isLocked=false,msg_bg_unavail=chrome.i18n.getMessage('bgPageUnavailable'),msg_bg_unavail_snap=chrome.i18n.getMessage('bgPageUnavailableSnap'),msg_error=chrome.i18n.getMessage('error'),opts_url=chrome.extension.getURL('options.html');
+var n=null,c=null,waterm=null,watermlo=null,watermct=null,wmMoveCtr=0,lastMoveInc=0,gameScr=false,hex='F00BAF',lasthex='',rgb=null;hsv=null;scal=1,ex=0,ey=0,isEnabled=false,isLocked=false,msg_bg_unavail=chrome.i18n.getMessage('bgPageUnavailable');
 var isUpdating=false,lastTimeout=0,lx=0,ly=0,histories=0,nbsp='\u00A0',popupsShowing=0,connectListener=false;
 var opts={};
 var cvs = document.createElement('canvas');
@@ -12,7 +12,15 @@ var imagesLoadedCounter=0;
 var lastActivationMode=0;
 var isMakingNew=false,lastNewTimeout=0,snapshotLoadedTimeout=0;
 var imageRequestReachedBg=0;
-var snapModeDetected = window.location.href.indexOf(chrome.extension.getURL('pick.html')) === 0;
+var pickHtmlUrl = chrome.extension.getURL('pick.html');
+var snapModeDetected = window.location.href.indexOf(pickHtmlUrl) === 0;
+var msg_bg_unavail_snap=msg_bg_unavail;
+var msg_error='Error';
+var opts_url = pickHtmlUrl.replace('pick.html', 'options.html');
+var msg_ext_name = 'ColorPick Eyedropper';
+var ext_icon = pickHtmlUrl;
+var ext_close = pickHtmlUrl;
+
 function _ge(n){return document.getElementById(n);}
 function RGBtoHex(R,G,B) {return applyHexCase(toHex(R)+toHex(G)+toHex(B));}
 function applyHexCase(hex){return opts.hexIsLowerCase ? hex.toLowerCase() : hex;}
@@ -261,7 +269,8 @@ function exitAndDetachWithMessage(){
 
 	exitAndDetach();
 
-	var detachedl=Cr.elm('img',{src:chrome.extension.getURL('img/icon64.png'), width:64, align:"top", style:'vertical-align:top;display:inline-block;'});
+	// careful, use of chrome.* api in this funciton without try/catch should be avoided for when ext context is invalidated... see ext_close
+	var detachedl=Cr.elm('img',{src:ext_icon, width:64, align:"top", style:'vertical-align:top;display:inline-block;'});
 	var detachedct=Cr.elm('div',{id:'detached-content',style:'margin:14px',childNodes:[
 		Cr.elm('div',{style:'color:red;font-weight:bold;',childNodes:[Cr.txt(msg_error)]}),
 		Cr.elm('div',{childNodes:[Cr.txt(snapModeDetected ? msg_bg_unavail_snap : msg_bg_unavail)]}),
@@ -278,7 +287,7 @@ function exitAndDetachWithMessage(){
 		style:"position:fixed;bottom:0;right:25%;left:25%;cursor:default;z-index:2147483645;transition:0.5s ease-out;user-select:none;background:white;box-shadow:#000 0px 0px 10px 1px;font-family:sans-serif;color:#494949;font-size:14px;text-align:left;",
 		events:[['mousemove', moveNosnapNotice],['mouseup', moveNosnapNotice]],
 		childNodes:[
-			Cr.elm('img',{src:chrome.extension.getURL('img/close.png'),style:'float:right;',events:['click', function(){detached.remove();}]}),
+			Cr.elm('img',{src:ext_close,alt:'X',style:'float:right;',events:['click', function(){detached.remove();}]}),
 			Cr.elm('div',{
 				style:"font-family:'Helvetica Neue','Lucida Grande',sans-serif;font-size:16px;color:black;font-weight:300;text-shadow:white 1px 1px 2px;line-height:24px;padding:5px;text-align:left;opacity:0.9;float:left;",
 				childNodes:[
@@ -286,7 +295,7 @@ function exitAndDetachWithMessage(){
 					Cr.elm('div',{
 						style:"display:inline-block;width:85px;margin:8px 0 0 5px;",
 						childNodes:[
-							Cr.txt(chrome.i18n.getMessage('extName'))
+							Cr.txt(msg_ext_name)
 						]
 					})
 				]
@@ -371,6 +380,13 @@ function initialInit(){
 		})
 		connectListener=true;
 	}
+	// we need to cache these values for our WithMessage error display after the extension context is invalidated...
+	msg_bg_unavail_snap = chrome.i18n.getMessage('bgPageUnavailableSnap')
+	msg_error = chrome.i18n.getMessage('error');
+	opts_url = chrome.extension.getURL('options.html')
+	msg_ext_name = chrome.i18n.getMessage('extName');
+	ext_icon = chrome.extension.getURL('img/icon64.png');
+	ext_close = chrome.extension.getURL('img/close.png');
 }
 function crosshairCss(){
 	return 'url('+chrome.extension.getURL('img/crosshair.png')+') 16 16,crosshair';
