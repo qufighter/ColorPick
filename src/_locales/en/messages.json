@@ -66,10 +66,10 @@
       "message": "Press Enter to Pick Color"
    },
    "bgPageUnavailable": {
-      "message": "Background Snapshot Not Responding - Please Refresh the Page and Try Again.  You may adjust the timeout in advanced options."
+      "message": "Page Snapshot Not Responding.  You may adjust the timeout in advanced options and then refresh the page and try again."
    },
    "bgPageUnavailableSnap": {
-      "message": "Background Snapshot Not Responding.  You may adjust the timeout in advanced options."
+      "message": "Page Snapshot Not Responding.  You may adjust the timeout in advanced options."
    },
    "registered": {
       "message": "Registered"
