@@ -264,7 +264,7 @@ function exitAndDetachWithMessage(){
 
 	// careful, use of chrome.* api in this funciton without try/catch should be avoided for when ext context is invalidated... see ext_close
 	var detachedl=Cr.elm('img',{src:ext_icon, width:64, align:"top", style:'vertical-align:top;display:inline-block;'});
-	var detachedct=Cr.elm('div',{id:'detached-content',style:'margin:14px',childNodes:[
+	var detachedct=Cr.elm('div',{id:'detached-content',style:'margin:14px;margin-left:164px;',childNodes:[
 		Cr.elm('div',{style:'color:red;font-weight:bold;',childNodes:[Cr.txt(msg_error)]}),
 		Cr.elm('div',{childNodes:[Cr.txt(snapModeDetected ? msg_bg_unavail_snap : msg_bg_unavail)]}),
 		Cr.elm('a', {href:opts_url+'?reveal=snapWaitTimeout', target: '_blank', event:['click',function(ev){
