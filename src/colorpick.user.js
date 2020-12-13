@@ -10,16 +10,9 @@ var dirtyImage=Cr.elm('img');
 var imagesRcvdCounter=0;
 var imagesLoadedCounter=0;
 var lastActivationMode=0;
-var isMakingNew=false,lastNewTimeout=0,snapshotLoadedTimeout=0;
-var imageRequestReachedBg=0;
-var pickHtmlUrl = chrome.extension.getURL('pick.html');
+var isMakingNew=false,lastNewTimeout=0,snapshotLoadedTimeout=0,imageRequestReachedBg=0,pickHtmlUrl=chrome.extension.getURL('pick.html');
 var snapModeDetected = window.location.href.indexOf(pickHtmlUrl) === 0;
-var msg_bg_unavail_snap=msg_bg_unavail;
-var msg_error='Error';
-var opts_url = pickHtmlUrl;
-var msg_ext_name = 'ColorPick Eyedropper';
-var ext_icon = pickHtmlUrl;
-var ext_close = pickHtmlUrl;
+var msg_bg_unavail_snap=msg_bg_unavail,msg_error='Error',opts_url=pickHtmlUrl,msg_ext_name='ColorPick',ext_icon=pickHtmlUrl,ext_close=pickHtmlUrl;
 
 function _ge(n){return document.getElementById(n);}
 function RGBtoHex(R,G,B) {return applyHexCase(toHex(R)+toHex(G)+toHex(B));}
