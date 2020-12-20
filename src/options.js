@@ -553,6 +553,9 @@ function draggedOverPalleteSwatch(dragMeta, dest){
 
 function draggedOutPalleteSwatch(dragMeta, dest){
 	dest.style.marginBottom = 0;
+	if( dest.classList.contains("faux-top-swatch") ){
+		dest.remove();
+	}
 }
 
 function swatchDragStart(ev){
@@ -569,13 +572,24 @@ function swatchDragStart(ev){
 	);
 }
 
-function swatchDragOverEntry(ev){
-	dragMeta.setDest(ev.target.closest('.swatch'), draggedOverPalleteSwatch);
+function swatchDragOverEntry(ev){ // palleteSwatch
+	var overDest = ev.target.closest('.swatch');
+	dragMeta.setDest(overDest, draggedOverPalleteSwatch);
 	ev.preventDefault();
 	if( dragMeta.sourceObj.closest('.clickSwatch') ){
 		ev.dataTransfer.dropEffect = "copy"
 	}else{
 		ev.dataTransfer.dropEffect = "move"
+	}
+	// add a destination at the top for dropping items at the top
+	if( overDest.previousElementSibling == null ){
+		if( !overDest.classList.contains("faux-top-swatch") && ev.offsetY < (overDest.clientHeight * 0.5) ){
+			Cr.insertNode(
+				Cr.elm('div', {class: 'swatch faux-top-swatch', style: 'height:'+(overDest.clientHeight)+'px', events:palleteSwatchEvents() }),
+				overDest.parentNode,
+				overDest
+			);
+		}
 	}
 }
 
@@ -605,11 +619,15 @@ function swatchDroppedEntry(ev){
 	dragMeta.reset(draggedOutPalleteSwatch);
 }
 
+function palleteSwatchEvents(){
+	return [['dragover', swatchDragOverEntry],['dragleave', swatchDragOutEntry],['drop', swatchDroppedEntry],['dragend', swatchDroppedEntry],['dragstart', swatchDragStart]]
+}
+
 function createPalleteSwatch(hex, append){
 	var swHld = document.getElementById('swatches');
 	if( hex.length == 6 ){ hex = '#'+hex; }
 	hex = hex.toUpperCase();
-	return Cr.elm('div',{class:'swatch',draggable:true,style:'background-color:'+hex+';',events:[['dragover', swatchDragOverEntry],['dragleave', swatchDragOutEntry],['drop', swatchDroppedEntry],['dragend', swatchDroppedEntry],['dragstart', swatchDragStart]]},[
+	return Cr.elm('div',{class:'swatch',draggable:true,style:'background-color:'+hex+';',events:palleteSwatchEvents()},[
 		//Cr.elm('span',{style:'position:absolute;left:-40px;'},[ // for some reason breaks the events
 			Cr.elm("a",{class:'palette-nav', style:'cursor:ns-resize;', },[Cr.txt('\u25CF ')]),
 			Cr.elm("a",{class:'palette-nav', events:['click',moveUp]},[Cr.txt('\u25B3')]),

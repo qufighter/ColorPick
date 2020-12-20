@@ -41,12 +41,13 @@ label.changed:before{
 
 #swatch-holder{position:absolute;width:400px;left:480px;transition:margin-top ease-out 0.1s;}
 .rtl #swatch-holder{left:auto;right:480px;}
-#swatches{border-top: 1px solid #EEE;border-bottom: 1px solid #EEE;clear: both;}
+#swatches{border-top: 1px solid #EEE;border-bottom: 1px solid #AAA;clear: both;}
 .swatch-spacer{transition:margin ease-out 0.15s;}
 .swatch{padding:10px;transition:margin ease-in 0.15s;}
 .swatch .hex{background-color:transparent;border:none;text-shadow:1px 1px 6px white;width: 72px;padding-left:10px;}
 .rtl .swatch .hex{padding-left:2px;padding-right:10px;}}
 .swatch .close{float:right;cursor:pointer;}
+.faux-top-swatch{padding:0;margin-bottom:0 !important;}
 .swatchCtrl{
 	color:black;
 	padding:3px 10px 3px 0;
