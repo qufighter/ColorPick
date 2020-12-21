@@ -623,10 +623,20 @@ function palleteSwatchEvents(){
 	return [['dragover', swatchDragOverEntry],['dragleave', swatchDragOutEntry],['drop', swatchDroppedEntry],['dragend', swatchDroppedEntry],['dragstart', swatchDragStart]]
 }
 
+function setDragDropTransitionSpeed(swHld){
+	// to disable drag-over margin transition when many pallete entries
+	if( swHld.childNodes.length > 25 ){
+		swHld.classList.add('many');
+	}else{
+		swHld.classList.remove('many');
+	}
+}
+
 function createPalleteSwatch(hex, append){
 	var swHld = document.getElementById('swatches');
 	if( hex.length == 6 ){ hex = '#'+hex; }
 	hex = hex.toUpperCase();
+	setDragDropTransitionSpeed(swHld);
 	return Cr.elm('div',{class:'swatch',draggable:true,style:'background-color:'+hex+';',events:palleteSwatchEvents()},[
 		//Cr.elm('span',{style:'position:absolute;left:-40px;'},[ // for some reason breaks the events
 			Cr.elm("a",{class:'palette-nav', style:'cursor:ns-resize;', },[Cr.txt('\u25CF ')]),
@@ -1470,7 +1480,7 @@ Cr.elm("div",{id:"mainbox"},[
 		}
 
 		var reveal = window.location.search.match(/\?reveal[=]?(\w+)/);
-		if( reveal.length > 1 ){
+		if( reveal && reveal.length > 1 ){
 			var found = document.getElementById('label_'+reveal[1]);
 			if( found ){
 				found.style.border = '1px solid blue';
