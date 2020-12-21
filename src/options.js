@@ -585,7 +585,7 @@ function swatchDragOverEntry(ev){ // palleteSwatch
 	if( overDest.previousElementSibling == null ){
 		if( !overDest.classList.contains("faux-top-swatch") && ev.offsetY < (overDest.clientHeight * 0.5) ){
 			Cr.insertNode(
-				Cr.elm('div', {class: 'swatch faux-top-swatch', style: 'height:'+(overDest.clientHeight)+'px', events:palleteSwatchEvents() }),
+				Cr.elm('div', {class: 'swatch faux-top-swatch', style: 'height:'+Math.round(overDest.clientHeight * 0.75)+'px', events:palleteSwatchEvents() }),
 				overDest.parentNode,
 				overDest
 			);
