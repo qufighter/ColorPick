@@ -40,7 +40,7 @@ function fromPrefs(){
 	defaultIcon(iconWasCustom);
 
 	if( chrome.runtime.setUninstallURL && !options.disableUninstallSurvey ){
-		chrome.runtime.setUninstallURL("https://www.vidsbee.com/Contact/?uninstallSurvey=ColorPick&browserinfo=To help improve this tool, please take a moment to describe why you uninstalled ColorPick.%0A%0AColorPick has an option to disable this survey.%0A%0AExtUninstall-"+safeGetVersion());
+		chrome.runtime.setUninstallURL('');//"https://www.vidsbee.com/Contact/?uninstallSurvey=ColorPick&browserinfo=To help improve this tool, please take a moment to describe why you uninstalled ColorPick.%0A%0AColorPick has an option to disable this survey.%0A%0AExtUninstall-"+safeGetVersion());
 	}else{
 		chrome.runtime.setUninstallURL('');
 	}
