@@ -962,43 +962,60 @@ Cr.elm("div",{},[
 		])
 	]),
 	Cr.elm("div",{id:"preview",title:chrome.i18n.getMessage('zoomPreviewDefaultTip')},[
-		Cr.elm("a",{id:"unreg_msg",target:"_blank",href:"register.html",event:['click',navToReg],title:chrome.i18n.getMessage('buyRegisterTip')},[/*Cr.txt(chrome.i18n.getMessage('registerBanner'))*/]),
-		Cr.elm("span",{id:"timer_msg"},[]),
 		Cr.elm("a",{href:'#',id:'arr_u',class:'hilight mvarrow',name:38,event:['click',moveArrowBtn]},[Cr.txt(String.fromCharCode(9650))]),
 		Cr.elm("a",{href:'#',id:'arr_d',class:'hilight mvarrow',name:40,event:['click',moveArrowBtn]},[Cr.txt(String.fromCharCode(9660))]),
 		Cr.elm("a",{href:'#',id:'arr_l',class:'hilight mvarrow',name:37,event:['click',moveArrowBtn]},[Cr.txt(String.fromCharCode(9664))]),
 		Cr.elm("a",{href:'#',id:'arr_r',class:'hilight mvarrow',name:39,event:['click',moveArrowBtn]},[Cr.txt(String.fromCharCode(9654))]),
+
+
+		Cr.elm('a',{
+			id:'launch-tablet-edition-btn',
+			class:'promt-row',style:'display:none;',
+			event:['click', function(){
+
+				chrome.tabs.sendMessage(tabid,{getActivatedStatus:true, tab:tabid, win:winid},function(tab_response){
+					// TODO: show loading ?? (response is pretty quick!)
+					var fw_tab_resp = Object.assign({alsoLaunch: true}, tab_response);
+					//console.log('got respone from tab...', fw_tab_resp);
+					chrome.runtime.sendMessage(extensionsKnown.color_pick_tablet, fw_tab_resp, function(r) {
+						//console.log('good to launch?', r);
+					});
+				});
+			}],
+			title:Cr.txt(chrome.i18n.getMessage('tabletModePrompt')),
+			childNodes:[
+				Cr.txt('\uD83D\uDD0D ')//,Cr.txt(chrome.i18n.getMessage('tabletModePrompt')),Cr.txt(' \uD83D\uDD0E')
+			]
+		}),
+		Cr.elm('a',{
+			id:'get-tablet-edition-btn',
+			class:'promt-row',
+			style:'display:none;',
+			href: extensionsKnown.color_pick_tablet_url + '?from_popup=true',
+			target: '_blank',
+			title:Cr.txt(chrome.i18n.getMessage('tabletModePitch')),
+			childNodes:[
+				Cr.txt('\uD83D\uDD0D ')//,Cr.txt(chrome.i18n.getMessage('tabletModePitch')),Cr.txt(' \uD83D\uDD0E')
+			]
+		}),
+
+		Cr.elm("a",{href:"#",title:chrome.i18n.getMessage('pickAgainLocked'),id:"epick"},[
+			Cr.elm("img",{border:"0",align:"top",style:"position:relative;top:-1px;",src:"img/crosshair.png",width:"19"})
+		]),
+
+
 		Cr.elm("canvas",{id:"pre",width:"150",height:"150",style:"margin-bottom:3px;"})
 	]),
-	Cr.elm('a',{id:'launch-tablet-edition-btn',class:'promt-row',style:'display:none;',event:['click', function(){
-
-		chrome.tabs.sendMessage(tabid,{getActivatedStatus:true, tab:tabid, win:winid},function(tab_response){
-			// TODO: show loading ?? (response is pretty quick!)
-			var fw_tab_resp = Object.assign({alsoLaunch: true}, tab_response);
-			//console.log('got respone from tab...', fw_tab_resp);
-			chrome.runtime.sendMessage(extensionsKnown.color_pick_tablet, fw_tab_resp, function(r) {
-				//console.log('good to launch?', r);
-			});
-		});
-	}],childNodes:[Cr.txt('\uD83D\uDD0D '),Cr.txt(chrome.i18n.getMessage('tabletModePrompt')),Cr.txt(' \uD83D\uDD0E')]}),
-	Cr.elm('a',{
-		id:'get-tablet-edition-btn',
-		class:'promt-row',
-		style:'display:none;',
-		href: extensionsKnown.color_pick_tablet_url + '?from_popup=true',
-		target: '_blank',
-		childNodes:[
-			Cr.txt('\uD83D\uDD0D '),Cr.txt(chrome.i18n.getMessage('tabletModePitch')),Cr.txt(' \uD83D\uDD0E')
-		]
-	}),
 	Cr.elm("div",{id:"pres"},[
 		Cr.elm("div",{id:"ohexpre"}),
 		Cr.elm("div",{id:"hexpre",title:chrome.i18n.getMessage('showColorChooser')})
 	]),
-	Cr.elm("div",{id:"ctrls"},[
-		Cr.elm("a",{href:"#",title:chrome.i18n.getMessage('pickAgainLocked'),id:"epick"},[
-			Cr.elm("img",{border:"0",align:"top",style:"position:relative;top:-1px;",src:"img/crosshair.png",width:"19"})
-		]),
+	Cr.elm("div",{class:"ctrls"},[
+			Cr.elm("a",{id:"unreg_msg",target:"_blank",href:"register.html",event:['click',navToOptions],title:chrome.i18n.getMessage('buyRegisterTip')},[/*Cr.txt(chrome.i18n.getMessage('registerBanner'))*/]),
+			Cr.elm("span",{id:"timer_msg"},[]),
+
+	]),
+	Cr.elm("div",{id:"ctrls",class:"ctrls"},[
 		Cr.elm("a",{href:"#",class:'hilight',title:chrome.i18n.getMessage('reSnapPage'),id:"resnap"},[
 			Cr.elm("img",{align:"top",src:"img/refresh.png"})
 		]),
@@ -1054,6 +1071,7 @@ Cr.elm("div",{},[
 		console.warn("background alive wait timeout!")
 		bgPageOrPortError();
 	}, 4500);
+
 
 	//console.log('pending: option for automatically entering wasm "touch" mode? or seperate extension?', window.navigator.maxTouchPoints);
 

@@ -1,4 +1,4 @@
-body{position:relative;width:150px;font-family:arial,sans-serif;font-size:12px;padding:0px 4px 0px 4px;margin:0px;overflow-y:auto;overflow-x:hidden;min-height:300px;}
+body{position:relative;width:150px;font-family:arial,sans-serif;font-size:12px;padding:0px 4px 0px 4px;margin:0px;overflow-y:auto;overflow-x:hidden;min-height:290px;}
 a{text-decoration:none;position:relative;margin:2px;padding:3px;}
 a.hilight:hover{color:#338;background-color:#AAF;}
 #eclose{margin:5px 0; padding: 3px 3px 3px 0px;}
@@ -24,12 +24,12 @@ input{padding:9px 5px;}
 #pres{position:relative;width:150px;height:36px;border:1px solid grey;z-index:1;top:-1px;}
 #ohexpre{z-index:0;position:absolute;left:0px;top:0px;width:150px;min-height:36px;cursor:url(img/icons/history/icon32.png) 16 16,hand;}
 #hexpre{z-index:9999;position:absolute;left:0px;top:0px;width:75px;min-height:36px;cursor:url(img/icons/no-shadow/icon32.png) 16 16,hand;}
-.promt-row{margin:0;padding:12px 0 13px;text-align:center;display:block;cursor:pointer;width:152px;font-size:0.9em;}
-#ctrls{margin:-3px 0 0 -2px;z-index:-1;}
-#ctrls a{margin-right:2px;display:inline-block;vertical-align: top;}
-.rtl #ctrls a{margin-right:0;margin-left:2px;}
+.promt-row{margin:0;padding:6px;text-align:center;display:block;cursor:pointer;position:absolute;top:0;right:0;font-size:1.6em;}
+.ctrls{margin:-3px 0 0 -2px;z-index:-1;}
+.ctrls a{margin-right:2px;display:inline-block;vertical-align: top;min-height:1em;}
+.rtl .ctrls a{margin-right:0;margin-left:2px;}
 #unreg_msg{display:none;position:absolute;bottom:0;left:0;width:75;text-align:left;color:blue;font-weight:bold;text-shadow:white 1px 1px 1px;padding:5px 3px;}
-#timer_msg{position:absolute;bottom:0;right:0;width:75;text-align:left;color:red;font-weight:bold;text-shadow:white 1px 1px 1px;padding:5px 3px;}
+#timer_msg{position:absolute;bottom:0;right:0;width:75;text-align:right;color:red;font-weight:bold;text-shadow:white 1px 1px 1px;padding:5px 3px;}
 #alt-snap-mode-link{position:absolute;top: 0;left: 0;width: 80%;height: 80%;display: block;text-align: center;margin: 0;padding: 10%;text-shadow:white 1px 1px 1px;}
 #alt-snap-mode-link:visited{color:blue;}
 .btnActive{border:1px solid #FFB923;}
@@ -45,3 +45,4 @@ input{padding:9px 5px;}
 .rtl #hue_pos{left:auto;right:0px;}
 #gradi_box{position:relative;overflow:hidden;width:256px;height:256px;cursor:url(img/crosshair.png) 16 16,crosshair;}
 #ch_ctrls_box{text-align:center;margin-top:3px;}
+#epick{position:absolute;bottom:0px;}
