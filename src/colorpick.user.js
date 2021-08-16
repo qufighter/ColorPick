@@ -453,7 +453,7 @@ function swapSides(elm, olds, news, length, swappedCb){
 	}, 500);
 }
 function moveWm(ev){
-	if(!waterm) return;
+	if(!waterm || waterm.name == 'data-stay-put') return;
 	var t=waterm.style.top.match(/^0/), r=waterm.style.right.match(/^0/), b=waterm.style.bottom.match(/^0/), l=waterm.style.left.match(/^0/);
 	var cliw = waterm.clientWidth;
 	var le = ev.offsetX < 10, re = ev.offsetX > cliw - 10;
@@ -488,11 +488,13 @@ function wmSwapped(){
 }
 function wMoveInc(){
 	wmMoveCtr++;
-	if( wmMoveCtr == 3 ){
+	if( wmMoveCtr >= 3 ){
 		if(!gameScr){
-			chrome.runtime.sendMessage({beginGame:true}, function(response){});
-		}else{
-			initGame();
+			if(snapModeDetected){
+				document.head.appendChild(Cr.elm('script',{src:'colorgame.user.js'}))
+			}else{
+				chrome.runtime.sendMessage({beginGame:true}, function(response){});
+			}
 		}
 	}
 	if( wmMoveCtr > 3 ){
@@ -520,11 +522,12 @@ function currentTip(){
 function nextWm(){
 	if(!waterm) return;
 
+	currentTip();
+
 	if( gameScr ){
+		waterm.name = '';
 		nextIconImage(wmMoveCtr-4);
 	}
-
-	currentTip();
 }
 
 function enableColorPicker(){
