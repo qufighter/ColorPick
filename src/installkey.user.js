@@ -10,7 +10,7 @@ function clickedInstallKey(){
 	installKey();
 }
 function installKey(){
-	window.location=chrome.extension.getURL('register.html')+'?k='+rkey+'&n='+rname;
+	chrome.runtime.sendMessage({goToOrVisitTab: chrome.extension.getURL('register.html')+'?k='+rkey+'&n='+rname}, function(r){});
 }
 destNode=document.body;
 if(document.getElementById('autoinstall.colorpick.com') && rname != 'default_reg_name'){
