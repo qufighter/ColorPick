@@ -3,7 +3,7 @@
         "message": "Tancar i sortir del mode de selecció del color"
     },
     "hideMinimize": {
-        "message": "Ocultar / minimitzar [esc]"
+        "message": "Ocultar / minimitzar "
     },
     "showColorChooser": {
         "message": "Mostra el selector de colors"

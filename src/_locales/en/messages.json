@@ -10,7 +10,7 @@
       "message": "Close and Exit Color Pick Mode"
    },
    "hideMinimize": {
-      "message": "Hide/Minimize [esc]",
+        "message": "Hide/Minimize ",
       "description": "This will hide the extension's popup menu triggered when clicking the extension icon, the [esc] key does this too."
    },
    "buyRegisterTip": {

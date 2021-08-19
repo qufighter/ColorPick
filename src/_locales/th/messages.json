@@ -3,7 +3,7 @@
         "message": "ปิดและเลือกโหมดการเลือกสี"
     },
     "hideMinimize": {
-        "message": "ซ่อน / ลด [esc]"
+        "message": "ซ่อน / ลด "
     },
     "showColorChooser": {
         "message": "แสดง color chooser"

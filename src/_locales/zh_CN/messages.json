@@ -3,7 +3,7 @@
         "message": "关闭退出颜色选择模式"
     },
     "hideMinimize": {
-        "message": "隐藏/最小化 [esc]"
+        "message": "隐藏/最小化 "
     },
     "showColorChooser": {
         "message": "显示颜色选择器"

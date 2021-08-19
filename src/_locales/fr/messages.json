@@ -3,7 +3,7 @@
         "message": "Fermer et quitter le mode de sélection des couleurs"
     },
     "hideMinimize": {
-        "message": "Cacher / minimiser [esc]"
+        "message": "Cacher / minimiser "
     },
     "showColorChooser": {
         "message": "Afficher le sélecteur de couleurs"

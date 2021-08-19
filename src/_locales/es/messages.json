@@ -3,7 +3,7 @@
         "message": "Cerrar y salir del modo de captura de color"
     },
     "hideMinimize": {
-        "message": "Ocultar / minimizar [esc]"
+        "message": "Ocultar / minimizar "
     },
     "showColorChooser": {
         "message": "Mostrar el selector de color"
