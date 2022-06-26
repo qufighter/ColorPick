@@ -188,7 +188,7 @@ function(request, sender, sendResponse) {
 			sendResponse({});
 		}else if (request.activateOnTab){
 			lastActiveTabTime=(new Date()).getTime() - timeRequiredToBeOnTabSinceChange;
-			chrome.tabs.sendMessage(tabid, {enableColorPicker:true, forSnapMode: request.forSnapMode},function(r){});
+			chrome.tabs.sendMessage(tabid, {enableColorPicker:true, forSnapMode: request.forSnapMode, historyLen:25},function(r){});
 			sendResponse({});
 		}else if (request.isBgAlive){
 			sendResponse({});
@@ -211,7 +211,7 @@ function(request, sender, sendResponse) {
 			chrome.tabs.sendMessage(tabid, {disableColorPicker:true}, function(response) {});
 			sendResponse({});
 		}else if (request.activateForInput){
-			chrome.tabs.sendMessage(tabid,{enableColorPicker:true},function(response){});
+			chrome.tabs.sendMessage(tabid,{enableColorPicker:true, historyLen:25},function(response){});
 			sendResponse({});
 		}else if(request.goToOrVisitTab){
 			goToOrOpenTab(request.goToOrVisitTab);
@@ -224,7 +224,6 @@ function(request, sender, sendResponse) {
 			sendResponse({});
     }else
     	sendResponse({});
-  
 });
 
 

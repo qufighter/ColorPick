@@ -115,6 +115,10 @@ function navToReg(ev){
 	navTo(ev, 'register.html');
 }
 
+function navToAmz(ev){
+	navTo(ev, 'https://www.amazon.com?tag=colorpick01-20');
+}
+
 function navToOptions(ev){
 	if( ev.target && ev.target.closest('a') && ev.target.closest('a').href.match(/options.html\?/) ){
 		navTo(ev, ev.target.closest('a').href.match(/options.html\?([\w=&]+)/)[0]); // send query params if present on link

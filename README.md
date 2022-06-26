@@ -18,3 +18,4 @@ Do you want to leverage this extension's eyedropper feature on a website you ope
 [Just use input type=color fields](https://github.com/qufighter/ColorPick/blob/master/src/color-input.user.js)
 
 Please note this extension feature is not enabled on all platforms by default.
+

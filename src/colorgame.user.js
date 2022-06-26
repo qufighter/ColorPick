@@ -53,6 +53,9 @@ var sponsors = [
 	}
 ];
 
+// TODO:
+// Sponsor should NOT be random.... really it should cycle in "random" order
+
 var last_sponsor_index = -1;
 
 function rollSponsor(){
@@ -64,46 +67,83 @@ function rollSponsorAgain(){
 	while( sponsor == last_sponsor_index ){
 		sponsor = rollSponsor();
 	}
+    last_sponsor_index = sponsor;
 	return sponsor;
 }
 
 function nextIconImage(g_moveCtr){
+    //g_moveCtr = wmMoveCtr-4
 	// when this is called we already tested if(!waterm) return;
 
-	waterml.src = chrome.extension.getURL(icons[g_moveCtr%icons.length]);
+    if( icons[g_moveCtr%icons.length] ){
+        waterml.src = chrome.extension.getURL(icons[g_moveCtr%icons.length]);
+    }
 
-	//console.log('next from index', g_moveCtr, g_moveCtr % 6, watermct)
+	//console.log('next from index', g_moveCtr, '%'+wmTipsTotal+':', g_moveCtr % wmTipsTotal, watermct)
 
 	//return;
 
 	waterm.firstChild.style.display="block";
 
-	if( g_moveCtr % 6 == 1 || g_moveCtr > 2){
 
+    // the principle is that we let the ads in 1 slot early
+    // targeting tips_5": {"message": "Your Ad Here
+    // to replace this with an ad, but then we allow tip 0 to display (g_moveCtr==6, tip 0)
+    // then all subsequent slots are ads
+	if( g_moveCtr % wmTipsTotal == 5 || g_moveCtr > wmTipsTotal ){
+
+        
 		// waterml.src = chrome.extension.getURL('img/icon64.png');
 		// Cr.empty(watermct);
 		// Cr.elm('div',{id:'tip_'+((g_moveCtr + 4)%6),childNodes:[
 		// 	Cr.txt('TEST!'),
 		// ]}, watermct);
 
-		closeX=Cr.elm('a',{
-			style:'top:0;right:3px;position:absolute;cursor:pointer;text-decoration:none',
-			title:chrome.i18n.getMessage('hideMinimize') + ' ' + uos,
-			events:[
-				['click', function(ev){
-					waterm.name='';moveWm(ev);closeX.remove();
-				}],
-				['mouseover',function(ev){ev.target.style.textDecoration='underline';}],
-				['mouseout',function(ev){ev.target.style.textDecoration='none';}]
-			],
-			childNodes:[Cr.txt('-_-')]
-		}, waterm)
+        
+        
+        closeX=Cr.elm('div', {
+            style:'top:0;right:3px;position:absolute;',
+            childNodes:[
+            
+                Cr.elm('a',{
+                    style:'cursor:pointer;text-decoration:none',
+                    title:chrome.i18n.getMessage('tips_0'),
+                    events:[
+                        ['click', function(ev){
+                            if(confirm(chrome.i18n.getMessage('tips_0'))){
+                                navToReg(ev);
+                            }
+                        }],
+                        ['mouseover',function(ev){ev.target.style.textDecoration='underline';}],
+                        ['mouseout',function(ev){ev.target.style.textDecoration='none';}]
+                    ],
+                    childNodes:[Cr.txt('?')]
+                }),
+                Cr.txt(' '),
+                Cr.elm('a',{
+                    style:'cursor:pointer;text-decoration:none',
+                    title:chrome.i18n.getMessage('hideMinimize') + ' ' + uos,
+                    events:[
+                        ['click', function(ev){
+                            waterm.name='';moveWm(ev);closeX.remove();
+                        }],
+                        ['mouseover',function(ev){ev.target.style.textDecoration='underline';}],
+                        ['mouseout',function(ev){ev.target.style.textDecoration='none';}]
+                    ],
+                    childNodes:[Cr.txt('-_-')]
+                })
+        ]}, waterm);
+        
+        
+        
 
 
 		var sponsor = sponsors[rollSponsorAgain()];
 
-		Cr.empty(watermct);
-		Cr.elm('div',{id:'tip_'+((g_moveCtr + 4)%6),childNodes:[
+        //console.log('in adspace', sponsor);
+
+        Cr.empty(watermct);
+		Cr.elm('div',{id:'sponsor_tip_'+(g_moveCtr % wmTipsTotal),childNodes:[
 			Cr.elm('div',{
 				title: uos,
 				style:'font-size:8px',
@@ -111,10 +151,11 @@ function nextIconImage(g_moveCtr){
 			Cr.elm('a',{
 				href: sponsor.href,
 				target: '_blank',
-				style:'white-space:pre;text-align:center;display:block;text-decoration:none;',
+				style:'white-space:pre;text-align:center;display:block;text-decoration:none;font-size:10pt;',
 				childNodes:[
 					Cr.elm('img',{
 						style: 'padding-bottom:5px;max-width: '+(sponsor.maxw || '100%')+' !important;max-height:47vh !important;display:block;',
+                        alt: "Sponsor Image",
 						src: sponsor.img}),
 					Cr.txt(sponsor.title)
 				]

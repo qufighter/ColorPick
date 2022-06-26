@@ -384,7 +384,7 @@
       "message": "Watermark may be disabled from advanced options once you have registered the extension."
    },
    "tips_0": {
-      "message": "Register ColorPick for the option to hide this message.",
+      "message": "Register ColorPick for the option to hide this 'watermark' message.",
       "description": "'ColorPick' refers to the extName key, see that description for details, if that key is not translated leave this part of the string untranslated"
    },
    "tips_1": {

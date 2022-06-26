@@ -1,6 +1,6 @@
 var elmid1='color_pick_click_box',elmid2='ChromeExtension:Color-Pick.com';
 if(typeof(exitAndDetach)=='function')exitAndDetach();
-var n=null,c=null,waterm=null,watermlo=null,watermct=null,wmMoveCtr=0,lastMoveInc=0,gameScr=false,hex='F00BAF',lasthex='',rgb=null;hsv=null;scal=1,ex=0,ey=0,isEnabled=false,isLocked=false,msg_bg_unavail=chrome.i18n.getMessage('bgPageUnavailable');
+var n=null,c=null,waterm=null,watermlo=null,watermct=null,wmMoveCtr=0,wmTipsTotal=6,lastMoveInc=0,gameScr=false,hex='F00BAF',lasthex='',rgb=null;hsv=null;scal=1,ex=0,ey=0,isEnabled=false,isLocked=false,msg_bg_unavail=chrome.i18n.getMessage('bgPageUnavailable');
 var isUpdating=false,lastTimeout=0,lx=0,ly=0,histories=0,nbsp='\u00A0',popupsShowing=0,connectListener=false;
 var opts={};
 var cvs = document.createElement('canvas');
@@ -212,7 +212,7 @@ function setDisplay(){//Cr.elm
 			Cr.elm('div', {style:'text-shadow:white 1px 1px 2px;font-weight:bold;'}, [
 				Cr.elm('a', {
 					style: 'cursor:pointer;',
-					events:['click', navToAmz],
+					events:['click', navToReg],
 					childNodes:[Cr.txt(chrome.i18n.getMessage('registerBannerLong'))]
 				})
 			], n);
@@ -235,8 +235,9 @@ function picked(ev){
 		}
 		isLocked=true;
 		setDisplay();
+        nextTip();
 	}
-	updateTip();
+	updateTip(); // for tip1, needed (changes if locked or unlocked)
 	chrome.runtime.sendMessage({setPickState:true,isPicking:!isLocked}, function(r){});
 	mmf(ev);
 }
@@ -487,6 +488,7 @@ function wmSwapped(){
 	lastMoveInc = t;
 }
 function wMoveInc(){
+    if(!waterm) return;
 	wmMoveCtr++;
 	if( wmMoveCtr >= 3 ){
 		if(!gameScr){
@@ -504,8 +506,7 @@ function wMoveInc(){
 	}
 }
 function updateTip(){
-	// we can possibly more simply test wmMoveCtr is sufficient range for tips... rather than querySelector....
-	if(!waterm) return;
+	if(!waterm || wmMoveCtr%wmTipsTotal != 1 ) return;
 	var tip1 = waterm.querySelector('#tip_1');
 	if( tip1 ){
 		currentTip();
@@ -514,19 +515,24 @@ function updateTip(){
 function currentTip(){
 	if(!waterm) return;
 	Cr.empty(watermct);
-	var tipIndex = wmMoveCtr%6;
+	var tipIndex = wmMoveCtr%wmTipsTotal;
 	var extra = '';
 	if( tipIndex == 1 && isLocked ){ extra = '_locked' }
 	Cr.elm('div',{id:'tip_'+tipIndex,childNodes:[Cr.txt(chrome.i18n.getMessage('tips_'+tipIndex+extra))]}, watermct);
 }
+function nextTip(){
+    if(!waterm) return;
+    wMoveInc();
+}
 function nextWm(){
 	if(!waterm) return;
-
-	currentTip();
+    if( !gameScr || wmMoveCtr <= wmTipsTotal ){
+        currentTip();
+    }
 
 	if( gameScr ){
 		waterm.name = '';
-		nextIconImage(wmMoveCtr-4);
+		nextIconImage(wmMoveCtr);
 	}
 }
 
@@ -565,12 +571,21 @@ function keepOnScreen(){
   if(!n)return;
 	n.style.top=(ly+8)+"px";
 	n.style.left=(lx+8)+"px";
+    var block_slide = false; // prevernts cursor from being obscured in tiny window...
 	if( n.clientWidth + n.offsetLeft +24 > innerWidth ){
-		n.style.left=(lx-8-n.clientWidth)+"px";
+        if( lx-8-n.clientWidth < 0 ){
+            n.style.left="0px"; block_slide = true;
+        }else{
+            n.style.left=(lx-8-n.clientWidth)+"px";
+        }
 	}
 	if( n.clientHeight + n.offsetTop +24 > innerHeight ){
-		n.style.top=(ly-8-n.clientHeight)+"px";
-	}
+        if( ly-8-n.clientHeight < 0 && !block_slide ){
+            n.style.top="0px";
+        }else{
+            n.style.top=(ly-8-n.clientHeight)+"px";
+        }
+    }
 }
 function updateColorPreview(ev){
 	if(!isEnabled)return;

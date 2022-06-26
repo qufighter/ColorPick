@@ -38,7 +38,8 @@ function saveToChromeSyncStorage(){
 }
 
 function goToOrOpenTab(tabUrl, completedCallback){
-  if( !tabUrl.match(/^chrome/) ) tabUrl = chrome.extension.getURL(tabUrl); // typically "options.html"
+  if( tabUrl.match(/^http/) ) tabUr = tabUrl
+  else if( !tabUrl.match(/^chrome/) ) tabUrl = chrome.extension.getURL(tabUrl); // typically "options.html"
   completedCallback = completedCallback || function(){};
   chrome.tabs.query({
     url: tabUrl,
