@@ -73,11 +73,34 @@ document.addEventListener('DOMContentLoaded', function(){
 			Cr.elm('h3', {
 				class: 'txt',
 				style: 'margin:0;',
-				childNodes:[Cr.txt(chrome.i18n.getMessage('snapModeDesc'))]
+				childNodes:[
+					Cr.txt(chrome.i18n.getMessage('snapModeDesc'))
+					//Cr.elm('a',{events:['click',goToTabletEdition],childNodes:[Cr.txt('Woah there, we do no accept input here...')]})
+				]
 			})
 		]
 	}, document.body);
 });
+
+function goToTabletEdition(){
+
+	if( snapLoader && snapLoader.src ){
+
+		console.log('full win')
+	}
+	console.log("part win")
+}
+/*
+chrome.tabs.sendMessage(tabid,{getActivatedStatus:true, tab:tabid, win:winid},function(tab_response){
+					// TODO: show loading ?? (response is pretty quick!)
+					var fw_tab_resp = Object.assign({alsoLaunch: true}, tab_response);
+					//console.log('got respone from tab...', fw_tab_resp);
+					chrome.runtime.sendMessage(extensionsKnown.color_pick_tablet, fw_tab_resp, function(r) {
+						//console.log('good to launch?', r);
+					});
+				});
+*/
+
 
 var lastX = 0, lastY=0;
 function timeoutUpdatePosition(ev){

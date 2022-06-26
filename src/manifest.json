@@ -47,7 +47,15 @@
      "img/game/bunny.webp",
      "img/game/rabbit.webp",
      "img/crosshair.png",
-     "img/close.png"
+     "img/close.png",
+     "img/sponsors/colordoctor.jpg",
+     "img/sponsors/waterpik.jpg",
+     "img/sponsors/picks.jpg",
+     "img/sponsors/laser.jpg",
+     "img/sponsors/color.jpg",
+     "img/sponsors/prismacolor.jpg",
+     "img/sponsors/bulb.jpg",
+     "img/sponsors/purple.jpg"
    ],
    "permissions": [
       "activeTab", "tabs", "<all_urls>", "storage", "alarms"

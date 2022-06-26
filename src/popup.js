@@ -982,7 +982,7 @@ Cr.elm("div",{},[
 					});
 				});
 			}],
-			title:Cr.txt(chrome.i18n.getMessage('tabletModePrompt')),
+			title:chrome.i18n.getMessage('tabletModePrompt'),
 			childNodes:[
 				Cr.txt('\uD83D\uDD0D ')//,Cr.txt(chrome.i18n.getMessage('tabletModePrompt')),Cr.txt(' \uD83D\uDD0E')
 			]
@@ -993,7 +993,7 @@ Cr.elm("div",{},[
 			style:'display:none;',
 			href: extensionsKnown.color_pick_tablet_url + '?from_popup=true',
 			target: '_blank',
-			title:Cr.txt(chrome.i18n.getMessage('tabletModePitch')),
+			title:chrome.i18n.getMessage('tabletModePitch'),
 			childNodes:[
 				Cr.txt('\uD83D\uDD0D ')//,Cr.txt(chrome.i18n.getMessage('tabletModePitch')),Cr.txt(' \uD83D\uDD0E')
 			]
