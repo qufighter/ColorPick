@@ -141,6 +141,9 @@
       "message": "Start picking colors each time popup is clicked",
       "description": "'Start picking' in this usage refers to entering color selection mode.  If this feature is disabled the previous mode will be retained instead (locked (selected) or unlocked (picking)).  'popup' refers to the extension's popup menu triggered when clicking the icon."
    },
+   "closePopupOnTrigger": {
+      "message": "Auto close popup when first starting extension."
+   },
    "pixelatedPreview": {
       "message": "Zoomed Preview is Pixelated"
    },

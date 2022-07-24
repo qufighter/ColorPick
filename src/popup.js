@@ -8,7 +8,7 @@ var nbsp='\u00A0';
 var lastHex='FFF';
 var isPopout=false;
 //pref variables should be created dynamicaly
-var borderValue='1px solid grey',EnableRGB=true,EnableHSL=true,useCSSValues=true,usePrevColorBG=false,showPreviousClr=true,pickEveryTime=(isWindows?true:false),bbackgroundColor='white',hexHasHash=false,hexIsLowerCase=false;
+var borderValue='1px solid grey',EnableRGB=true,EnableHSL=true,useCSSValues=true,usePrevColorBG=false,showPreviousClr=true,pickEveryTime=(isWindows?true:false),closePopupOnTrigger=false,bbackgroundColor='white',hexHasHash=false,hexIsLowerCase=false;
 var cpScaleOffset=(isWindows?16:0);
 var isPicking=false,keyInputMode=false;
 var CSS3ColorFormat=loadedOptions.CSS3ColorFormat;
@@ -315,6 +315,7 @@ function iin(){
 	if(typeof(localStorage["EnableHSL"])!='undefined')EnableHSL = ((localStorage["EnableHSL"]=='true')?true:false);
 	if(typeof(localStorage["cpScaleOffset"])!='undefined')cpScaleOffset = localStorage["cpScaleOffset"]-0;
 	if(typeof(localStorage["pickEveryTime"])!='undefined')pickEveryTime = ((localStorage["pickEveryTime"]=='true')?true:false);
+    if(typeof(localStorage["closePopupOnTrigger"])!='undefined')closePopupOnTrigger = ((localStorage["closePopupOnTrigger"]=='true')?true:false);
 	if(typeof(localStorage["usePrevColorBG"])!='undefined')usePrevColorBG = ((localStorage["usePrevColorBG"]=='true')?true:false);
 	if(typeof(localStorage["bbackgroundColor"])!='undefined')bbackgroundColor = (localStorage["bbackgroundColor"]);
 	if(typeof(localStorage["showPreviousClr"])!='undefined')showPreviousClr = ((localStorage["showPreviousClr"]=='true')?true:false);
@@ -623,11 +624,12 @@ function finishSetup(){
 		if(!response.isPicking && pickEveryTime)toglPick();
 		setButtonState(response && response.isPicking);
 
-		if(!response.wasAlreadyEnabled && !isWindows && isChrome){
-			setTimeout(function(){
-				just_close_preview();
-			},1000);
-		}
+        if(!response.wasAlreadyEnabled && closePopupOnTrigger){
+            setTimeout(function(){
+                just_close_preview();
+            },10);
+        }
+        
 	});
 
 	if(localStorage.feedbackOptOut=='true' && localStorage["reg_chk"]!='true'){
