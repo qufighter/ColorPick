@@ -8,7 +8,7 @@ var nbsp='\u00A0';
 var lastHex='FFF';
 var isPopout=false;
 //pref variables should be created dynamicaly
-var borderValue='1px solid grey',EnableRGB=true,EnableHSL=true,useCSSValues=true,usePrevColorBG=false,showPreviousClr=true,pickEveryTime=(isWindows?true:false),closePopupOnTrigger=false,bbackgroundColor='white',hexHasHash=false,hexIsLowerCase=false;
+var borderValue='1px solid grey',EnableRGB=true,EnableHSL=true,useCSSValues=true,usePrevColorBG=false,showPreviousClr=true,pickEveryTime=false,closePopupOnTrigger=true,bbackgroundColor='white',hexHasHash=false,hexIsLowerCase=false;
 var cpScaleOffset=(isWindows?16:0);
 var isPicking=false,keyInputMode=false;
 var CSS3ColorFormat=loadedOptions.CSS3ColorFormat;
