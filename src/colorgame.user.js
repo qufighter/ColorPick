@@ -16,12 +16,30 @@ var drag = {
 
 var uos = 'ColorPick unofficial sponsor:';
 
-var sponsors = [
-	{
-		img:chrome.extension.getURL('img/sponsors/colordoctor.jpg'),
-		title:'Color Doctor\nhypertension tester',
-		href:'https://amzn.to/2KWw7hJ'
-	},{
+var timestamp = (new Date()).getTime();
+
+var sponsors = [];
+
+// sponsors block added here
+
+// test sponsor for index 0...
+sponsors.push({
+    img:chrome.extension.getURL('img/sponsors/colordoctor.jpg'),
+    title:'Color Doctor\nhypertension tester',
+    href:'https://amzn.to/2KWw7hJ'
+});
+
+var sponsorsPaidCount = sponsors.length;
+var sponsorsPaid = [].concat(sponsors);
+// end sponsors block
+
+var sponsorsDefault = [
+//	{
+//		img:chrome.extension.getURL('img/sponsors/colordoctor.jpg'),
+//		title:'Color Doctor\nhypertension tester',
+//		href:'https://amzn.to/2KWw7hJ'
+//	},
+    {
 		img:chrome.extension.getURL('img/sponsors/waterpik.jpg'),
 		title:'Waterpik\njust add water',
 		href:'https://amzn.to/2KXVEqM'
@@ -53,22 +71,46 @@ var sponsors = [
 	}
 ];
 
+// todo, each time we re-enter, we should re-roll the default sponsors... and reset to paid sponsors
+function randomizeDefaultSponsors(){
+    sponsorsDefault = sponsorsDefault.sort(function(){return Math.random() > 0.5 ? 1 : -1;});
+    sponsors = sponsorsPaid.concat(sponsorsDefault);
+    last_sponsor_index = -1;
+}
+
 // TODO:
 // Sponsor should NOT be random.... really it should cycle in "random" order
 
 var last_sponsor_index = -1;
+
+function rollPaidSponsor(){
+    return Math.floor(Math.random()*sponsorsPaidCount);
+}
 
 function rollSponsor(){
 	return Math.floor(Math.random()*sponsors.length);
 }
 
 function rollSponsorAgain(){
-	var sponsor = rollSponsor();
-	while( sponsor == last_sponsor_index ){
-		sponsor = rollSponsor();
-	}
-    last_sponsor_index = sponsor;
-	return sponsor;
+//	var sponsor = rollSponsor();
+//	while( sponsor == last_sponsor_index ){
+//		sponsor = rollSponsor();
+//	}
+//    last_sponsor_index = sponsor;
+//	return sponsor;
+    
+    // for NON random ordering...
+    last_sponsor_index++;
+    // if our index is greater than our paid sponsor... chance to reset to a paid sponsor should increase
+    if( last_sponsor_index >= sponsorsPaidCount ){
+        if( Math.random() < last_sponsor_index / sponsors.length ){
+            last_sponsor_index = rollPaidSponsor();
+        }
+    }
+    if( last_sponsor_index >= sponsors.length ){
+        last_sponsor_index = 0;
+    }
+    return last_sponsor_index;
 }
 
 function nextIconImage(g_moveCtr){
@@ -79,13 +121,18 @@ function nextIconImage(g_moveCtr){
         waterml.src = chrome.extension.getURL(icons[g_moveCtr%icons.length]);
     }
 
-	//console.log('next from index', g_moveCtr, '%'+wmTipsTotal+':', g_moveCtr % wmTipsTotal, watermct)
+	console.log('next from index', g_moveCtr, '%'+wmTipsTotal+':', g_moveCtr % wmTipsTotal, watermct)
 
 	//return;
 
 	waterm.firstChild.style.display="block";
 
 
+    if( g_moveCtr == 4 ){
+        // for this time of triggering the extension, this is the first call to this function
+        randomizeDefaultSponsors();
+    }
+    
     // the principle is that we let the ads in 1 slot early
     // targeting tips_5": {"message": "Your Ad Here
     // to replace this with an ad, but then we allow tip 0 to display (g_moveCtr==6, tip 0)
@@ -155,7 +202,7 @@ function nextIconImage(g_moveCtr){
 				childNodes:[
 					Cr.elm('img',{
 						style: 'padding-bottom:5px;max-width: '+(sponsor.maxw || '100%')+' !important;max-height:47vh !important;display:block;',
-                        alt: "Sponsor Image",
+                        alt: (sponsor.alt || "Sponsor Image"),
 						src: sponsor.img}),
 					Cr.txt(sponsor.title)
 				]
