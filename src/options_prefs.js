@@ -32,6 +32,7 @@ pOptions["closePopupOnTrigger"]={def:true,ind:0}; //default also set in popup.ht
 pOptions["pixelatedPreview"]={def:true,ind:0};
 pOptions["allowWebGl"]={def:false,ind:1,img:'img/warning.png'};
 pOptions["fishEye"]={def:5,ind:1,select:{1:'1 '+chrome.i18n.getMessage('minimum')+'/'+chrome.i18n.getMessage('off'),2:2,3:3,4:4,5:'5 '+chrome.i18n.getMessage('default'),6:6,7:7,8:8,9:'9 '+chrome.i18n.getMessage('full'),10:10,11:11,12:12,13:13,14:14,15:'15 '+chrome.i18n.getMessage('maxZoom')}};
+pOptions["lessFishEye"]={def:false,ind:2};
 pOptions["EnableHex"]={def:true,ind:0,css:'display:inline-block;'};
 pOptions["EnableRGB"]={def:true,ind:0,css:'display:inline-block;margin-left:8px;'};
 pOptions["EnableHSL"]={def:false,ind:0,css:'display:inline-block;margin-left:8px;'};

@@ -702,7 +702,7 @@ function handleRendering(quick){
 		}else{
 			ictx = getMain2dContext();
 			ictx.drawImage(cvs,-ox+(startPoint),-oy+(startPoint));
-			var smi,spi,mp=opts.fishEye-0;
+			var smi,spi,mp=opts.fishEye-0,mpMod=opts.lessFishEye?0:1;
 			//xx,yy
 			for(var i=0;i<startPoint;i+=2){
 				smi=startPoint-i;
@@ -729,7 +729,7 @@ function handleRendering(quick){
 					ictx.drawImage(icvs,0,spi,totalWidth,smi, 0,spi+1,totalWidth,smi);
 					ictx.drawImage(icvs,0,0,totalWidth,smi+1, 0,-1,totalWidth,smi+1);
 				}
-				mp--;
+				mp-=mpMod;
 				if(mp<1)mp=1;
 				ictx.fillRect(spi+1, 0, 1, totalWidth);
 				ictx.fillRect(smi-1, 0, 1, totalWidth);
@@ -830,7 +830,7 @@ function initializeCanvas(){
 		" vec2 ctr=vec2(0.5,0.5) + vec2(halfTexSizeFracOnePix,-halfTexSizeFracOnePix);"+"\n"+
 		" vec2 agl=(vTextureCoord.xy - ctr.xy);"+"\n"+
 		" float dis=distance(ctr,vTextureCoord) / fishEyeScale;"+"\n"+
-		" vec2 get=ctr + (agl * dis);"+"\n"+
+        " vec2 get=ctr + (agl "+(opts.lessFishEye ? "/ (fishEyeScale * 2.0)" : "* dis" )+");"+"\n"+
 		" vec4 bcolor=texture2D(uSampler, get);"+"\n"+
 		" vec2 res=get * 128.0;"+"\n"+
 		" ivec2 geb=ivec2(res);"+"\n"+

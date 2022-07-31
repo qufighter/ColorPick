@@ -154,6 +154,9 @@
    "fishEye": {
       "message": "Fish Eye Zoom Amount"
    },
+   "lessFishEye": {
+         "message": "Reduce or Disable Fish Eye Bulge"
+      },
    "EnableHex": {
       "message": "Show hexadecimal"
    },
