@@ -703,7 +703,14 @@ function handleRendering(quick){
 			ictx = getMain2dContext();
 			ictx.drawImage(cvs,-ox+(startPoint),-oy+(startPoint));
 			var smi,spi,mp=opts.fishEye-0,mpMod=opts.lessFishEye?0:1;
-			//xx,yy
+            
+            var dat = ictx.getImageData(startPoint, startPoint, 1, 1).data;//notarget
+            //ictx.fillStyle = "rgba("+(255-data[0])+","+(255-data[1])+","+(255-data[2])+",0.9)";
+            var d=dat[0]+dat[1]+dat[2];
+            if(d > 192) ictx.fillStyle = "rgba(30,30,30,0.8)";
+            else ictx.fillStyle = "rgba(225,225,225,0.8)";
+
+            //xx,yy
 			for(var i=0;i<startPoint;i+=2){
 				smi=startPoint-i;
 				spi=startPoint+i;
@@ -712,14 +719,7 @@ function handleRendering(quick){
 				ictx.drawImage(icvs,0,0,smi+1,totalWidth, -1,0,smi+1,totalWidth);
 				ictx.drawImage(icvs,0,spi,totalWidth,smi, 0,spi+1,totalWidth,smi);
 				ictx.drawImage(icvs,0,0,totalWidth,smi+1, 0,-1,totalWidth,smi+1);
-				if(i==0){
-					var dat = ictx.getImageData(startPoint, startPoint, 1, 1).data;//notarget
-//					ictx.fillStyle = "rgba("+(255-data[0])+","+(255-data[1])+","+(255-data[2])+",0.9)";
-					var d=dat[0]+dat[1]+dat[2];
-					if(d > 192) ictx.fillStyle = "rgba(30,30,30,0.8)";
-					else ictx.fillStyle = "rgba(225,225,225,0.8)";
-				}else ictx.fillStyle = "rgba(255,255,255,0.4)";
-
+                if(mp<1)mp=1;
 				for(var c=0;c<mp;c++){
 					if(++i>=startPoint)break;
 					smi=startPoint-i;
@@ -730,11 +730,11 @@ function handleRendering(quick){
 					ictx.drawImage(icvs,0,0,totalWidth,smi+1, 0,-1,totalWidth,smi+1);
 				}
 				mp-=mpMod;
-				if(mp<1)mp=1;
 				ictx.fillRect(spi+1, 0, 1, totalWidth);
 				ictx.fillRect(smi-1, 0, 1, totalWidth);
 				ictx.fillRect(0, spi+1, totalWidth, 1);
 				ictx.fillRect(0,smi-1,totalWidth,1);
+                ictx.fillStyle = "rgba(255,255,255,0.4)"; // all subsequent line rendering will be transparent
 			}
 		}
 	}
