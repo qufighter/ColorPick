@@ -251,9 +251,11 @@ var chromeStatusCounter=0;
 function getChromeInAppStatus(){
 	var inAppBtnArea = gel('chrome-inapp');
 	chromeStatusCounter++; // second time we should avoid showing the buy button alone...
+    var inAppLoaded = false;
 	google.payments.inapp.getPurchases({
 		parameters: {env: 'prod'},
 		success: function(resp){
+            inAppLoaded = true;
 			if( searchQuery.indexOf('debug') > -1 ) console.log('inapp - check - resp', resp);
 			var found = false;
 			resp.response.details.forEach(function(purchase){
@@ -306,10 +308,19 @@ function getChromeInAppStatus(){
 			}
 		},
 		failure: function(resp){
+            if( inAppLoaded ) return;
+            inAppLoaded = true;
 			if( searchQuery.indexOf('debug') > -1 ) console.log('inapp - check - failed', resp);
 			showInappFailure();
 		}
 	});
+    setTimeout(function(){
+        if( !inAppLoaded ){
+            inAppLoaded = true;
+            showInappFailure();
+        }
+        
+    }, 5000)
 }
 
 function showInappFailure(){
@@ -324,21 +335,25 @@ function showInappFailure(){
 					Cr.txt(' More Info'+nbsp)
 				]),
 				Cr.elm("ul",{style:"display:none;"},[
-					Cr.elm('li',{},[Cr.txt('After signing in then reload this page.')]),
-					Cr.elm('li',{},[Cr.txt('Chrome does not support in-app purchases in all regions.')]),
-					Cr.elm('li',{},[
-						Cr.txt('Your firewall must allow Chrome to connect to Google Wallet.'),
-						Cr.elm("ul",{style:""},[
-							Cr.elm('li',{},[Cr.txt('This includes any firewalls present between your device and the Internet.')]),
-							Cr.elm('li',{},[Cr.txt('Allow all Google owned domains on port 80 and 443 (not all of them are obvious).')]),
-							Cr.elm('li',{},[Cr.txt(chrome.i18n.getMessage('licenseComFirewall'))]),
-							Cr.elm('li',{},[Cr.txt('You may need to restart chrome.')]),
-
-						])
-					]),
-					getSingleuserListItem(),
-					getNewSignInListItem(),
-					getJustPurchasedListItem()
+                    Cr.elm('li',{},[Cr.txt('If you purchased this chrome exclusive license in the past and feel entitled to registered mode without having to purchase an updated license, you may steal(); the program from the javascript console.')]),
+                    Cr.elm('li',{},[Cr.txt('Warning that unsteal(); will also remove any valid or invalid registration.')]),
+                    Cr.elm('li',{},[Cr.txt('This means of registration is as valid as any other (eg you may use it to disable the watermark advertsement).')]),
+                    Cr.elm('li',{},[Cr.txt('Please register!')]),
+//					Cr.elm('li',{},[Cr.txt('After signing in then reload this page.')]),
+//					Cr.elm('li',{},[Cr.txt('Chrome does not support in-app purchases in all regions.')]),
+//					Cr.elm('li',{},[
+//						Cr.txt('Your firewall must allow Chrome to connect to Google Wallet.'),
+//						Cr.elm("ul",{style:""},[
+//							Cr.elm('li',{},[Cr.txt('This includes any firewalls present between your device and the Internet.')]),
+//							Cr.elm('li',{},[Cr.txt('Allow all Google owned domains on port 80 and 443 (not all of them are obvious).')]),
+//							Cr.elm('li',{},[Cr.txt(chrome.i18n.getMessage('licenseComFirewall'))]),
+//							Cr.elm('li',{},[Cr.txt('You may need to restart chrome.')]),
+//
+//						])
+//					]),
+//					getSingleuserListItem(),
+//					getNewSignInListItem(),
+//					getJustPurchasedListItem()
 				])
 			]
 	}));

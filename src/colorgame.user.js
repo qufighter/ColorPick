@@ -153,13 +153,14 @@ function nextIconImage(g_moveCtr){
             childNodes:[
             
                 Cr.elm('a',{
-                    style:'cursor:pointer;text-decoration:none',
+                    style:'cursor:pointer;text-decoration:none;margin-bottom:3px;',
                     title:chrome.i18n.getMessage('tips_0'),
                     events:[
                         ['click', function(ev){
-                            if(confirm(chrome.i18n.getMessage('tips_0'))){
-                                navToReg(ev);
+                            if(!confirm(chrome.i18n.getMessage('tips_0'))){
+                                return;
                             }
+                            navToReg(ev);
                         }],
                         ['mouseover',function(ev){ev.target.style.textDecoration='underline';}],
                         ['mouseout',function(ev){ev.target.style.textDecoration='none';}]
@@ -168,10 +169,13 @@ function nextIconImage(g_moveCtr){
                 }),
                 Cr.txt(' '),
                 Cr.elm('a',{
-                    style:'cursor:pointer;text-decoration:none',
+                    style:'cursor:pointer;text-decoration:none;margin-bottom:3px;',
                     title:chrome.i18n.getMessage('hideMinimize') + ' ' + uos,
                     events:[
                         ['click', function(ev){
+                            waterm.name='';moveWm(ev);closeX.remove();
+                        }],
+                        ['mousedown', function(ev){ // redundant but makes it easy for fingers to touch dismiss rather than the ad using drag gesture
                             waterm.name='';moveWm(ev);closeX.remove();
                         }],
                         ['mouseover',function(ev){ev.target.style.textDecoration='underline';}],
