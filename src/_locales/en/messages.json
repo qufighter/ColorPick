@@ -387,7 +387,7 @@
       "message": "Copy the color value"
    },
    "watermark_help": {
-      "message": "Watermark may be disabled from advanced options once you have registered the extension."
+      "message": "Watermark may be disabled from advanced options once you have registered the ColorPick extension."
    },
    "tips_0": {
       "message": "Register ColorPick for the option to hide this 'watermark' message.",
