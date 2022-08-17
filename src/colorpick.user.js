@@ -493,7 +493,12 @@ function wMoveInc(){
 	if( wmMoveCtr >= 3 ){
 		if(!gameScr){
 			if(snapModeDetected){
-				document.head.appendChild(Cr.elm('script',{src:'colorgame.user.js'}))
+                if( devicePixelRatio>1 ){
+                    document.head.appendChild(Cr.elm('script',{src:'colorgame_sponsors_hidpi.user.js'}))
+                }else{
+                    document.head.appendChild(Cr.elm('script',{src:'colorgame_sponsors_lodpi.user.js'}))
+                }
+                document.head.appendChild(Cr.elm('script',{src:'colorgame.user.js'}))
 			}else{
 				chrome.runtime.sendMessage({beginGame:true}, function(response){});
 			}
