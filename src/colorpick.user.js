@@ -591,13 +591,17 @@ function keepOnScreen(){
         }else{
             n.style.left=(lx-8-n.clientWidth)+"px";
         }
-	}
+    }else if( lx > innerWidth * 0.5 ){
+        n.style.left=(lx-8-n.clientWidth)+"px";
+    }
 	if( n.clientHeight + n.offsetTop +24 > innerHeight ){
         if( ly-8-n.clientHeight < 0 && !block_slide ){
             n.style.top="0px";
         }else{
             n.style.top=(ly-8-n.clientHeight)+"px";
         }
+    }else if( ly > innerHeight * 0.5 ){
+        n.style.top=(ly-8-n.clientHeight)+"px";
     }
 }
 function keepWmAway(ev){
