@@ -230,27 +230,111 @@ function(request, sender, sendResponse) {
     	sendResponse({});
 });
 
+function finallyProcessSafeSponsorsListFor(sponsors, safeBrowsingResponse, tabid){
+    var sponsorsValid = [];
+    console.log('safeBrowsingResponse', safeBrowsingResponse);
+    safeBrowsingResponse = safeBrowsingResponse || {};
+    // safeBrowsingResponse = { "matches": [{"threat":{"url": "http://www.urltocheck1.org/"}}] }; console.error('dummy response override!!  this code should be uncommented for TESTING ONLY!!!! oops!!!!');
+    var badUrls = {};
+    if( safeBrowsingResponse.matches && safeBrowsingResponse.matches.length ){
+        for( var m=0, th=null; m<safeBrowsingResponse.matches.length; m++){
+            th = safeBrowsingResponse.matches[m];
+            if( th.threat && th.threat.url ){
+                badUrls[th.threat.url] = th;
+            }
+        }
+    }
+
+    for( var s=0, sp=null; s<sponsors.length; s++){
+        sp = sponsors[s];
+        if( badUrls[sp.href] ){
+            console.log('sponsor was omitted due to failed safe browisng api check', badUrls[sp.href]);
+        }else{
+            sponsorsValid.push(sp);
+        }
+    }
+
+    if( sponsorsValid.length ){
+        var sponsorsJson = JSON.stringify(sponsors);
+        chrome.tabs.sendMessage(tabid, {validSponsors:sponsorsJson}, function(response) {});
+    }
+}
+
+function safeBrowsingCheckSponsorsList(sponsors, tabid){
+    //  https://developers.google.com/safe-browsing/v4/lookup-api (docs)
+    // my argument for this not being revenue generating is that this is
+    // a request made on behalf of the client to validate safety
+    // in reality they would use their own api key for this task if it is important to them
+    // plus as time is money, I'm not making any money...
+    // I'll probably still be billed for this for more than anyone will ever pay for a link
+    // I'd rather just send the link to a google redirect and let them pick if it is currently safe TBH....
+    // this is just to account for the fact sites will randomly be hacked, and safety may constantly change
+    // while extension deploys have become a slow process and unlikely to be as responsive to a live issue as this api
+    // here is hoping no sponsor will ever be negatively impacted by this check
+    // and no user will ever be negatively impacted by a sponsor link...
+    var coolorpeckkey = 'AIzaSyAIWf-Mc8OvaBJYY6pBZOcBoiWZOkQjf0g';
+    var threatsUrl = 'https://safebrowsing.googleapis.com/v4/threatLists?key='+coolorpeckkey;
+    // you need to visit threatsUrl and load this list, or otherwise.... maintain appropriate logic here... yay!
+    var baseUrl = 'https://safebrowsing.googleapis.com/v4/threatMatches:find?key='+coolorpeckkey;
+    // good thing we love complexity here.... in no-mans infinite time land... lols :)
+    var request = {
+      "client": {
+        "clientId":      "com.vidsbee.colorpick",
+        "clientVersion": safeGetVersion()
+      },
+      "threatInfo": {
+        "threatTypes":      ["MALWARE"],
+        "platformTypes":    ["ANY_PLATFORM"],
+        "threatEntryTypes": ["URL"],
+        "threatEntries": []
+      }
+    };
+
+    for( var s=0, sp=null; s<sponsors.length; s++){
+        sp = sponsors[s];
+        request.threatInfo.threatEntries.push(sp.href);
+    }
+
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange=function(){if(xhr.readyState == 4){
+        if(xhr.status == 200){
+            var safeBrowsingResponse = null;
+            try{
+                safeBrowsingResponse = JSON.parse(xhr.responseText);
+            }catch(e){
+                console.warn("The Safe Browsing API did not return json.  If your internet was connected, please report this issue to http://www.vidsbee.com/Contact", xhr.responseText, xhr);
+            }
+            finallyProcessSafeSponsorsListFor(sponsors, safeBrowsingResponse, tabid);
+        }else{
+            // google is down? api key expires? well we can't just assume this means the URL is malware...
+            console.warn("The Safe Browsing API check failed.  If your internet was connected, please report this issue to http://www.vidsbee.com/Contact", xhr.responseText, xhr);
+            finallyProcessSafeSponsorsListFor(sponsors, null, tabid);
+        }
+    }};
+    xhr.open('POST', baseUrl, true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.send();
+}
+
 function processSponsorsListFor(sponsors, tabid, timestamp){
-//    timestamp = (new Date('2022-08-31 12:00:00')).getTime()
-//    console.error('timestamp override!!  this code should be enabled for TESTING ONLY!!!! oops!!!!');
+     //timestamp = (new Date('2022-08-31 12:00:00')).getTime(); console.error('timestamp override!!  this code should be uncommented for TESTING ONLY!!!! oops!!!!');
 
     // if someone can hack the file system, they could probably change this check too
     // anyway we'll double check what we got from the coresponding lo/hi dpi JSON file(s) to see if it's in the approved list...
-    // and check against google too... https://developers.google.com/safe-browsing/v4/lookup-api (todo)
+    // and check against google safe-browsing api too... see safeBrowsingCheckSponsorsList()
     var knownSponsorUrls={
         'https://get.manganum.app/GWor': 1
     };
     var sponsorsValid = [];
     for( var s=0, sp=null; s<sponsors.length; s++){
         sp = sponsors[s];
-        if( timestamp > sp.begin && timestamp < sp.end && knownSponsorUrls[sp.url] ){
+        if( timestamp > sp.begin && timestamp < sp.end && knownSponsorUrls[sp.href] ){
             sponsorsValid.push(sp);
         }
     }
-    //console.log('bg: sponsors', sponsors_dpi, sponsors, 'validated', sponsorsValid);
+    //console.log('bg: sponsors', sponsors, 'validated', sponsorsValid);
     if( sponsorsValid.length ){
-        var sponsorsJson = JSON.stringify(sponsors);
-        chrome.tabs.sendMessage(tabid, {validSponsors:sponsorsJson}, function(response) {});
+        safeBrowsingCheckSponsorsList(sponsors, tabid);
     }
 }
 
