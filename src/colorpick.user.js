@@ -325,7 +325,7 @@ function dissableColorPickerFromHere(){
 function disableColorPicker(){
 	isEnabled=false,isLocked=false;
 	isUpdating = false;isMakingNew = false;
-	document.removeEventListener('mousemove',mmf);
+	document.body.removeEventListener('mousemove',mmf);
 	removeEventListener('scroll',ssf);
 	removeEventListener('resize',ssf);
 	removeEventListener('keyup',wk);
@@ -434,7 +434,7 @@ function prefsLoadedCompleteInit(){
 	}
 	wmMoveCtr=0;
 	dirtyImage.src=chrome.extension.getURL('img/close.png');
-	document.addEventListener('mousemove',mmf);
+	document.body.addEventListener('mousemove',mmf);
 	addEventListener('keyup',wk);
 	addEventListener('scroll',ssf);
 	addEventListener('resize',ssf);
