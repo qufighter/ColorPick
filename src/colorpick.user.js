@@ -203,9 +203,9 @@ function setDisplay(){//Cr.elm
 	Cr.elm('div',{},[
 		(opts.EnableHex && !opts.hexHasHash)?Cr.elm('span',{style:'vertical-align:bottom;padding:8px 4px;display:inline-block;'},[Cr.txt('#')]):0,
 		Cr.elm('input',{type:'text',readonly:true,size:8,style:'max-width:75px;font-size:10pt;vertical-align:bottom;padding:8px;border:'+opts.borderValue,id:'cphexvl',value:(opts.hexHasHash?'#':'')+hex,event:['mouseover',selectTargElm]}),
-		Cr.elm('input',{type:'image',style:iconStyles,src:chrome.extension.getURL('img/icons/history/icon32.png'),title:chrome.i18n.getMessage('history'),id:'cphistbtn',event:['click',function(ev){ chrome.runtime.sendMessage({goToOrVisitTab:'options.html?history='+hex}, function(r){}); ev.preventDefault();},true]}),
-		Cr.elm('input',{type:'image',style:iconStyles,src:chrome.extension.getURL('img/icons/palette/icon32.png'),title:chrome.i18n.getMessage('generate_palette'),id:'cpgenbtn',event:['click',function(ev){ chrome.runtime.sendMessage({goToOrVisitTab:'options.html?palette='+hex}, function(r){}); ev.preventDefault();},true]}),
-		Cr.elm('input',{type:'image',style:iconStyles,src:chrome.extension.getURL('img/close.png'),title:chrome.i18n.getMessage('closeAndExit')+' [esc]',id:'cpexitbtn',event:['click',dissableColorPickerFromHere,true]}),
+		Cr.elm('input',{type:'image',role:'img',style:iconStyles,src:chrome.extension.getURL('img/icons/history/icon32.png'),title:chrome.i18n.getMessage('history'),id:'cphistbtn',event:['click',function(ev){ chrome.runtime.sendMessage({goToOrVisitTab:'options.html?history='+hex}, function(r){}); ev.preventDefault();},true]}),
+		Cr.elm('input',{type:'image',role:'img',style:iconStyles,src:chrome.extension.getURL('img/icons/palette/icon32.png'),title:chrome.i18n.getMessage('generate_palette'),id:'cpgenbtn',event:['click',function(ev){ chrome.runtime.sendMessage({goToOrVisitTab:'options.html?palette='+hex}, function(r){}); ev.preventDefault();},true]}),
+		Cr.elm('input',{type:'image',role:'img',style:iconStyles,src:chrome.extension.getURL('img/close.png'),title:chrome.i18n.getMessage('closeAndExit')+' [esc]',id:'cpexitbtn',event:['click',dissableColorPickerFromHere,true]}),
 		(opts.ShowRGBHSL&&opts.EnableRGB&&rgb?Cr.elm('input',{type:'text',readonly:true,style:'max-width:150px;display:block;',value:'rgb'+formatColorValuesWith(opts.CSS3ColorFormat,rgb.r,rgb.g,rgb.b),id:'cprgbvl',event:['mouseover',selectTargElm]}):0),
 		(opts.ShowRGBHSL&&opts.EnableHSL&&hsv?Cr.elm('input',{type:'text',readonly:true,style:'max-width:150px;display:block;',value:'hsl'+formatColorValuesWith(opts.CSS3ColorFormat,hsv.h,hsv.s,hsv.v,0,1,1),id:'cphslvl',event:['mouseover',selectTargElm]}):0)
 	],n);
@@ -398,7 +398,14 @@ function prefsLoadedCompleteInit(){
 		return;
 	}
 	removeExistingNodes();
-	c=Cr.elm('canvas',{id:elmid1,height:innerHeight,width:innerWidth,style:'position:fixed;width:auto!important;height:auto!important;max-width:none!important;max-height:none!important;top:0px!important;left:0px!important;margin:0px!important;padding:0px!important;overflow:hidden;z-index:2147483646;cursor:'+crosshairCss(),events:[['click',picked,true],['mousedown',function(ev){if(ev.which!=2)ev.preventDefault();}]]},[],document.body);
+	c=Cr.elm('canvas',{
+        id:elmid1,
+        height:innerHeight,
+        width:innerWidth,
+        role:'img',
+        style:'position:fixed;width:auto!important;height:auto!important;max-width:none!important;max-height:none!important;top:0px!important;left:0px!important;margin:0px!important;padding:0px!important;overflow:hidden;z-index:2147483646;cursor:'+crosshairCss(),
+        events:[['click',picked,true],['mousedown',function(ev){if(ev.which!=2)ev.preventDefault();}]]
+    },[],document.body);
 	n=Cr.elm('div',{id:elmid2,style:'position:fixed;min-width:30px;max-width:300px;min-height:30px;box-shadow:2px 2px 2px #999;transition:box-shadow 0.5s ease-out; border:'+opts.borderValue+';z-index:2147483646;cursor:default;padding:4px;'},[Cr.txt(' ')],document.body);
 	if( opts.reg_chk!=true || !opts.hideWatermark ){
 		waterml=Cr.elm('img',{src:chrome.extension.getURL('img/icon64.png'), width:64, align:"top", style:'vertical-align:top;display:inline-block;'});
@@ -814,7 +821,7 @@ function getMain3dContext(){
 function initializeCanvas(){
 	gl=0;
 	icvs = Cr.elm('canvas',{width:totalWidth,height:totalWidth});//icon canvas
-	ticvs = Cr.elm('canvas',{width:totalWidth,height:totalWidth});//tainted icon canvas
+	ticvs = Cr.elm('canvas',{width:totalWidth,height:totalWidth,role:'img'});//tainted icon canvas
 	if( webGlAvail && opts.pixelatedPreview && opts.allowWebGl){
 		gl = icvs.getContext("webgl");
 
