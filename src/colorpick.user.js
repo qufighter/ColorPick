@@ -474,40 +474,46 @@ function swapSides(elm, olds, news, length, swappedCb){
 		}, 30);
 	}, 500);
 }
-function moveWm(ev){
+function moveWm(ev, swappedFn){
 	if(!waterm || waterm.name == 'data-stay-put') return;
+    swappedFn = swappedFn || wmSwapped;
 	var t=waterm.style.top.match(/^0/), r=waterm.style.right.match(/^0/), b=waterm.style.bottom.match(/^0/), l=waterm.style.left.match(/^0/);
 	var cliw = waterm.clientWidth;
 	var le = ev.offsetX < 10, re = ev.offsetX > cliw - 10;
 	if( (le || re) && window.innerWidth > (cliw * 2 ) ){
 		if( r ){
-			swapSides(waterm, 'right', 'left', cliw, wmSwapped);
+			swapSides(waterm, 'right', 'left', cliw, swappedFn);
 		}else if( l ){
-			swapSides(waterm, 'left', 'right', cliw, wmSwapped);
+			swapSides(waterm, 'left', 'right', cliw, swappedFn);
 		}
 	}else{
 		if( b ){
-			swapSides(waterm, 'bottom', 'top', waterm.clientHeight, wmSwapped);
+			swapSides(waterm, 'bottom', 'top', waterm.clientHeight, swappedFn);
 		}else if( t ){
-			swapSides(waterm, 'top', 'bottom', waterm.clientHeight, wmSwapped);
+			swapSides(waterm, 'top', 'bottom', waterm.clientHeight, swappedFn);
 		}
 	}
 }
 function wmSwapped(){
 	var t = (new Date()).getTime();
 	if( t - lastMoveInc > (wmMoveCtr == 1 ? 1000 : 500) ){
-		wMoveInc();
-		if( n ){
-			// todo standardize auto reset fn?
-			var orig = n.style.boxShadow;
-			n.style.boxShadow = '#222 2px 2px 19px 19px';
-			setTimeout(function(){
-				n.style.boxShadow = orig;
-			}, 500 );
-		}
+        wMoveInc();
+        wmSwappedNoInc();
 	}
 	lastMoveInc = t;
 }
+
+function wmSwappedNoInc(){
+    if( n ){
+        var orig = n.style.boxShadow;
+        n.style.boxShadow = '#222 2px 2px 19px 19px';
+        setTimeout(function(){
+            n.style.boxShadow = orig;
+        }, 500 );
+    }
+}
+
+
 function wMoveInc(){
     if(!waterm) return;
 	wmMoveCtr++;
@@ -637,7 +643,7 @@ function keepWmAway(ev){
     || (nr.top < wr.bottom && nr.top > wr.top       && nr.left < wr.right && nr.left > wr.left)
     ){
         ev = ev || {offsetX: wr.right  };
-        waterm.name='';moveWm(ev);
+        waterm.name='';moveWm(ev, wmSwappedNoInc); //swap sides but keep current presented wm
     }
 }
 
