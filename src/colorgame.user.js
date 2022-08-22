@@ -17,11 +17,9 @@ var drag = {
 var uos = 'ColorPick unofficial sponsor:';
 var uof = 'ColorPick sponsor:';
 
-var sponsors = sponsors || [];
-
-var sponsorsPaidCount = sponsors.length;
-var sponsorsPaid = [].concat(sponsors);
-// end sponsors block
+var sponsors = [];
+var sponsorsPaid = [];
+var sponsorsPaidCount = 0;
 
 var sponsorsDefault = [
     {
@@ -241,9 +239,19 @@ function nextIconImage(g_moveCtr){
         waterm.name='data-stay-put';
     }
 }
-    
-function initGame(){
 
+function paidSponsorsRcvd(json){
+    //console.log('content script got json... ', json);
+    var arrRecieved = JSON.parse(json);
+    if( arrRecieved.length ){
+        sponsorsPaid = arrRecieved;
+        sponsorsPaidCount = sponsorsPaid.length;
+        randomizeDefaultSponsors() // this will probably be called anyway soon, but we'll make sure it is called once
+    }
+}
+
+function initGame(){
+    chrome.runtime.sendMessage({requestSponsorsList:true, devicePixelRatio: devicePixelRatio, timestamp: (new Date()).getTime()}, function(response){});
 }
 initGame();
 

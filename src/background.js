@@ -205,6 +205,9 @@ function(request, sender, sendResponse) {
 		}else if (request.beginGame){
 			chrome.tabs.executeScript(tabid, {file: "colorgame.user.js"}, function(){});
 			sendResponse({});
+        }else if (request.requestSponsorsList){
+            fetchSponsorsListTo(tabid, request.devicePixelRatio || 1, request.timestamp);
+            sendResponse({});
 		}else if (request.disableColorPicker){
 			isRunning=false;
 			defaultIcon();
@@ -227,6 +230,43 @@ function(request, sender, sendResponse) {
     	sendResponse({});
 });
 
+function processSponsorsListFor(sponsors, tabid, timestamp){
+//    timestamp = (new Date('2022-08-31 12:00:00')).getTime()
+//    console.error('timestamp override!!  this code should be enabled for TESTING ONLY!!!! oops!!!!');
+
+    // if someone can hack the file system, they could probably change this check too
+    // anyway we'll double check what we got from the coresponding lo/hi dpi JSON file(s) to see if it's in the approved list...
+    // and check against google too... https://developers.google.com/safe-browsing/v4/lookup-api (todo)
+    var knownSponsorUrls={
+        'https://get.manganum.app/GWor': 1
+    };
+    var sponsorsValid = [];
+    for( var s=0, sp=null; s<sponsors.length; s++){
+        sp = sponsors[s];
+        if( timestamp > sp.begin && timestamp < sp.end && knownSponsorUrls[sp.url] ){
+            sponsorsValid.push(sp);
+        }
+    }
+    //console.log('bg: sponsors', sponsors_dpi, sponsors, 'validated', sponsorsValid);
+    if( sponsorsValid.length ){
+        var sponsorsJson = JSON.stringify(sponsors);
+        chrome.tabs.sendMessage(tabid, {validSponsors:sponsorsJson}, function(response) {});
+    }
+}
+
+function fetchSponsorsListTo(tabid, devicePixelRatio, timestamp){
+    var sponsors_dpi = 'colorgame_sponsors_lodpi.json';
+    if( devicePixelRatio > 1 ){
+        sponsors_dpi = 'colorgame_sponsors_hidpi.json';
+    }
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange=function(){if(xhr.readyState == 4 && xhr.status == 200){
+        var sponsors =  JSON.parse(xhr.responseText);
+        processSponsorsListFor(sponsors, tabid, timestamp);
+    }};
+    xhr.open('GET', chrome.runtime.getURL(sponsors_dpi), true);
+    xhr.send();
+}
 
 function processSetColor(request){
 	if(request.hex) curentHex=request.hex;

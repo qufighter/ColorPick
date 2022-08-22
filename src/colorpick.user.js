@@ -128,7 +128,12 @@ function reqLis(request, sender, sendResponse) {
 		if( ey < 0 ){ ey = 0; }else if( ey >= c.height ){ ey = c.height - 1; }
 		lx=Math.round(ex / x_cvs_scale),ly=Math.round(ey / y_cvs_scale);
 		updateColorPreview();
-	}else if (request.reloadPrefs){
+      
+  }else if (request.validSponsors){
+      if( typeof(paidSponsorsRcvd) == 'function' ){
+          paidSponsorsRcvd(request.validSponsors);
+      }
+  }else if (request.reloadPrefs){
 		loadPrefsFromStorage(opts, function(){updateColorPreview();});
   }else if (request.disableColorPicker){
 	if( !sender || !sender.tab ){ // if this was sent from a tab, it is from another content script, ignore
@@ -493,11 +498,6 @@ function wMoveInc(){
 	if( wmMoveCtr >= 3 ){
 		if(!gameScr){
 			if(snapModeDetected){
-                if( devicePixelRatio>1 ){
-                    document.head.appendChild(Cr.elm('script',{src:'colorgame_sponsors_hidpi.user.js'}))
-                }else{
-                    document.head.appendChild(Cr.elm('script',{src:'colorgame_sponsors_lodpi.user.js'}))
-                }
                 document.head.appendChild(Cr.elm('script',{src:'colorgame.user.js'}))
 			}else{
 				chrome.runtime.sendMessage({beginGame:true}, function(response){});
