@@ -243,6 +243,7 @@ function picked(ev){
         nextTip();
 	}
 	updateTip(); // for tip1, needed (changes if locked or unlocked)
+    setTimeout(keepWmAway, 250);
 	chrome.runtime.sendMessage({setPickState:true,isPicking:!isLocked}, function(r){});
 	mmf(ev);
 }
@@ -592,6 +593,20 @@ function keepOnScreen(){
         }
     }
 }
+function keepWmAway(ev){
+    if(!n||!waterm)return;
+    var nr = n.getBoundingClientRect();
+    var wr = waterm.getBoundingClientRect();
+    if((nr.bottom > wr.top && nr.bottom < wr.bottom && nr.right > wr.left && nr.right < wr.right)
+    || (nr.top < wr.bottom && nr.top > wr.top       && nr.right > wr.left && nr.right < wr.right)
+    || (nr.bottom > wr.top && nr.bottom < wr.bottom && nr.left < wr.right && nr.left > wr.left)
+    || (nr.top < wr.bottom && nr.top > wr.top       && nr.left < wr.right && nr.left > wr.left)
+    ){
+        ev = ev || {offsetX: wr.right  };
+        waterm.name='';moveWm(ev);
+    }
+}
+
 function updateColorPreview(ev){
 	if(!isEnabled)return;
 	keepOnScreen();
