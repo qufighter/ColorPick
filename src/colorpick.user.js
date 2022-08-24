@@ -251,7 +251,7 @@ function picked(ev){
         nextTip();
 	}
 	updateTip(); // for tip1, needed (changes if locked or unlocked)
-    setTimeout(keepWmAway, 250);
+    setTimeout(keepWmAway, 250); // the new watermark could have overlapped the main control... avoid this!
 	chrome.runtime.sendMessage({setPickState:true,isPicking:!isLocked}, function(r){});
 	mmf(ev);
 }
@@ -468,18 +468,22 @@ function swapSides(elm, olds, news, length, swappedCb){
 	setTimeout(function(){
 		elm.style[news] = elm.style[olds];
 		elm.style[olds] = '';
+        elm.setAttribute('data-last-swap', (news=='left' || news=='right' ? 'hz' : 'vt') )
 		swappedCb();
 		setTimeout(function(){
 			elm.style[news] = '0px';
 		}, 30);
 	}, 500);
 }
-function moveWm(ev, swappedFn){
-	if(!waterm || waterm.name == 'data-stay-put') return;
+function moveWm(ev, swappedFn, forceDifferentSwap){
+	if(!waterm || (waterm.name == 'data-stay-put' && !forceDifferentSwap)) return;
     swappedFn = swappedFn || wmSwapped;
 	var t=waterm.style.top.match(/^0/), r=waterm.style.right.match(/^0/), b=waterm.style.bottom.match(/^0/), l=waterm.style.left.match(/^0/);
 	var cliw = waterm.clientWidth;
 	var le = ev.offsetX < 10, re = ev.offsetX > cliw - 10;
+    if( forceDifferentSwap ){
+        if(waterm.getAttribute('data-last-swap') == 'hz' ){le=false;re=false;}else{le=true;}
+    }
 	if( (le || re) && window.innerWidth > (cliw * 2 ) ){
 		if( r ){
 			swapSides(waterm, 'right', 'left', cliw, swappedFn);
@@ -509,6 +513,7 @@ function wmSwappedNoInc(){
         n.style.boxShadow = '#222 2px 2px 19px 19px';
         setTimeout(function(){
             n.style.boxShadow = orig;
+            keepWmAway();// we may have accidentally overlapped our main control... this will avoid that!
         }, 500 );
     }
 }
@@ -643,7 +648,7 @@ function keepWmAway(ev){
     || (nr.top < wr.bottom && nr.top > wr.top       && nr.left < wr.right && nr.left > wr.left)
     ){
         ev = ev || {offsetX: wr.right  };
-        waterm.name='';moveWm(ev, wmSwappedNoInc); //swap sides but keep current presented wm
+        moveWm(ev, wmSwappedNoInc, true); //swap sides but keep current presented wm, force different swap
     }
 }
 
