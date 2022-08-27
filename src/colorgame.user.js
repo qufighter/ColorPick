@@ -1,3 +1,5 @@
+// In case you are wondering what this is, this is part of the ColorPick eyedropper extension
+
 gameScr = true;
 
 var closeX=null;
@@ -109,7 +111,7 @@ function nextIconImage(g_moveCtr){
         waterml.src = chrome.extension.getURL(icons[g_moveCtr%icons.length]);
     }
 
-    console.log('next from index', g_moveCtr, '%'+wmTipsTotal+':', g_moveCtr % wmTipsTotal, watermct)
+    //console.log('next from index', g_moveCtr, '%'+wmTipsTotal+':', g_moveCtr % wmTipsTotal, watermct)
 
     //return;
 
