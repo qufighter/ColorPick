@@ -278,7 +278,7 @@ function exitAndDetachWithMessage(){
 	exitAndDetach();
 
 	// careful, use of chrome.* api in this funciton without try/catch should be avoided for when ext context is invalidated... see ext_close
-	var detachedl=Cr.elm('img',{src:ext_icon, width:64, align:"top", style:'vertical-align:top;display:inline-block;'});
+	var detachedl=Cr.elm('img',{src:ext_icon, width:64, align:"top", style:'vertical-align:top;display:inline-block;position:relative !important;padding: 0 0 5px 0 !important;margin:0 !important;'});
 	var detachedct=Cr.elm('div',{id:'detached-content',style:'margin:14px;margin-left:164px;',childNodes:[
 		Cr.elm('div',{style:'color:red;font-weight:bold;',childNodes:[Cr.txt(msg_error)]}),
 		Cr.elm('div',{childNodes:[Cr.txt(snapModeDetected ? msg_bg_unavail_snap : msg_bg_unavail)]}),
@@ -416,7 +416,7 @@ function prefsLoadedCompleteInit(){
     },[],document.body);
 	n=Cr.elm('div',{id:elmid2,style:'position:fixed;min-width:30px;max-width:300px;min-height:30px;box-shadow:2px 2px 2px #999;transition:'+ntx.def+'; border:'+opts.borderValue+';z-index:2147483646;cursor:default;padding:4px;'},[Cr.txt(' ')],document.body);
 	if( opts.reg_chk!=true || !opts.hideWatermark ){
-		waterml=Cr.elm('img',{src:chrome.extension.getURL('img/icon64.png'), width:64, align:"top", style:'vertical-align:top;display:inline-block;'});
+		waterml=Cr.elm('img',{src:chrome.extension.getURL('img/icon64.png'), width:64, align:"top", style:'vertical-align:top;display:inline-block;position:relative !important;padding: 0 0 5px 0 !important;margin:0 !important;'});
 		watermct=Cr.elm('div',{id:'wm-content',style:'margin:7px'});
 		waterm=Cr.elm('div',{
 			id:'colorpick-watermark',

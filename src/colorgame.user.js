@@ -197,7 +197,7 @@ function nextIconImage(g_moveCtr){
                 style:'white-space:pre;text-align:center;display:block;text-decoration:none;font-size:10pt;',
                 childNodes:[
                     Cr.elm('img',{
-                        style: 'padding-bottom:5px;max-width: '+(sponsor.maxw || '100%')+' !important;max-height:47vh !important;display:block;',
+                        style: 'position:relative !important;padding: 0 0 5px 0 !important;max-width: '+(sponsor.maxw || '100%')+' !important;max-height:47vh !important;display:block;margin:0 !important;',
                         alt: (sponsor.alt || "Sponsor Image"),
                         src: sponsor.img
                     }),
