@@ -179,6 +179,7 @@ function keyResponse(isValid,validHash,validName){
 	}else{
 		set_unregistered();
 	}
+    saveToChromeSyncStorage();
 	saveSyncItemsToChromeSyncStorage();
 }
 
@@ -199,12 +200,14 @@ function license_go(){
 	}
 }
 
-function resetPurchases(){
+function resetPurchases(cbf){
 	localStorage['reg_chk']='false';
 	localStorage['reg_inapp']='false';
+    localStorage.removeItem('reg_hash');
 	localStorage.removeItem('reg_name');
 	set_unregistered();
-	saveSyncItemsToChromeSyncStorage();
+    saveToChromeSyncStorage();
+	saveSyncItemsToChromeSyncStorage(cbf);
 }
 
 function chromeInapPurchaseSuccess(){
@@ -220,6 +223,7 @@ function chromeInapPurchaseSuccess(){
 	localStorage['reg_inapp']='true';
 	localStorage['reg_name']=localStorage['reg_name'] || ((isChrome?'Chrome ':'') + 'Exclusive');
 	set_registered();
+    saveToChromeSyncStorage();
 	saveSyncItemsToChromeSyncStorage();
 }
 
@@ -240,10 +244,14 @@ function steal(){
 
 function unsteal(){
 	if( localStorage['was_stole'] ){
-		resetPurchases();
 		localStorage.removeItem('was_stole');
-		window.location.reload();
+        resetPurchases(function(){window.location.reload();});
 	}
+}
+
+function unsteal_anyway(){
+    localStorage.removeItem('was_stole');
+    resetPurchases(function(){window.location.reload();});
 }
 
 var chromeStatusCounter=0;
@@ -252,75 +260,78 @@ function getChromeInAppStatus(){
 	var inAppBtnArea = gel('chrome-inapp');
 	chromeStatusCounter++; // second time we should avoid showing the buy button alone...
     var inAppLoaded = false;
-	google.payments.inapp.getPurchases({
-		parameters: {env: 'prod'},
-		success: function(resp){
-            inAppLoaded = true;
-			if( searchQuery.indexOf('debug') > -1 ) console.log('inapp - check - resp', resp);
-			var found = false;
-			resp.response.details.forEach(function(purchase){
-				if( purchase.sku == registerdModeSku){
-					found = true;
-				}
-			});
+//	google.payments.inapp.getPurchases({
+//		parameters: {env: 'prod'},
+//		success: function(resp){
+//
+//            inAppLoaded = true;
+//			if( searchQuery.indexOf('debug') > -1 ) console.log('inapp - check - resp', resp);
+//			var found = false;
+//			resp.response.details.forEach(function(purchase){
+//				if( purchase.sku == registerdModeSku){
+//					found = true;
+//				}
+//			});
+//
+//			if( found ){
+//				chromeInapPurchaseSuccess();
+//
+//			}else{
 
-			if( found ){
-				chromeInapPurchaseSuccess();
-			}else{
-				Cr.empty(inAppBtnArea);
-				inAppBtnArea.appendChild(Cr.elm('span', {
-					style: Cr.css({
-						color: "white",
-						'font-size': '16px',
-						'background-color': '#6799CC',
-						'box-shadow': 'black 1px 1px 1px',
-						'border-radius': '4px',
-						border: '1px solid #1c6bbb',
-						padding: '8px',
-						cursor: 'pointer'
-					}),
-					events: Cr.evt('click', chromeInappBuyBegin),
-					childNodes: [
-						Cr.txt('Buy License')
-					]
-				}));
-
-
-				if( chromeStatusCounter > 1 ){
-					// means the user may have already made a purchase.... but it has not yet charged their card
-					inAppBtnArea.appendChild(Cr.elm('div', {
-						childNodes: [
-							Cr.elm('br'),
-							Cr.elm("a",{class:"pointer",events:Cr.evt('click', toggle_next_sibling_display)},[
-								Cr.elm("img",{src:"img/expand.png",class:'expand-triangle'}),
-								Cr.txt(' Help'+nbsp)
-							]),
-							Cr.elm("ul",{style:"display:none;"},[
-								getSingleuserListItem(),
-								getNewSignInListItem(),
-								getJustPurchasedListItem()
-							])
-						]
-					}));
-				}
+//				Cr.empty(inAppBtnArea);
+//				inAppBtnArea.appendChild(Cr.elm('span', {
+//					style: Cr.css({
+//						color: "white",
+//						'font-size': '16px',
+//						'background-color': '#6799CC',
+//						'box-shadow': 'black 1px 1px 1px',
+//						'border-radius': '4px',
+//						border: '1px solid #1c6bbb',
+//						padding: '8px',
+//						cursor: 'pointer'
+//					}),
+//					events: Cr.evt('click', chromeInappBuyBegin),
+//					childNodes: [
+//						Cr.txt('Buy License')
+//					]
+//				}));
 
 
-			}
-		},
-		failure: function(resp){
-            if( inAppLoaded ) return;
-            inAppLoaded = true;
-			if( searchQuery.indexOf('debug') > -1 ) console.log('inapp - check - failed', resp);
-			showInappFailure();
-		}
-	});
-    setTimeout(function(){
-        if( !inAppLoaded ){
-            inAppLoaded = true;
-            showInappFailure();
-        }
-        
-    }, 5000)
+//				if( chromeStatusCounter > 1 ){
+//					// means the user may have already made a purchase.... but it has not yet charged their card
+////					inAppBtnArea.appendChild(Cr.elm('div', {
+////						childNodes: [
+////							Cr.elm('br'),
+////							Cr.elm("a",{class:"pointer",events:Cr.evt('click', toggle_next_sibling_display)},[
+////								Cr.elm("img",{src:"img/expand.png",class:'expand-triangle'}),
+////								Cr.txt(' Help'+nbsp)
+////							]),
+////							Cr.elm("ul",{style:"display:none;"},[
+////								getSingleuserListItem(),
+////								getNewSignInListItem(),
+////								getJustPurchasedListItem()
+////							])
+////						]
+////					}));
+//				}
+                showInappFailure();
+//
+//			}
+//		},
+//		failure: function(resp){
+//            if( inAppLoaded ) return;
+//            inAppLoaded = true;
+//			if( searchQuery.indexOf('debug') > -1 ) console.log('inapp - check - failed', resp);
+//			showInappFailure();
+//		}
+//	});
+//    setTimeout(function(){
+//        if( !inAppLoaded ){
+//            inAppLoaded = true;
+//            showInappFailure();
+//        }
+//
+//    }, 5000)
 }
 
 function showInappFailure(){
@@ -336,9 +347,11 @@ function showInappFailure(){
 				]),
 				Cr.elm("ul",{style:"display:none;"},[
                     Cr.elm('li',{},[Cr.txt('If you purchased this chrome exclusive license in the past and feel entitled to registered mode without having to purchase an updated license, you may steal(); the program from the javascript console.')]),
-                    Cr.elm('li',{},[Cr.txt('Warning that unsteal(); will also remove any valid or invalid registration.')]),
+                    Cr.elm('li',{},[Cr.txt('Warning that unsteal(); or unsteal_anyway(); will also remove any valid or invalid registration.')]),
                     Cr.elm('li',{},[Cr.txt('This means of registration is as valid as any other (eg you may use it to disable the watermark advertsement).')]),
                     Cr.elm('li',{},[Cr.txt('Please register!')]),
+                    Cr.elm('li',{},[localStorage['was_stole'] ? Cr.elm('input',{type:'button', value:'unsteal();', event:['click',unsteal]}) : (localStorage['reg_chk']!='true' ? Cr.elm('input',{type:'button', value:'steal();', event:['click',steal]}): 0)]),
+                    
 //					Cr.elm('li',{},[Cr.txt('After signing in then reload this page.')]),
 //					Cr.elm('li',{},[Cr.txt('Chrome does not support in-app purchases in all regions.')]),
 //					Cr.elm('li',{},[
