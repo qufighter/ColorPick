@@ -10,23 +10,25 @@ function sendReloadPrefs(cb){
 	});
 }
 
-function chromeStorageSaveALocalStor(tosave){
+function chromeStorageSaveALocalStor(tosave, cbf){
+	cbf =  cbf || function(){};
 	storage.set(tosave, function() {
 		if(chrome.runtime.lastError && chrome.runtime.lastError.message.indexOf('MAX_WRITE_OPERATIONS_PER_HOUR') > 0){
 			//console.log(chrome.runtime.lastError);
 		}
+		cbf();
 	});
 }
 
-function saveSyncItemsToChromeSyncStorage(){
+function saveSyncItemsToChromeSyncStorage(cbf){
 	var tosave={};
 	for(var i in pSyncItems){
 		tosave[i]=localStorage[i];
 	}
-	chromeStorageSaveALocalStor(tosave);
+	chromeStorageSaveALocalStor(tosave, cbf);
 	sendReloadPrefs();
 }
-function saveToChromeSyncStorage(){
+function saveToChromeSyncStorage(cbf){
 	var tosave={};
 	for(var i in pOptions){
 		tosave[i]=localStorage[i];
@@ -34,7 +36,7 @@ function saveToChromeSyncStorage(){
 	for(var i in pAdvOptions){
 		tosave[i]=localStorage[i];
 	}
-	chromeStorageSaveALocalStor(tosave);
+	chromeStorageSaveALocalStor(tosave, cbf);
 }
 
 function goToOrOpenTab(tabUrl, completedCallback){
