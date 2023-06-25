@@ -760,46 +760,22 @@ function handleRendering(quick){
 	}else{
 		if(opts.allowWebGl && webGlAvail){
 			getMain3dContext();
-			texturectx.drawImage(cvs,-ox+(64),-oy+(64));
-			//gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, texture);
-			gl.texSubImage2D(gl.TEXTURE_2D, 0, 0,0, gl.RGBA, gl.UNSIGNED_BYTE, texture);
-			gl.uniform1i(textureSampPosition, 0);
-			gl.uniform1f(fishEyeScalePosition, opts.fishEye);
-			gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
-		}else{
-			ictx = getMain2dContext();
-			ictx.drawImage(cvs,-ox+(startPoint),-oy+(startPoint));
-			var smi,spi,mp=opts.fishEye-0,mpMod=opts.lessFishEye?0:1;
-            var d = rgb.r + rgb.g + rgb.b;
-			if(d > 192) ictx.fillStyle = "rgba(30,30,30,0.8)";
-			else ictx.fillStyle = "rgba(225,225,225,0.8)";
-
-			//xx,yy
-			for(var i=0;i<startPoint;i+=2){
-				smi=startPoint-i;
-				spi=startPoint+i;
-				//drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight) //CANVAS
-				ictx.drawImage(icvs,spi,0,smi,totalWidth, spi+1,0,smi,totalWidth);
-				ictx.drawImage(icvs,0,0,smi+1,totalWidth, -1,0,smi+1,totalWidth);
-				ictx.drawImage(icvs,0,spi,totalWidth,smi, 0,spi+1,totalWidth,smi);
-				ictx.drawImage(icvs,0,0,totalWidth,smi+1, 0,-1,totalWidth,smi+1);
-                if(mp<1)mp=1;
-				for(var c=0;c<mp;c++){
-					if(++i>=startPoint)break;
-					smi=startPoint-i;
-					spi=startPoint+i;
-					ictx.drawImage(icvs,spi,0,smi,totalWidth, spi+1,0,smi,totalWidth);
-					ictx.drawImage(icvs,0,0,smi+1,totalWidth, -1,0,smi+1,totalWidth);
-					ictx.drawImage(icvs,0,spi,totalWidth,smi, 0,spi+1,totalWidth,smi);
-					ictx.drawImage(icvs,0,0,totalWidth,smi+1, 0,-1,totalWidth,smi+1);
-				}
-				mp-=mpMod;
-				ictx.fillRect(spi+1, 0, 1, totalWidth);
-				ictx.fillRect(smi-1, 0, 1, totalWidth);
-				ictx.fillRect(0, spi+1, totalWidth, 1);
-				ictx.fillRect(0,smi-1,totalWidth,1);
-                ictx.fillStyle = "rgba(255,255,255,0.4)"; // all subsequent line rendering will be transparent
+			try{
+				texturectx.drawImage(cvs,-ox+(64),-oy+(64));
+				//gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, texture);
+				gl.texSubImage2D(gl.TEXTURE_2D, 0, 0,0, gl.RGBA, gl.UNSIGNED_BYTE, texture);
+			}catch(ex){
+				console.warn("ColorPick tried to render the texture using WebGl but has failed due to the following error, falling back to 2d render.", ex);
+				webGlAvail=false;
+				ictx=handleRenderingSub2d(startPoint, ox, oy);
 			}
+			if( webGlAvail ){
+				gl.uniform1i(textureSampPosition, 0);
+				gl.uniform1f(fishEyeScalePosition, opts.fishEye);
+				gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+			}
+		}else{
+			ictx=handleRenderingSub2d(startPoint, ox, oy);
 		}
 	}
 
@@ -832,6 +808,44 @@ function handleRendering(quick){
 		sendDataToPopup();
 	}
 	isUpdating = false;
+}
+
+function handleRenderingSub2d(startPoint, ox, oy){
+	var ictx;
+	ictx = getMain2dContext();
+	ictx.drawImage(cvs,-ox+(startPoint),-oy+(startPoint));
+	var smi,spi,mp=opts.fishEye-0,mpMod=opts.lessFishEye?0:1;
+	var d = rgb.r + rgb.g + rgb.b;
+	if(d > 192) ictx.fillStyle = "rgba(30,30,30,0.8)";
+	else ictx.fillStyle = "rgba(225,225,225,0.8)";
+
+	//xx,yy
+	for(var i=0;i<startPoint;i+=2){
+		smi=startPoint-i;
+		spi=startPoint+i;
+		//drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight) //CANVAS
+		ictx.drawImage(icvs,spi,0,smi,totalWidth, spi+1,0,smi,totalWidth);
+		ictx.drawImage(icvs,0,0,smi+1,totalWidth, -1,0,smi+1,totalWidth);
+		ictx.drawImage(icvs,0,spi,totalWidth,smi, 0,spi+1,totalWidth,smi);
+		ictx.drawImage(icvs,0,0,totalWidth,smi+1, 0,-1,totalWidth,smi+1);
+	    if(mp<1)mp=1;
+		for(var c=0;c<mp;c++){
+			if(++i>=startPoint)break;
+			smi=startPoint-i;
+			spi=startPoint+i;
+			ictx.drawImage(icvs,spi,0,smi,totalWidth, spi+1,0,smi,totalWidth);
+			ictx.drawImage(icvs,0,0,smi+1,totalWidth, -1,0,smi+1,totalWidth);
+			ictx.drawImage(icvs,0,spi,totalWidth,smi, 0,spi+1,totalWidth,smi);
+			ictx.drawImage(icvs,0,0,totalWidth,smi+1, 0,-1,totalWidth,smi+1);
+		}
+		mp-=mpMod;
+		ictx.fillRect(spi+1, 0, 1, totalWidth);
+		ictx.fillRect(smi-1, 0, 1, totalWidth);
+		ictx.fillRect(0, spi+1, totalWidth, 1);
+		ictx.fillRect(0,smi-1,totalWidth,1);
+	    ictx.fillStyle = "rgba(255,255,255,0.4)"; // all subsequent line rendering will be transparent
+	}
+	return ictx;
 }
 
 function sendDataToPopup(){
