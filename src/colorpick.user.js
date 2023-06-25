@@ -1,6 +1,6 @@
 var elmid1='color_pick_click_box',elmid2='ChromeExtension:Color-Pick.com';
 if(typeof(exitAndDetach)=='function')exitAndDetach();
-var n=null,c=null,waterm=null,watermlo=null,watermct=null,wmMoveCtr=0,wmTipsTotal=6,lastMoveInc=0,gameScr=false,hex='F00BAF',lasthex='',rgb=null;hsv=null;scal=1,ex=0,ey=0,isEnabled=false,isLocked=false,msg_bg_unavail=chrome.i18n.getMessage('bgPageUnavailable');
+var n=null,c=null,waterm=null,watermlo=null,watermct=null,wmMoveCtr=0,wmTipsTotal=6,lastMoveInc=0,gameScr=false,hex='F00BAF',lasthex='',rgb={};hsv={};scal=1,ex=0,ey=0,isEnabled=false,isLocked=false,msg_bg_unavail=chrome.i18n.getMessage('bgPageUnavailable');
 var ntx={ // transition states of element n...
     def: 'box-shadow 0.5s ease-out',
     swp: 'box-shadow 0.5s ease-out, top 0.25s ease-out, left 0.25s ease-out',
@@ -770,14 +770,11 @@ function handleRendering(quick){
 			ictx = getMain2dContext();
 			ictx.drawImage(cvs,-ox+(startPoint),-oy+(startPoint));
 			var smi,spi,mp=opts.fishEye-0,mpMod=opts.lessFishEye?0:1;
-            
-            var dat = ictx.getImageData(startPoint, startPoint, 1, 1).data;//notarget
-            //ictx.fillStyle = "rgba("+(255-data[0])+","+(255-data[1])+","+(255-data[2])+",0.9)";
-            var d=dat[0]+dat[1]+dat[2];
-            if(d > 192) ictx.fillStyle = "rgba(30,30,30,0.8)";
-            else ictx.fillStyle = "rgba(225,225,225,0.8)";
+            var d = rgb.r + rgb.g + rgb.b;
+			if(d > 192) ictx.fillStyle = "rgba(30,30,30,0.8)";
+			else ictx.fillStyle = "rgba(225,225,225,0.8)";
 
-            //xx,yy
+			//xx,yy
 			for(var i=0;i<startPoint;i+=2){
 				smi=startPoint-i;
 				spi=startPoint+i;
@@ -970,6 +967,8 @@ function initializeCanvas(){
 		texture.width=128,
 		texture.height=128;
 		texturectx = texture.getContext("2d");
+
+		//texturectx.drawImage(dirtyImage,0,0,1,1,0,0,1,1); // taint the canvas to prevent malicious website (or framework) from stealing zoomed view while color pick runs. To verify, select the canvas element and $0.toDataURL() to see an exception
 
 		gl.activeTexture(gl.TEXTURE0);
 		snapTexture = gl.createTexture();
