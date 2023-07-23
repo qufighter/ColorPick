@@ -429,6 +429,7 @@ function moveDn(e){
 
 function removeSwatch(e){
 	deleteHistoryElementWithUndo(e.target.closest('.swatch'));
+	addOrRemovePalleteGenerationFeatureIf();
 }
 
 function colorMetaForHex(hex, associatedNode){
@@ -484,6 +485,7 @@ function clearSwatches(){
 	}
 	Cr.empty(swHld);
 	document.getElementById('clear-palette').style.display='none';
+	addOrRemovePalleteGenerationFeatureIf();
 }
 
 function dedupeSwatches(){
@@ -690,6 +692,7 @@ function selectOptionsForObject(modesObj, selectedValue, filterFunction){
 	return options;
 }
 
+// also gradient feature is controlled here....
 function addOrRemovePalleteGenerationFeatureIf(pColorInput){
 	var pgHld = document.getElementById('generate-palette-area');
 	if( pgHld ){
@@ -706,6 +709,8 @@ function addOrRemovePalleteGenerationFeatureIf(pColorInput){
 			var c = colorMetaForHex(colorInput.value);
 			var options = selectOptionsForObject(paletteGenData.Modes, localStorage['lastPalleteMode']);
 			var eliminatedToneKeys={};
+			var cVis = '#FFF';
+			if( c.rgb.r + c.rgb.g + c.rgb.b > 382 ) cVis = '#000';
 			var toneOptions = selectOptionsForObject(paletteGenData.Tones, localStorage['lastPalleteTone'], function(pMeta){
 				// when 2 or more transform of this type yield the SAME result....
 				// we return false thus omitting this ineffective choice (the choice would genrate repeats (for any resultant hue angle))
@@ -728,13 +733,26 @@ function addOrRemovePalleteGenerationFeatureIf(pColorInput){
 				}
 				return true;
 			});
-
 			var holder=Cr.elm('div', {
 				class: 'transitions',
 				style: 'background-color:#999',
 				childNodes: [
 					Cr.txt(chrome.i18n.getMessage('generate_palette') + ' '),
-					Cr.elm('span', {id:'palette-gen-selection', style: 'border:1px solid black;display:inline-block;width:1em;background-color:' + colorInput.value, title: colorInput.value, childNodes:[Cr.txt(nbsp)]}),
+					Cr.elm('span', {
+						id:'palette-gen-selection',
+						style: Cr.css({
+							border: '1px solid black',
+							display: 'inline-block',
+							cursor: 'pointer',
+							width: '0.5em',
+							padding: '0 0.3em',
+							color: cVis,
+							'background-color':colorInput.value
+						}),
+						title: colorInput.value,
+						childNodes:[Cr.txt((colorElms.length > 1 ? 'x' : nbsp ))],
+						event:['click',function(){addOrRemovePalleteGenerationFeatureIf()}]
+					}),
 					Cr.txt(' '),
 					Cr.elm('select', {
 						id: 'palette-gen-mode',
@@ -787,7 +805,20 @@ function addOrRemovePalleteGenerationFeatureIf(pColorInput){
 			setTimeout(function(){ holder.style.backgroundColor=''; }, 10);
 			scrollIntoView(pgHld);
 		}
-	}
+
+		// gradient stuff, currently we disable if they pick pallete gen features to reduce confusion
+		if( !colorInput && colorElms.length > 1 ){
+			var grad_gen_holder=Cr.elm('div', {
+				childNodes: [
+					Cr.txt(chrome.i18n.getMessage('generate_gradient') + ' '),
+					Cr.elm('input', {type:'button', value: chrome.i18n.getMessage('linear'), name: 'linear', event: ['click', generateGradientFromSwatchES]}),
+					Cr.txt(' '),
+					Cr.elm('input', {type:'button', value: chrome.i18n.getMessage('radial'), name: 'radial', event: ['click', generateGradientFromSwatchES]}),
+					Cr.elm('div', {id: 'gradient-results-area'})
+				]
+			}, pgHld);
+		}
+	} // if pgHld, indicating 1 or more swatches available
 }
 
 function scrollIntoView(elm){
@@ -861,6 +892,45 @@ function generatePalleteFromSwatchES(){
 		var rgbResult = hsv2rgb( c.hsv.h, c.hsv.s, c.hsv.v);
 		addPalleteSwatch( RGBtoHex(rgbResult.r, rgbResult.g, rgbResult.b) );
 	}
+}
+
+function gradDimensions(grad){
+	if(!grad) return "";
+	return Cr.css({width: grad.style.width, height: grad.style.height})
+}
+
+function gradTextChanged(ev){
+	var grad=document.getElementById('gradient');
+	grad.style = grad.value + gradDimensions(grad);
+}
+
+function generateGradientFromSwatchES(ev){
+	var gradient_type_desired = ev.target.name || 'linear';
+	var gradResult = document.getElementById('gradient-results-area');
+	var grad=document.getElementById('gradient');
+	var swHld = document.getElementById('swatches');
+	var colorElms = swHld.getElementsByClassName('hex');
+	//todo: add angle, and for repeating, size?
+	// option to include stops?
+	var gradCss = 'background: '+gradient_type_desired+'-gradient(';
+	//background: linear-gradient(45deg, black, transparent);
+	//repeating-linear-gradient(45deg, black, transparent 100px)
+	//radial-gradient(black, transparent)
+	if( gradient_type_desired == 'linear') gradCss += '90deg, ';
+	var stepPct = Math.floor((1 / (colorElms.length - 1)) * 100)
+	for( var ce=0; ce<colorElms.length; ce++){
+		var c = colorMetaForHex(colorElms[ce].value);
+		gradCss += '#'+c.hex + ' ' + (ce*stepPct) +'%, ';
+	}
+	gradCss = gradCss.substr(0, gradCss.length - 2); // remove ', '
+	gradCss+= ');';
+	Cr.empty(gradResult).appendChild(Cr.elm('textarea', {
+		id:'gradient',
+		style: gradCss + gradDimensions(grad),
+		'class': 'gradient-preview',
+		events: [['change', gradTextChanged], ['keyup', gradTextChanged]],
+		childNodes:[Cr.txt(gradCss)]
+	}))
 }
 
 function historySwatchDragStart(ev){

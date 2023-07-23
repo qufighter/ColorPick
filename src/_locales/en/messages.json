@@ -427,11 +427,20 @@
    "generate": {
       "message": "Generate"
    },
+   "linear": {
+	  "message": "Linear"
+   },
+   "radial": {
+	  "message": "Radial"
+   },
     "palette": {
       "message": "Palette"
    },
    "generate_palette": {
       "message": "Generate Palette"
+   },
+   "generate_gradient": {
+	  "message": "Generate Gradient"
    },
    "palette_plus_saturation":{
       "message": "+Saturation",
