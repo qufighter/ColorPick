@@ -51,7 +51,7 @@ function defaultIcon(force){
 	if( iconIsBitmap || appleIcon || force ){
 		var iconPath='img/icons/no-shadow/';
 		if(appleIcon)iconPath+='apple/';
-		if(resetIcon)chrome.browserAction.setIcon({path:{19:chrome.extension.getURL(iconPath+'icon19.png'),38:chrome.extension.getURL(iconPath+'icon38.png')}});
+		if(resetIcon)chrome.browserAction.setIcon({path:{19:chrome.runtime.getURL(iconPath+'icon19.png'),38:chrome.runtime.getURL(iconPath+'icon38.png')}});
 		return true;
 	}
 	return false;

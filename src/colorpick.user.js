@@ -18,7 +18,7 @@ var dirtyImage=Cr.elm('img');
 var imagesRcvdCounter=0;
 var imagesLoadedCounter=0;
 var lastActivationMode=0;
-var isMakingNew=false,lastNewTimeout=0,snapshotLoadedTimeout=0,imageRequestReachedBg=0,pickHtmlUrl=chrome.extension.getURL('pick.html');
+var isMakingNew=false,lastNewTimeout=0,snapshotLoadedTimeout=0,imageRequestReachedBg=0,pickHtmlUrl=chrome.runtime.getURL('pick.html');
 var snapModeDetected = window.location.href.indexOf(pickHtmlUrl) === 0;
 var msg_bg_unavail_snap=msg_bg_unavail,msg_error='Error',opts_url=pickHtmlUrl,msg_ext_name='ColorPick',ext_icon=pickHtmlUrl,ext_close=pickHtmlUrl;
 
@@ -179,7 +179,7 @@ function setPixelPreview(hxe,lhex){
 			Cr.elm('br'),
 			(opts.EnableHex && !opts.hexHasHash)?Cr.txt('#'):0,
 			Cr.elm('input',{type:'text',readonly:true,size:8,style:'max-width:75px;font-size:10pt;border:'+opts.borderValue,id:'cphexvl',value:(opts.hexHasHash?'#':'')+hex,event:['mouseover',selectTargElm]}),
-			//Cr.elm('input',{type:'image',src:chrome.extension.getURL('img/close.png'),alt:'Close',title:chrome.i18n.getMessage('closeAndExit'),id:'exitbtn',event:['click',dissableColorPickerFromHere,true]}),
+			//Cr.elm('input',{type:'image',src:chrome.runtime.getURL('img/close.png'),alt:'Close',title:chrome.i18n.getMessage('closeAndExit'),id:'exitbtn',event:['click',dissableColorPickerFromHere,true]}),
 			(opts.showPreviousClr&&lhex!='none'?Cr.elm('input',{type:'text',size:1,style:'max-width:50px;font-size:10pt;background-color:#'+lhex+';border:'+opts.borderValue+';border-left:none;',value:''}):0),
 			(opts.ShowRGBHSL&&opts.EnableRGB&&rgb?Cr.elm('input',{type:'text',readonly:true,style:'max-width:150px;display:block;',value:'rgb'+formatColorValuesWith(opts.CSS3ColorFormat,rgb.r,rgb.g,rgb.b),id:'cprgbvl',event:['mouseover',selectTargElm]}):0),
 			(opts.ShowRGBHSL&&opts.EnableHSL&&hsv?Cr.elm('input',{type:'text',readonly:true,style:'max-width:150px;display:block;',value:'hsl'+formatColorValuesWith(opts.CSS3ColorFormat,hsv.h,hsv.s,hsv.v,0,1,1),id:'cphslvl',event:['mouseover',selectTargElm]}):0)
@@ -212,10 +212,10 @@ function setDisplay(){//Cr.elm
 	Cr.elm('div',{},[
 		(opts.EnableHex && !opts.hexHasHash)?Cr.elm('span',{style:'vertical-align:bottom;padding:8px 4px;display:inline-block;'},[Cr.txt('#')]):0,
 		Cr.elm('input',{type:'text',readonly:true,size:8,style:'max-width:75px;font-size:10pt;vertical-align:bottom;padding:8px;border:'+opts.borderValue,id:'cphexvl',value:(opts.hexHasHash?'#':'')+hex,event:['mouseover',selectTargElm]}),
-		Cr.elm('input',{type:'image',role:'img',style:iconStyles,src:chrome.extension.getURL('img/icons/history/icon32.png'),title:chrome.i18n.getMessage('history'),id:'cphistbtn',event:['click',function(ev){ chrome.runtime.sendMessage({goToOrVisitTab:'options.html?history='+hex}, function(r){}); ev.preventDefault();},true]}),
-		Cr.elm('input',{type:'image',role:'img',style:iconStyles,src:chrome.extension.getURL('img/icons/palette/icon32.png'),title:chrome.i18n.getMessage('generate_palette'),id:'cpgenbtn',event:['click',function(ev){ chrome.runtime.sendMessage({goToOrVisitTab:'options.html?palette='+hex}, function(r){}); ev.preventDefault();},true]}),
-		Cr.elm('a',{target:'_blank', href: 'https://vidsbee.com/ColorPick/Thanks/?search=%23'+hex+' '+fmt_rgb, childNodes:[Cr.elm('img', {style:iconStyles,src: chrome.extension.getURL('img/icons/search/icon32.png')})]}),
-		Cr.elm('input',{type:'image',role:'img',style:iconStyles,src:chrome.extension.getURL('img/close.png'),title:chrome.i18n.getMessage('closeAndExit')+' [esc]',id:'cpexitbtn',event:['click',dissableColorPickerFromHere,true]}),
+		Cr.elm('input',{type:'image',role:'img',style:iconStyles,src:chrome.runtime.getURL('img/icons/history/icon32.png'),title:chrome.i18n.getMessage('history'),id:'cphistbtn',event:['click',function(ev){ chrome.runtime.sendMessage({goToOrVisitTab:'options.html?history='+hex}, function(r){}); ev.preventDefault();},true]}),
+		Cr.elm('input',{type:'image',role:'img',style:iconStyles,src:chrome.runtime.getURL('img/icons/palette/icon32.png'),title:chrome.i18n.getMessage('generate_palette'),id:'cpgenbtn',event:['click',function(ev){ chrome.runtime.sendMessage({goToOrVisitTab:'options.html?palette='+hex}, function(r){}); ev.preventDefault();},true]}),
+		Cr.elm('a',{target:'_blank', href: 'https://vidsbee.com/ColorPick/Thanks/?search=%23'+hex+' '+fmt_rgb, childNodes:[Cr.elm('img', {style:iconStyles,src: chrome.runtime.getURL('img/icons/search/icon32.png')})]}),
+		Cr.elm('input',{type:'image',role:'img',style:iconStyles,src:chrome.runtime.getURL('img/close.png'),title:chrome.i18n.getMessage('closeAndExit')+' [esc]',id:'cpexitbtn',event:['click',dissableColorPickerFromHere,true]}),
 		(opts.ShowRGBHSL&&opts.EnableRGB&&rgb?Cr.elm('input',{type:'text',readonly:true,style:'max-width:150px;display:block;',value:fmt_rgb,id:'cprgbvl',event:['mouseover',selectTargElm]}):0),
 		(opts.ShowRGBHSL&&opts.EnableHSL&&hsv?Cr.elm('input',{type:'text',readonly:true,style:'max-width:150px;display:block;',value:'hsl'+formatColorValuesWith(opts.CSS3ColorFormat,hsv.h,hsv.s,hsv.v,0,1,1),id:'cphslvl',event:['mouseover',selectTargElm]}):0)
 	],n);
@@ -393,13 +393,13 @@ function initialInit(){
 	// we need to cache these values for our WithMessage error display after the extension context is invalidated...
 	msg_bg_unavail_snap = chrome.i18n.getMessage('bgPageUnavailableSnap')
 	msg_error = chrome.i18n.getMessage('error');
-	opts_url = chrome.extension.getURL('options.html')
+	opts_url = chrome.runtime.getURL('options.html')
 	msg_ext_name = chrome.i18n.getMessage('extName');
-	ext_icon = chrome.extension.getURL('img/icon64.png');
-	ext_close = chrome.extension.getURL('img/close.png');
+	ext_icon = chrome.runtime.getURL('img/icon64.png');
+	ext_close = chrome.runtime.getURL('img/close.png');
 }
 function crosshairCss(){
-	return 'url('+chrome.extension.getURL('img/crosshair.png')+') 16 16,crosshair';
+	return 'url('+chrome.runtime.getURL('img/crosshair.png')+') 16 16,crosshair';
 }
 
 function prefsLoadedCompleteInit(){
@@ -418,7 +418,7 @@ function prefsLoadedCompleteInit(){
     },[],document.body);
 	n=Cr.elm('div',{id:elmid2,style:'position:fixed;min-width:30px;max-width:300px;min-height:30px;box-shadow:2px 2px 2px #999;transition:'+ntx.def+'; border:'+opts.borderValue+';z-index:2147483646;cursor:default;padding:4px;'},[Cr.txt(' ')],document.body);
 	if( opts.reg_chk!=true || !opts.hideWatermark ){
-		waterml=Cr.elm('img',{src:chrome.extension.getURL('img/icon64.png'), width:64, align:"top", style:'vertical-align:top;display:inline-block;position:relative !important;padding: 0 0 5px 0 !important;margin:0 !important;'});
+		waterml=Cr.elm('img',{src:chrome.runtime.getURL('img/icon64.png'), width:64, align:"top", style:'vertical-align:top;display:inline-block;position:relative !important;padding: 0 0 5px 0 !important;margin:0 !important;'});
 		watermct=Cr.elm('div',{id:'wm-content',style:'margin:7px'});
 		waterm=Cr.elm('div',{
 			id:'colorpick-watermark',
@@ -443,7 +443,7 @@ function prefsLoadedCompleteInit(){
 		},document.body);
 	}
 	wmMoveCtr=0;
-	dirtyImage.src=chrome.extension.getURL('img/close.png');
+	dirtyImage.src=chrome.runtime.getURL('img/close.png');
 	document.body.addEventListener('mousemove',mmf);
 	addEventListener('keyup',wk);
 	addEventListener('scroll',ssf);

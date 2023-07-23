@@ -101,7 +101,7 @@ function save_options() {
 	if(!iconbitmap){
 		var iconPath='img/';
 		if(appleIcon)iconPath+='apple/';
-		chrome.browserAction.setIcon({path:chrome.extension.getURL(iconPath+'icon19.png')});//update icon (to be configurable)
+		chrome.browserAction.setIcon({path:chrome.runtime.getURL(iconPath+'icon19.png')});//update icon (to be configurable)
 	}
 	
 	if(typeof(localStorage["usageStatistics"])=='undefined')localStorage["usageStatistics"]=false;
@@ -645,7 +645,7 @@ function createPalleteSwatch(hex, append){
 		//]),
 		Cr.elm('input',{type:'text',value:hex,class:'hex',event:['change', swatchChanged]}),
 		Cr.elm("a",{class:'palette-nav', title: chrome.i18n.getMessage('generate_palette'), events:['click',paletteForColorHex]},[Cr.txt('\u25B7')]),
-		Cr.elm("img",{class:'close',draggable:false,align:'top',src:chrome.extension.getURL('img/close.png'),events:['click',removeSwatch]})
+		Cr.elm("img",{class:'close',draggable:false,align:'top',src:chrome.runtime.getURL('img/close.png'),events:['click',removeSwatch]})
 	], append ? swHld : null);
 }
 
@@ -1019,7 +1019,7 @@ function load_history(){
 					['drop', historySwatchDroppedEntry],
 				]
 			},[
-				Cr.elm('img',{style:'height:1.5em;',src:chrome.extension.getURL('img/trash.svg')}),
+				Cr.elm('img',{style:'height:1.5em;',src:chrome.runtime.getURL('img/trash.svg')}),
 				Cr.elm('a', {
 					id:'hist-del-undo-btn',
 					style:'position:absolute;left:100%;top:0px;padding-left:5px;display:none;', // undo won't work (always) if we re-create this history area!!!!! so no point in this: '+(hasUndo()?'':'none'

@@ -46,7 +46,7 @@ label.changed:before{
 .swatch{padding:10px;transition:margin ease-in 0.15s;}
 #swatches.many .swatch{transition:none;}
 .swatch .hex{background-color:transparent;border:none;text-shadow:1px 1px 6px white;width: 72px;padding-left:10px;}
-.rtl .swatch .hex{padding-left:2px;padding-right:10px;}}
+.rtl .swatch .hex{padding-left:2px;padding-right:10px;}
 .swatch .close{float:right;cursor:pointer;}
 .faux-top-swatch{padding:0;margin-bottom:0 !important;}
 .swatchCtrl{

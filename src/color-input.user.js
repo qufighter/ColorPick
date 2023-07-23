@@ -130,7 +130,7 @@ function beginColorInputProcessing(){
 
 			var btn = document.createElement('img');
 			btn.setAttribute('style', 'min-width:16px;min-height:16px;box-sizing:unset;box-shadow:none;background:unset;padding:'+(modeAfter?'0 0 0 6px':'0 6px 0 0')+';cursor:pointer;');
-			btn.setAttribute('src', chrome.extension.getURL('img/icon16.png'));
+			btn.setAttribute('src', chrome.runtime.getURL('img/icon16.png'));
 			btn.setAttribute('title', toolTipMessage);
 			btn.setAttribute('class', 'colorpick-eyedropper-input-trigger');
 			btn.addEventListener('click', getClickListenerForColorInput(colorInputs[i]), true);

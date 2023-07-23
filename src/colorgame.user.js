@@ -25,37 +25,37 @@ var sponsorsPaidCount = 0;
 
 var sponsorsDefault = [
     {
-        img:chrome.extension.getURL('img/sponsors/colordoctor.jpg'),
+        img:chrome.runtime.getURL('img/sponsors/colordoctor.jpg'),
         title:'Color Doctor\nhypertension tester',
         href:'https://amzn.to/2KWw7hJ'
     },
     {
-        img:chrome.extension.getURL('img/sponsors/waterpik.jpg'),
+        img:chrome.runtime.getURL('img/sponsors/waterpik.jpg'),
         title:'Waterpik\njust add water',
         href:'https://amzn.to/2KXVEqM'
     },{
-        img:chrome.extension.getURL('img/sponsors/picks.jpg'),
+        img:chrome.runtime.getURL('img/sponsors/picks.jpg'),
         title:'Pick\nVarious to choose from',
         href:'https://amzn.to/31PJJC7'
     },{
-        img:chrome.extension.getURL('img/sponsors/laser.jpg'),
+        img:chrome.runtime.getURL('img/sponsors/laser.jpg'),
         title:'Color Laser Printer\nAre you tired of refilling ink?',
         href:'https://amzn.to/2KL8d9V'
     },{
-        img:chrome.extension.getURL('img/sponsors/color.jpg'),
+        img:chrome.runtime.getURL('img/sponsors/color.jpg'),
         title:'Color\nmost expensive',
         href:'https://amzn.to/2ZeTTug',
         maxw:'125px'
     },{
-        img:chrome.extension.getURL('img/sponsors/prismacolor.jpg'),
+        img:chrome.runtime.getURL('img/sponsors/prismacolor.jpg'),
         title:'Prismacolor\nProfessional Markers etc',
         href:'https://amzn.to/31K2kj0'
     },{
-        img:chrome.extension.getURL('img/sponsors/bulb.jpg'),
+        img:chrome.runtime.getURL('img/sponsors/bulb.jpg'),
         title:'Color Changing LED Bulbs\nWay too cool',
         href:'https://amzn.to/31S7pFS'
     },{
-        img:chrome.extension.getURL('img/sponsors/purple.jpg'),
+        img:chrome.runtime.getURL('img/sponsors/purple.jpg'),
         title:'The color Purple\ngo get yourself a mattress',
         href:'https://amzn.to/2uhRjtF'
     }
@@ -108,7 +108,7 @@ function nextIconImage(g_moveCtr){
     // when this is called we already tested if(!waterm) return;
 
     if( icons[g_moveCtr%icons.length] ){
-        waterml.src = chrome.extension.getURL(icons[g_moveCtr%icons.length]);
+        waterml.src = chrome.runtime.getURL(icons[g_moveCtr%icons.length]);
     }
 
     //console.log('next from index', g_moveCtr, '%'+wmTipsTotal+':', g_moveCtr % wmTipsTotal, watermct)
@@ -130,7 +130,7 @@ function nextIconImage(g_moveCtr){
     if( g_moveCtr % wmTipsTotal == 5 || g_moveCtr > wmTipsTotal ){
 
         
-        // waterml.src = chrome.extension.getURL('img/icon64.png');
+        // waterml.src = chrome.runtime.getURL('img/icon64.png');
         // Cr.empty(watermct);
         // Cr.elm('div',{id:'tip_'+((g_moveCtr + 4)%6),childNodes:[
         //     Cr.txt('TEST!'),

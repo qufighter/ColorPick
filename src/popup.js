@@ -325,7 +325,7 @@ function iin(){
 
 	if( !(popupWaitTimeout > 10) ) popupWaitTimeout = 4000;
 
-	setPreviewSRC(chrome.extension.getURL('img/default.png'),true);
+	setPreviewSRC(chrome.runtime.getURL('img/default.png'),true);
 
 	if(useCSSValues){
 		document.getElementById('cssmode').style.display="block";
@@ -440,7 +440,7 @@ function showErrorScreen(errorType){
 	}
 	errorTypes.current = errorType;
 	// todo: delay/fade this error in??  maybe some types ???
-	setPreviewSRC(chrome.extension.getURL('img/error'+err.image+'.png'), true);
+	setPreviewSRC(chrome.runtime.getURL('img/error'+err.image+'.png'), true);
 	if( err.chooser && !cp_chooser_booted ){ init_color_chooser(); }
 	if( err.timer ){ showLoadingTimer(); }
 	if( !err.no_snap )errorShowScreenshotInstead();
@@ -485,7 +485,7 @@ function tabScreenshotRecieved(dataUri, request){
 	Cr.elm("a",{
 		id:'alt-snap-mode-link',
 		target:'_blank',
-		href:chrome.extension.getURL('pick.html#tab='+request.setTabImage)+(snapExtPage?'#extSelf':''),
+		href:chrome.runtime.getURL('pick.html#tab='+request.setTabImage)+(snapExtPage?'#extSelf':''),
 		event:['click', function(){
 			console.log('passing data to snap mode via localStorage...') // todo fix this
 			localStorage.lastImageSnap=dataUri; // our new tab will delete this entry
@@ -543,7 +543,7 @@ function scriptsInjectedResult(){
 	clearTimeout(scriptAliveTimeout);
 	scriptAliveTimeout = 0;
 	if(!isScriptAlive){
-		//chrome.extension.getURL('img/error'+1+'.png'); // showErrorScreen('page_slow');
+		//chrome.runtime.getURL('img/error'+1+'.png'); // showErrorScreen('page_slow');
 		// if they wait anyway, it could work....
 		chrome.tabs.executeScript(tabid, {file: "Cr.js"}, function(){
 			if(chrome.runtime.lastError){
@@ -711,7 +711,7 @@ function popOut(ev){
 }
 
 function popOutUrl(){
-	return chrome.extension.getURL('popup.html')+'?isPopup='+tabid+','+winid
+	return chrome.runtime.getURL('popup.html')+'?isPopup='+tabid+','+winid
 }
 
 function close_stop_picking(ev){
@@ -926,7 +926,7 @@ Cr.elm("div",{},[
 	Cr.elm("div",{class:"lbrow",id:"hex-and-close"},[
 		Cr.elm("div",{class:"lb"},[
 			Cr.elm("span",{title:chrome.i18n.getMessage('closeAndExit')+' [esc]',id:"eclose"},[
-				Cr.elm("img",{align:'top',src:chrome.extension.getURL('img/close.png')})
+				Cr.elm("img",{align:'top',src:chrome.runtime.getURL('img/close.png')})
 			]),
 			Cr.elm('span',{id:'hex-prefix'},[Cr.txt("#")])
 		]),
