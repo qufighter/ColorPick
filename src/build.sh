@@ -43,8 +43,15 @@ echo "manifest version detected: "$vers
 
 cd build
 
-cat manifest.json | grep -v browser_specific_settings > manifest2.json
-mv -f manifest2.json manifest.json
+
+if [ "$1" != "ff" ]; then
+	echo 'not firefox build'
+	cat manifest.json | grep -v browser_specific_settings > manifest2.json
+	mv -f manifest2.json manifest.json
+else
+	echo 'firefox'
+fi
+
 
 find . -name ".DS_Store" -delete
 
@@ -77,5 +84,12 @@ echo "the built zip is now in your builds folder two levels up from pwd"
 
 mv "$PROG.$vers.zip" "builds/$PROG.$vers.zip"
 cd builds
-cp "$PROG.$vers.zip" "$PROG.$vers.xpi"
+
+if [ "$1" != "ff" ]; then
+	echo 'not firefox build'
+else
+	echo 'firefox'
+	# cp "$PROG.$vers.zip" "$PROG.$vers.xpi"
+	mv -f "$PROG.$vers.zip" "$PROG.$vers.xpi"
+fi
 

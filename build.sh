@@ -2,4 +2,4 @@
 
 echo "moving into directory ColorPick/data..."
 cd src
-./build.sh
+./build.sh $1
