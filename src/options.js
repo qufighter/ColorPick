@@ -1142,7 +1142,7 @@ function load_history(){
 }
 function disableSelection(){document.body.style.userSelect='none';}
 function enableSelection(){document.body.style.userSelect='';}
-var histReSize=false;histReSizeVrt=false;
+var histReSize=false; var histReSizeVrt=false;
 function dragHist(ev){ histReSize=true;disableSelection(); }
 function dragHistVrt(ev){ histReSizeVrt=true;disableSelection(); }
 function dragHistBth(ev){ histReSize=histReSizeVrt=true;disableSelection(); }
