@@ -12,6 +12,8 @@ if( isWindows ){
 	infoicon='\uD83D\uDEC8';
 };
 
+var swatchesLinkBasePath = 'saveSwatches.html';
+
 var instanceId = (new Date().getTime()) + '_' + Math.floor(Math.random() * 65535);
 
 function getEventTargetA(ev){
@@ -411,7 +413,7 @@ function printSwatches(e){
 	for( var c=0,l=colors.length; c<l; c++ ){
 		params+='||'+JSON.stringify({hex: colors[c].hex,rgb: colors[c].rgb, hsl: colors[c].hsl, hsv: colors[c].hsv});
 	}
-	e.target.href='saveSwatches.html?fmt='+escape(localStorage['CSS3ColorFormat'])+'&swatches='+params;
+	e.target.href=swatchesLinkBasePath+'?fmt='+escape(localStorage['CSS3ColorFormat']||'')+'&swatches='+params;
 	if(colors.length < 1){
 		e.preventDefault();
 	}
