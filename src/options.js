@@ -1360,7 +1360,7 @@ function doc_keyup(ev){
 	}
 }
 
-function createDOM(){
+function createDOM(destnode){
 Cr.elm("div",{id:"mainbox"},[
 	Cr.elm("h3",{},[
 		Cr.elm("img",{src:"img/icon48.png",id:"logo"}),
@@ -1489,7 +1489,7 @@ Cr.elm("div",{id:"mainbox"},[
 		Cr.txt("Vidsbee.com")
 	])
 
-],document.body);
+],destnode||document.body);
 
 	createAndAttachRatings(document.getElementById('rate_position'));
 
