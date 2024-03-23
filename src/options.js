@@ -1074,10 +1074,10 @@ function load_history(){
 	Cr.elm('div', {
 		style: 'text-align:center;padding-top:15px;',
 		childNodes:[
-			hist.length > 1 ? Cr.elm("a",{href:"#",style:"font-size:10px;float:left;",event:['click', clear_history]},[
+			hist.length > 0 ? Cr.elm("a",{href:"#",style:"font-size:10px;float:left;",event:['click', clear_history]},[
 				Cr.txt(chrome.i18n.getMessage('clear'))
 			]) : 0,
-			hist.length > 1 ? Cr.elm("a",{
+			Cr.elm("a",{
 				href:"#",
 				style:"font-size:10px;display:inline-block;position:relative;",
 				class: 'drop-target',
@@ -1096,7 +1096,7 @@ function load_history(){
 					events:[['click', applyUndo]],
 					childNodes:[Cr.txt(chrome.i18n.getMessage('undo'))]
 				})
-			]) : 0,
+			]),
 			hist.length > 2 ? Cr.elm("a",{href:"#",style:"font-size:10px;float:right;",event:['click', add_all_history]},[
 				Cr.txt(chrome.i18n.getMessage('add_all'))
 			]) : 0
