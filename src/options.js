@@ -103,7 +103,7 @@ function save_options() {
 	if(!iconbitmap){
 		var iconPath='img/';
 		if(appleIcon)iconPath+='apple/';
-		chrome.browserAction.setIcon({path:chrome.runtime.getURL(iconPath+'icon19.png')});//update icon (to be configurable)
+		chrome.action.setIcon({path:chrome.runtime.getURL(iconPath+'icon19.png')});//update icon (to be configurable)
 	}
 	
 	if(typeof(localStorage["usageStatistics"])=='undefined')localStorage["usageStatistics"]=false;

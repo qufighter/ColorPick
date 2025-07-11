@@ -1,5 +1,5 @@
 {
-   "manifest_version": 2,
+   "manifest_version": 3,
    "description": "__MSG_extDescription__",
    "name": "__MSG_extName__",
    "browser_action": {
@@ -39,30 +39,36 @@
        "64": "img/icon64.png",
       "128": "img/icon128.png"
    },
-   "web_accessible_resources": [
-     "img/icon16.png",
-     "img/icon64.png",
-     "img/icons/palette/icon32.png",
-     "img/icons/history/icon32.png",
-     "img/icons/search/icon32.png",
-     "img/game/bunny.webp",
-     "img/game/rabbit.webp",
-     "img/crosshair.png",
-     "img/close.png",
-     "img/sponsors/colordoctor.jpg",
-     "img/sponsors/waterpik.jpg",
-     "img/sponsors/picks.jpg",
-     "img/sponsors/laser.jpg",
-     "img/sponsors/color.jpg",
-     "img/sponsors/prismacolor.jpg",
-     "img/sponsors/bulb.jpg",
-     "img/sponsors/purple.jpg"
-   ],
+   "web_accessible_resources": [{
+	   "resources": [
+		 "img/icon16.png",
+		 "img/icon64.png",
+		 "img/icons/palette/icon32.png",
+		 "img/icons/history/icon32.png",
+		 "img/icons/search/icon32.png",
+		 "img/game/bunny.webp",
+		 "img/game/rabbit.webp",
+		 "img/crosshair.png",
+		 "img/close.png",
+		 "img/sponsors/colordoctor.jpg",
+		 "img/sponsors/waterpik.jpg",
+		 "img/sponsors/picks.jpg",
+		 "img/sponsors/laser.jpg",
+		 "img/sponsors/color.jpg",
+		 "img/sponsors/prismacolor.jpg",
+		 "img/sponsors/bulb.jpg",
+		 "img/sponsors/purple.jpg"
+		],
+	   "matches":[ "<all_urls>", "file:///*" ]
+   }],
    "permissions": [
-      "activeTab", "tabs", "<all_urls>", "storage", "alarms"
+      "activeTab", "tabs", "scripting", "storage", "alarms"
    ],
    "browser_specific_settings": {"gecko": {"id": "jid1-kCS67LPIOiGf2Q@jetpack"}},
-   "content_security_policy": "script-src 'self'; object-src 'self'",
+   "content_security_policy": {
+	   "extension_pages": "script-src 'self'; object-src 'self'",
+	   "sandbox": "sandbox allow-scripts; script-src 'self'"
+   },
    "default_locale": "en",
    "version": "0.0.2.39"
 }

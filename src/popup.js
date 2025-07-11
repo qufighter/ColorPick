@@ -545,14 +545,14 @@ function scriptsInjectedResult(){
 	if(!isScriptAlive){
 		//chrome.runtime.getURL('img/error'+1+'.png'); // showErrorScreen('page_slow');
 		// if they wait anyway, it could work....
-		chrome.tabs.executeScript(tabid, {file: "Cr.js"}, function(){
+		chrome.scripting.executeScript({target: {tabId: tabid}, files: ["Cr.js"]}, function(){
 			if(chrome.runtime.lastError){
 				console.log(chrome.runtime.lastError.message);
 				showErrorScreen('conent_port');
 				return;
 			}
-			chrome.tabs.executeScript(tabid, {file: "options_prefs.js"}, function(){
-				chrome.tabs.executeScript(tabid, {file: "colorpick.user.js"}, function(){
+			chrome.scripting.executeScript({target: {tabId: tabid}, files: ["options_prefs.js"]}, function(){
+				chrome.scripting.executeScript({target: {tabId: tabid}, files: ["colorpick.user.js"]}, function(){
 					isScriptAlive=true;
 					setTimeout(finishSetup, 250);
 				});

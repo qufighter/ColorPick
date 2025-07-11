@@ -51,7 +51,7 @@ function defaultIcon(force){
 	if( iconIsBitmap || appleIcon || force ){
 		var iconPath='img/icons/no-shadow/';
 		if(appleIcon)iconPath+='apple/';
-		if(resetIcon)chrome.browserAction.setIcon({path:{19:chrome.runtime.getURL(iconPath+'icon19.png'),38:chrome.runtime.getURL(iconPath+'icon38.png')}});
+		if(resetIcon)chrome.action.setIcon({path:{19:chrome.runtime.getURL(iconPath+'icon19.png'),38:chrome.runtime.getURL(iconPath+'icon38.png')}});
 		return true;
 	}
 	return false;
@@ -200,10 +200,10 @@ function(request, sender, sendResponse) {
 			processSetColor(request);
 			sendResponse({});
 		}else if (request.browserIconMsg){
-			chrome.browserAction.setIcon({path:(request.path)});
+			chrome.action.setIcon({path:(request.path)});
 			sendResponse({});
 		}else if (request.beginGame){
-			chrome.tabs.executeScript(tabid, {file: "colorgame.user.js"}, function(){});
+			chrome.scripting.executeScript({target: {tabId: tabid}, files: ["colorgame.user.js"]});
 			sendResponse({});
         }else if (request.requestSponsorsList){
             fetchSponsorsListTo(tabid, request.devicePixelRatio || 1, request.timestamp);
@@ -211,7 +211,7 @@ function(request, sender, sendResponse) {
 		}else if (request.disableColorPicker){
 			isRunning=false;
 			defaultIcon();
-			//chrome.browserAction.setBadgeText({text:''});
+			//chrome.action.setBadgeText({text:''});
 			chrome.tabs.sendMessage(tabid, {disableColorPicker:true}, function(response) {});
 			sendResponse({});
 		}else if (request.activateForInput){
