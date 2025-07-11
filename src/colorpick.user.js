@@ -395,7 +395,7 @@ function initialInit(){
 		prefsLoadedCompleteInit()
 	});
 	if( !connectListener ){
-		chrome.runtime.connect({name: 'tbd-tabid'}).onDisconnect.addListener(function() {
+		chrome.runtime.connect({name: 'colorpick-tabus-' + (new Date()).getTime() }).onDisconnect.addListener(function() {
 			console.log("Sorry - ColorPick detected the extension has been reloaded.  This instance of the content script is now defunct. You may have to refresh the page to use ColorPick here!", msg_bg_unavail)
 			exitAndDetach(); // no WithMessage here, the error dialoge won't have clickable options link
 		})

@@ -1,4 +1,4 @@
-import {goToOrOpenTab, chromeStorageSaveALocalStor, loadSettingsFromChromeSyncStorage, pOptions, pAdvOptions, pSyncItems, loadedOptions} from "./EXPORT_options_prefs_helpers.js";
+import {goToOrOpenTab, chromeStorageSaveALocalStor, loadSettingsFromChromeSyncStorage, pOptions, pAdvOptions, loadedOptions} from "./EXPORT_options_prefs_helpers.js";
 
 //var private_window={};
 //var options={};
@@ -311,6 +311,7 @@ function safeBrowsingCheckSponsorsList(sponsors, tabid){
         request.threatInfo.threatEntries.push(sp.href);
     }
 
+	// mv3 fixme too use fetch/etc if possible, as needed (zero sponser presently so not needed)
     var xhr = new XMLHttpRequest();
     xhr.onreadystatechange=function(){if(xhr.readyState == 4){
         if(xhr.status == 200){
