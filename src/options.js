@@ -12,6 +12,9 @@ if( isWindows ){
 	infoicon='\uD83D\uDEC8';
 };
 
+// worth a note, localStorage usage can MOSTLY but not completely migrate to be loadedOptions, but
+// at present, NOT within save_options, and NOT colorPickHistory, possibly etc...
+
 var swatchesLinkBasePath = 'saveSwatches.html';
 
 var instanceId = (new Date().getTime()) + '_' + Math.floor(Math.random() * 65535);
@@ -1051,6 +1054,12 @@ function updateHistorySelection(newSelection){
 function load_history(){
 	if(!document.getElementById('history'))return;
 	if(typeof(localStorage["colorPickHistory"])=='undefined')localStorage['colorPickHistory']="";
+	
+	//if(loadedOptions.syncColorHistory)
+	// so it is prety wierd, we'll want to load localStorage.colorPickHistory it UNLESS we do find a save event...
+	// has occured ,in which case we'll be able to have cleared colorPickHistory
+	// OR we can force a save event (*!!! scary)
+	
 	var hist=localStorage['colorPickHistory'].replace(/^undefined/,'').split("#");
 	var div_history=document.getElementById('history');
 	var exiHisInner=document.getElementById('historyInner');

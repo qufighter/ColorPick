@@ -14,6 +14,8 @@ function sendReloadPrefs(cb){
 	});
 }
 
+// note, this is probably inadequately named, as it will be local only if sync is not available...
+// and yes sadly clicking fast may yield errors syncing the color history now :/
 function chromeStorageSaveALocalStor(tosave, cbf){
 	cbf =  cbf || function(){};
 	storage.set(tosave, function() {
@@ -92,7 +94,7 @@ function getDirMap(dir){
 	return dirMap;
 }
 
-function loadSettingsFromChromeSyncStorage(cbf){
+function loadSettingsFromChromeSyncStorage(cbf, optionalIntoObj){
 	
 	storage.get(null, function(obj) {
 		for(i in obj){
@@ -100,7 +102,7 @@ function loadSettingsFromChromeSyncStorage(cbf){
 //				localStorage[i] = obj[i];
 //			}
 		}
-		loadPrefsFromLocalStorage(loadedOptions, function(){});
+		loadPrefsFromLocalStorage(optionalIntoObj || loadedOptions, function(){});
 		sendReloadPrefs(); // can maybe remove the call to sendReload here and call when needed instead?
 		if(typeof(cbf)=='function')cbf();
 	});
@@ -110,4 +112,4 @@ loadPrefsFromLocalStorage(loadedOptions, function(){});
 
 
 //run build_exports.sh to create EXPORT_<file>.js
-//export { storage, plat3, isWindows, isMac, isFirefox, isChrome, isEdge, pOptions, pAdvOptions, pSyncItems, extensionsKnown, formatColorValues, formatColorValuesWith, navTo, navToHelp, navToDesktop, navToMobile, navToReg, navToAmz, navToOptions, navToHistory, navToPallete, loadPrefsFromStorage, loadPrefsFromLocalStorage, loadedOptions, loadSettingsFromChromeSyncStorage, getDirMap, detectDirection, getDirection, goToOrOpenTab, saveToChromeSyncStorage, saveSyncItemsToChromeSyncStorage, sendReloadPrefs }
+//export { storage, plat3, isWindows, isMac, isFirefox, isChrome, isEdge, pOptions, pAdvOptions, pSyncItems, extensionsKnown, formatColorValues, formatColorValuesWith, navTo, navToHelp, navToDesktop, navToMobile, navToReg, navToAmz, navToOptions, navToHistory, navToPallete, loadPrefsFromStorage, loadPrefsFromLocalStorage, loadedOptions, loadSettingsFromChromeSyncStorage, getDirMap, detectDirection, getDirection, goToOrOpenTab, saveToChromeSyncStorage, saveSyncItemsToChromeSyncStorage, chromeStorageSaveALocalStor, sendReloadPrefs }

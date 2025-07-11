@@ -1,65 +1,64 @@
-//import {storage, plat3, isWindows, isMac, isFirefox, isChrome, isEdge, pOptions, pAdvOptions, pSyncItems, extensionsKnown, formatColorValues, formatColorValuesWith, navTo, navToHelp, navToDesktop, navToMobile, navToReg, navToAmz, navToOptions, navToHistory, navToPallete, loadPrefsFromStorage, loadPrefsFromLocalStorage} from "./EXPORT_options_prefs";
-//import {loadedOptions, loadSettingsFromChromeSyncStorage, getDirMap, detectDirection, getDirection, goToOrOpenTab, saveToChromeSyncStorage, saveSyncItemsToChromeSyncStorage, sendReloadPrefs} from "./EXPORT_options_prefs_helpers.js";
-import {goToOrOpenTab, pOptions, pAdvOptions, pSyncItems} from "./EXPORT_options_prefs_helpers.js";
+import {goToOrOpenTab, chromeStorageSaveALocalStor, loadSettingsFromChromeSyncStorage, pOptions, pAdvOptions, pSyncItems, loadedOptions} from "./EXPORT_options_prefs_helpers.js";
 
-
-var private_window={};
-var options={};
+//var private_window={};
+//var options={};
 var tabs_ports={};
 var localStorage = {}; // TBD< this is no longer hte real localStorage :/ so this does NOT sync anything wiht options.html etc
 
-function fromPrefs(){
-	//remove defunct options
-	//localStorage.removeItem("autoRedirectPickable");
-
-	//future additions -
-	//storage.remove(['','',''], function(){})
-
-	var iconWasCustom = private_window.iconIsBitmap || private_window.appleIcon;
-
-	for(var i in pOptions){
-		if(typeof(pOptions[i].def)=='boolean')
-			options[i] = ((localStorage[i]=='true')?true:((localStorage[i]=='false')?false:pOptions[i].def));
-		else
-			options[i] = ((localStorage[i])?localStorage[i]:pOptions[i].def);
-		private_window[i] = options[i] // todo refactor out
-	}
-
-	for(var i in pAdvOptions){
-		if(typeof(pAdvOptions[i].def)=='boolean')
-			options[i] = ((localStorage[i]=='true')?true:((localStorage[i]=='false')?false:pAdvOptions[i].def));
-		else
-			options[i] = ((localStorage[i])?localStorage[i]:pAdvOptions[i].def);
-		private_window[i] = options[i] // todo refactor out
-	}
-
-	if(typeof(localStorage["usageStatistics"])=='undefined'){
-		//if(!navigator.doNotTrack) localStorage["usageStatistics"]=true;
-		//else
-		localStorage["usageStatistics"]=false;
-	}
-
-	if(localStorage["usageStatistics"]=='true' && !navigator.doNotTrack){
-		localStorage.removeItem("feedbackOptOut");
-	}else{
-		localStorage.feedbackOptOut = "true";
-	}
-	
-	defaultIcon(iconWasCustom);
-
-	if( chrome.runtime.setUninstallURL && !options.disableUninstallSurvey ){
-		chrome.runtime.setUninstallURL("https://www.vidsbee.com/ColorPick/Thanks/?uninstall=1&browserinfo=To help improve this tool, please take a moment to describe why you uninstalled ColorPick.%0A%0AColorPick has an option to disable this survey.%0A%0AExtUninstall-"+safeGetVersion());
-        //"https://www.vidsbee.com/Contact/?uninstallSurvey=ColorPick&browserinfo=To help improve this tool, please take a moment to describe why you uninstalled ColorPick.%0A%0AColorPick has an option to disable this survey.%0A%0AExtUninstall-"+safeGetVersion());
-	}else{
-		chrome.runtime.setUninstallURL('');
-	}
-}
+// arguably this is totally defunct... yes we can get options from private_window,
+// but they are also already read into EXPORT_options_prefs_helpers.loadedOptions
+//function fromPrefs(){
+//	//remove defunct options
+//	//localStorage.removeItem("autoRedirectPickable");
+//
+//	//future additions -
+//	//storage.remove(['','',''], function(){})
+//
+//	var iconWasCustom = private_window.iconIsBitmap || private_window.appleIcon;
+//
+//	for(var i in pOptions){
+//		if(typeof(pOptions[i].def)=='boolean')
+//			options[i] = ((localStorage[i]=='true')?true:((localStorage[i]=='false')?false:pOptions[i].def));
+//		else
+//			options[i] = ((localStorage[i])?localStorage[i]:pOptions[i].def);
+//		private_window[i] = options[i] // todo refactor out
+//	}
+//
+//	for(var i in pAdvOptions){
+//		if(typeof(pAdvOptions[i].def)=='boolean')
+//			options[i] = ((localStorage[i]=='true')?true:((localStorage[i]=='false')?false:pAdvOptions[i].def));
+//		else
+//			options[i] = ((localStorage[i])?localStorage[i]:pAdvOptions[i].def);
+//		private_window[i] = options[i] // todo refactor out
+//	}
+//
+//	if(typeof(localStorage["usageStatistics"])=='undefined'){
+//		//if(!navigator.doNotTrack) localStorage["usageStatistics"]=true;
+//		//else
+//		localStorage["usageStatistics"]=false;
+//	}
+//
+//	if(localStorage["usageStatistics"]=='true' && !navigator.doNotTrack){
+//		localStorage.removeItem("feedbackOptOut");
+//	}else{
+//		localStorage.feedbackOptOut = "true";
+//	}
+//
+//	defaultIcon(iconWasCustom);
+//
+//	if( chrome.runtime.setUninstallURL && !options.disableUninstallSurvey ){
+//		chrome.runtime.setUninstallURL("https://www.vidsbee.com/ColorPick/Thanks/?uninstall=1&browserinfo=To help improve this tool, please take a //moment to describe why you uninstalled ColorPick.%0A%0AColorPick has an option to disable this //survey.%0A%0AExtUninstall-"+safeGetVersion());
+//        //"https://www.vidsbee.com/Contact/?uninstallSurvey=ColorPick&browserinfo=To help improve this tool, please take a moment to describe why //you uninstalled ColorPick.%0A%0AColorPick has an option to disable this survey.%0A%0AExtUninstall-"+safeGetVersion());
+//	}else{
+//		chrome.runtime.setUninstallURL('');
+//	}
+//}
 
 function defaultIcon(force){
-	if( private_window.iconIsBitmap || private_window.appleIcon || force ){
+	if( loadedOptions.iconIsBitmap || loadedOptions.appleIcon || force ){
 		var iconPath='img/icons/no-shadow/';
-		if(private_window.appleIcon)iconPath+='apple/';
-		if(private_window.resetIcon)chrome.action.setIcon({path:{19:chrome.runtime.getURL(iconPath+'icon19.png'),38:chrome.runtime.getURL(iconPath+'icon38.png')}});
+		if(loadedOptions.appleIcon)iconPath+='apple/';
+		if(loadedOptions.resetIcon)chrome.action.setIcon({path:{19:chrome.runtime.getURL(iconPath+'icon19.png'),38:chrome.runtime.getURL(iconPath+'icon38.png')}});
 		return true;
 	}
 	return false;
@@ -132,10 +131,11 @@ chrome.runtime.onMessageExternal.addListener(function(request, sender, sendRespo
 			});
 			sendResponse({askedTheTab:true});
 		}else if(request.bulkAppendHistories){
-			localStorage['colorPickHistory']=(localStorage['colorPickHistory']||'')+bulkAppendHistories;
+			loadedOptions['syncColorHistory']=(loadedOptions['syncColorHistory']||'')+bulkAppendHistories;
+			// tbd, in tehory we'd want to trigger the historypush message here
 			sendResponse({});
 		}else if(request.getAllHistories){
-			sendResponse({allExtHistories: localStorage['colorPickHistory'] || ''});
+			sendResponse({allExtHistories: loadedOptions['syncColorHistory'] || ''});
 		}else if(request.historyPush && request.hex && request.rgb && request.hsv ){
 			processSetColor({setColor:true,hex:request.hex,rgb:request.rgb,hsv:request.hsv});
 			sendResponse({});
@@ -174,7 +174,7 @@ function doCaptueForTab(request,tabId,winId){
 	// 	}// define handler instead?
 	// }
 	if(winId < 1)winId=null;
-	if(private_window.usePNG)chrome.tabs.captureVisibleTab(winId, {format:'png'}, cbf);
+	if(loadedOptions.usePNG)chrome.tabs.captureVisibleTab(winId, {format:'png'}, cbf);
 	else chrome.tabs.captureVisibleTab(winId, {format:'jpeg',quality:100}, cbf);
 }
 
@@ -229,10 +229,11 @@ function(request, sender, sendResponse) {
 			goToOrOpenTab(request.goToOrVisitTab);
 			sendResponse({});
 		}else if(request.reloadprefs){
-			setTimeout(function(){
+			loadSettingsFromChromeSyncStorage(function load_prefs_cb(){
+				// logging: the joy of needing to debug possible circulars
+				console.log('reaload prefs processed in bg page...');
 				chrome.tabs.sendMessage(lsnaptabid, {reloadPrefs:true}, function(r) {});
-			},255);
-			fromPrefs();
+			}, loadedOptions);
 			sendResponse({});
     }else
     	sendResponse({});
@@ -359,22 +360,28 @@ function fetchSponsorsListTo(tabid, devicePixelRatio, timestamp){
 	});
 }
 
-function processSetColor(request){
-	if(request.hex) curentHex=request.hex;
-	if( lastHex != curentHex ){
-		//optionally store color to database...
-		if(private_window.shareClors){
-			var xhr = new XMLHttpRequest();
-			xhr.onreadystatechange=function(){if(xhr.readyState == 4){ }};
-			xhr.open('GET', 'https://vidsbee.com/ColorPick/Daily/vcolors.php?colorhex='+curentHex, true);
-			xhr.send();
-		}
-		//store colors
-		localStorage['colorPickHistory']=(localStorage['colorPickHistory']||'')+"#"+curentHex;
+function saveColorHistories(){
+	chromeStorageSaveALocalStor({syncColorHistory: loadedOptions['syncColorHistory']}, function saved_prefs_hista(){
 		//logs error when options is not showing... not sure of best way to prevent
 		chrome.runtime.sendMessage({historypush: true}, function(response) {
 			if(chrome.runtime.lastError)console.log('historypush error (options screen not open?): '+chrome.runtime.lastError.message);
 		});
+	})
+}
+
+function processSetColor(request){
+	if(request.hex) curentHex=request.hex;
+	if( lastHex != curentHex ){
+		//optionally store color to database...
+		if(loadedOptions.shareClors){
+			fetch('https://vidsbee.com/ColorPick/Daily/vcolors.php?colorhex='+curentHex)
+			.then(function(response){ /* possibly contributed hex code, not tested */ })
+		}
+		//store colors
+		
+		loadedOptions['syncColorHistory']=(loadedOptions['syncColorHistory']||'')+"#"+curentHex;
+		saveColorHistories();
+		
 	}
 	if( curentHex ){
 		chrome.tabs.sendMessage(tabid,{hexValueWasSelected:curentHex.toLowerCase()},function(response){});
@@ -400,20 +407,9 @@ chrome.alarms.onAlarm.addListener(function(alarm){
 	//if(!isRunning)chrome.runtime.reload();//testing only, force update apply
 });
 
-function DOMloaded(){
-	//difficult to say when best time to do this is.... chrome running at 2 locations with different settings may produce odd results!
-	loadSettingsFromChromeSyncStorage(function(){
-		fromPrefs();
-	});
-}
-
-//document.addEventListener('DOMContentLoaded', DOMloaded);
-
 function safeGetVersion(){
 	if( chrome.runtime.getManifest ){
 		return ((chrome.runtime.getManifest() || {}).version) || 'null-version';
 	}
 	return 'no-version';
 }
-
-//DOMloaded(); // ummm... servcie worker?

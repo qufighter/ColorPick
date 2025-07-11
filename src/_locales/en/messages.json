@@ -281,7 +281,7 @@
       "message": "Snap Mode - backup mode handles various errors"
    },
    "snapModeDesc": {
-      "message": "Snap Mode - Pick from Screenshot"
+      "message": "Snap Mode - Pick from Screenshot (you may have to click the extension icon again to use this mode)"
    },
    "snapModeBlock": {
       "message": "Blocked Pages [RegEx,i]",

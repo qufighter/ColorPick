@@ -87,6 +87,7 @@ pOptions["disableRewriting"]={def:true,ind:0}; //this option has no effect, but 
 pOptions["usageStatistics"]={def:false,ind:0};
 pOptions["shareClors"]={def:false,ind:0};
 pOptions["disableUninstallSurvey"]={def:false,ind:0};
+pSyncItems["syncColorHistory"]={def:''};
 pSyncItems["reg_chk"]={def:false};
 pSyncItems["reg_hash"]={def:""};
 pSyncItems["reg_name"]={def:""};
