@@ -5,6 +5,11 @@ import {storage, plat3, isWindows, isMac, isFirefox, isChrome, isEdge, pOptions,
 
 var loadedOptions = {}
 
+if(typeof(localStorage)!='object'){
+	var localStorage = {};
+}
+
+
 function sendReloadPrefs(cb){
 	var cbf=cb;
 	if(typeof(cbf)!='function')cbf=function(){};
@@ -16,11 +21,15 @@ function sendReloadPrefs(cb){
 
 // note, this is probably inadequately named, as it will be local only if sync is not available...
 // and yes sadly clicking fast may yield errors syncing the color history now :/
+// mv3 note need to handle errors with save now... localStorage backup won't necessarily be reliably available
 function chromeStorageSaveALocalStor(tosave, cbf){
 	cbf =  cbf || function(){};
 	storage.set(tosave, function() {
-		if(chrome.runtime.lastError && chrome.runtime.lastError.message.indexOf('MAX_WRITE_OPERATIONS_PER_HOUR') > 0){
-			//console.log(chrome.runtime.lastError);
+		if(chrome.runtime.lastError ){
+			console.log(chrome.runtime.lastError);
+			if(chrome.runtime.lastError.message.indexOf('MAX_WRITE_OPERATIONS_PER_HOUR') > 0){
+				// ???
+			}
 		}
 		cbf();
 	});
@@ -96,13 +105,16 @@ function getDirMap(dir){
 
 function loadSettingsFromChromeSyncStorage(cbf, optionalIntoObj){
 	
+	var srcLocation = localStorage;
+	
+	
 	storage.get(null, function(obj) {
-		for(i in obj){
-//			if(pOptions[i] || pAdvOptions[i] || pSyncItems[i]){
-//				localStorage[i] = obj[i];
-//			}
+		for(var i in obj){
+			if(pOptions[i] || pAdvOptions[i] || pSyncItems[i]){
+				srcLocation[i] = obj[i];
+			}
 		}
-		loadPrefsFromLocalStorage(optionalIntoObj || loadedOptions, function(){});
+		loadPrefsFromLocalStorage(optionalIntoObj || loadedOptions, function(){}, srcLocation);
 		sendReloadPrefs(); // can maybe remove the call to sendReload here and call when needed instead?
 		if(typeof(cbf)=='function')cbf();
 	});

@@ -3,7 +3,7 @@ import {goToOrOpenTab, chromeStorageSaveALocalStor, loadSettingsFromChromeSyncSt
 //var private_window={};
 //var options={};
 var tabs_ports={};
-var localStorage = {}; // TBD< this is no longer hte real localStorage :/ so this does NOT sync anything wiht options.html etc
+//var localStorage = {}; // TBD< this is no longer hte real localStorage :/ so this does NOT sync anything wiht options.html etc
 
 // arguably this is totally defunct... yes we can get options from private_window,
 // but they are also already read into EXPORT_options_prefs_helpers.loadedOptions
@@ -131,11 +131,11 @@ chrome.runtime.onMessageExternal.addListener(function(request, sender, sendRespo
 			});
 			sendResponse({askedTheTab:true});
 		}else if(request.bulkAppendHistories){
-			loadedOptions['syncColorHistory']=(loadedOptions['syncColorHistory']||'')+bulkAppendHistories;
-			// tbd, in tehory we'd want to trigger the historypush message here
+			loadedOptions.syncColorHistory=(loadedOptions.syncColorHistory||'')+bulkAppendHistories;
+			saveColorHistories();
 			sendResponse({});
 		}else if(request.getAllHistories){
-			sendResponse({allExtHistories: loadedOptions['syncColorHistory'] || ''});
+			sendResponse({allExtHistories: loadedOptions.syncColorHistory || ''});
 		}else if(request.historyPush && request.hex && request.rgb && request.hsv ){
 			processSetColor({setColor:true,hex:request.hex,rgb:request.rgb,hsv:request.hsv});
 			sendResponse({});
@@ -229,7 +229,13 @@ function(request, sender, sendResponse) {
 		}else if(request.goToOrVisitTab){
 			goToOrOpenTab(request.goToOrVisitTab);
 			sendResponse({});
+		}else if(request.assignsavedhistory){
+			// we saved a new history from options, avoid a round trip to storage
+			console.log('assigning new history as: '+request.assignsavedhistory);
+			loadedOptions.syncColorHistory = request.assignsavedhistory
+			sendResponse({});
 		}else if(request.reloadprefs){
+			// tbd...
 			loadSettingsFromChromeSyncStorage(function load_prefs_cb(){
 				// logging: the joy of needing to debug possible circulars
 				console.log('reaload prefs processed in bg page...');
@@ -362,9 +368,10 @@ function fetchSponsorsListTo(tabid, devicePixelRatio, timestamp){
 }
 
 function saveColorHistories(){
-	chromeStorageSaveALocalStor({syncColorHistory: loadedOptions['syncColorHistory']}, function saved_prefs_hista(){
+	chromeStorageSaveALocalStor({syncColorHistory: loadedOptions.syncColorHistory}, function saved_prefs_hista(){
+		//console.log('save occured of the option syncColorHistory');
 		//logs error when options is not showing... not sure of best way to prevent
-		chrome.runtime.sendMessage({historypush: true}, function(response) {
+		chrome.runtime.sendMessage({historypush: loadedOptions.syncColorHistory}, function(response) {
 			if(chrome.runtime.lastError)console.log('historypush error (options screen not open?): '+chrome.runtime.lastError.message);
 		});
 	})
@@ -379,10 +386,12 @@ function processSetColor(request){
 			.then(function(response){ /* possibly contributed hex code, not tested */ })
 		}
 		//store colors
-		
-		loadedOptions['syncColorHistory']=(loadedOptions['syncColorHistory']||'')+"#"+curentHex;
+		// tbd, it may already have a hex prefix...
+		loadedOptions.syncColorHistory=(loadedOptions.syncColorHistory||'')+"#"+curentHex;
 		saveColorHistories();
 		
+		
+		//console.log(request, loadedOptions.syncColorHistory)
 	}
 	if( curentHex ){
 		chrome.tabs.sendMessage(tabid,{hexValueWasSelected:curentHex.toLowerCase()},function(response){});
@@ -397,7 +406,6 @@ chrome.runtime.onUpdateAvailable.addListener(function(details){
 
 chrome.runtime.onConnect.addListener(function(port){
 	tabs_ports[port.name] = port;
-	
 });
 
 //we need to save periodically in some way that won't over-use the sync api
@@ -414,3 +422,9 @@ function safeGetVersion(){
 	}
 	return 'no-version';
 }
+
+// loadedOptions is already laoded from an empty data source, this is problematic potentially...
+loadSettingsFromChromeSyncStorage(function(){
+	// mv3 note until this loads, we're actually not ready to process runtime.onMessage! fun fact...
+	console.log('loadedOptions', loadedOptions);
+});

@@ -381,33 +381,53 @@ function clear_history(ev){
 				processUndo: persist_history_state
 			});
 		}
-		localStorage['colorPickHistory']=''; // cheap persist_history_state
-		inform_history_update();
-		sendReloadPrefs();
+		localStorage['colorPickHistory']=''; // clears what was once the history storage too, defunct
+		loadedOptions.syncColorHistory='';
+		inform_history_update(); // may inform OTHER options.html tabs... and tells bg page what the current history is
+		chromeStorageSaveALocalStor({syncColorHistory: loadedOptions.syncColorHistory}, function saved_prefs_hista(){
+			//sendReloadPrefs();
+			// mv3 if these fail it's super sad, and maybe needs a retry etc...
+		})
 	}
 }
 
 function inform_history_update(){
-	chrome.runtime.sendMessage({historypush:true, fromoptions:instanceId}, function(response){});
+	chrome.runtime.sendMessage({historypush:loadedOptions.syncColorHistory, fromoptions:instanceId}, function(response){});
+	chrome.runtime.sendMessage({assignsavedhistory:loadedOptions.syncColorHistory}, function(response){});
 }
 
-function persist_history_state(){
+function persist_history_state(only_if_found_array_of_size){
 	var exiHisInner=document.getElementById('historyInner');
 	var histories = exiHisInner.getElementsByClassName('clickSwatch');
 	var toSave = [];
 	if( histories.length ){
 		if( localStorage['oldHistoryFirst'] != 'true' ){
 			for( var h=histories.length-1; h>-1; h-- ){
-				toSave.push(histories[h].getAttribute('name'));
+				toSave.push(histories[h].getAttribute('name').replace('#', ''));
 			}
 		}else{
 			for( var h=0,hl=histories.length;h<hl;h++ ){
-				toSave.push(histories[h].getAttribute('name'));
+				toSave.push(histories[h].getAttribute('name').replace('#', ''));
 			}
 		}
 	}
-	localStorage['colorPickHistory']=toSave.join('#');//.split('##').join('#');
-	inform_history_update();
+	if( only_if_found_array_of_size && toSave.length < only_if_found_array_of_size ){
+		console.warn('not saving over localStorage.colorPickHistory threshold not met');
+		return;
+	}
+	//localStorage['colorPickHistory']=toSave.join('#');//.split('##').join('#');
+	localStorage['colorPickHistory_saving']=toSave.join('#');
+	loadedOptions.syncColorHistory=localStorage['colorPickHistory_saving'];
+	inform_history_update(); // may inform OTHER options.html tabs... and tells bg page what the current history is
+	chromeStorageSaveALocalStor({syncColorHistory: loadedOptions.syncColorHistory}, function saved_prefs_hista(){
+		//sendReloadPrefs(); // bg page to reload prefs... MAYBE better to just send hte history direclty
+		// mv3 if these fail it's super sad, and maybe needs a retry etc...
+		
+		//localStorage['saving_colorPickHistory']=''; // because we saved, we may clear this wierd intermediary "save"... but some docs say check localStorage for the history... so perhaps we keep this undocumented name key, but proper trail around...
+		localStorage['colorPickHistory']=''; // because we now successfully migrated away from the old mv2 history storage
+
+	});
+	
 }
 
 function printSwatches(e){
@@ -1055,12 +1075,13 @@ function load_history(){
 	if(!document.getElementById('history'))return;
 	if(typeof(localStorage["colorPickHistory"])=='undefined')localStorage['colorPickHistory']="";
 	
-	//if(loadedOptions.syncColorHistory)
-	// so it is prety wierd, we'll want to load localStorage.colorPickHistory it UNLESS we do find a save event...
-	// has occured ,in which case we'll be able to have cleared colorPickHistory
-	// OR we can force a save event (*!!! scary)
+	loadedOptions.syncColorHistory = loadedOptions.syncColorHistory || '';
+	var hist=loadedOptions.syncColorHistory.replace(/^undefined/,'').split("#");
+	//console.log(hist);
+	if( localStorage['colorPickHistory'] ){ // if historic data still exists, timet to merge this in!
+		hist = (localStorage['colorPickHistory'].replace(/^undefined/,'').split("#")).concat(hist);
+	}
 	
-	var hist=localStorage['colorPickHistory'].replace(/^undefined/,'').split("#");
 	var div_history=document.getElementById('history');
 	var exiHisInner=document.getElementById('historyInner');
 	var heightToUse = exiHisInner ? exiHisInner.style.height : 'auto';
@@ -1148,6 +1169,10 @@ function load_history(){
 		class: 'hist_drag_sizer',
 		event: ['mousedown', dragHistBth]
 	}, [], div_history);
+	
+	if( localStorage['colorPickHistory'] ){
+		persist_history_state(5); // this is a migraiton code to move away from this storage
+	}
 }
 function disableSelection(){document.body.style.userSelect='none';}
 function enableSelection(){document.body.style.userSelect='';}
@@ -1285,8 +1310,8 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 		if( request.fromoptions && request.fromoptions == instanceId ){
 			return sendResponse({}); // we never reach here normally, since sendMessage skips our own listener very nicely, but just in case we do not want to blast away the undo history for the active tab... there is a "better" way but involves fetching our sender's tab ID
 		}
-		if(typeof(fetchMainPrefs)=='function')fetchMainPrefs();
-		else load_history(); // while there is the idea we can just push it on the left or right edge... since history may be changed by any number of different options windows.... at some point this needs to be sync'd (the deletions of history items)
+		loadedOptions.syncColorHistory=request.historypush;
+		load_history();
 		sendResponse({});
 	}else if(request.reloadprefs){
 		restore_options();
@@ -1504,7 +1529,12 @@ Cr.elm("div",{id:"mainbox"},[
 
 	createAndAttachRatings(document.getElementById('rate_position'));
 
-	init();
+	loadSettingsFromChromeSyncStorage(function(){
+		console.log('loaded opts', loadedOptions)
+		init();
+	});
+	
+	
 	document.getElementById('bsave').addEventListener('click', save_options);
 	document.getElementById('defa').addEventListener('click', reset_options);
 
