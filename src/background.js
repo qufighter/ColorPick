@@ -159,6 +159,7 @@ function doCaptueForTab(request,tabId,winId){
 			//}, 5000); // for testing only, to simulate slow PC...
 		}else{
 			// tab must have changed too recently - too risky to send this snapshot back... (might be wrong tab)
+			// NOTE: mv3 this is totally broken, presently returns a blob not a dataurlimage, tbd move the faux generator to the userscript....
 			chrome.tabs.sendMessage(tabId, {setPickerImage:true,pickerImage:getFauxSnap(dataUrl,request.w,request.h),to:request.to,isErrorTryAgain:true}, function(response) {});
 		}
 	}
