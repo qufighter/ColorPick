@@ -83,33 +83,6 @@ chrome.tabs.onActivated.addListener(function(activeInfo){
 	lastActiveTabTime=(new Date()).getTime();
 });
 
-function getFauxSnap(dataUrl,w,h){
-	var props = {width:600,height:400};
-	w=w||props.width;
-	h=h||props.height;
-	var ratio = w/h;
-	props.height = props.width / ratio;
-	if( props.height < 400 ) props.height = 400;
-	var cvs = new OffscreenCanvas(w,h); // document.createElement('canvas');
-//	cvs.setAttribute('width', props.width)
-//	cvs.setAttribute('height', props.height)
-	var ctx = cvs.getContext('2d');
-	ctx.fillStyle = "rgb(77,77,77)";
-	ctx.fillRect(0, 0, props.width, props.height);
-	ctx.fillStyle = "rgb(255,255,255)";
-	ctx.textAlign = "center";
-	ctx.font = "12px sans-serif";
-	ctx.fillText("Press R, scroll or resize the window for a new snapshot", 300, 50);
-	ctx.font = "24px sans-serif";
-	ctx.fillText("ColorPick - Snapshot Error", 300, 100);
-	ctx.font = "12px sans-serif";
-	if( dataUrl ){
-		ctx.fillText("The screenshot was discarded", 300, 200);
-	}
-	ctx.fillText("Press R, scroll or resize the window for a new snapshot", 300, 250);
-	return cvs.convertToBlob(); //URL.createObjectURL(cvs.convertToBlob());
-}
-
 chrome.runtime.onMessageExternal.addListener(function(request, sender, sendResponse) {
 	//console.log('external message onMessageExternal', request, sender);
 	var extTabId = request.active_tab;
@@ -159,8 +132,7 @@ function doCaptueForTab(request,tabId,winId){
 			//}, 5000); // for testing only, to simulate slow PC...
 		}else{
 			// tab must have changed too recently - too risky to send this snapshot back... (might be wrong tab)
-			// NOTE: mv3 this is totally broken, presently returns a blob not a dataurlimage, tbd move the faux generator to the userscript....
-			chrome.tabs.sendMessage(tabId, {setPickerImage:true,pickerImage:getFauxSnap(dataUrl,request.w,request.h),to:request.to,isErrorTryAgain:true}, function(response) {});
+			chrome.tabs.sendMessage(tabId, {setPickerImage:true,pickerImage:"",getFaux:true,to:request.to,isErrorTryAgain:true}, function(response) {});
 		}
 	}
 	// if( request.newImage == 'for-popup' ){

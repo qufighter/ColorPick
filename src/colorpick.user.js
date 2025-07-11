@@ -119,7 +119,12 @@ function reqLis(request, sender, sendResponse) {
 			newImage();
 		}else{
 			if( request.to - 0 === snapshotLoadedTimeout - 0 && lastNewTimeout == 0 ){
-				snapLoader.src=request.pickerImage;
+				if( request.getFaux ){
+					snapLoader.src=getFauxSnap(true, innerWidth, innerHeight);
+					return;
+				}else{
+					snapLoader.src=request.pickerImage;
+				}
 			}else{
 				isMakingNew = false;
 				newImage();
@@ -152,6 +157,38 @@ function reqLis(request, sender, sendResponse) {
   sendResponse(resp);
 }
 chrome.runtime.onMessage.addListener(reqLis);
+
+// historically this would be needed if the gotten screenshot was for a previoulsy sleected tab due to tab switch...
+// and is arguably a great security feature if the website is spying on the content nodes somehow... and got a screenshot
+// of your gmail instead of the intended tab (itself), but anyway!
+function getFauxSnap(dataUrl,w,h){
+	var props = {width:600,height:400};
+	w=w||props.width;
+	h=h||props.height;
+	var ratio = w/h;
+	props.height = props.width / ratio;
+	if( props.height < 400 ) props.height = 400;
+	var fxcvs = document.createElement('canvas'); //new OffscreenCanvas(w,h); // document.createElement('canvas');
+	fxcvs.setAttribute('width', props.width)
+	fxcvs.setAttribute('height', props.height)
+	var fxctx = fxcvs.getContext('2d');
+	fxctx.fillStyle = "rgb(77,77,77)";
+	fxctx.fillRect(0, 0, props.width, props.height);
+	fxctx.fillStyle = "rgb(255,255,255)";
+	fxctx.textAlign = "center";
+	fxctx.font = "12px sans-serif";
+	fxctx.fillText("Press R, scroll or resize the window for a new snapshot", 300, 50);
+	fxctx.font = "24px sans-serif";
+	fxctx.fillText("ColorPick - Snapshot Error", 300, 100);
+	fxctx.font = "12px sans-serif";
+	if( dataUrl ){
+		fxctx.fillText("The screenshot was discarded due to recent tab switch (security reasons)", 300, 200);
+	}
+	fxctx.fillText("Press R, scroll or resize the window for a new snapshot", 300, 250);
+	return fxcvs.toDataURL(); //(for normal canvas, use this!)
+	// return fxcvs.convertToBlob(); //URL.createObjectURL(fxcvs.convertToBlob());
+	//return URL.createObjectURL(fxcvs.convertToBlob()); // offscreen canvas maybe method; maybe doesn't work...
+}
 
 function decrementPopupsShowing(){
 	popupsShowing--;
