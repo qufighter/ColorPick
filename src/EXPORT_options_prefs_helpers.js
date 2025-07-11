@@ -1,7 +1,7 @@
 // these functions are NOT included in user.js (content scripts)
 
 //run build_exports.sh to create EXPORT_<file>.js
-import {loadPrefsFromLocalStorage} from "./EXPORT_options_prefs.js"
+import {storage, plat3, isWindows, isMac, isFirefox, isChrome, isEdge, pOptions, pAdvOptions, pSyncItems, extensionsKnown, formatColorValues, formatColorValuesWith, navTo, navToHelp, navToDesktop, navToMobile, navToReg, navToAmz, navToOptions, navToHistory, navToPallete, loadPrefsFromStorage, loadPrefsFromLocalStorage} from "./EXPORT_options_prefs.js"
 
 var loadedOptions = {}
 
@@ -96,9 +96,9 @@ function loadSettingsFromChromeSyncStorage(cbf){
 	
 	storage.get(null, function(obj) {
 		for(i in obj){
-			if(pOptions[i] || pAdvOptions[i] || pSyncItems[i]){
-				localStorage[i] = obj[i];
-			}
+//			if(pOptions[i] || pAdvOptions[i] || pSyncItems[i]){
+//				localStorage[i] = obj[i];
+//			}
 		}
 		loadPrefsFromLocalStorage(loadedOptions, function(){});
 		sendReloadPrefs(); // can maybe remove the call to sendReload here and call when needed instead?
@@ -110,4 +110,4 @@ loadPrefsFromLocalStorage(loadedOptions, function(){});
 
 
 //run build_exports.sh to create EXPORT_<file>.js
-export { loadedOptions, loadSettingsFromChromeSyncStorage, getDirMap, detectDirection, getDirection, goToOrOpenTab, saveToChromeSyncStorage, saveSyncItemsToChromeSyncStorage, sendReloadPrefs }
+export { storage, plat3, isWindows, isMac, isFirefox, isChrome, isEdge, pOptions, pAdvOptions, pSyncItems, extensionsKnown, formatColorValues, formatColorValuesWith, navTo, navToHelp, navToDesktop, navToMobile, navToReg, navToAmz, navToOptions, navToHistory, navToPallete, loadPrefsFromStorage, loadPrefsFromLocalStorage, loadedOptions, loadSettingsFromChromeSyncStorage, getDirMap, detectDirection, getDirection, goToOrOpenTab, saveToChromeSyncStorage, saveSyncItemsToChromeSyncStorage, sendReloadPrefs }

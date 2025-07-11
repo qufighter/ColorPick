@@ -1,5 +1,6 @@
 #!/bin/sh
 
+cat src/options_prefs_helpers.js | awk -f build_exports.awk > src/EXPORT_options_prefs_helpers.js
 cat src/options_prefs.js | awk -f build_exports.awk > src/EXPORT_options_prefs.js
 
 

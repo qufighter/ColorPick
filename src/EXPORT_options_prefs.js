@@ -2,15 +2,20 @@ var storage = chrome.storage.sync || chrome.storage.local;
 var plat3 = navigator.platform.substr(0,3).toLowerCase();
 var isWindows=plat3=='win';
 var isMac=plat3=='mac';
-var isFirefox = window.navigator.userAgent.indexOf('Firefox') > -1;
-var isChrome = window.navigator.userAgent.indexOf('Chrome/') > -1;
-var isEdge = window.navigator.userAgent.indexOf('Edge') > -1;
+var isFirefox = navigator.userAgent.indexOf('Firefox') > -1;
+var isChrome = navigator.userAgent.indexOf('Chrome/') > -1;
+var isEdge = navigator.userAgent.indexOf('Edge') > -1;
 if( isEdge ){
 	isChrome = false;
 }
 var pOptions={};
 var pAdvOptions={};
 var pSyncItems={};
+
+// some fallback code, tbd
+if(typeof(localStorage)!='object'){
+	var localStorage = {};
+}
 
 var extensionsKnown = {
 	color_pick_tablet: (isChrome ? 'hobaclohjecibademehpakdcphmbodmb' : (isFirefox ? null : (isEdge ? null : null))),

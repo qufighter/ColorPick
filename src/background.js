@@ -1,4 +1,12 @@
+//import {storage, plat3, isWindows, isMac, isFirefox, isChrome, isEdge, pOptions, pAdvOptions, pSyncItems, extensionsKnown, formatColorValues, formatColorValuesWith, navTo, navToHelp, navToDesktop, navToMobile, navToReg, navToAmz, navToOptions, navToHistory, navToPallete, loadPrefsFromStorage, loadPrefsFromLocalStorage} from "./EXPORT_options_prefs";
+//import {loadedOptions, loadSettingsFromChromeSyncStorage, getDirMap, detectDirection, getDirection, goToOrOpenTab, saveToChromeSyncStorage, saveSyncItemsToChromeSyncStorage, sendReloadPrefs} from "./EXPORT_options_prefs_helpers.js";
+import {goToOrOpenTab, pOptions, pAdvOptions, pSyncItems} from "./EXPORT_options_prefs_helpers.js";
+
+
+var private_window={};
 var options={};
+var tabs_ports={};
+var localStorage = {}; // TBD< this is no longer hte real localStorage :/ so this does NOT sync anything wiht options.html etc
 
 function fromPrefs(){
 	//remove defunct options
@@ -7,14 +15,14 @@ function fromPrefs(){
 	//future additions -
 	//storage.remove(['','',''], function(){})
 
-	var iconWasCustom = window.iconIsBitmap || window.appleIcon;
+	var iconWasCustom = private_window.iconIsBitmap || private_window.appleIcon;
 
 	for(var i in pOptions){
 		if(typeof(pOptions[i].def)=='boolean')
 			options[i] = ((localStorage[i]=='true')?true:((localStorage[i]=='false')?false:pOptions[i].def));
 		else
 			options[i] = ((localStorage[i])?localStorage[i]:pOptions[i].def);
-		window[i] = options[i] // todo refactor out
+		private_window[i] = options[i] // todo refactor out
 	}
 
 	for(var i in pAdvOptions){
@@ -22,7 +30,7 @@ function fromPrefs(){
 			options[i] = ((localStorage[i]=='true')?true:((localStorage[i]=='false')?false:pAdvOptions[i].def));
 		else
 			options[i] = ((localStorage[i])?localStorage[i]:pAdvOptions[i].def);
-		window[i] = options[i] // todo refactor out
+		private_window[i] = options[i] // todo refactor out
 	}
 
 	if(typeof(localStorage["usageStatistics"])=='undefined'){
@@ -48,10 +56,10 @@ function fromPrefs(){
 }
 
 function defaultIcon(force){
-	if( iconIsBitmap || appleIcon || force ){
+	if( private_window.iconIsBitmap || private_window.appleIcon || force ){
 		var iconPath='img/icons/no-shadow/';
-		if(appleIcon)iconPath+='apple/';
-		if(resetIcon)chrome.action.setIcon({path:{19:chrome.runtime.getURL(iconPath+'icon19.png'),38:chrome.runtime.getURL(iconPath+'icon38.png')}});
+		if(private_window.appleIcon)iconPath+='apple/';
+		if(private_window.resetIcon)chrome.action.setIcon({path:{19:chrome.runtime.getURL(iconPath+'icon19.png'),38:chrome.runtime.getURL(iconPath+'icon38.png')}});
 		return true;
 	}
 	return false;
@@ -83,9 +91,9 @@ function getFauxSnap(dataUrl,w,h){
 	var ratio = w/h;
 	props.height = props.width / ratio;
 	if( props.height < 400 ) props.height = 400;
-	var cvs = document.createElement('canvas');
-	cvs.setAttribute('width', props.width)
-	cvs.setAttribute('height', props.height)
+	var cvs = new OffscreenCanvas(w,h); // document.createElement('canvas');
+//	cvs.setAttribute('width', props.width)
+//	cvs.setAttribute('height', props.height)
 	var ctx = cvs.getContext('2d');
 	ctx.fillStyle = "rgb(77,77,77)";
 	ctx.fillRect(0, 0, props.width, props.height);
@@ -100,7 +108,7 @@ function getFauxSnap(dataUrl,w,h){
 		ctx.fillText("The screenshot was discarded", 300, 200);
 	}
 	ctx.fillText("Press R, scroll or resize the window for a new snapshot", 300, 250);
-	return cvs.toDataURL();
+	return cvs.convertToBlob(); //URL.createObjectURL(cvs.convertToBlob());
 }
 
 chrome.runtime.onMessageExternal.addListener(function(request, sender, sendResponse) {
@@ -166,7 +174,7 @@ function doCaptueForTab(request,tabId,winId){
 	// 	}// define handler instead?
 	// }
 	if(winId < 1)winId=null;
-	if(usePNG)chrome.tabs.captureVisibleTab(winId, {format:'png'}, cbf);
+	if(private_window.usePNG)chrome.tabs.captureVisibleTab(winId, {format:'png'}, cbf);
 	else chrome.tabs.captureVisibleTab(winId, {format:'jpeg',quality:100}, cbf);
 }
 
@@ -343,20 +351,19 @@ function fetchSponsorsListTo(tabid, devicePixelRatio, timestamp){
     if( devicePixelRatio > 1 ){
         sponsors_dpi = 'colorgame_sponsors_hidpi.json';
     }
-    var xhr = new XMLHttpRequest();
-    xhr.onreadystatechange=function(){if(xhr.readyState == 4 && xhr.status == 200){
-        var sponsors =  JSON.parse(xhr.responseText);
-        processSponsorsListFor(sponsors, tabid, timestamp);
-    }};
-    xhr.open('GET', chrome.runtime.getURL(sponsors_dpi), true);
-    xhr.send();
+	fetch(chrome.runtime.getURL(sponsors_dpi))
+	.then(function(response){return response.text()})
+	.then(function(responseText){
+		var sponsors =  JSON.parse(responseText);
+		processSponsorsListFor(sponsors, tabid, timestamp);
+	});
 }
 
 function processSetColor(request){
 	if(request.hex) curentHex=request.hex;
 	if( lastHex != curentHex ){
 		//optionally store color to database...
-		if(shareClors){
+		if(private_window.shareClors){
 			var xhr = new XMLHttpRequest();
 			xhr.onreadystatechange=function(){if(xhr.readyState == 4){ }};
 			xhr.open('GET', 'https://vidsbee.com/ColorPick/Daily/vcolors.php?colorhex='+curentHex, true);
@@ -369,28 +376,21 @@ function processSetColor(request){
 			if(chrome.runtime.lastError)console.log('historypush error (options screen not open?): '+chrome.runtime.lastError.message);
 		});
 	}
-	if(autocopyhex&&autocopyhex!='false'){
-		copyColor(request);
-	}
 	if( curentHex ){
 		chrome.tabs.sendMessage(tabid,{hexValueWasSelected:curentHex.toLowerCase()},function(response){});
 	}
 	lastLastHex=lastHex;lastHex=curentHex;
 }
 
-function copyColor(request){
-	var n=document.createElement('input');document.body.appendChild(n);
-	var fmt = request.hex;
-	if( request.rgb && autocopyhex=='rgb' ) fmt='rgb'+formatColorValues(request.rgb.r,request.rgb.g,request.rgb.b);
-	if( request.hsv && autocopyhex=='hsl' ) fmt='hsl'+formatColorValues(request.hsv.h,request.hsv.s,request.hsv.v,0,1,1);
-	n.value=fmt;n.select();document.execCommand('copy');n.parentNode.removeChild(n);
-}
 
 chrome.runtime.onUpdateAvailable.addListener(function(details){
 	updateAvailable=true;
 });
 
-chrome.runtime.onConnect.addListener(function(port){});
+chrome.runtime.onConnect.addListener(function(port){
+	tabs_ports[port.name] = port;
+	
+});
 
 //we need to save periodically in some way that won't over-use the sync api
 chrome.alarms.create("sync colorpick", {delayInMinutes:40,periodInMinutes:80});
@@ -407,7 +407,7 @@ function DOMloaded(){
 	});
 }
 
-document.addEventListener('DOMContentLoaded', DOMloaded);
+//document.addEventListener('DOMContentLoaded', DOMloaded);
 
 function safeGetVersion(){
 	if( chrome.runtime.getManifest ){
@@ -415,3 +415,5 @@ function safeGetVersion(){
 	}
 	return 'no-version';
 }
+
+//DOMloaded(); // ummm... servcie worker?

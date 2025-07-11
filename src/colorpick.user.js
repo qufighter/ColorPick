@@ -243,6 +243,7 @@ function picked(ev){
 		emptyNode(n);
 	}else{
 		try{
+			copyColorIfEna();
 			chrome.runtime.sendMessage({setColor:true,hex:hex,rgb:rgb,hsv:hsv}, function(response){});
 		}catch(e){
 			console.log("Sorry - ColorPick experienced a problem during setColor and has been disabled - Reload the page in order to pick colors here.", msg_bg_unavail, e);
@@ -256,6 +257,16 @@ function picked(ev){
     setTimeout(keepWmAway, 250); // the new watermark could have overlapped the main control... avoid this!
 	chrome.runtime.sendMessage({setPickState:true,isPicking:!isLocked}, function(r){});
 	mmf(ev);
+}
+
+function copyColorIfEna(){
+	if(opts.autocopyhex =='rgb'){
+		navigator.clipboard.writeText('rgb'+formatColorValuesWith(opts.CSS3ColorFormat,rgb.r,rgb.g,rgb.b));
+	}else if(opts.autocopyhex =='hsl'){
+		navigator.clipboard.writeText('hsl'+formatColorValuesWith(opts.CSS3ColorFormat,hsv.h,hsv.s,hsv.v,0,1,1));
+	}else if(opts.autocopyhex=='true'){
+		navigator.clipboard.writeText(hex);
+	}
 }
 
 function moveNosnapNotice(ev){
@@ -384,7 +395,7 @@ function initialInit(){
 		prefsLoadedCompleteInit()
 	});
 	if( !connectListener ){
-		chrome.runtime.connect().onDisconnect.addListener(function() {
+		chrome.runtime.connect({name: 'tbd-tabid'}).onDisconnect.addListener(function() {
 			console.log("Sorry - ColorPick detected the extension has been reloaded.  This instance of the content script is now defunct. You may have to refresh the page to use ColorPick here!", msg_bg_unavail)
 			exitAndDetach(); // no WithMessage here, the error dialoge won't have clickable options link
 		})
