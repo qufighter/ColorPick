@@ -124,10 +124,10 @@ chrome.runtime.onMessageExternal.addListener(function(request, sender, sendRespo
 
 function doCaptueForTab(request,tabId,winId){
 	var cbf=function(dataUrl){
+		var error_capturing = false;
 		if(chrome.runtime.lastError){
 			console.error('capture err ', chrome.runtime.lastError);
-			// mv3 tbd, set isErrorTryAgain based on this?
-			// any faux mode should try again though...
+			error_capturing = true; // tbd assign sring for what error?
 		}
 		var currentTime = (new Date()).getTime();
 		var snapDuration = currentTime - lastActiveTabTime; // measure duration since last tab activation....
@@ -138,7 +138,8 @@ function doCaptueForTab(request,tabId,winId){
 			//}, 5000); // for testing only, to simulate slow PC...
 		}else{
 			// tab must have changed too recently - too risky to send this snapshot back... (might be wrong tab)
-			chrome.tabs.sendMessage(tabId, {setPickerImage:true,pickerImage:"",getFaux:true,to:request.to,isErrorTryAgain:true}, function(response) {});
+			// note: error capturing will preempt getFaux mode...
+			chrome.tabs.sendMessage(tabId, {setPickerImage:true,pickerImage:"",getFaux:true,to:request.to,isErrorTryAgain:error_capturing}, function(response) {});
 		}
 	}
 	// if( request.newImage == 'for-popup' ){
