@@ -74,6 +74,13 @@ function snapshotLoaded(){
 			showCtrls();document.body.style.cursor=crosshairCss();updateColorPreview();
 		},10);
 }
+var errorRetryTimeout = 0;
+var errorBackoff = 100;
+function getSnapErrorBackoff(){
+	errorBackoff *= 1.1;
+	if(errorBackoff > 1000);
+	return errorBackoff;
+}
 function reqLis(request, sender, sendResponse) {
   // typically we only get tab messages, however on pick.html we may get other messages !
   var resp={result:true};
@@ -111,23 +118,27 @@ function reqLis(request, sender, sendResponse) {
 			}
 		}
   }else if (request.setPickerImage){
+		clearTimeout(errorRetryTimeout);
 		imagesRcvdCounter++;
 		if( request.isErrorTryAgain ){
 			/// do we let them have time to read it?? or not???
 			// if we are "locked" or not.... ?
 			isMakingNew = false;
-			newImage();
+			errorRetryTimeout = setTimeout(newImage, getSnapErrorBackoff());
 		}else{
+			errorBackoff = 100;
 			if( request.to - 0 === snapshotLoadedTimeout - 0 && lastNewTimeout == 0 ){
 				if( request.getFaux ){
 					snapLoader.src=getFauxSnap(true, innerWidth, innerHeight);
+					isMakingNew = false;
+					errorRetryTimeout = setTimeout(newImage, getSnapErrorBackoff());
 					return;
 				}else{
 					snapLoader.src=request.pickerImage;
 				}
 			}else{
 				isMakingNew = false;
-				newImage();
+				errorRetryTimeout = setTimeout(newImage, getSnapErrorBackoff());
 			}
 		}
 

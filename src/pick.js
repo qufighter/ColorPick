@@ -5,26 +5,30 @@ document.addEventListener('DOMContentLoaded', function(){
 
 	winloc = winlocParts[0];
 
-	if( winlocParts[1] == 'extSelf' ){
-		Cr.elm('div',{
-			style: Cr.css({
-				position: 'absolute',
-				width: '100%',
-				color: 'grey',
-				top: 0
-			}),
-			childNodes:[
-				Cr.elm('h1', {
-					style: 'margin:0;',
-					childNodes:[Cr.txt(chrome.i18n.getMessage('colorProfileWarning1'))]
-				}),
-				Cr.elm('h3', {
-					style: 'margin:0;',
-					childNodes:[Cr.txt(chrome.i18n.getMessage('colorProfileWarning2'))]
-				})
-			]
-		}, document.body);
-	}
+	Cr.elm('div',{
+		style: Cr.css({
+			position: 'absolute',
+			width: '100%',
+			color: 'grey',
+			'z-index': -1,
+			top: 0,
+			left: '32px'
+		}),
+		childNodes:[
+			winlocParts[1] == 'extSelf' ? Cr.elm('h1', {
+				style: 'margin:0;',
+				childNodes:[Cr.txt(chrome.i18n.getMessage('colorProfileWarning1'))]
+			}): 0,
+			winlocParts[1] == 'extSelf' ? Cr.elm('h3', {
+				style: 'margin:0;',
+				childNodes:[Cr.txt(chrome.i18n.getMessage('colorProfileWarning2'))]
+			}): 0,
+			Cr.elm('h3', {
+				style: 'margin:0;',
+				childNodes:[Cr.txt(chrome.i18n.getMessage('snapModeDesc'))]
+			})
+		]
+	}, document.body);
 
 	var last = localStorage.lastImageSnap;
 	if( !last && localStorage.cacheSnapshots == 'true' ){

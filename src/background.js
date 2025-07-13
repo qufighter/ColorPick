@@ -124,6 +124,11 @@ chrome.runtime.onMessageExternal.addListener(function(request, sender, sendRespo
 
 function doCaptueForTab(request,tabId,winId){
 	var cbf=function(dataUrl){
+		if(chrome.runtime.lastError){
+			console.error('capture err ', chrome.runtime.lastError);
+			// mv3 tbd, set isErrorTryAgain based on this?
+			// any faux mode should try again though...
+		}
 		var currentTime = (new Date()).getTime();
 		var snapDuration = currentTime - lastActiveTabTime; // measure duration since last tab activation....
 
