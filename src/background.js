@@ -1,4 +1,4 @@
-import {goToOrOpenTab, chromeStorageSaveALocalStor, loadSettingsFromChromeSyncStorage, pOptions, pAdvOptions, loadedOptions} from "./EXPORT_options_prefs_helpers.js";
+import {goToOrOpenTab, chromeStorageSaveALocalStor, loadSettingsFromChromeSyncStorage, pOptions, pAdvOptions, loadedOptions, extensionsKnown} from "./EXPORT_options_prefs_helpers.js";
 
 //var private_window={};
 //var options={};
@@ -84,6 +84,7 @@ chrome.tabs.onActivated.addListener(function(activeInfo){
 });
 
 chrome.runtime.onMessageExternal.addListener(function(request, sender, sendResponse) {
+	
 	//console.log('external message onMessageExternal', request, sender);
 	var extTabId = request.active_tab;
 	var extWinId = request.active_window;
