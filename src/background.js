@@ -388,14 +388,6 @@ chrome.runtime.onConnect.addListener(function(port){
 	tabs_ports[port.name] = port;
 });
 
-//we need to save periodically in some way that won't over-use the sync api
-chrome.alarms.create("sync colorpick", {delayInMinutes:40,periodInMinutes:80});
-chrome.alarms.onAlarm.addListener(function(alarm){
-	saveToChromeSyncStorage();//we should also find a way to save before the extension is being restarted
-	if(!isRunning&&updateAvailable) chrome.runtime.reload();//applies a pending update
-	//if(!isRunning)chrome.runtime.reload();//testing only, force update apply
-});
-
 function safeGetVersion(){
 	if( chrome.runtime.getManifest ){
 		return ((chrome.runtime.getManifest() || {}).version) || 'null-version';
