@@ -66,3 +66,6 @@ And yes, sure, but it is better to wrestle the lion, and loose, than live among 
 It is fools like myself which maybe bested with simple knowledge of the critical hit, the lion no longer exists, and now have only regret.
 I'd ratehr die a fool than respect a world of unfairness ruled by fear, as though it were wise.
 But there is still some truth to the quote, that unfair worlds kill.  And in a sense, that is a just end for the fearful fools, but maybe not for the rest.
+
+
+Conform to speak has to go; because conformity isn't worth being spoken and says nothing worth reading, and it's how powerful constrain opportunities from everyone.  Simply put, it's the system that binds things into a bad state of non freedom that ultimately only works for the powerful that constrain it.  Systems that reqiure conformity and normality are basically doomed from the very start, and value nothing of actual value.  The great simplifiers of corporate greed confom aren't actually making your life any easier, theyre taking away what works and replacing it with grabage that works for them.
