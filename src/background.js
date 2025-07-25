@@ -318,9 +318,7 @@ function processSponsorsListFor(sponsors, tabid, timestamp){
     // if someone can hack the file system, they could probably change this check too
     // anyway we'll double check what we got from the coresponding lo/hi dpi JSON file(s) to see if it's in the approved list...
     // and check against google safe-browsing api too... see safeBrowsingCheckSponsorsList()
-    var knownSponsorUrls={
-        'https://get.manganum.app/GWor': 1
-    };
+    var knownSponsorUrls={};
     var sponsorsValid = [];
     for( var s=0, sp=null; s<sponsors.length; s++){
         sp = sponsors[s];
@@ -363,7 +361,18 @@ function processSetColor(request){
 		//optionally store color to database...
 		if(loadedOptions.shareClors){
 			fetch('https://vidsbee.com/ColorPick/Daily/vcolors.php?colorhex='+curentHex)
-			.then(function(response){ /* possibly contributed hex code, not tested */ })
+			.then(function(response){
+				// huh?  it works?  I don't have any host permisison claimed
+				// to me this is an indciation of how easy it is to do nefarious things with manifest version 3
+				// nuff said... (unlesssomeone made a special exception for me, aww how sweet)
+				// I'm going to guess service_worker: it's not restricted.  yikes.
+				// mv2 basiaclly forced you to use permissions.<all_urls> instead of a restricted set so that ohter features would work ( for example, content_scripts that needed <all_urls>)
+				// now mv3 you don't have to claim anything and you can fetch (and presumably execute) anything
+				// and that thing could fetch more stuff....
+				// so this just breeds culplable deniablitiy, etc
+				// the spyware for profit ethos of our times demands it?
+				// not a fan...
+			});
 		}
 		//store colors
 		// tbd, it may already have a hex prefix...
