@@ -394,7 +394,7 @@
       "description": "'ColorPick' refers to the extName key, see that description for details, if that key is not translated leave this part of the string untranslated"
    },
    "tips_1": {
-      "message": "Move your mouse over the web page to examine pixel color values. Click to the web page to pick!",
+      "message": "Move your mouse over the web page to examine pixel color values. Click the web page to pick!",
       "description": "'pick' refers to selection of the current color, or the user has chosen the current color."
    },
    "tips_1_locked": {
@@ -408,7 +408,7 @@
       "message": "Chase this message for tips and more."
    },
    "tips_4": {
-      "message": "Did you know? ColorPick Eyedropper is available for iPhone and Android!  Also you may find the 'Tablet Edition' Extension; see Options.",
+      "message": "Did you know? ColorPick Eyedropper has a tablet/mobile version?  See website for details.",
       "description": "'ColorPick Eyedropper' refers to the extName key, see that description for details, if that key is not translated leave this part of the string untranslated"
    },
    "tips_5": {

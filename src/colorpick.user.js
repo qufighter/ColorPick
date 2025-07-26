@@ -611,6 +611,7 @@ function currentTip(){
 	var tipIndex = wmMoveCtr%wmTipsTotal;
 	var extra = '';
 	if( tipIndex == 1 && isLocked ){ extra = '_locked' }
+	if(tipIndex<1) tipIndex = 1; // disable the "register" tip as who cares, its only valuable if everyone does it
 	Cr.elm('div',{id:'tip_'+tipIndex,childNodes:[Cr.txt(chrome.i18n.getMessage('tips_'+tipIndex+extra))]}, watermct);
 }
 function nextTip(){

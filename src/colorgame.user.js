@@ -23,43 +23,7 @@ var sponsors = [];
 var sponsorsPaid = [];
 var sponsorsPaidCount = 0;
 
-var sponsorsDefault = [
-    {
-        img:chrome.runtime.getURL('img/sponsors/colordoctor.jpg'),
-        title:'Color Doctor\nhypertension tester',
-        href:'https://amzn.to/2KWw7hJ'
-    },
-    {
-        img:chrome.runtime.getURL('img/sponsors/waterpik.jpg'),
-        title:'Waterpik\njust add water',
-        href:'https://amzn.to/2KXVEqM'
-    },{
-        img:chrome.runtime.getURL('img/sponsors/picks.jpg'),
-        title:'Pick\nVarious to choose from',
-        href:'https://amzn.to/31PJJC7'
-    },{
-        img:chrome.runtime.getURL('img/sponsors/laser.jpg'),
-        title:'Color Laser Printer\nAre you tired of refilling ink?',
-        href:'https://amzn.to/2KL8d9V'
-    },{
-        img:chrome.runtime.getURL('img/sponsors/color.jpg'),
-        title:'Color\nmost expensive',
-        href:'https://amzn.to/2ZeTTug',
-        maxw:'125px'
-    },{
-        img:chrome.runtime.getURL('img/sponsors/prismacolor.jpg'),
-        title:'Prismacolor\nProfessional Markers etc',
-        href:'https://amzn.to/31K2kj0'
-    },{
-        img:chrome.runtime.getURL('img/sponsors/bulb.jpg'),
-        title:'Color Changing LED Bulbs\nWay too cool',
-        href:'https://amzn.to/31S7pFS'
-    },{
-        img:chrome.runtime.getURL('img/sponsors/purple.jpg'),
-        title:'The color Purple\ngo get yourself a mattress',
-        href:'https://amzn.to/2uhRjtF'
-    }
-];
+var sponsorsDefault = [];
 
 // todo, each time we re-enter, we should re-roll the default sponsors... and reset to paid sponsors
 function randomizeDefaultSponsors(){
@@ -181,6 +145,11 @@ function nextIconImage(g_moveCtr){
 
         var sponsor = sponsors[rollSponsorAgain()];
 
+		if(!sponsor){
+			closeX.remove(); // the close controls are only neeed when the ips must be manually dismissed/moved with a click (because it wss clickable)
+			return;
+		}
+		
         //console.log('in adspace', sponsor);
 
         var thisUos = !sponsor.id ? uos : uof;
@@ -203,18 +172,7 @@ function nextIconImage(g_moveCtr){
                     }),
                     (sponsor.title ? Cr.txt(sponsor.title) : 0)
                 ]
-            }),
-            // sponsor.id indicates paid sponsor, so skip the amazon search area
-            (!sponsor.id ? Cr.elm('div',{
-                title: thisUos,
-                style:'font-size:8px',
-                childNodes: [
-                    Cr.elm('form', {action: 'https://www.amazon.com/s', method: 'GET', childNodes:[
-                        Cr.elm('input', {type: 'hidden', name: 'tag', value: "colorpick01-20"}),
-                        Cr.elm('input', {type: 'search', name: 'k'}),
-                        Cr.elm('input', {type: 'submit', prompt: 'search', value: '\uD83D\uDD0D  Amazon', style:'position: absolute;right: 5px;font-size:8pt;'})
-                    ]})
-            ]}) : 0 ),
+            })
         ]}, watermct);
 
 
