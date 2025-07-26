@@ -208,7 +208,7 @@
       "message": "Disable extension removal survey after uninstall"
    },
    "disableRewriting": {
-      "message": "Disable affiliation of non-affiliate links"
+      "message": "Disable affiliate links"
    },
    "usageStatistics": {
       "message": "Gather Usage Statistics (See Terms of Use)"
