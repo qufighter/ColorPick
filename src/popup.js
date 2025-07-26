@@ -632,9 +632,6 @@ function finishSetup(){
         
 	});
 
-	if(localStorage.feedbackOptOut=='true' && localStorage["reg_chk"]!='true'){
-		setTimeout(checkForLicense,500);
-	}
 }
 function oout(){
 	chrome.runtime.sendMessage({disableColorPicker:true,tabi:tabid},function(r){});
@@ -739,42 +736,7 @@ function selectSelfText(ev){
  getEventTarget(ev).select();
 }
 
-var licf=false,lhei=10;
-function checkForLicense(){
-	//return;
-	//if(document.getElementById('pre').src.indexOf('error') < 0)//< pre no longer exists
-		document.getElementById('unreg_msg').style.display="block";
-	
-	if(localStorage["hasAgreedToLicense"]=='true')return;//they agreed then opted-out
-	
-	if(typeof(localStorage["trialPeriod"])=='undefined')localStorage["trialPeriod"]=0;
-	if(localStorage["trialPeriod"]-0 < 5 ){
-		localStorage["trialPeriod"] = localStorage["trialPeriod"]-0+1;
-		return;
-	}
-	
-	return;//do not be super annoying...
-	
-	lhei=10;
-	var f=document.createElement('iframe');
-	f.setAttribute('id','license_frame');
-	f.setAttribute('src','license.html');
-	f.setAttribute('width','146');
-	f.setAttribute('height',lhei);
-	f.setAttribute('frameborder','yes');
-	f.setAttribute('scrolling','no');
-	f.setAttribute('style','position:absolute;top:40px;'+dirMap.start+':3px;z-index:999;box-shadow: 0px 0px 6px #000;opacity:0.9;');
-	
-	if(document.body.firstChild.id=='license_frame')document.body.removeChild(document.body.firstChild);
-	document.body.insertBefore(f,document.body.firstChild);
-	licf=f;
-	animIn();
-}
-function animIn(){
-	lhei+=5;
-	licf.style.height=lhei+'px';
-	if(lhei < 150)setTimeout(animIn,33);
-}
+
 function sizeWindow(x,y){
 	//window.resizeTo(x,y); // broken! works from console
 }

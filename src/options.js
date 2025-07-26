@@ -1470,10 +1470,6 @@ Cr.elm("div",{id:"mainbox"},[
 	]),
 	Cr.elm("span",{id:"status"}),
 	Cr.elm("div",{id:"cotd"},[]),
-	Cr.elm("a",{id:"license_link",href:"license.html?wide=1"},[
-		Cr.txt(chrome.i18n.getMessage('terms'))
-	]),
-	Cr.txt(" | "),
 	Cr.elm("a",{target:"_blank",href:"help.html",event:['click', navToHelp]},[
 		Cr.elm('span',{style:'color:#444;'},[Cr.txt('\uFFFD ')]),
 		Cr.txt(chrome.i18n.getMessage('help'))

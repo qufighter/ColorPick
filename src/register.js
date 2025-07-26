@@ -514,14 +514,7 @@ Cr.elm("div",{id:"mainbox"},[
 
 	// Cr.elm("h3",{style:"margin-bottom:7px;clear:both;"},[
 	// 	Cr.txt("Alternative")
-	// ]),
-	// Cr.txt("If you do not wish to purchase a license at this time,"),
-	// Cr.elm("br"),
-	// Cr.txt("you may still place this ColorPick extension in registered mode by following the "),
-	// Cr.elm("a",{id:"license_link",href:"license.html?wide=1"},[
-	// 	Cr.txt("license agreement")
-	// ]),
-	// Cr.txt(".")
+	// ])
 ],document.body);
 	init();
 	gel('license_go').addEventListener('click', license_go);
