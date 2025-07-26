@@ -349,8 +349,8 @@ function showInappFailure(){
                     Cr.elm('li',{},[Cr.txt('If you purchased this chrome exclusive license in the past and feel entitled to registered mode without having to purchase an updated license, you may steal(); the program from the javascript console.')]),
                     Cr.elm('li',{},[Cr.txt('Warning that unsteal(); or unsteal_anyway(); will also remove any valid or invalid registration.')]),
                     Cr.elm('li',{},[Cr.txt('This means of registration is as valid as any other (eg you may use it to disable the watermark advertsement).')]),
-                    Cr.elm('li',{},[Cr.txt('Please register!')]),
-                    Cr.elm('li',{},[localStorage['was_stole'] ? Cr.elm('input',{type:'button', value:'unsteal();', event:['click',unsteal]}) : (localStorage['reg_chk']!='true' ? Cr.elm('input',{type:'button', value:'steal();', event:['click',steal]}): 0)]),
+					Cr.elm('li',{},[Cr.txt('If you registered in the past, and are sore about it, I think in some cases it is justified, but refunding you isn\'t always easy at this point as the elapsed time to do so is too long, plus some idiots pulled the plug on the whole interface in their latest dumb "connection-ism" stunt, prentending it is in any way cost-effective to migrate, and I can\'t even find your email addreses of those who did... what I need for CWS reg is the actual reciept number (CWS.XXXX-XXXX-XXXX-XXXX	Order Creation Date,	Currency of Transaction,	Order Amount,	Amount Charged,	Buyer City,	Buyer State,	Buyer Postal Code,	Buyer Country), and we\'ll pretend that if you have this you must be you.  Your name on a support ticket doesn\'t map to any datapoint that I have nor is that the private setting for settling any dispute.  If you registerd on my website then this may be simpler, but the plan there is ultimatley to build the refund feature into the license manager there... if you did reg via paypal all I really need is your reg name selected or email address.  I won\'t actually revoke the license for any manual refund due to associated risks.  This being said if I can determine that you did register, and what your email address is (*cannot be done), and that you have not been refunded in the past (* damnit I\'m creating race to the bottom aren\'t I, so disclose: this is not a race, if you WAIT, I will make this claim that the 2x refund promised MIGHT be a 3x refund at some future date...), I\'m happy to return the money plus interest (via paypal or maybe even zelle) as we will pretend this exension is profitable and license values accrue even though the whole world is a bunch of jackasses who hate this pretend value model (they insist on actual profit, what a hassle, I only value the REDACTED by profit imaginary value model which I will insist is common knowledge but we all know should but cannot be discussed openly), by returning value I will still establish a road to becomming a penny-less drifter the only dream worth having (*actually free world to even do this doesn\'t exist). Anyway my plan is to refund 2x whatever you paid and still it will feel so hollow and worthless I guarantee it won\'t even buy diner, yeah blame me for inflation too... isn\'t it gerat being blamed for what the rich inflate. Life itself, some artifact of artificial inflation caused by greed, therefore can not ever be valued, as value only accrues via scarcity. By greedflation of life the rich will always find plenty of willilng criminals to put profit first. '), Cr.elm('a',{href:'mailto:samlarison+refunds-noreply@gmail.com'},[Cr.txt("Refund Request Email")])]),
+                    Cr.elm('li',{style:'font-weight:bold;font-size:3em;'},[localStorage['was_stole'] ? Cr.elm('input',{type:'button', value:'unsteal();', event:['click',unsteal]}) : (localStorage['reg_chk']!='true' ? Cr.elm('input',{style:'font-weight:bold;font-size:2em;', type:'button', value:'steal();', event:['click',steal]}): 0)]),
                     
 //					Cr.elm('li',{},[Cr.txt('After signing in then reload this page.')]),
 //					Cr.elm('li',{},[Cr.txt('Chrome does not support in-app purchases in all regions.')]),
@@ -416,6 +416,7 @@ Cr.elm("div",{id:"mainbox"},[
 		Cr.elm("h3",{},[
 			Cr.txt("Register Chrome Extension only (Exclusive license)")
 		]),
+		Cr.elm('div',{},[Cr.txt('NOTE: registration is now (and arguably always has been) FREE, under "More Info" use the "seal()" and "unsteal()" button toggle to change this status.  It now has no effect, but these were always console commands available here')]),
 		Cr.elm("a",{style:'display:block;padding-bottom:12px;',title:'Sorry this method of registration appears to be going the way of the dinosaur.  Now no one will help you donate except paypal.',href:'https://developer.chrome.com/webstore/cws-payments-deprecation',target:'_blank'},[
 			Cr.txt("Deprecation Notice")
 		]),
@@ -452,15 +453,15 @@ Cr.elm("div",{id:"mainbox"},[
 			])
 		])
 	]),
-	Cr.elm("h3",{style:"margin-bottom:7px;"},[
-		Cr.txt("Buy ColorPick License")
-	]),
-	Cr.elm("br"),
-	Cr.elm("a",{style:"float:left;margin-right:20px;top:-10px;",class:"rounded",target:"_blank",href:"http://vidsbee.com/ColorPick/"},[
-		Cr.txt("Purchase License Key"),
-		Cr.elm("br"),
-		Cr.elm("img",{style:'width:130px;height:41px;padding-top:8px;',src:"img/paypal.png"})
-	]),
+//	Cr.elm("h3",{style:"margin-bottom:7px;"},[
+//		Cr.txt("Buy ColorPick License")
+//	]),
+//	Cr.elm("br"),
+//	Cr.elm("a",{style:"float:left;margin-right:20px;top:-10px;",class:"rounded",target:"_blank",href:"http://vidsbee.com/ColorPick/"},[
+//		Cr.txt("Purchase License Key"),
+//		Cr.elm("br"),
+//		Cr.elm("img",{style:'width:130px;height:41px;padding-top:8px;',src:"img/paypal.png"})
+//	]),
 
 
 	Cr.elm("span",{style:"float:left;margin-right:12px;margin-bottom:24px;"},[
@@ -504,6 +505,12 @@ Cr.elm("div",{id:"mainbox"},[
 		Cr.txt('*'),
 		Cr.txt(" Mobile Platforms")
 	]),
+	Cr.elm('div',{},[
+	    Cr.txt("While it has been determined that app store listings are impermanent and therefore worthless endeavour"),
+		Cr.elm('br'),
+		Cr.txt("The mobile/tablet edition is still availble on my website (app itself is add free and hosted with reasonable security via github.io).")
+		
+	]),
 	Cr.elm("small",{style:"",class:""},[
 		createPhoneDiv()
 	]),
@@ -522,7 +529,7 @@ Cr.elm("div",{id:"mainbox"},[
 	if( isChrome ){
 		getChromeInAppStatus();
 	}else{
-		gel('chrome-inapp-reg').style.display='none';
+		//gel('chrome-inapp-reg').style.display='none';
 	}
 
 	//setTimeout(function(){

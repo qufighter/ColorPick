@@ -47,14 +47,14 @@ function createPhoneDiv(){
 					Cr.elm('br'),
 					Cr.elm('br'),
 
-					Cr.elm('a', {href:"https://itunes.apple.com/us/app/colorpick-eyedropper/id1455143862?mt=8", style:"display:inline-block;overflow:hidden;background:url(img/AppStore.svg) no-repeat;width:135px;height:40px;"}),
-					Cr.txt(nbsp + nbsp ),
-					Cr.elm('a', {href:"https://play.google.com/store/apps/details?id=com.vidsbee.colorpicksdl&utm_source=chrome-ext&utm_campaign=web&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1", style:"display:inline-block;overflow:hidden;background:url(img/PlayStore.png) no-repeat;width:135px;height:40px;background-position: -10px -10px; background-size: 113%;"}),
-
-					// basic
-					Cr.elm('a', {href:"https://itunes.apple.com/us/app/colorpick-eyedropper-basic/id1457611642?mt=8", class:'basic', style:"display:inline-block;overflow:hidden;width:135px;"}),
-					Cr.txt(nbsp + nbsp ),
-					Cr.elm('a', {href:"https://play.google.com/store/apps/details?id=com.vidsbee.colorpickbasicsdl&utm_source=chrome-ext&utm_campaign=web&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1", class:'basic', style:"display:inline-block;overflow:hidden;width:135px;background-position: -10px -10px; background-size: 113%;"}),
+//					Cr.elm('a', {href:"https://itunes.apple.com/us/app/colorpick-eyedropper/id1455143862?mt=8", style:"display:inline-block;overflow:hidden;background:url(img/AppStore.svg) no-repeat;width:135px;height:40px;"}),
+//					Cr.txt(nbsp + nbsp ),
+//					Cr.elm('a', {href:"https://play.google.com/store/apps/details?id=com.vidsbee.colorpicksdl&utm_source=chrome-ext&utm_campaign=web&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1", style:"display:inline-block;overflow:hidden;background:url(img/PlayStore.png) no-repeat;width:135px;height:40px;background-position: -10px -10px; background-size: 113%;"}),
+//
+//					// basic
+//					Cr.elm('a', {href:"https://itunes.apple.com/us/app/colorpick-eyedropper-basic/id1457611642?mt=8", class:'basic', style:"display:inline-block;overflow:hidden;width:135px;"}),
+//					Cr.txt(nbsp + nbsp ),
+//					Cr.elm('a', {href:"https://play.google.com/store/apps/details?id=com.vidsbee.colorpickbasicsdl&utm_source=chrome-ext&utm_campaign=web&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1", class:'basic', style:"display:inline-block;overflow:hidden;width:135px;background-position: -10px -10px; background-size: 113%;"}),
 
 					//Cr.txt('Features:'),
 					Cr.elm('br'),

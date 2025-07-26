@@ -62,5 +62,5 @@
 	   "sandbox": "sandbox allow-scripts; script-src 'self'"
    },
    "default_locale": "en",
-   "version": "0.0.3.0"
+   "version": "0.0.3.1"
 }
