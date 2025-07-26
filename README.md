@@ -49,6 +49,8 @@ Terrorism and Bathtubs: Comparing and Assessing the Risks
 
 5) Isn't society a special club for just us?
 
+(Context note, 2025-07-26 this points are not beliefs, in conflict, and failing the do not get me wrong test is basically guaranteed 205%... that being said they are intended to cause thought, or if not (*worst case scenario*) at least potentially challenge the reader to think, whether possible or not )
+
 TIL Bathtubs defend society from itself, more than I can say for society... but again even free speech is lost in this era... what they did to us on 09/11 or continue to do was never remotely unthinkable though, but let's ban it anyway, it's outside think.  Now we're so protected in our thought bubble nothing can hurt our feelings now!
 
 True overpopulation will come with it's own revelations and devaluations... we'd be better off devaluing human life up front and avoiding it entirely.
