@@ -271,7 +271,7 @@
       "message": "Confirm closing this tab with palette entires"
    },
    "hideWatermark": {
-      "message": "Hide ColorPick watermark on webpage corner (registered only)",
+      "message": "Hide ColorPick watermark on webpage corner",
       "description": "'ColorPick' refers to the extName key, see that description for details, if that key is not translated leave this part of the string untranslated"
    },
    "snapMode_prompt": {
