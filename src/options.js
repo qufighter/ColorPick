@@ -628,6 +628,7 @@ function swatchDroppedEntry(ev){
 	if( dragMeta.active ){
 		dragMeta.resetActive();
 		if( dragMeta.lastDest && ev.type == 'drop' ){
+			Cr.empty(document.getElementById('palette-gen-selection')).appendChild(Cr.txt('x'))
 			if( dragMeta.sourceObj.closest('.clickSwatch') ){
 				// dragging from history to palette :)
 				updateHistorySelection(dragMeta.sourceObj);
@@ -718,7 +719,7 @@ function selectOptionsForObject(modesObj, selectedValue, filterFunction){
 }
 
 //see also, addHistorySwatch... this is only used for the color names feature apt...
-function createBasicSwatch(d, colorNamesSrcInfo, origColorMeta, optParentNode){
+function createColorNameSwatch(d, colorNamesSrcInfo, origColorMeta, optParentNode){
 	var distRounded = Math.round(d*100)/100;
 	return Cr.elm('div', {
 		draggable:true,
@@ -731,8 +732,8 @@ function createBasicSwatch(d, colorNamesSrcInfo, origColorMeta, optParentNode){
 		style: 'background: linear-gradient(90deg, #'+colorNamesSrcInfo.h+' 90%, #'+origColorMeta.hex+' 100%);',
 
 		name: '#'+colorNamesSrcInfo.h,
-		title: '#'+colorNamesSrcInfo.h+' '+colorNamesSrcInfo.n + ' (distance from source: '+distRounded+')'
-	}, [Cr.txt(colorNamesSrcInfo.n),Cr.elm('span',{style:'float:right;',childNodes:[Cr.txt(distRounded)]})], optParentNode)
+		title: '#'+colorNamesSrcInfo.h+' '+colorNamesSrcInfo.n + ' (distance from source: '+distRounded+'), drag to pallete!'
+	}, [Cr.elm('input',{type:'text',value:colorNamesSrcInfo.n,"class":'hidinp'}),Cr.elm('span',{style:'float:right;',childNodes:[Cr.txt(distRounded)]})], optParentNode)
 }
 
 // also gradient feature is controlled here....
@@ -777,18 +778,24 @@ function addOrRemovePalleteGenerationFeatureIf(pColorInput){
 				return true;
 			});
 			
-			var bestNamesHolder = Cr.elm('div',{class:'best-names'});
-			var bestNames = namesForColor(c.rgb, 10);
-			//console.log('best names for', c.rgb, bestNames);
-			for( var b=0; b<bestNames.length; b++){
-				var nameElm = createBasicSwatch(bestNames[b].d, bestNames[b].r, c, bestNamesHolder);
-				nameElm.addEventListener('click', function(ev){
-					var tc=ev.target.getAttribute('name');
-					if(tc){
-						addPalleteSwatch(tc);
-					}
-			   },false);
+			var bestNamesHolder = Cr.elm('div',{class:'best-names', childNodes:[Cr.elm('h3', {childNodes:[Cr.txt(chrome.i18n.getMessage('guessColorNameTitle')+":")]})]});
+			if(localStorage['guessColorName'] === 'true'){
+				var bestNames = namesForColor(c.rgb, 10);
+				//console.log('best names for', c.rgb, bestNames);
+				for( var b=0; b<bestNames.length; b++){
+					var nameElm = createColorNameSwatch(bestNames[b].d, bestNames[b].r, c, bestNamesHolder);
+					nameElm.addEventListener('click', function(ev){
+						var tc=ev.target.getAttribute('name');
+						if(tc){
+							addPalleteSwatch(tc);
+						}
+				   },false);
+				}
+				bestNamesHolder.appendChild(Cr.elm('div',{style:'color:grey;',childNodes:[Cr.txt('*'+chrome.i18n.getMessage('guessColorNameDisclaimer'))]}))
+			}else{
+				bestNamesHolder = 0;
 			}
+			
 			
 			var holder=Cr.elm('div', {
 				class: 'transitions',

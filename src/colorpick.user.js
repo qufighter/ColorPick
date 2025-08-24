@@ -269,13 +269,14 @@ function setDisplay(){//Cr.elm
 		(opts.ShowRGBHSL&&opts.EnableHSL&&hsv?Cr.elm('input',{type:'text',readonly:true,style:'max-width:150px;display:block;',value:'hsl'+formatColorValuesWith(opts.CSS3ColorFormat,hsv.h,hsv.s,hsv.v,0,1,1),id:'cphslvl',event:['mouseover',selectTargElm]}):0)
 	],n);
 	
-	// wip optional feature
-//	var bestNames = namesForColor(rgb);
-//	console.log('best names for', rgb, bestNames);
-//	for( var b=0; b<bestNames.length; b++){
-//		createNamedSwatch(bestNames[b].d, bestNames[b].r, {hex: hex}, n);
-//	}
-	
+	if(opts.guessColorNameInPage){
+		var bestNames = namesForColor(rgb);
+		//console.log('best names for', rgb, bestNames);
+		for( var b=0; b<bestNames.length; b++){
+			createNamedSwatch(bestNames[b].d, bestNames[b].r, {hex: hex}, n);
+		}
+	}
+
 	if(!opts.EnableHex) _ge('cphexvl').style.display="none";
 	if(_ge('cphexvl'))_ge('cphexvl').select();
 //	if( hex && hex != lastHex && (!rgb || (rgb.r != rgb.g || rgb.r != rgb.b || rgb.g != rgb.b)) ){

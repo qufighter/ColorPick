@@ -179,6 +179,19 @@
    "autocopyhex": {
       "message": "Attempt to auto copy value to clipboard"
    },
+   "guessColorNameTitle": {
+	   "message": "CSS Color Names Feature"
+   },
+   "guessColorNameDisclaimer": {
+	   "message": "Some css color names are not accurate, and for example brown appears to be essentially firebrick,red. In color comparison linear distance used here is not always related to visual similarity.",
+	   "description": "the strings brown,firebrick,red should likely remain unchanged in translations until translation support is added."
+   },
+   "guessColorName": {
+	   "message": "Resolve CSS color names for the selected palette color"
+   },
+   "guessColorNameInPage": {
+	   "message": "Reveal color names near the cursor after picking"
+   },
    "hexIsLowerCase": {
       "message": "Lower case hexadecimal values"
    },
