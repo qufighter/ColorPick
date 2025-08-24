@@ -12,7 +12,7 @@ var ntx={ // transition states of element n...
 var isUpdating=false,lastTimeout=0,lx=0,ly=0,histories=0,nbsp='\u00A0',popupsShowing=0,connectListener=false;
 var opts={};
 var cvs = document.createElement('canvas');
-var ctx = cvs.getContext('2d'/*, {willReadFrequently: true}*/),x_cvs_scale=1,y_cvs_scale=1;
+var ctx = cvs.getContext('2d', {willReadFrequently: true}),x_cvs_scale=1,y_cvs_scale=1;
 var snapLoader=Cr.elm('img',{events:[['load',snapshotLoaded]]});
 var dirtyImage=Cr.elm('img');
 var imagesRcvdCounter=0;
