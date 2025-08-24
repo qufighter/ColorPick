@@ -35,6 +35,7 @@ label.changed:before{
 #historyInner{overflow-y:auto;overflow-x:hidden;max-height:220px;}
 .clickSwatch{width:22px;height:22px;display:inline-block;cursor:copy;}
 .clickSwatch.last-selection{box-shadow: black 0px 0px 1px 1px inset;}
+.clickSwatch.nameSwatch{width:auto;height:auto;display:block;color:black;text-shadow:1px 1px 6px white;padding:0.3em;}
 .alt-key .clickSwatch{cursor:url(img/close.png) 10 10,not-allowed;}
 .hist_drag_sizer{display:block;background-color:#CCC;opacity:0.5;position:absolute;}
 .transitions{transition:all ease-out 0.25s;}

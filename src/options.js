@@ -717,6 +717,24 @@ function selectOptionsForObject(modesObj, selectedValue, filterFunction){
 	return options;
 }
 
+//see also, addHistorySwatch... this is only used for the color names feature apt...
+function createBasicSwatch(d, colorNamesSrcInfo, origColorMeta, optParentNode){
+	var distRounded = Math.round(d*100)/100;
+	return Cr.elm('div', {
+		draggable:true,
+		events:[
+			['dragend', historySwatchDroppedEntry],
+			['dragstart', historySwatchDragStart]
+		],
+		class: 'clickSwatch nameSwatch',
+		//style: 'background-color:rgb('+colorNamesSrcInfo.r+','+colorNamesSrcInfo.g+','+colorNamesSrcInfo.b+');',
+		style: 'background: linear-gradient(90deg, #'+colorNamesSrcInfo.h+' 90%, #'+origColorMeta.hex+' 100%);',
+
+		name: '#'+colorNamesSrcInfo.h,
+		title: '#'+colorNamesSrcInfo.h+' '+colorNamesSrcInfo.n + ' (distance from source: '+distRounded+')'
+	}, [Cr.txt(colorNamesSrcInfo.n),Cr.elm('span',{style:'float:right;',childNodes:[Cr.txt(distRounded)]})], optParentNode)
+}
+
 // also gradient feature is controlled here....
 function addOrRemovePalleteGenerationFeatureIf(pColorInput){
 	var pgHld = document.getElementById('generate-palette-area');
@@ -758,6 +776,20 @@ function addOrRemovePalleteGenerationFeatureIf(pColorInput){
 				}
 				return true;
 			});
+			
+			var bestNamesHolder = Cr.elm('div',{class:'best-names'});
+			var bestNames = namesForColor(c.rgb, 10);
+			//console.log('best names for', c.rgb, bestNames);
+			for( var b=0; b<bestNames.length; b++){
+				var nameElm = createBasicSwatch(bestNames[b].d, bestNames[b].r, c, bestNamesHolder);
+				nameElm.addEventListener('click', function(ev){
+					var tc=ev.target.getAttribute('name');
+					if(tc){
+						addPalleteSwatch(tc);
+					}
+			   },false);
+			}
+			
 			var holder=Cr.elm('div', {
 				class: 'transitions',
 				style: 'background-color:#999',
@@ -824,7 +856,8 @@ function addOrRemovePalleteGenerationFeatureIf(pColorInput){
 						],
 						childNodes:[Cr.txt(' '+infoicon+' ')]
 					}),
-					Cr.elm('input', {type:'button', value: chrome.i18n.getMessage('generate'), event: ['click', generatePalleteFromSwatchES]})
+					Cr.elm('input', {type:'button', value: chrome.i18n.getMessage('generate'), event: ['click', generatePalleteFromSwatchES]}),
+					bestNamesHolder
 				]
 			}, pgHld);
 			setTimeout(function(){ holder.style.backgroundColor=''; }, 10);
