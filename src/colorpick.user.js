@@ -12,7 +12,7 @@ var ntx={ // transition states of element n...
 var isUpdating=false,lastTimeout=0,lx=0,ly=0,histories=0,nbsp='\u00A0',popupsShowing=0,connectListener=false;
 var opts={};
 var cvs = document.createElement('canvas');
-var ctx = cvs.getContext('2d'),x_cvs_scale=1,y_cvs_scale=1;
+var ctx = cvs.getContext('2d'/*, {willReadFrequently: true}*/),x_cvs_scale=1,y_cvs_scale=1;
 var snapLoader=Cr.elm('img',{events:[['load',snapshotLoaded]]});
 var dirtyImage=Cr.elm('img');
 var imagesRcvdCounter=0;
@@ -251,7 +251,7 @@ function selectTargElm(ev){
 	ev.target.select();
 }
 var lastHex='';
-var goodHexCounter=0;
+//var goodHexCounter=0;
 function setDisplay(){//Cr.elm
 	if( !n ) return;
 	emptyNode(n);
@@ -267,22 +267,39 @@ function setDisplay(){//Cr.elm
 		(opts.ShowRGBHSL&&opts.EnableRGB&&rgb?Cr.elm('input',{type:'text',readonly:true,style:'max-width:150px;display:block;',value:fmt_rgb,id:'cprgbvl',event:['mouseover',selectTargElm]}):0),
 		(opts.ShowRGBHSL&&opts.EnableHSL&&hsv?Cr.elm('input',{type:'text',readonly:true,style:'max-width:150px;display:block;',value:'hsl'+formatColorValuesWith(opts.CSS3ColorFormat,hsv.h,hsv.s,hsv.v,0,1,1),id:'cphslvl',event:['mouseover',selectTargElm]}):0)
 	],n);
+	
+	// wip optional feature
+//	var bestNames = namesForColor(rgb);
+//	console.log('best names for', rgb, bestNames);
+//	for( var b=0; b<bestNames.length; b++){
+//		createNamedSwatch(bestNames[b].d, bestNames[b].r, {hex: hex}, n);
+//	}
+	
 	if(!opts.EnableHex) _ge('cphexvl').style.display="none";
 	if(_ge('cphexvl'))_ge('cphexvl').select();
-	if( hex && hex != lastHex && (!rgb || (rgb.r != rgb.g || rgb.r != rgb.b || rgb.g != rgb.b)) ){
-		goodHexCounter++;
-		if( goodHexCounter > 1 && histories > 25 ){
-			Cr.elm('div', {style:'text-shadow:white 1px 1px 2px;font-weight:bold;'}, [
-				Cr.elm('a', {
-					style: 'cursor:pointer;',
-					events:['click', navToReg],
-					childNodes:[Cr.txt(chrome.i18n.getMessage('registerBannerLong'))]
-				})
-			], n);
-		}
-		lastHex=hex;
-	}
+//	if( hex && hex != lastHex && (!rgb || (rgb.r != rgb.g || rgb.r != rgb.b || rgb.g != rgb.b)) ){
+//		goodHexCounter++;
+//		if( goodHexCounter > 1 && histories > 25 ){
+//			Cr.elm('div', {style:'text-shadow:white 1px 1px 2px;font-weight:bold;'}, [
+//				Cr.elm('a', {
+//					style: 'cursor:pointer;',
+//					events:['click', navToReg],
+//					childNodes:[Cr.txt(chrome.i18n.getMessage('registerBannerLong'))]
+//				})
+//			], n);
+//		}
+//	}
+	lastHex=hex;
 	keepOnScreen();
+}
+function createNamedSwatch(d, colorNamesSrcInfo, origColorMeta, optParentNode){
+	var distRounded = Math.round(d*100)/100;
+	return Cr.elm('div', {
+		event:['click',function(ev){ chrome.runtime.sendMessage({goToOrVisitTab:'options.html?palette='+colorNamesSrcInfo.h}, function(r){}); ev.preventDefault();},true],
+		style: 'display:block;background: linear-gradient(90deg, #'+colorNamesSrcInfo.h+' 90%, #'+origColorMeta.hex+' 100%);text-align:left;color:black;text-shadow:1px 1px 6px white;padding:0.3em;',
+		name: '#'+colorNamesSrcInfo.h,
+		title: '#'+colorNamesSrcInfo.h+' '+colorNamesSrcInfo.n + ' (distance from source: '+distRounded+')'
+	}, [Cr.txt(colorNamesSrcInfo.n),Cr.elm('span',{style:'float:right;',childNodes:[Cr.txt(distRounded)]})], optParentNode)
 }
 function picked(ev){
 	if(isLocked){
