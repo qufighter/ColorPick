@@ -46,6 +46,8 @@ pOptions["showPreviewInContent"]={def:true,ind:0};
 pOptions["ShowRGBHSL"]={def:true,ind:1};
 pOptions["autocopyhex"]={def:'false',ind:0,select:{'false':chrome.i18n.getMessage('off'),'true':'hexadecimal','rgb':'rgb','hsl':'hsl'}};
 
+pOptions["guessColorName"]={def:true,ind:0};
+pOptions["guessColorNameInPage"]={def:false,ind:1};
 
 //pAdvOptions["customCalibration"]={def:false,ind:0,name:'Enable the defunct calibration link above.'};
 pAdvOptions["usePNG"]={def:true,ind:0};
@@ -70,7 +72,7 @@ pAdvOptions["usePrevColorBG"]={def:false,ind:1};
 pAdvOptions["showPreviousClr"]={def:true,ind:0};
 pAdvOptions["borderValue"]={def:'1px solid grey',ind:0};
 
-pAdvOptions["popupWaitTimeout"]={def:4000,ind:0};
+pAdvOptions["popupWaitTimeout"]={def:2000,ind:0};
 pAdvOptions["snapWaitTimeout"]={def:6000,ind:0};
 pAdvOptions["controlsHiddenDelay"]={def:10,ind:1,select:{1:'1',10:'10 '+chrome.i18n.getMessage('default'),20:20,35:35,50:50,100:100,255:255}};
 
@@ -83,7 +85,6 @@ pAdvOptions["hideWatermark"]={def:false,ind:0};
 //pAdvOptions["autoRedirectPickable"]={def:false,ind:0,name:'Automatically redirect to a pickable version when unavailable (no longer useful!)'};
 //pAdvOptions["redirectSameWindow"]={def:false,ind:1,name:'Use the same window (warning: you may lose form data)'};
 pOptions["hasAgreedToLicense"]={def:false,ind:0,css:'display:none;'};
-pOptions["disableRewriting"]={def:true,ind:0}; //this option has no effect, but is required so that old reviews make logical sense, if people want to opt out of something that doesn't exist they can
 pOptions["usageStatistics"]={def:false,ind:0};
 pOptions["shareClors"]={def:false,ind:0};
 pOptions["disableUninstallSurvey"]={def:false,ind:0};

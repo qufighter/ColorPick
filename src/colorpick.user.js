@@ -469,8 +469,13 @@ function initialInit(){
 	});
 	if( !connectListener ){
 		chrome.runtime.connect({name: 'colorpick-tabus-' + (new Date()).getTime() }).onDisconnect.addListener(function() {
+			connectListener=false;
 			console.log("Sorry - ColorPick detected the extension has been reloaded.  This instance of the content script is now defunct. You may have to refresh the page to use ColorPick here!", msg_bg_unavail)
-			exitAndDetach(); // no WithMessage here, the error dialoge won't have clickable options link
+			if( n !== null ){
+				exitAndDetach(); // no WithMessage here, the error dialoge won't have clickable options link
+			}else{
+				disableColorPicker(); // this is a less severe disabling of this instance of the content script...
+			}
 		})
 		connectListener=true;
 	}
