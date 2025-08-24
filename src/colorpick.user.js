@@ -10,6 +10,7 @@ var ntx={ // transition states of element n...
     y_state: 0
 };
 var isUpdating=false,lastTimeout=0,lx=0,ly=0,histories=0,nbsp='\u00A0',popupsShowing=0,connectListener=false;
+var keepAliveTimeout=0;// idle active extension bg page is killed, which kills the ext in mv3...
 var opts={};
 var cvs = document.createElement('canvas');
 var ctx = cvs.getContext('2d', {willReadFrequently: true}),x_cvs_scale=1,y_cvs_scale=1;
@@ -292,6 +293,12 @@ function setDisplay(){//Cr.elm
 	lastHex=hex;
 	keepOnScreen();
 }
+function keepAliveFires(){
+	clearTimeout(keepAliveTimeout);
+	keepAliveTimeout = setTimeout(keepAliveFires, 5000);
+	chrome.runtime.sendMessage({keepBgAlive: true}, function(r){})
+}
+
 function createNamedSwatch(d, colorNamesSrcInfo, origColorMeta, optParentNode){
 	var distRounded = Math.round(d*100)/100;
 	return Cr.elm('div', {
@@ -409,6 +416,7 @@ function dissableColorPickerFromHere(){
 	}
 }
 function disableColorPicker(){
+	clearTimeout(keepAliveTimeout);
 	isEnabled=false,isLocked=false;
 	isUpdating = false;isMakingNew = false;
 	if( document.body ) document.body.removeEventListener('mousemove',mmf);
@@ -419,7 +427,6 @@ function disableColorPicker(){
 	clearTimeout(lastNewTimeout);
 	clearTimeout(snapshotLoadedTimeout);
 	lastNewTimeout=0;
-
 }
 function removeExistingNodes(){
 	if(document.body){
@@ -483,6 +490,7 @@ function prefsLoadedCompleteInit(){
 		console.log('ColorPick: erroneously called prefsLoadedCompleteInit 2x');
 		return;
 	}
+	keepAliveFires();
 	removeExistingNodes();
 	c=Cr.elm('canvas',{
         id:elmid1,
