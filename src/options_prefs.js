@@ -113,7 +113,7 @@ function namesForColor(search_rgb, max){
 	var rsl=[];
 	for(var cx=0,cl=colorNamesSrc.length; cx<cl; cx++){
 		cns = colorNamesSrc[cx];
-		d = Math.cbrt(Math.pow(cns.r - sr, 2) + Math.pow(cns.g - sg, 2) + Math.pow(cns.b - sb, 2));
+		d = Math.sqrt(Math.pow(cns.r - sr, 2) + Math.pow(cns.g - sg, 2) + Math.pow(cns.b - sb, 2));
 		rsl.push({d:d, r: cns});
 	}
 	rsl = rsl.sort(function(a, b){return a.d-b.d});
