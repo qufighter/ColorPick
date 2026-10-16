@@ -71,7 +71,7 @@ function defaultIcon(force){
 
 //globals
 var x,y,tabid=0,lsnaptabid=0,winid=0;
-var curentHex=0,lastHex='FFF',lastLastHex='FFF';
+var curentHex='',lastHex='FFF',lastLastHex='FFF';
 var isCurrentEnableReady=false,isRunning=false,updateAvailable=false;
 
 
@@ -83,44 +83,48 @@ chrome.tabs.onActivated.addListener(function(activeInfo){
 	lastActiveTabTime=(new Date()).getTime();
 });
 
-chrome.runtime.onMessageExternal.addListener(function(request, sender, sendResponse) {
-	
-	//console.log('external message onMessageExternal', request, sender);
-	var extTabId = request.active_tab;
-	var extWinId = request.active_window;
-	if (sender.id === extensionsKnown.color_pick_tablet){
 
-		if(request.movePixel){
-			chrome.tabs.sendMessage(extTabId, {movePixel:true,_x:request.x,_y:request.y,tabi:extTabId}, function(r) {});
-			sendResponse({});
-		}else if(request.getActivatedStatusFromBg){
-			//console.log('chrome.tabs.sendMessage(',extTabId, {getActivatedStatus:true, tab:extTabId, win:extWinId});
-			chrome.tabs.sendMessage(extTabId, {getActivatedStatus:true, tab:extTabId, win:extWinId}, function(tab_response) {
-				if( chrome.runtime.lastError || !tab_response ){
-					chrome.runtime.sendMessage(extensionsKnown.color_pick_tablet, {extInactive:true, tab:extTabId, win:extWinId}, function(r) {});
-				}else{
-					chrome.runtime.sendMessage(extensionsKnown.color_pick_tablet, tab_response, function(r) {});
-				}
-				//console.log('recieved a response from the tab....', tab_response);
-			});
-			sendResponse({askedTheTab:true});
-		}else if(request.bulkAppendHistories){
-			loadedOptions.syncColorHistory=(loadedOptions.syncColorHistory||'')+bulkAppendHistories;
-			saveColorHistories();
-			sendResponse({});
-		}else if(request.getAllHistories){
-			sendResponse({allExtHistories: loadedOptions.syncColorHistory || ''});
-		}else if(request.historyPush && request.hex && request.rgb && request.hsv ){
-			processSetColor({setColor:true,hex:request.hex,rgb:request.rgb,hsv:request.hsv});
-			sendResponse({});
-		}else if(request.goToOrVisitTab){
-			goToOrOpenTab(request.goToOrVisitTab);
-			sendResponse({});
-		}
-	}else{
-		sendResponse({});
-	}
-});
+// the tablet edition, even this harmless wrapper, bought "gret risk"
+// with the concept of somehow imperisonating the ohter extension, could then
+// miraculously call processSetColor but with some terrible string instead of a hex value...
+//chrome.runtime.onMessageExternal.addListener(function(request, sender, sendResponse) {
+//	
+//	//console.log('external message onMessageExternal', request, sender);
+//	var extTabId = request.active_tab;
+//	var extWinId = request.active_window;
+//	if (sender.id === extensionsKnown.color_pick_tablet){
+//
+//		if(request.movePixel){
+//			chrome.tabs.sendMessage(extTabId, {movePixel:true,_x:request.x,_y:request.y,tabi:extTabId}, function(r) {});
+//			sendResponse({});
+//		}else if(request.getActivatedStatusFromBg){
+//			//console.log('chrome.tabs.sendMessage(',extTabId, {getActivatedStatus:true, tab:extTabId, win:extWinId});
+//			chrome.tabs.sendMessage(extTabId, {getActivatedStatus:true, tab:extTabId, win:extWinId}, function(tab_response) {
+//				if( chrome.runtime.lastError || !tab_response ){
+//					chrome.runtime.sendMessage(extensionsKnown.color_pick_tablet, {extInactive:true, tab:extTabId, win:extWinId}, function(r) {});
+//				}else{
+//					chrome.runtime.sendMessage(extensionsKnown.color_pick_tablet, tab_response, function(r) {});
+//				}
+//				//console.log('recieved a response from the tab....', tab_response);
+//			});
+//			sendResponse({askedTheTab:true});
+//		}else if(request.bulkAppendHistories){
+//			loadedOptions.syncColorHistory=(loadedOptions.syncColorHistory||'')+bulkAppendHistories;
+//			saveColorHistories();
+//			sendResponse({});
+//		}else if(request.getAllHistories){
+//			sendResponse({allExtHistories: loadedOptions.syncColorHistory || ''});
+//		}else if(request.historyPush && request.hex && request.rgb && request.hsv ){
+//			processSetColor({setColor:true,hex:request.hex,rgb:request.rgb,hsv:request.hsv});
+//			sendResponse({});
+//		}else if(request.goToOrVisitTab){
+//			goToOrOpenTab(request.goToOrVisitTab);
+//			sendResponse({});
+//		}
+//	}else{
+//		sendResponse({});
+//	}
+//});
 
 function doCaptueForTab(request,tabId,winId){
 	var cbf=function(dataUrl){
@@ -267,7 +271,7 @@ function safeBrowsingCheckSponsorsList(sponsors, tabid){
     // while extension deploys have become a slow process and unlikely to be as responsive to a live issue as this api
     // here is hoping no sponsor will ever be negatively impacted by this check
     // and no user will ever be negatively impacted by a sponsor link...
-    var coolorpeckkey = 'AIzaSyAIWf-Mc8OvaBJYY6pBZOcBoiWZOkQjf0g';
+    var coolorpeckkey = '0-NA-';
     var threatsUrl = 'https://safebrowsing.googleapis.com/v4/threatLists?key='+coolorpeckkey;
     // you need to visit threatsUrl and load this list, or otherwise.... maintain appropriate logic here... yay!
     var baseUrl = 'https://safebrowsing.googleapis.com/v4/threatMatches:find?key='+coolorpeckkey;
@@ -356,8 +360,8 @@ function saveColorHistories(){
 }
 
 function processSetColor(request){
-	if(request.hex) curentHex=request.hex;
-	if( lastHex != curentHex ){
+	if(request.hex && request.hex.length === 6 ) curentHex=request.hex;
+	if( curentHex && lastHex != curentHex ){
 		//optionally store color to database...
 		if(loadedOptions.shareClors){
 			fetch('https://vidsbee.com/ColorPick/Daily/vcolors.php?colorhex='+curentHex)
